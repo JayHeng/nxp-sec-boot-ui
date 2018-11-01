@@ -11,6 +11,1270 @@ import wx
 import wx.xrc
 
 ###########################################################################
+## Class MyFrame_FLEXSPI_NOR
+###########################################################################
+
+class MyFrame_FLEXSPI_NOR ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"FLEXSPI_NOR", pos = wx.DefaultPosition, size = wx.Size( 508,268 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.Bind(wx.EVT_CLOSE,self.OnClose_FLEXSPI_NOR)
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		sbSizer_FLEXSPI_NOR = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Configure" ), wx.VERTICAL )
+		
+		self.m_staticText_FLEXSPI_NOR = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Configurations of FLEXSPI NOR", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_FLEXSPI_NOR.Wrap( -1 )
+		
+		sbSizer_FLEXSPI_NOR.Add( self.m_staticText_FLEXSPI_NOR, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_FLEXSPI_NOR = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_Max_Freq = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Max Freq:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Max_Freq.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Max_Freq, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Max_FreqChoices = [ u"30MHz", u"50MHz", u"60MHz", u"75MHz", u"80MHz", u"100MHz", u"133MHz", u"166MHz" ]
+		self.m_choice_Max_Freq = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 70,25 ), m_choice_Max_FreqChoices, 0 )
+		self.m_choice_Max_Freq.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Max_Freq, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Per_Enhance = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Performance Enhance:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Per_Enhance.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Per_Enhance, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Per_EnhanceChoices = [ u"Not enabled", u"Enable 0-4-4 mode for High random Read performance" ]
+		self.m_choice_Per_Enhance = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 195,25 ), m_choice_Per_EnhanceChoices, 0 )
+		self.m_choice_Per_Enhance.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Per_Enhance, 0, wx.ALL, 5 )
+		
+		self.m_staticText_CMD_pad = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"CMD pad(s):", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_CMD_pad.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_CMD_pad, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_CMD_padChoices = [ u"1", u"4", u"8" ]
+		self.m_choice_CMD_pad = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 55,25 ), m_choice_CMD_padChoices, 0 )
+		self.m_choice_CMD_pad.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_CMD_pad, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Quad_Mode = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Quad Mode Entry Setting:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Quad_Mode.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Quad_Mode, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Quad_ModeChoices = [ u"Not configure", u"Set bit 6 in Status Register 1", u"Set bit 1 in Status Register 2", u"Set bit 7 in Status Register 2" ]
+		self.m_choice_Quad_Mode = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 180,25 ), m_choice_Quad_ModeChoices, 0 )
+		self.m_choice_Quad_Mode.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Quad_Mode, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Query_CMD_pad = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Query CMD pad:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Query_CMD_pad.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Query_CMD_pad, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Query_CMD_padChoices = [ u"1", u"4", u"8" ]
+		self.m_choice_Query_CMD_pad = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 35,25 ), m_choice_Query_CMD_padChoices, 0 )
+		self.m_choice_Query_CMD_pad.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Query_CMD_pad, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Device_Detection = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Device Detection Type:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Device_Detection.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Device_Detection, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Device_DetectionChoices = [ u"Read SFDP for SDR commands", u"Read SFDP for DDR Read commands", u"HyperFLASH 1V8", u"HyperFLASH 3V", u"Macronix Octal DDR", u"Micron Octal DDR", u"Adesto EcoXiP DDR" ]
+		self.m_choice_Device_Detection = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 195,25 ), m_choice_Device_DetectionChoices, 0 )
+		self.m_choice_Device_Detection.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Device_Detection, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Option_size = wx.StaticText( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, u"Option size:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Option_size.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NOR.Add( self.m_staticText_Option_size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Option_sizeChoices = [ u"0", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"10", u"11", u"12", u"13", u"14", u"15" ]
+		self.m_choice_Option_size = wx.Choice( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 60,25 ), m_choice_Option_sizeChoices, 0 )
+		self.m_choice_Option_size.SetSelection( 0 )
+		wSizer_FLEXSPI_NOR.Add( self.m_choice_Option_size, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_FLEXSPI_NOR.Add( wSizer_FLEXSPI_NOR, 1, wx.EXPAND, 5 )
+		
+		m_sdbSizer_FLEXSPI_NOR = wx.StdDialogButtonSizer()
+		self.m_sdbSizer_FLEXSPI_NOROK = wx.Button( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_OK )
+		m_sdbSizer_FLEXSPI_NOR.AddButton( self.m_sdbSizer_FLEXSPI_NOROK )
+		self.m_sdbSizer_FLEXSPI_NORCancel = wx.Button( sbSizer_FLEXSPI_NOR.GetStaticBox(), wx.ID_CANCEL )
+		m_sdbSizer_FLEXSPI_NOR.AddButton( self.m_sdbSizer_FLEXSPI_NORCancel )
+		m_sdbSizer_FLEXSPI_NOR.Realize();
+		
+		sbSizer_FLEXSPI_NOR.Add( m_sdbSizer_FLEXSPI_NOR, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( sbSizer_FLEXSPI_NOR )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+		self.m_sdbSizer_FLEXSPI_NORCancel.Bind( wx.EVT_BUTTON, self.cancel_of_FLEXSPI_NOR )
+		self.m_sdbSizer_FLEXSPI_NOROK.Bind( wx.EVT_BUTTON, self.apply_of_FLEXSPI_NOR )
+	
+	def __del__( self ):
+		pass
+
+
+		# Virtual event handlers, overide them in your derived class
+	def cancel_of_FLEXSPI_NOR( self, event ):
+                
+                self.Show(False)
+                event.Skip()
+	
+	def apply_of_FLEXSPI_NOR( self, event ):
+                
+                self.Show(False)
+		event.Skip()
+
+	def OnClose_FLEXSPI_NOR( self, event ):
+                ret = wx.MessageBox('Do you really want to leave?',  'Confirm', wx.OK|wx.CANCEL)
+                if ret == wx.OK:
+                        self.Show(False)
+
+
+
+
+
+###########################################################################
+## Class MyFrame_FLEXSPI_NAND
+###########################################################################
+
+class MyFrame_FLEXSPI_NAND ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"FLEXSPI_NOR", pos = wx.DefaultPosition, size = wx.Size( 567,410 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.Bind(wx.EVT_CLOSE,self.OnClose_FLEXSPI_NAND)
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		sbSizer_FLEXSPI_NAND = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Configure" ), wx.VERTICAL )
+		
+		self.m_staticText_FLEXSPI_NAND = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Configurations of FLEXSPI NAND", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_FLEXSPI_NAND.Wrap( -1 )
+		
+		sbSizer_FLEXSPI_NAND.Add( self.m_staticText_FLEXSPI_NAND, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_FLEXSPI_NAND = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_Max_Freq = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Max Freq:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Max_Freq.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_Max_Freq, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Max_FreqChoices = [ u"30MHz", u"50MHz", u"60MHz", u"75MHz", u"80MHz", u"100MHz" ]
+		self.m_choice_Max_Freq = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 70,25 ), m_choice_Max_FreqChoices, 0 )
+		self.m_choice_Max_Freq.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_Max_Freq, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Page_Size = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Page Size (KBytes):", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Page_Size.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_Page_Size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Page_SizeChoices = [ u"2KB", u"4KB" ]
+		self.m_choice_Page_Size = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_Page_SizeChoices, 0 )
+		self.m_choice_Page_Size.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_Page_Size, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Pages = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Pages Per Block:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Pages.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_Pages, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PagesChoices = [ u"64", u"128", u"256", u"32" ]
+		self.m_choice_Pages = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 60,25 ), m_choice_PagesChoices, 0 )
+		self.m_choice_Pages.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_Pages, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Flash_size = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Flash size:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Flash_size.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_Flash_size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Flash_sizeChoices = [ u"512M", u"1GB", u"2GB", u"4GB" ]
+		self.m_choice_Flash_size = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 70,25 ), m_choice_Flash_sizeChoices, 0 )
+		self.m_choice_Flash_size.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_Flash_size, 0, wx.ALL, 5 )
+		
+		self.m_staticText_planes = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Has multiplanes:   ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_planes.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_planes, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_planesChoices = [ u"1 plane", u"2 planes" ]
+		self.m_choice_planes = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_planesChoices, 0 )
+		self.m_choice_planes.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_planes, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Option_size = wx.StaticText( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"Option size:        ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Option_size.Wrap( -1 )
+		
+		wSizer_FLEXSPI_NAND.Add( self.m_staticText_Option_size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Option_sizeChoices = [ u"0", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"10", u"11", u"12", u"13", u"14", u"15" ]
+		self.m_choice_Option_size = wx.Choice( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 60,25 ), m_choice_Option_sizeChoices, 0 )
+		self.m_choice_Option_size.SetSelection( 0 )
+		wSizer_FLEXSPI_NAND.Add( self.m_choice_Option_size, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_FLEXSPI_NAND.Add( wSizer_FLEXSPI_NAND, 1, wx.EXPAND, 5 )
+		
+		sbSizer_FCB_option = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_ANY, u"FCB option" ), wx.VERTICAL )
+		
+		wSizer_FCB_option = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_Size = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"Size:           ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Size.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_Size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_SizeChoices = [ u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"10" ]
+		self.m_choice_Size = wx.Choice( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 60,-1 ), m_choice_SizeChoices, 0 )
+		self.m_choice_Size.SetSelection( 0 )
+		wSizer_FCB_option.Add( self.m_choice_Size, 0, wx.ALL, 5 )
+		
+		self.m_staticText_address_type = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"address_type:         ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_address_type.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_address_type, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_address_typeChoices = [ u"byte address", u"block address" ]
+		self.m_choice_address_type = wx.Choice( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,-1 ), m_choice_address_typeChoices, 0 )
+		self.m_choice_address_type.SetSelection( 0 )
+		wSizer_FCB_option.Add( self.m_choice_address_type, 0, wx.ALL, 5 )
+		
+		self.m_staticText_search_stride = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"search_stride:     ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_search_stride.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_search_stride, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_search_strideChoices = [ u"64 pages", u"128 pages", u"256 pages", u"32 pages" ]
+		self.m_choice_search_stride = wx.Choice( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 60,-1 ), m_choice_search_strideChoices, 0 )
+		self.m_choice_search_stride.SetSelection( 0 )
+		wSizer_FCB_option.Add( self.m_choice_search_stride, 0, wx.ALL, 5 )
+		
+		self.m_staticText_search_count = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"search_count:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_search_count.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_search_count, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_search_countChoices = [ u"1", u"2", u"3", u"4" ]
+		self.m_choice_search_count = wx.Choice( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 43,-1 ), m_choice_search_countChoices, 0 )
+		self.m_choice_search_count.SetSelection( 0 )
+		wSizer_FCB_option.Add( self.m_choice_search_count, 0, wx.ALL, 5 )
+		
+		self.m_staticText_block_count = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"block_count:          ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_block_count.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_block_count, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_block_count = wx.TextCtrl( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,-1 ), 0 )
+		wSizer_FCB_option.Add( self.m_textCtrl_block_count, 0, wx.ALL, 5 )
+		
+		self.m_staticText_block_id = wx.StaticText( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"block_id:             ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_block_id.Wrap( -1 )
+		
+		wSizer_FCB_option.Add( self.m_staticText_block_id, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_block_id = wx.TextCtrl( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 60,-1 ), 0 )
+		wSizer_FCB_option.Add( self.m_textCtrl_block_id, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_FCB_option.Add( wSizer_FCB_option, 1, wx.EXPAND, 5 )
+		
+		sbSizer_KeyBlob_Option = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB_option.GetStaticBox(), wx.ID_ANY, u"KeyBlob Option" ), wx.VERTICAL )
+		
+		wSizer_KeyBlob_Option = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_image_index = wx.StaticText( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, u"image_index:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_image_index.Wrap( -1 )
+		
+		wSizer_KeyBlob_Option.Add( self.m_staticText_image_index, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_image_indexChoices = [ u"0", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"10", u"11", u"12", u"13", u"14", u"15" ]
+		self.m_choice_image_index = wx.Choice( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 80,-1 ), m_choice_image_indexChoices, 0 )
+		self.m_choice_image_index.SetSelection( 0 )
+		wSizer_KeyBlob_Option.Add( self.m_choice_image_index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_dek_size = wx.StaticText( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, u"dek_size:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_dek_size.Wrap( -1 )
+		
+		wSizer_KeyBlob_Option.Add( self.m_staticText_dek_size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_dek_sizeChoices = [ u"128bits" ]
+		self.m_choice_dek_size = wx.Choice( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 80,-1 ), m_choice_dek_sizeChoices, 0 )
+		self.m_choice_dek_size.SetSelection( 0 )
+		wSizer_KeyBlob_Option.Add( self.m_choice_dek_size, 0, wx.ALL, 5 )
+		
+		self.m_staticText_keyblob_infosize = wx.StaticText( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, u"keyblob_info size:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_keyblob_infosize.Wrap( -1 )
+		
+		wSizer_KeyBlob_Option.Add( self.m_staticText_keyblob_infosize, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_keyblob_infosizeChoices = [ u"0", u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8", u"9", u"10", u"11", u"12", u"13", u"14", u"15" ]
+		self.m_choice_keyblob_infosize = wx.Choice( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 80,-1 ), m_choice_keyblob_infosizeChoices, 0 )
+		self.m_choice_keyblob_infosize.SetSelection( 0 )
+		wSizer_KeyBlob_Option.Add( self.m_choice_keyblob_infosize, 0, wx.ALL, 5 )
+		
+		self.m_staticText_type = wx.StaticText( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, u"type:              ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_type.Wrap( -1 )
+		
+		wSizer_KeyBlob_Option.Add( self.m_staticText_type, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_typeChoices = [ u"Update, used to update the keyblob context", u"Program - used to notify memory driver to program Keyblob to destination" ]
+		self.m_choice_type = wx.Choice( sbSizer_KeyBlob_Option.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_typeChoices, 0 )
+		self.m_choice_type.SetSelection( 0 )
+		wSizer_KeyBlob_Option.Add( self.m_choice_type, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_KeyBlob_Option.Add( wSizer_KeyBlob_Option, 1, wx.EXPAND, 5 )
+		
+		
+		sbSizer_FCB_option.Add( sbSizer_KeyBlob_Option, 1, wx.EXPAND, 5 )
+		
+		
+		sbSizer_FLEXSPI_NAND.Add( sbSizer_FCB_option, 1, wx.EXPAND, 5 )
+		
+		m_sdbSizer_FLEXSPI_NAND = wx.StdDialogButtonSizer()
+		self.m_sdbSizer_FLEXSPI_NANDOK = wx.Button( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_OK )
+		m_sdbSizer_FLEXSPI_NAND.AddButton( self.m_sdbSizer_FLEXSPI_NANDOK )
+		self.m_sdbSizer_FLEXSPI_NANDCancel = wx.Button( sbSizer_FLEXSPI_NAND.GetStaticBox(), wx.ID_CANCEL )
+		m_sdbSizer_FLEXSPI_NAND.AddButton( self.m_sdbSizer_FLEXSPI_NANDCancel )
+		m_sdbSizer_FLEXSPI_NAND.Realize();
+		
+		sbSizer_FLEXSPI_NAND.Add( m_sdbSizer_FLEXSPI_NAND, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( sbSizer_FLEXSPI_NAND )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+		self.m_sdbSizer_FLEXSPI_NANDCancel.Bind( wx.EVT_BUTTON, self.cancel_of_FLEXSPI_NAND )
+		self.m_sdbSizer_FLEXSPI_NANDOK.Bind( wx.EVT_BUTTON, self.apply_of_FLEXSPI_NAND )
+	
+	def __del__( self ):
+		pass
+
+
+		# Virtual event handlers, overide them in your derived class
+	def cancel_of_FLEXSPI_NAND( self, event ):
+                
+                self.Show(False)
+                event.Skip()
+	
+	def apply_of_FLEXSPI_NAND( self, event ):
+                
+                self.Show(False)
+		event.Skip()
+
+	def OnClose_FLEXSPI_NAND( self, event ):
+                ret = wx.MessageBox('Do you really want to leave?',  'Confirm', wx.OK|wx.CANCEL)
+                if ret == wx.OK:
+                        self.Show(False)
+	
+		
+###########################################################################
+## Class MyFrame_SEMC_NOR
+###########################################################################
+
+class MyFrame_SEMC_NOR ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"SEMC_NOR", pos = wx.DefaultPosition, size = wx.Size( 520,426 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.Bind(wx.EVT_CLOSE,self.OnClose_SEMC_NOR)
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		sbSizer_SEMC_NOR = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Configure" ), wx.VERTICAL )
+		
+		self.staticText_SEMC_NOR = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"Configurations of SEMC NOR", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_SEMC_NOR.Wrap( -1 )
+		
+		sbSizer_SEMC_NOR.Add( self.staticText_SEMC_NOR, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_SEMC_NOR = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.staticText_PCS_Port = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"PCS Port:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_PCS_Port.Wrap( -1 )
+		
+		wSizer_SEMC_NOR.Add( self.staticText_PCS_Port, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PCS_PortChoices = [ u"CSX0", u"CSX1", u"CSX2", u"CSX3", u"A8" ]
+		self.m_choice_PCS_Port = wx.Choice( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,25 ), m_choice_PCS_PortChoices, 0 )
+		self.m_choice_PCS_Port.SetSelection( 0 )
+		self.m_choice_PCS_Port.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		wSizer_SEMC_NOR.Add( self.m_choice_PCS_Port, 0, wx.ALL, 5 )
+		
+		self.staticText_ADV_Polarity = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"     ADV Port Polarity:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_ADV_Polarity.Wrap( -1 )
+		
+		wSizer_SEMC_NOR.Add( self.staticText_ADV_Polarity, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_ADV_PolarityChoices = [ u"Low active", u"High active" ]
+		self.m_choice_ADV_Polarity = wx.Choice( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,25 ), m_choice_ADV_PolarityChoices, 0 )
+		self.m_choice_ADV_Polarity.SetSelection( 0 )
+		wSizer_SEMC_NOR.Add( self.m_choice_ADV_Polarity, 0, wx.ALL, 5 )
+		
+		self.staticText_DataPort_Size = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"Data Port Size:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_DataPort_Size.Wrap( -1 )
+		
+		wSizer_SEMC_NOR.Add( self.staticText_DataPort_Size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_DataPort_SizeChoices = [ u"8bits", u"8bits", u"16bits", u"24bits" ]
+		self.m_choice_DataPort_Size = wx.Choice( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_DataPort_SizeChoices, 0 )
+		self.m_choice_DataPort_Size.SetSelection( 0 )
+		wSizer_SEMC_NOR.Add( self.m_choice_DataPort_Size, 0, wx.ALL, 5 )
+		
+		self.staticText_Timing_Mode = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"     AC Timing Mode:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_Timing_Mode.Wrap( -1 )
+		
+		wSizer_SEMC_NOR.Add( self.staticText_Timing_Mode, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Timing_ModeChoices = [ u"Safe mode", u"Fast mode", u"User defined(Field 0x04-0x19)" ]
+		self.m_choice_Timing_Mode = wx.Choice( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 125,25 ), m_choice_Timing_ModeChoices, 0 )
+		self.m_choice_Timing_Mode.SetSelection( 0 )
+		wSizer_SEMC_NOR.Add( self.m_choice_Timing_Mode, 0, wx.ALL, 5 )
+		
+		self.staticText_Command_Set = wx.StaticText( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"Command Set:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_Command_Set.Wrap( -1 )
+		
+		wSizer_SEMC_NOR.Add( self.staticText_Command_Set, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Command_SetChoices = [ u"EPSCD-As Micron MT28EW", u"SFMCD-As Micron MT28GU" ]
+		self.m_choice_Command_Set = wx.Choice( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 160,25 ), m_choice_Command_SetChoices, 0 )
+		self.m_choice_Command_Set.SetSelection( 0 )
+		wSizer_SEMC_NOR.Add( self.m_choice_Command_Set, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_SEMC_NOR.Add( wSizer_SEMC_NOR, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Setting_Nxp = wx.StaticBoxSizer( wx.StaticBox( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_ANY, u"Setting By NXP" ), wx.VERTICAL )
+		
+		wSizer_Setting_Nxp = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_tCES = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"tCES:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tCES.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tCES, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tCESChoices = [ u"CE setup time in ns" ]
+		self.m_choice_tCES = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tCESChoices, 0 )
+		self.m_choice_tCES.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tCES, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tCEH = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"     tCEH:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tCEH.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tCEH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tCEHChoices = [ u"CE hold time in ns" ]
+		self.m_choice_tCEH = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tCEHChoices, 0 )
+		self.m_choice_tCEH.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tCEH, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tCEITV = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"tCEITV:  ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tCEITV.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tCEITV, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tCEITVChoices = [ u"CE# interval time in ns" ]
+		self.m_choice_tCEITV = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tCEITVChoices, 0 )
+		self.m_choice_tCEITV.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tCEITV, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tAS = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"     tAS:          ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tAS.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tAS, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tASChoices = [ u"Address setup time in ns" ]
+		self.m_choice_tAS = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tASChoices, 0 )
+		self.m_choice_tAS.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tAS, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tAH = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"tAH:       ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tAH.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tAH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tAHChoices = [ u"Address hold time in ns" ]
+		self.m_choice_tAH = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tAHChoices, 0 )
+		self.m_choice_tAH.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tAH, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tTA = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"     tTA:         ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tTA.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tTA, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tTAChoices = [ u"Turnaround time in ns" ]
+		self.m_choice_tTA = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tTAChoices, 0 )
+		self.m_choice_tTA.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tTA, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tWEL = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"tWEL:     ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tWEL.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tWEL, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tWELChoices = [ u"WE LOW time in ns" ]
+		self.m_choice_tWEL = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tWELChoices, 0 )
+		self.m_choice_tWEL.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tWEL, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tWEH = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"     tWEH:     ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tWEH.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tWEH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice14Choices = [ u"WE HIGH time in ns" ]
+		self.m_choice14 = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice14Choices, 0 )
+		self.m_choice14.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice14, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tREL = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"tREL:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tREL.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tREL, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tRELChoices = [ u"RE LOW time in ns" ]
+		self.m_choice_tREL = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tRELChoices, 0 )
+		self.m_choice_tREL.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tREL, 0, wx.ALL, 5 )
+		
+		self.m_staticText_tREH = wx.StaticText( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, u"     tREH:       ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_tREH.Wrap( -1 )
+		
+		wSizer_Setting_Nxp.Add( self.m_staticText_tREH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_tREHChoices = [ u"RE HIGH time in ns" ]
+		self.m_choice_tREH = wx.Choice( sbSizer_Setting_Nxp.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,25 ), m_choice_tREHChoices, 0 )
+		self.m_choice_tREH.SetSelection( 0 )
+		wSizer_Setting_Nxp.Add( self.m_choice_tREH, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Setting_Nxp.Add( wSizer_Setting_Nxp, 1, wx.EXPAND, 5 )
+		
+		
+		sbSizer_SEMC_NOR.Add( sbSizer_Setting_Nxp, 1, wx.EXPAND, 5 )
+		
+		sdbSizer_SEMC_NOR = wx.StdDialogButtonSizer()
+		self.sdbSizer_SEMC_NOROK = wx.Button( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_OK )
+		sdbSizer_SEMC_NOR.AddButton( self.sdbSizer_SEMC_NOROK )
+		self.sdbSizer_SEMC_NORCancel = wx.Button( sbSizer_SEMC_NOR.GetStaticBox(), wx.ID_CANCEL )
+		sdbSizer_SEMC_NOR.AddButton( self.sdbSizer_SEMC_NORCancel )
+		sdbSizer_SEMC_NOR.Realize();
+		
+		sbSizer_SEMC_NOR.Add( sdbSizer_SEMC_NOR, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( sbSizer_SEMC_NOR )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+	
+
+
+		
+		self.sdbSizer_SEMC_NORCancel.Bind( wx.EVT_BUTTON, self.cancel_of_SEMC_NOR )
+		self.sdbSizer_SEMC_NOROK.Bind( wx.EVT_BUTTON, self.apply_of_SEMC_NOR )
+	
+	def __del__( self ):
+		pass
+	
+	# Virtual event handlers, overide them in your derived class
+	def cancel_of_SEMC_NOR( self, event ):
+                
+                self.Show(False)
+                event.Skip()
+	
+	def apply_of_SEMC_NOR( self, event ):
+                
+                self.Show(False)
+		event.Skip()
+
+	def OnClose_SEMC_NOR( self, event ):
+                ret = wx.MessageBox('Do you really want to leave?',  'Confirm', wx.OK|wx.CANCEL)
+                if ret == wx.OK:
+                        self.Show(False)
+
+###########################################################################
+## Class MyFrame_SEMC_NAND
+###########################################################################
+
+class MyFrame_SEMC_NAND ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"SEMC_NAND", pos = wx.DefaultPosition, size = wx.Size( 735,516 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.Bind(wx.EVT_CLOSE,self.OnClose_SEMC_NAND)
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		sbSizer_SEMC_NAND = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Configure" ), wx.VERTICAL )
+		
+		self.staticText_SEMC_NAND = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"Configuration of SEMC NAND", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_SEMC_NAND.Wrap( -1 )
+		
+		sbSizer_SEMC_NAND.Add( self.staticText_SEMC_NAND, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_configure = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.staticText_ECC_Status = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"Device ECC Status:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_ECC_Status.Wrap( -1 )
+		
+		wSizer_configure.Add( self.staticText_ECC_Status, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_ECC_StatusChoices = [ u"Enable", u"Disable" ]
+		self.m_choice_ECC_Status = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_ECC_StatusChoices, 0 )
+		self.m_choice_ECC_Status.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_ECC_Status, 0, wx.ALL, 5 )
+		
+		self.staticText_ECC_Type = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"ECC Check Type:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_ECC_Type.Wrap( -1 )
+		
+		wSizer_configure.Add( self.staticText_ECC_Type, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_ECC_TypeChoices = [ u"Software (1bit SEC)", u"Hardware (Device)" ]
+		self.m_choice_ECC_Type = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,25 ), m_choice_ECC_TypeChoices, 0 )
+		self.m_choice_ECC_Type.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_ECC_Type, 0, wx.ALL, 5 )
+		
+		self.staticText_DatePort_Size = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"IO Port Size:           ", wx.Point( -1,-1 ), wx.DefaultSize, 0 )
+		self.staticText_DatePort_Size.Wrap( -1 )
+		
+		wSizer_configure.Add( self.staticText_DatePort_Size, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_DatePort_SizeChoices = [ u"8bits", u"16bits" ]
+		self.m_choice_DatePort_Size = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,25 ), m_choice_DatePort_SizeChoices, 0 )
+		self.m_choice_DatePort_Size.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_DatePort_Size, 0, wx.ALL, 5 )
+		
+		self.staticText_EDO_Mode = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"EDO Mode:            ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.staticText_EDO_Mode.Wrap( -1 )
+		
+		wSizer_configure.Add( self.staticText_EDO_Mode, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_EDO_ModeChoices = [ u"EDO Disable", u"EDO Enable" ]
+		self.m_choice_EDO_Mode = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_EDO_ModeChoices, 0 )
+		self.m_choice_EDO_Mode.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_EDO_Mode, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image_Copies = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"Image Copies:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image_Copies.Wrap( -1 )
+		
+		wSizer_configure.Add( self.m_staticText_Image_Copies, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Image_CopiesChoices = [ u"One image", u"Two image", u"Three image", u"Four image", u"Five image", u"Six image", u"Seven image", u"Eight image" ]
+		self.m_choice_Image_Copies = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,25 ), m_choice_Image_CopiesChoices, 0 )
+		self.m_choice_Image_Copies.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_Image_Copies, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Search_Stride = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"Search Stride:        ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Search_Stride.Wrap( -1 )
+		
+		wSizer_configure.Add( self.m_staticText_Search_Stride, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Search_StrideChoices = [ u"1 block", u"2 block", u"3 block", u"4 block", u"5 block", u"6 block", u"7 block", u"8 block" ]
+		self.m_choice_Search_Stride = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,25 ), m_choice_Search_StrideChoices, 0 )
+		self.m_choice_Search_Stride.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_Search_Stride, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Search_Count = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"Search Count:       ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Search_Count.Wrap( -1 )
+		
+		wSizer_configure.Add( self.m_staticText_Search_Count, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Search_CountChoices = [ u"1", u"2", u"3", u"4", u"5", u"6", u"7", u"8" ]
+		self.m_choice_Search_Count = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 100,25 ), m_choice_Search_CountChoices, 0 )
+		self.m_choice_Search_Count.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_Search_Count, 0, wx.ALL, 5 )
+		
+		self.m_staticText_IPCS_Port = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"IPCS Port:              ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_IPCS_Port.Wrap( -1 )
+		
+		wSizer_configure.Add( self.m_staticText_IPCS_Port, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_IPCS_PortChoices = [ u"CSX0" ]
+		self.m_choice_IPCS_Port = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,25 ), m_choice_IPCS_PortChoices, 0 )
+		self.m_choice_IPCS_Port.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_IPCS_Port, 0, wx.ALL, 5 )
+		
+		self.m_staticText_ONFI_Mode = wx.StaticText( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"ONFI timing mode:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_ONFI_Mode.Wrap( -1 )
+		
+		wSizer_configure.Add( self.m_staticText_ONFI_Mode, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_ONFI_ModeChoices = [ u"mode 0 (10MHz)" ]
+		self.m_choice_ONFI_Mode = wx.Choice( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 110,25 ), m_choice_ONFI_ModeChoices, 0 )
+		self.m_choice_ONFI_Mode.SetSelection( 0 )
+		wSizer_configure.Add( self.m_choice_ONFI_Mode, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_SEMC_NAND.Add( wSizer_configure, 1, wx.EXPAND, 5 )
+		
+		sbSizer_FCB = wx.StaticBoxSizer( wx.StaticBox( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_ANY, u"FCB Options" ), wx.VERTICAL )
+		
+		wSizer_FCB = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		sbSizer_Image0 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image0" ), wx.VERTICAL )
+		
+		gSizer_Image0 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image0_Index = wx.StaticText( sbSizer_Image0.GetStaticBox(), wx.ID_ANY, u"Image0 Index: ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image0_Index.Wrap( -1 )
+		
+		gSizer_Image0.Add( self.m_staticText_Image0_Index, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_Image0_Index = wx.TextCtrl( sbSizer_Image0.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image0.Add( self.m_textCtrl_Image0_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image0_Count = wx.StaticText( sbSizer_Image0.GetStaticBox(), wx.ID_ANY, u"Image0 Count: ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image0_Count.Wrap( -1 )
+		
+		gSizer_Image0.Add( self.m_staticText_Image0_Count, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl__Image0_Count = wx.TextCtrl( sbSizer_Image0.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image0.Add( self.m_textCtrl__Image0_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image0.Add( gSizer_Image0, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image0, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image2 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image2" ), wx.VERTICAL )
+		
+		gSizer_Image2 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image2_Index = wx.StaticText( sbSizer_Image2.GetStaticBox(), wx.ID_ANY, u"Image2 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image2_Index.Wrap( -1 )
+		
+		gSizer_Image2.Add( self.m_staticText_Image2_Index, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_Image2_Index = wx.TextCtrl( sbSizer_Image2.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image2.Add( self.m_textCtrl_Image2_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image2_Count = wx.StaticText( sbSizer_Image2.GetStaticBox(), wx.ID_ANY, u"Image2 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image2_Count.Wrap( -1 )
+		
+		gSizer_Image2.Add( self.m_staticText_Image2_Count, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_Image2_Count = wx.TextCtrl( sbSizer_Image2.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image2.Add( self.m_textCtrl_Image2_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image2.Add( gSizer_Image2, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image2, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image3 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image3" ), wx.VERTICAL )
+		
+		gSizer_Image3 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image3_Index = wx.StaticText( sbSizer_Image3.GetStaticBox(), wx.ID_ANY, u"Image3 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image3_Index.Wrap( -1 )
+		
+		gSizer_Image3.Add( self.m_staticText_Image3_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image3_Index = wx.TextCtrl( sbSizer_Image3.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image3.Add( self.m_textCtrl_Image3_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image3_Count = wx.StaticText( sbSizer_Image3.GetStaticBox(), wx.ID_ANY, u"Image3 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image3_Count.Wrap( -1 )
+		
+		gSizer_Image3.Add( self.m_staticText_Image3_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image3_Count = wx.TextCtrl( sbSizer_Image3.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image3.Add( self.m_textCtrl_Image3_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image3.Add( gSizer_Image3, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image3, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image4 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image4" ), wx.VERTICAL )
+		
+		gSizer_Image4 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image4_Index = wx.StaticText( sbSizer_Image4.GetStaticBox(), wx.ID_ANY, u"Image4 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image4_Index.Wrap( -1 )
+		
+		gSizer_Image4.Add( self.m_staticText_Image4_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image4_Index = wx.TextCtrl( sbSizer_Image4.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image4.Add( self.m_textCtrl_Image4_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image4_Count = wx.StaticText( sbSizer_Image4.GetStaticBox(), wx.ID_ANY, u"Image4 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image4_Count.Wrap( -1 )
+		
+		gSizer_Image4.Add( self.m_staticText_Image4_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image4_Count = wx.TextCtrl( sbSizer_Image4.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image4.Add( self.m_textCtrl_Image4_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image4.Add( gSizer_Image4, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image4, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image5 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image5" ), wx.VERTICAL )
+		
+		gSizer_Image5 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image5_Index = wx.StaticText( sbSizer_Image5.GetStaticBox(), wx.ID_ANY, u"Image5 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image5_Index.Wrap( -1 )
+		
+		gSizer_Image5.Add( self.m_staticText_Image5_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image5_Index = wx.TextCtrl( sbSizer_Image5.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image5.Add( self.m_textCtrl_Image5_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image5_Count = wx.StaticText( sbSizer_Image5.GetStaticBox(), wx.ID_ANY, u"Image5 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image5_Count.Wrap( -1 )
+		
+		gSizer_Image5.Add( self.m_staticText_Image5_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image5_Count = wx.TextCtrl( sbSizer_Image5.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image5.Add( self.m_textCtrl_Image5_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image5.Add( gSizer_Image5, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image5, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image6 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image6" ), wx.VERTICAL )
+		
+		gSizer_Image6 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image6_Index = wx.StaticText( sbSizer_Image6.GetStaticBox(), wx.ID_ANY, u"Image6 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image6_Index.Wrap( -1 )
+		
+		gSizer_Image6.Add( self.m_staticText_Image6_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image6_Index = wx.TextCtrl( sbSizer_Image6.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image6.Add( self.m_textCtrl_Image6_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image6_Count = wx.StaticText( sbSizer_Image6.GetStaticBox(), wx.ID_ANY, u"Image6 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image6_Count.Wrap( -1 )
+		
+		gSizer_Image6.Add( self.m_staticText_Image6_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image6_Count = wx.TextCtrl( sbSizer_Image6.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image6.Add( self.m_textCtrl_Image6_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image6.Add( gSizer_Image6, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image6, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image7 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image7" ), wx.VERTICAL )
+		
+		gSizer_Image7 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image7_Index = wx.StaticText( sbSizer_Image7.GetStaticBox(), wx.ID_ANY, u"Image7 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image7_Index.Wrap( -1 )
+		
+		gSizer_Image7.Add( self.m_staticText_Image7_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image7_Index = wx.TextCtrl( sbSizer_Image7.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image7.Add( self.m_textCtrl_Image7_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image7_Count = wx.StaticText( sbSizer_Image7.GetStaticBox(), wx.ID_ANY, u"Image7 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image7_Count.Wrap( -1 )
+		
+		gSizer_Image7.Add( self.m_staticText_Image7_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image7_Count = wx.TextCtrl( sbSizer_Image7.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image7.Add( self.m_textCtrl_Image7_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image7.Add( gSizer_Image7, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image7, 1, wx.EXPAND, 5 )
+		
+		sbSizer_Image8 = wx.StaticBoxSizer( wx.StaticBox( sbSizer_FCB.GetStaticBox(), wx.ID_ANY, u"Image8" ), wx.VERTICAL )
+		
+		gSizer_Image8 = wx.GridSizer( 0, 2, 0, 0 )
+		
+		self.m_staticText_Image8_Index = wx.StaticText( sbSizer_Image8.GetStaticBox(), wx.ID_ANY, u"Image8 Index:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image8_Index.Wrap( -1 )
+		
+		gSizer_Image8.Add( self.m_staticText_Image8_Index, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image8_Index = wx.TextCtrl( sbSizer_Image8.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image8.Add( self.m_textCtrl_Image8_Index, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Image8_Count = wx.StaticText( sbSizer_Image8.GetStaticBox(), wx.ID_ANY, u"Image8 Count:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Image8_Count.Wrap( -1 )
+		
+		gSizer_Image8.Add( self.m_staticText_Image8_Count, 0, wx.ALL, 5 )
+		
+		self.m_textCtrl_Image8_Count = wx.TextCtrl( sbSizer_Image8.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 100,20 ), 0 )
+		gSizer_Image8.Add( self.m_textCtrl_Image8_Count, 0, wx.ALL, 5 )
+		
+		
+		sbSizer_Image8.Add( gSizer_Image8, 1, wx.EXPAND, 5 )
+		
+		
+		wSizer_FCB.Add( sbSizer_Image8, 1, wx.EXPAND, 5 )
+		
+		
+		sbSizer_FCB.Add( wSizer_FCB, 1, wx.EXPAND, 5 )
+		
+		
+		sbSizer_SEMC_NAND.Add( sbSizer_FCB, 1, wx.EXPAND, 5 )
+		
+		sdbSizer_SEMC_NAND = wx.StdDialogButtonSizer()
+		self.sdbSizer_SEMC_NANDOK = wx.Button( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_OK )
+		sdbSizer_SEMC_NAND.AddButton( self.sdbSizer_SEMC_NANDOK )
+		self.sdbSizer_SEMC_NANDCancel = wx.Button( sbSizer_SEMC_NAND.GetStaticBox(), wx.ID_CANCEL )
+		sdbSizer_SEMC_NAND.AddButton( self.sdbSizer_SEMC_NANDCancel )
+		sdbSizer_SEMC_NAND.Realize();
+		
+		sbSizer_SEMC_NAND.Add( sdbSizer_SEMC_NAND, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( sbSizer_SEMC_NAND )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+
+
+		
+		self.sdbSizer_SEMC_NANDCancel.Bind( wx.EVT_BUTTON, self.cancel_of_SEMC_NAND )
+		self.sdbSizer_SEMC_NANDOK.Bind( wx.EVT_BUTTON, self.apply_of_SEMC_NAND )
+	
+	def __del__( self ):
+		pass
+	
+	# Virtual event handlers, overide them in your derived class
+	def cancel_of_SEMC_NAND( self, event ):
+                
+                self.Show(False)
+                event.Skip()
+	
+	def apply_of_SEMC_NAND( self, event ):
+                
+                self.Show(False)
+		event.Skip()
+
+	def OnClose_SEMC_NAND( self, event ):
+                ret = wx.MessageBox('Do you really want to leave?',  'Confirm', wx.OK|wx.CANCEL)
+                if ret == wx.OK:
+                        self.Show(False)
+
+
+
+###########################################################################
+## Class MyFrame_SD_EMMC
+###########################################################################
+
+class MyFrame_SD_EMMC ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"SD_EMMC", pos = wx.DefaultPosition, size = wx.Size( 512,495 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.Bind(wx.EVT_CLOSE,self.OnClose_SD_EMMC)
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		bSizer_SD_EMMC = wx.BoxSizer( wx.VERTICAL )
+		
+		self.m_staticText_SD = wx.StaticText( self, wx.ID_ANY, u"Configurations of SD", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_SD.Wrap( -1 )
+		
+		self.m_staticText_SD.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHT ) )
+		
+		bSizer_SD_EMMC.Add( self.m_staticText_SD, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_SD = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_BUS_WIDTH = wx.StaticText( self, wx.ID_ANY, u"BUS WIDTH:        ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BUS_WIDTH.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_BUS_WIDTH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrl_BUS_WIDTH = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 70,-1 ), 0 )
+		wSizer_SD.Add( self.m_textCtrl_BUS_WIDTH, 0, wx.ALL, 5 )
+		
+		self.m_staticText_TIMING = wx.StaticText( self, wx.ID_ANY, u"TIMING_INTERFACE:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_TIMING.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_TIMING, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_TIMINGChoices = [ u"Normal/SDR12", u"High/SDR25", u"SDR50", u"SDR104" ]
+		self.m_choice_TIMING = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 185,25 ), m_choice_TIMINGChoices, 0 )
+		self.m_choice_TIMING.SetSelection( 0 )
+		wSizer_SD.Add( self.m_choice_TIMING, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_UP = wx.StaticText( self, wx.ID_ANY, u"CPWR_UP_TIME:     ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_UP.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_PWR_UP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_UPChoices = [ u"5ms", u"2.5ms" ]
+		self.m_choice_PWR_UP = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 55,25 ), m_choice_PWR_UPChoices, 0 )
+		self.m_choice_PWR_UP.SetSelection( 0 )
+		wSizer_SD.Add( self.m_choice_PWR_UP, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_CYCLE = wx.StaticText( self, wx.ID_ANY, u"PWR_CYCLE_ENABLE:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_CYCLE.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_PWR_CYCLE, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_CYCLEChoices = [ u"disable for non-UHSI timing", u"enable" ]
+		self.m_choice_PWR_CYCLE = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 180,25 ), m_choice_PWR_CYCLEChoices, 0 )
+		self.m_choice_PWR_CYCLE.SetSelection( 0 )
+		wSizer_SD.Add( self.m_choice_PWR_CYCLE, 0, wx.ALL, 5 )
+		
+		self.m_staticText_Query_PWR_DOWN = wx.StaticText( self, wx.ID_ANY, u"PWR_DOWN_TIME:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_Query_PWR_DOWN.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_Query_PWR_DOWN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_Query_PWR_DOWNChoices = [ u"20ms", u"10ms", u"5ms", u"2.5ms" ]
+		self.m_choice_Query_PWR_DOWN = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 55,25 ), m_choice_Query_PWR_DOWNChoices, 0 )
+		self.m_choice_Query_PWR_DOWN.SetSelection( 0 )
+		wSizer_SD.Add( self.m_choice_Query_PWR_DOWN, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_POLARITY = wx.StaticText( self, wx.ID_ANY, u"PWR_POLARITY:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_POLARITY.Wrap( -1 )
+		
+		wSizer_SD.Add( self.m_staticText_PWR_POLARITY, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_POLARITYChoices = [ u"Power down when uSDHC.RST set low", u"Power down when uSDHC.RST set high" ]
+		self.m_choice_PWR_POLARITY = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 210,25 ), m_choice_PWR_POLARITYChoices, 0 )
+		self.m_choice_PWR_POLARITY.SetSelection( 0 )
+		wSizer_SD.Add( self.m_choice_PWR_POLARITY, 0, wx.ALL, 5 )
+		
+		
+		bSizer_SD_EMMC.Add( wSizer_SD, 1, wx.EXPAND, 5 )
+		
+		self.m_staticText_EMMC = wx.StaticText( self, wx.ID_ANY, u"Configurations of EMMC", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_EMMC.Wrap( -1 )
+		
+		self.m_staticText_EMMC.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHT ) )
+		
+		bSizer_SD_EMMC.Add( self.m_staticText_EMMC, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		wSizer_EMMC = wx.WrapSizer( wx.HORIZONTAL, wx.WRAPSIZER_DEFAULT_FLAGS )
+		
+		self.m_staticText_BOOT_CONFIG = wx.StaticText( self, wx.ID_ANY, u"BOOT_CONFIG_ENABLE:              ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_CONFIG.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_CONFIG, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_CONFIGChoices = [ u"Boot configuration will be ignored", u"Boot configuration will be written into device" ]
+		self.m_choice_BOOT_CONFIG = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 300,-1 ), m_choice_BOOT_CONFIGChoices, 0 )
+		self.m_choice_BOOT_CONFIG.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_BOOT_CONFIG, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BOOT_ACK = wx.StaticText( self, wx.ID_ANY, u"BOOT_ACK:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_ACK.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_ACK, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_ACKChoices = [ u"NO ACK", u"ACK" ]
+		self.m_choice_BOOT_ACK = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 80,-1 ), m_choice_BOOT_ACKChoices, 0 )
+		self.m_choice_BOOT_ACK.SetSelection( 0 )
+		self.m_choice_BOOT_ACK.SetMinSize( wx.Size( 95,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_BOOT_ACK, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BOOT_BUS = wx.StaticText( self, wx.ID_ANY, u"  BOOT_BUS_CONDITIONS:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_BUS.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_BUS, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_BUSChoices = [ u"Reset to x1,SDR,Normal", u"Retain boot config" ]
+		self.m_choice_BOOT_BUS = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_BOOT_BUSChoices, 0 )
+		self.m_choice_BOOT_BUS.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_BOOT_BUS, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BOOT_MODE = wx.StaticText( self, wx.ID_ANY, u"BOOT_MODE:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_MODE.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_MODE, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_MODEChoices = [ u"Normal", u"HS", u"DDR" ]
+		self.m_choice_BOOT_MODE = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_BOOT_MODEChoices, 0 )
+		self.m_choice_BOOT_MODE.SetSelection( 0 )
+		self.m_choice_BOOT_MODE.SetMinSize( wx.Size( 83,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_BOOT_MODE, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PARTITION_ACCESS = wx.StaticText( self, wx.ID_ANY, u"   PARTITION_ACCESS:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PARTITION_ACCESS.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_PARTITION_ACCESS, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PARTITION_ACCESSChoices = [ u"User data area", u"Boot partition 1", u"Boot partition 2", u"RPMB", u"General Purpose parition 1", u"General Purpose parition 2", u"General Purpose parition 3", u"General Purpose parition 4" ]
+		self.m_choice_PARTITION_ACCESS = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 175,-1 ), m_choice_PARTITION_ACCESSChoices, 0 )
+		self.m_choice_PARTITION_ACCESS.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_PARTITION_ACCESS, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BUS_WIDTH = wx.StaticText( self, wx.ID_ANY, u"BUS_WIDTH:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BUS_WIDTH.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BUS_WIDTH, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BUS_WIDTHChoices = [ u" x1 SDR", u" x4 SDR", u" x8 SDR", u"x4 DDR", u"x8 DDR" ]
+		self.m_choice_BUS_WIDTH = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 75,-1 ), m_choice_BUS_WIDTHChoices, 0 )
+		self.m_choice_BUS_WIDTH.SetSelection( 0 )
+		self.m_choice_BUS_WIDTH.SetMinSize( wx.Size( 90,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_BUS_WIDTH, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BOOT_PARTITION = wx.StaticText( self, wx.ID_ANY, u"   BOOT_PARTITION_ENABLE:      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_PARTITION.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_PARTITION, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_PARTITIONChoices = [ u"Not enabled", u"Boot partition 1", u"Boot partition 2", u"User data area" ]
+		self.m_choice_BOOT_PARTITION = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 120,-1 ), m_choice_BOOT_PARTITIONChoices, 0 )
+		self.m_choice_BOOT_PARTITION.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_BOOT_PARTITION, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_UP = wx.StaticText( self, wx.ID_ANY, u"PWR_UP_TIME:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_UP.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_PWR_UP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_UPChoices = [ u"5ms", u"2.5ms" ]
+		self.m_choice_PWR_UP = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_PWR_UPChoices, 0 )
+		self.m_choice_PWR_UP.SetSelection( 0 )
+		self.m_choice_PWR_UP.SetMinSize( wx.Size( 77,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_PWR_UP, 0, wx.ALL, 5 )
+		
+		self.m_staticText_BOOT_BUS = wx.StaticText( self, wx.ID_ANY, u"    BOOT_BUS_WIDTH:          ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_BOOT_BUS.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_BOOT_BUS, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_BOOT_BUSChoices = [ u"x1(SDR),x4(DDR)", u"x4(SDR,DDR)", u"x8(SDR,DDR)" ]
+		self.m_choice_BOOT_BUS = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,-1 ), m_choice_BOOT_BUSChoices, 0 )
+		self.m_choice_BOOT_BUS.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_BOOT_BUS, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_DOWN = wx.StaticText( self, wx.ID_ANY, u"PWR_DOWN_TIME:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_DOWN.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_PWR_DOWN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_DOWNChoices = [ u"20ms", u"10ms", u"5ms", u"2.5ms" ]
+		self.m_choice_PWR_DOWN = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_PWR_DOWNChoices, 0 )
+		self.m_choice_PWR_DOWN.SetSelection( 0 )
+		self.m_choice_PWR_DOWN.SetMinSize( wx.Size( 55,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_PWR_DOWN, 0, wx.ALL, 5 )
+		
+		self.m_staticText_1V8 = wx.StaticText( self, wx.ID_ANY, u"    1V8_ENABLE:                      ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_1V8.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_1V8, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_1V8Choices = [ u" not set vselect pin", u"set vselect pin high" ]
+		self.m_choice_1V8 = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_1V8Choices, 0 )
+		self.m_choice_1V8.SetSelection( 0 )
+		self.m_choice_1V8.SetMinSize( wx.Size( 150,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_1V8, 0, wx.ALL, 5 )
+		
+		self.m_staticText_TIMING = wx.StaticText( self, wx.ID_ANY, u"TIMING_INTERFACE:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_TIMING.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_TIMING, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_TIMINGChoices = [ u"HS" ]
+		self.m_choice_TIMING = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_TIMINGChoices, 0 )
+		self.m_choice_TIMING.SetSelection( 0 )
+		self.m_choice_TIMING.SetMinSize( wx.Size( 50,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_TIMING, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_CYCLE = wx.StaticText( self, wx.ID_ANY, u"    PWR_CYCLE_ENABLE:                       ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_CYCLE.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_PWR_CYCLE, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_CYCLEChoices = [ u"disable", u"enable" ]
+		self.m_choice_PWR_CYCLE = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_PWR_CYCLEChoices, 0 )
+		self.m_choice_PWR_CYCLE.SetSelection( 0 )
+		self.m_choice_PWR_CYCLE.SetMinSize( wx.Size( 100,-1 ) )
+		
+		wSizer_EMMC.Add( self.m_choice_PWR_CYCLE, 0, wx.ALL, 5 )
+		
+		self.m_staticText_PWR_POLARITY = wx.StaticText( self, wx.ID_ANY, u"PWR_POLARITY:                             ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_PWR_POLARITY.Wrap( -1 )
+		
+		wSizer_EMMC.Add( self.m_staticText_PWR_POLARITY, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		m_choice_PWR_POLARITYChoices = [ u"Power down when uSDHC.RST set low", u"Power down when uSDHC.RST set high" ]
+		self.m_choice_PWR_POLARITY = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_PWR_POLARITYChoices, 0 )
+		self.m_choice_PWR_POLARITY.SetSelection( 0 )
+		wSizer_EMMC.Add( self.m_choice_PWR_POLARITY, 0, wx.ALL, 5 )
+		
+		
+		bSizer_SD_EMMC.Add( wSizer_EMMC, 1, wx.EXPAND, 5 )
+		
+		m_sdbSizer_SD_EMMC = wx.StdDialogButtonSizer()
+		self.m_sdbSizer_SD_EMMCOK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer_SD_EMMC.AddButton( self.m_sdbSizer_SD_EMMCOK )
+		self.m_sdbSizer_SD_EMMCCancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer_SD_EMMC.AddButton( self.m_sdbSizer_SD_EMMCCancel )
+		m_sdbSizer_SD_EMMC.Realize();
+		
+		bSizer_SD_EMMC.Add( m_sdbSizer_SD_EMMC, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( bSizer_SD_EMMC )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+		self.m_sdbSizer_SD_EMMCCancel.Bind( wx.EVT_BUTTON, self.cancel_of_SD_EMMC )
+		self.m_sdbSizer_SD_EMMCOK.Bind( wx.EVT_BUTTON, self.apply_of_SD_EMMC )
+	
+	def __del__( self ):
+		pass
+	
+	# Virtual event handlers, overide them in your derived class
+	def cancel_of_SD_EMMC( self, event ):
+                
+                self.Show(False)
+                event.Skip()
+	
+	def apply_of_SD_EMMC( self, event ):
+                
+                self.Show(False)
+		event.Skip()
+
+	def OnClose_SD_EMMC( self, event ):
+                ret = wx.MessageBox('Do you really want to leave?',  'Confirm', wx.OK|wx.CANCEL)
+                if ret == wx.OK:
+                        self.Show(False)
+###########################################################################
 ## Class secBootWin
 ###########################################################################
 
@@ -622,6 +1886,14 @@ class secBootWin ( wx.Frame ):
 		self.m_choice_secureBootType.Bind( wx.EVT_CHOICE, self.callbackSwitchSecureBootType )
 		self.m_choice_keyStorageRegion.Bind( wx.EVT_CHOICE, self.callbackSwitchKeyStorageRegion )
 
+		self.m_button_BootDeviceConfiguration.Bind( wx.EVT_BUTTON, self.callbackBoot_Device_Configuration )
+                self.m_button_BootDeviceConfiguration.SetToolTipString("This is Boot_Device_Configuration.")
+
+
+
+		self.m_button_doAuth.Bind( wx.EVT_BUTTON, self.callbackUN_CST_Tool )
+                self.m_button_doAuth.SetToolTipString("This is the first step to run CST tool.")
+
 	def __del__( self ):
 		pass
 
@@ -632,5 +1904,13 @@ class secBootWin ( wx.Frame ):
 
 	def callbackSwitchKeyStorageRegion( self, event ):
 		event.Skip()
+
+	def callbackBoot_Device_Configuration( self, event ):
+		event.Skip()
+
+	def callbackUN_CST_Tool( self, event ):
+		event.Skip()
+
+		
 
 
