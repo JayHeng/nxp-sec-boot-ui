@@ -1485,6 +1485,7 @@ class secBootUi(secBootWin.secBootWin):
         self.m_button_readMem.SetLabel(uilang.kMainLanguageContentDict['button_readMem'][langIndex])
         self.m_button_eraseMem.SetLabel(uilang.kMainLanguageContentDict['button_eraseMem'][langIndex])
         self.m_button_writeMem.SetLabel(uilang.kMainLanguageContentDict['button_writeMem'][langIndex])
+        self.m_button_executeApp.SetLabel(uilang.kMainLanguageContentDict['button_executeApp'][langIndex])
         self.m_button_viewMem.SetLabel(uilang.kMainLanguageContentDict['button_viewMem'][langIndex])
         self.m_button_clearMem.SetLabel(uilang.kMainLanguageContentDict['button_clearMem'][langIndex])
         self.m_checkBox_saveImageData.SetLabel(uilang.kMainLanguageContentDict['checkBox_saveImageData'][langIndex])

@@ -114,10 +114,11 @@ kMainLanguageContentDict = {
         'panel_memView':                      ['Boot Device Memory',                    u"       通用Flash编程       "],
         'sText_memStart':                     ['Start / Offset:',                       u"首地址/偏移："],
         'sText_memLength':                    ['Byte Length:',                          u"字节长度："],
-        'sText_memBinFile':                   ['Bin File:',                             u"源文件"],
+        'sText_memBinFile':                   ['Bin File:',                             u"源文件："],
         'button_readMem':                     ['Read',                                  u"回读"],
         'button_eraseMem':                    ['Erase',                                 u"擦除"],
         'button_writeMem':                    ['Write',                                 u"下载"],
+        'button_executeApp':                  ['Execute',                               u"执行"],
         'button_viewMem':                     ['View Bootable Image',                   u"回读查看标注的程序"],
         'button_clearMem':                    ['Clear The Screen',                      u"清除屏幕显示"],
         'checkBox_saveImageData':             ['Save image/data file to',               u"将程序/数据保存到"],
@@ -405,6 +406,12 @@ kRevision_1_4_0_zh = u"【v1.4.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. 默认FlexSPI NOR device应与恩智浦官方EVK板卡相匹配 \n" + \
                      u"     2. 为通用Flash编程器里的操作添加实时进度条显示 \n\n"
+kRevision_1_5_0_en =  "【v1.5.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. Add Execute action support for memory programmer \n\n"
+kRevision_1_5_0_zh = u"【v1.5.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. 在通用Flash编程器模式下增加执行(跳转)操作 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -424,6 +431,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v1_2_0':             [kRevision_1_2_0_en,                      kRevision_1_2_0_zh],
         'revisionHistory_v1_3_0':             [kRevision_1_3_0_en,                      kRevision_1_3_0_zh],
         'revisionHistory_v1_4_0':             [kRevision_1_4_0_en,                      kRevision_1_4_0_zh],
+        'revisionHistory_v1_5_0':             [kRevision_1_5_0_en,                      kRevision_1_5_0_zh],
 
         'bootDeviceInfo_hasOnchipSerialNor':  ['MCU has on-chip QSPI NOR Flash (4MB, 133MHz), so you don\'t need to configure this boot device!',
                                               u"微控制器内置4MB的QSPI NOR Flash，所以无需配置该启动设备！"],
