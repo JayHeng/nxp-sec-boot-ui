@@ -748,11 +748,21 @@ class secBootMain(memcore.secBootMem):
                     if self.isSbFileEnabledToGen:
                         self.genSbEfuseImage()
                 elif self.accessMemType == 'ReadMem':
-                    self.readBootDeviceMemory()
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
+                        self.readFlexramMemory()
+                    elif self.connectStage == uidef.kConnectStage_Reset:
+                        self.readBootDeviceMemory()
+                    else:
+                        pass
                 elif self.accessMemType == 'EraseMem':
                     self.eraseBootDeviceMemory()
                 elif self.accessMemType == 'WriteMem':
-                    self.writeBootDeviceMemory()
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
+                        self.writeFlexramMemory()
+                    elif self.connectStage == uidef.kConnectStage_Reset:
+                        self.writeBootDeviceMemory()
+                    else:
+                        pass
                 else:
                     pass
                 self.isAccessMemTaskPending = False
@@ -795,12 +805,13 @@ class secBootMain(memcore.secBootMem):
         self.clearMem()
 
     def _doReadMem( self ):
-        if self.connectStage == uidef.kConnectStage_Reset:
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
             self._startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'ReadMem'
         else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
     def callbackReadMem( self, event ):
         if not self.isToolRunAsEntryMode:
@@ -823,12 +834,13 @@ class secBootMain(memcore.secBootMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def _doWriteMem( self ):
-        if self.connectStage == uidef.kConnectStage_Reset:
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
             self._startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'WriteMem'
         else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
     def callbackWriteMem( self, event ):
         if not self.isToolRunAsEntryMode:

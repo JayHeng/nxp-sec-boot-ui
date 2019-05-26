@@ -832,11 +832,18 @@ class secBootGen(uicore.secBootUi):
         else:
             pass
 
+    def isInTheRangeOfFlexram( self, start, length ):
+        if ((start >= self.tgt.memoryRange['itcm'].start) and (start + length <= self.tgt.memoryRange['itcm'].start + self.tgt.memoryRange['itcm'].length)) or \
+           ((start >= self.tgt.memoryRange['dtcm'].start) and (start + length <= self.tgt.memoryRange['dtcm'].start + self.tgt.memoryRange['dtcm'].length)) or \
+           ((start >= self.tgt.memoryRange['ocram'].start) and (start + length <= self.tgt.memoryRange['ocram'].start + self.tgt.memoryRange['ocram'].length)):
+            return True
+        else:
+            return False
+
     def _isValidNonXipAppImage( self, imageStartAddr ):
-        if ((imageStartAddr >= self.tgt.memoryRange['itcm'].start) and (imageStartAddr < self.tgt.memoryRange['itcm'].start + self.tgt.memoryRange['itcm'].length)) or \
-           ((imageStartAddr >= self.tgt.memoryRange['dtcm'].start) and (imageStartAddr < self.tgt.memoryRange['dtcm'].start + self.tgt.memoryRange['dtcm'].length)) or \
-           ((imageStartAddr >= self.tgt.memoryRange['ocram'].start) and (imageStartAddr < self.tgt.memoryRange['ocram'].start + self.tgt.memoryRange['ocram'].length)) or \
-           ((imageStartAddr >= rundef.kBootDeviceMemBase_SemcSdram) and (imageStartAddr < rundef.kBootDeviceMemBase_SemcSdram + rundef.kBootDeviceMemMaxSize_SemcSdram)):
+        if self.isInTheRangeOfFlexram(imageStartAddr, 1):
+            return True
+        elif ((imageStartAddr >= rundef.kBootDeviceMemBase_SemcSdram) and (imageStartAddr < rundef.kBootDeviceMemBase_SemcSdram + rundef.kBootDeviceMemMaxSize_SemcSdram)):
             return True
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_invalidNonXipRange'][self.languageIndex])

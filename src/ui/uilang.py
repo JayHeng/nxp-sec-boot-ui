@@ -408,10 +408,14 @@ kRevision_1_4_0_zh = u"【v1.4.0】 \n" + \
                      u"     2. 为通用Flash编程器里的操作添加实时进度条显示 \n\n"
 kRevision_1_5_0_en =  "【v1.5.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. Add Execute action support for memory programmer \n\n"
+                      "     1. Add Execute action support for memory programmer \n" + \
+                      "  Improvement: \n" + \
+                      "     1. Can write/read FlexRAM via memory programmer \n\n"
 kRevision_1_5_0_zh = u"【v1.5.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. 在通用Flash编程器模式下增加执行(跳转)操作 \n\n"
+                     u"     1. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
+                     u"  改进: \n" + \
+                     u"     1. 通用Flash编程器里也支持读写FlexRAM \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -563,5 +567,7 @@ kMsgLanguageContentDict = {
 
         'operImgError_hasnotProgImage':       ['You should program your image first!',
                                               u"请首先下载image文件！"],
+        'operImgError_notInFlexram':          ['Your specified area is not in the range of FlexRAM (ITCM, DTCM, OCRAM), Please double check!',
+                                              u"当前指定的访问区域超出有效FlexRAM(ITCM, DTCM, OCRAM)范围，请仔细检查！"],
 
 }

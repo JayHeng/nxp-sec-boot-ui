@@ -445,3 +445,59 @@ class secBootMem(fusecore.secBootFuse):
                     self.popupMsgBox(u"写入启动设备失败，错误的代码是 %d ，请确认是否先擦除了启动设备！" %(status))
                 else:
                     pass
+
+    def readFlexramMemory( self ):
+        status, memStart, memLength = self._getUserComMemParameters(False)
+        if status:
+            if self.isInTheRangeOfFlexram(memStart, memLength):
+                alignedMemStart = misc.align_down(memStart, 0x10)
+                alignedMemLength = misc.align_up(memLength, 0x10) + 0x10
+                if memLength + memStart > alignedMemStart + 0x10:
+                    alignedMemLength += 0x10
+                memFilename = 'commonDataFromFlexram.dat'
+                memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
+                status, results, cmdStr = self.blhost.readMemory(alignedMemStart, alignedMemLength, memFilename)
+                self.printLog(cmdStr)
+                if status == boot.status.kStatus_Success:
+                    self.clearMem()
+                    memLeft = memLength
+                    addr = memStart
+                    with open(memFilepath, 'rb') as fileObj:
+                        fileObj.seek(memStart - alignedMemStart)
+                        while memLeft > 0:
+                            contentToShow, memContent = self._getOneLineContentToShow(addr, memLeft, fileObj)
+                            memLeft -= len(memContent)
+                            addr += len(memContent)
+                            self.printMem(contentToShow)
+                    self._tryToSaveImageDataFile(memFilepath)
+                else:
+                    if self.languageIndex == uilang.kLanguageIndex_English:
+                        self.popupMsgBox('Failed to read FlexRAM, error code is %d .' %(status))
+                    elif self.languageIndex == uilang.kLanguageIndex_Chinese:
+                        self.popupMsgBox(u"读取FlexRAM失败，错误的代码是 %d 。" %(status))
+                    else:
+                        pass
+            else:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_notInFlexram'][self.languageIndex])
+
+    def writeFlexramMemory( self ):
+        status, memStart, memBinFile = self._getUserComMemParameters(True)
+        if status:
+            memLength = os.path.getsize(memBinFile)
+            if self.isInTheRangeOfFlexram(memStart, memLength):
+                shutil.copy(memBinFile, self.userFilename)
+                status, results, cmdStr = self.blhost.writeMemory(memStart, self.userFilename)
+                try:
+                    os.remove(self.userFilename)
+                except:
+                    pass
+                self.printLog(cmdStr)
+                if status != boot.status.kStatus_Success:
+                    if self.languageIndex == uilang.kLanguageIndex_English:
+                        self.popupMsgBox('Failed to write FlexRAM, error code is %d .' %(status))
+                    elif self.languageIndex == uilang.kLanguageIndex_Chinese:
+                        self.popupMsgBox(u"写入FlexRAM失败，错误的代码是 %d 。" %(status))
+                    else:
+                        pass
+            else:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_notInFlexram'][self.languageIndex])
