@@ -56,6 +56,7 @@ class Target(object):
         self.flashloaderJumpAddr = misc.get_dict_default(kwargs, 'flashloaderJumpAddr', None)
         self.supportedPeripheralSpeed_uart = misc.get_dict_default(kwargs, 'supportedPeripheralSpeed_uart', None)
         self.hasRemappedFuse = misc.get_dict_default(kwargs, 'hasRemappedFuse', None)
+        self.availableBootDevices = misc.get_dict_default(kwargs, 'availableBootDevices', None)
         self.flexspiNorDevice = misc.get_dict_default(kwargs, 'flexspiNorDevice', None)
         self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
         self.flexspiNorEfuseBootCfg0Bits = misc.get_dict_default(kwargs, 'flexspiNorEfuseBootCfg0Bits', None)

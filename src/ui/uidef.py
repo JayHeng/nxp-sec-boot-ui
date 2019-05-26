@@ -19,12 +19,17 @@ kMcuSeries_LPC     = 'LPC'
 kMcuSeries_Kinetis = 'Kinetis'
 
 kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT]
+kMcuSeries_Latest = kMcuSeries_v1_0_0
 
 kMcuDevice_iMXRT1015 = 'i.MXRT1015'
 kMcuDevice_iMXRT102x = 'i.MXRT102x'
 kMcuDevice_iMXRT105x = 'i.MXRT105x'
 kMcuDevice_iMXRT106x = 'i.MXRT106x'
 kMcuDevice_iMXRT1064 = 'i.MXRT1064 SIP'
+
+kMcuDevice_v1_0_0 = [                      kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_v1_1_0 = [kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_Latest = kMcuDevice_v1_1_0
 
 kBootDevice_FlexspiNor     = 'FLEXSPI NOR'
 kBootDevice_FlexspiNand    = 'FLEXSPI NAND'
@@ -36,8 +41,9 @@ kBootDevice_LpspiNor       = 'LPSPI NOR/EEPROM'
 kBootDevice_Dcd            = 'DCD'
 kBootDevice_RamFlashloader = 'RAM FLASHLOADER'
 
-kBootDevice_v1_0_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand, kBootDevice_LpspiNor]
+kBootDevice_v1_0_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand,                                            kBootDevice_LpspiNor]
 kBootDevice_v1_4_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand, kBootDevice_UsdhcSd, kBootDevice_UsdhcMmc, kBootDevice_LpspiNor]
+kBootDevice_Latest = kBootDevice_v1_4_0
 
 kFlexspiNorDevice_None                  = 'No'
 kFlexspiNorDevice_ISSI_IS25LP064A       = 'ISSI_IS25LP064A_IS25WP064A'
@@ -68,6 +74,9 @@ kSecureBootType_Development = 'DEV Unsigned Image Boot'
 kSecureBootType_HabAuth     = 'HAB Signed Image Boot'
 kSecureBootType_HabCrypto   = 'HAB Encrypted Image Boot'
 kSecureBootType_BeeCrypto   = 'BEE Encrypted Image Boot'
+
+kSecureBootType_v1_0_0 = [kSecureBootType_Development, kSecureBootType_HabAuth, kSecureBootType_HabCrypto, kSecureBootType_BeeCrypto]
+kSecureBootType_Latest = kSecureBootType_v1_0_0
 
 kKeyStorageRegion_FixedOtpmkKey    = 'Fixed Otpmk(SNVS) Key'
 kKeyStorageRegion_FlexibleUserKeys = 'Flexible User Keys'

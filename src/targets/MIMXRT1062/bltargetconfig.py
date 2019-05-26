@@ -49,6 +49,7 @@ flashloaderJumpAddr = 0x20000400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = True
+availableBootDevices = uidef.kBootDevice_Latest
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
 flexspiNorMemBase = 0x60000000
 flexspiNorEfuseBootCfg0Bits = 12

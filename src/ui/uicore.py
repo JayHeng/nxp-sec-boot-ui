@@ -170,9 +170,11 @@ class secBootUi(secBootWin.secBootWin):
 
     def _initTargetSetupValue( self ):
         self.m_choice_mcuSeries.Clear()
+        self.m_choice_mcuDevice.Clear()
         self.m_choice_bootDevice.Clear()
-        self.m_choice_mcuSeries.SetItems(uidef.kMcuSeries_v1_0_0)
-        self.m_choice_bootDevice.SetItems(uidef.kBootDevice_v1_4_0)
+        self.m_choice_mcuSeries.SetItems(uidef.kMcuSeries_Latest)
+        self.m_choice_mcuDevice.SetItems(uidef.kMcuDevice_Latest)
+        self.m_choice_bootDevice.SetItems(uidef.kBootDevice_Latest)
         self.m_choice_mcuSeries.SetSelection(self.toolCommDict['mcuSeries'])
         self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
         self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
@@ -204,15 +206,22 @@ class secBootUi(secBootWin.secBootWin):
         except:
             pass
 
+    def _refreshBootDeviceList( self ):
+        if self.tgt.availableBootDevices != None:
+            self.m_choice_bootDevice.Clear()
+            self.m_choice_bootDevice.SetItems(self.tgt.availableBootDevices)
+            self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
+
     def setTargetSetupValue( self ):
         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.mcuSeries = self.m_choice_mcuSeries.GetString(self.m_choice_mcuSeries.GetSelection())
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
-        self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['mcuSeries'] = self.m_choice_mcuSeries.GetSelection()
         self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
-        self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
         self.createMcuTarget()
+        self._refreshBootDeviceList()
+        self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
+        self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
         if self.bootDevice == uidef.kBootDevice_FlexspiNor:
             self.isNandDevice = False
             self.isSdmmcCard = False
@@ -425,6 +434,8 @@ class secBootUi(secBootWin.secBootWin):
             self.toolCommDict['isOneStepChecked'] = True
 
     def _initSecureBootSeqValue( self ):
+        self.m_choice_secureBootType.Clear()
+        self.m_choice_secureBootType.SetItems(uidef.kSecureBootType_Latest)
         self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])
         self.m_textCtrl_serial.Clear()
         self.m_textCtrl_serial.write(self.toolCommDict['certSerial'])
