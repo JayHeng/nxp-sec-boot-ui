@@ -26,6 +26,7 @@ English | [中文](./README-zh.md)
 > * Can back up certificate with time stamp
 > * Support BEE encryption secure boot case (SNVS Key, User Keys)  
 > * Support common eFuse memory operation (eFuse Programmer)  
+> * Support common FlexRAM memory operation (ISP Boot)  
 > * Support common boot device memory operation (Flash Programmer)  
 > * Support for reading back and marking bootable image(NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob) from boot device  
 
@@ -264,7 +265,12 @@ define symbol m_data2_end              = 0x202BFFFF;
 
 ![NXP-MCUBootUtility_fuseViewer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_4_0_fuseViewer.PNG)
 
-#### 4.3 Universal Flash Programmer
+#### 4.3 Dedicated FlexRAM Programmer
+　　In the Master Mode, you can click the [Read], [Write], [Execute] button to implement any read, write and execute operations of the FlexRAM, so that the NXP-MCUBootUtility tool can be used as a FlexRAM programmer.
+
+![NXP-MCUBootUtility_flexramProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_5_0_flexramProgrammer_e.png)
+
+#### 4.4 Universal Flash Programmer
 　　In the Master Mode, you can click the [Read], [Erase], [Write] button to implement any read and write operations of the configured Flash, so that the NXP-MCUBootUtility tool can be used as a general-purpose Flash programmer.
 
-![NXP-MCUBootUtility_flashProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_0_0_flashProgrammer_e.png)
+![NXP-MCUBootUtility_flashProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_5_0_flashProgrammer_e.png)

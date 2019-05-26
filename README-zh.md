@@ -24,7 +24,8 @@
 > * 支持基于HAB实现的安全加密启动（单签名，签名和加密），证书自动备份  
 > * 支持基于BEE实现的安全加密启动（唯一SNVS key，用户自定义key）  
 > * 支持MCU芯片内部eFuse的回读和烧写操作（即专用eFuse烧写器）  
-> * 支持外部启动设备的任意读写擦操作（即通用Flash编程器）  
+> * 支持MCU芯片内部FlexRAM的读/写/执行操作（即专用FlexRAM编程器，可用于ISP启动）  
+> * 支持外部启动设备的任意读/写/擦操作（即通用Flash编程器）  
 > * 支持从外部启动设备回读Bootable image，并对其组成部分（NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob）进行标注  
 
 #### 1.2 下载
@@ -264,7 +265,12 @@ define symbol m_data2_end              = 0x202BFFFF;
 
 ![NXP-MCUBootUtility_fuseViewer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_4_0_fuseViewer.PNG)
 
-#### 4.3 通用Flash编程器
-　　进入Master模式下，可以点击【Read】、【Erase】、【Write】按钮实现已配置Flash的任意读擦写操作，这样可以将NXP-MCUBootUtility工具当做通用Flash编程器。  
+#### 4.3 专用FlexRAM编程器
+　　进入Master模式下，可以点击【Read】、【Write】、【Execute】按钮实现FlexRAM的任意读/写/执行操作，这样可以将NXP-MCUBootUtility工具当做专用FlexRAM编程器。  
 
-![NXP-MCUBootUtility_flashProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_0_0_flashProgrammer_e.png)
+![NXP-MCUBootUtility_flexramProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_5_0_flexramProgrammer_e.png)
+
+#### 4.4 通用Flash编程器
+　　进入Master模式下，可以点击【Read】、【Erase】、【Write】按钮实现已配置Flash的任意读/擦/写操作，这样可以将NXP-MCUBootUtility工具当做通用Flash编程器。  
+
+![NXP-MCUBootUtility_flashProgrammer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_5_0_flashProgrammer_e.png)
