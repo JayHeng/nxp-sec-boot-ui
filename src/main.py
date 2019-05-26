@@ -848,8 +848,18 @@ class secBootMain(memcore.secBootMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
+    def _doExecuteApp( self ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self.executeAppInFlexram()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
     def callbackExecuteApp( self, event ):
-        pass
+        if not self.isToolRunAsEntryMode:
+            self._doExecuteApp()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def callbackClearLog( self, event ):
         self.clearLog()

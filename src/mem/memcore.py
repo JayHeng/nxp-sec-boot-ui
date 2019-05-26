@@ -501,3 +501,32 @@ class secBootMem(fusecore.secBootFuse):
                         pass
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_notInFlexram'][self.languageIndex])
+
+    def executeAppInFlexram( self ):
+        status, memStart, memBinFile = self._getUserComMemParameters(False)
+        if status:
+            if self.isInTheRangeOfFlexram(memStart, 1):
+                vectorFilename = 'vectorDataFromFlexram.dat'
+                vectorFilepath = os.path.join(self.blhostVectorsDir, vectorFilename)
+                status, results, cmdStr = self.blhost.readMemory(memStart, 8, vectorFilename)
+                if status == boot.status.kStatus_Success:
+                    programCounter = self.getVal32FromBinFile(vectorFilepath, 4)
+                    stackPoint = self.getVal32FromBinFile(vectorFilepath, 0)
+                    status, results, cmdStr = self.blhost.execute(programCounter, 0, stackPoint)
+                    self.printLog(cmdStr)
+                    if status != boot.status.kStatus_Success:
+                        if self.languageIndex == uilang.kLanguageIndex_English:
+                            self.popupMsgBox('Failed to execute app in FlexRAM, error code is %d .' %(status))
+                        elif self.languageIndex == uilang.kLanguageIndex_Chinese:
+                            self.popupMsgBox(u"执行FlexRAM中应用程序失败，错误的代码是 %d 。" %(status))
+                        else:
+                            pass
+                else:
+                    if self.languageIndex == uilang.kLanguageIndex_English:
+                        self.popupMsgBox('Failed to read PC, SP of app from FlexRAM, error code is %d .' %(status))
+                    elif self.languageIndex == uilang.kLanguageIndex_Chinese:
+                        self.popupMsgBox(u"读取FlexRAM中应用程序PC,SP失败，错误的代码是 %d 。" %(status))
+                    else:
+                        pass
+            else:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_notInFlexram'][self.languageIndex])
