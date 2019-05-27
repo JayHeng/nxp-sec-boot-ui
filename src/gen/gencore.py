@@ -28,6 +28,7 @@ class secBootGen(uicore.secBootUi):
         self.cstCrtsFolder = os.path.join(self.exeTopRoot, 'tools', 'cst', 'crts')
         self.hab4PkiTreePath = os.path.join(self.exeTopRoot, 'tools', 'cst', 'keys')
         self.hab4PkiTreeName = 'hab4_pki_tree.bat'
+        self.certBatFilename = os.path.join(self.exeTopRoot, 'gen', 'hab_cert', 'imx_cert_gen.bat')
         self.srktoolPath = os.path.join(self.exeTopRoot, 'tools', 'cst', 'mingw32', 'bin', 'srktool.exe')
         self.srkFolder = os.path.join(self.exeTopRoot, 'gen', 'hab_cert')
         self.srkTableFilename = None
@@ -159,8 +160,7 @@ class secBootGen(uicore.secBootUi):
         self._copySerialAndKeypassfileToCstFolder()
         return True
 
-    def genCertificate( self ):
-        self.updateAllCstPathToCorrectVersion()
+    def _updateCertBatfileContent( self ):
         certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         batArg = ''
         batArg += ' ' + certSettingsDict['useExistingCaKey']
@@ -184,10 +184,20 @@ class secBootGen(uicore.secBootUi):
             pass
         else:
             pass
+
+        batContent = "\"" + os.path.join(self.hab4PkiTreePath, self.hab4PkiTreeName) + "\""
+        batContent += batArg
+        with open(self.certBatFilename, 'wb') as fileObj:
+            fileObj.write(batContent)
+            fileObj.close()
+
+    def genCertificate( self ):
+        self.updateAllCstPathToCorrectVersion()
+        self._updateCertBatfileContent()
         # We have to change system dir to the path of hab4_pki_tree.bat, or hab4_pki_tree.bat will not be ran successfully
         curdir = os.getcwd()
         os.chdir(self.hab4PkiTreePath)
-        os.system(self.hab4PkiTreeName + batArg)
+        os.system(self.certBatFilename)
         os.chdir(curdir)
         self.printLog('Certificates are generated into these folders: ' + self.cstKeysFolder + ' , ' + self.cstCrtsFolder)
 
@@ -257,7 +267,8 @@ class secBootGen(uicore.secBootUi):
 
     def genSuperRootKeys( self ):
         self._updateSrkBatfileContent()
-        os.system(self.srkBatFilename)
+        #os.system(self.srkBatFilename)
+        process = subprocess.Popen(self.srkBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.printLog('Public SuperRootKey files are generated successfully')
 
     def showSuperRootKeys( self ):
@@ -314,7 +325,8 @@ class secBootGen(uicore.secBootUi):
             fileObj.write(batContent)
             fileObj.close()
         try:
-            os.system(self.appFmtBatFilename)
+            #os.system(self.appFmtBatFilename)
+            process = subprocess.Popen(self.appFmtBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except:
             pass
         if os.path.isfile(destSrecAppFilename):

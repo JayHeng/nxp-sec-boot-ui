@@ -410,12 +410,16 @@ kRevision_1_5_0_en =  "【v1.5.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Add Execute action support for memory programmer \n" + \
                       "  Improvement: \n" + \
-                      "     1. Can write/read FlexRAM via memory programmer \n\n"
+                      "     1. Can write/read FlexRAM via memory programmer \n" + \
+                      "  Bug: \n" + \
+                      "     1. Sometimes tool will report error \"xx.bat file cannot be found\" \n\n"
 kRevision_1_5_0_zh = u"【v1.5.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
                      u"  改进: \n" + \
-                     u"     1. 通用Flash编程器里也支持读写FlexRAM \n\n"
+                     u"     1. 通用Flash编程器里也支持读写FlexRAM \n" + \
+                     u"  缺陷: \n" + \
+                     u"     1. 有时候生成证书时会提示bat文件无法找到，导致证书无法生成 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
