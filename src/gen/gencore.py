@@ -60,7 +60,7 @@ class secBootGen(uicore.secBootUi):
         self.destAppFilename = os.path.join(self.exeTopRoot, 'gen', 'bootable_image', 'ivt_application.bin')
         self.destAppNoPaddingFilename = os.path.join(self.exeTopRoot, 'gen', 'bootable_image', 'ivt_application_nopadding.bin')
         self.appBdFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_application_gen.bd')
-        self.elftosbPath = os.path.join(self.exeTopRoot, 'tools', 'elftosb', 'win', 'elftosb.exe')
+        self.elftosbPath = os.path.join(self.exeTopRoot, 'tools', 'elftosb4', 'win', 'elftosb.exe')
         self.appBdBatFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_application_gen.bat')
         self.destSbAppFilename = os.path.join(self.exeTopRoot, 'gen', 'sb_image', 'application_device.sb')
         self.sbAppBdContent = ''
