@@ -6,10 +6,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 sys.path.append(os.path.abspath(".."))
-from mem import memcore
+from mem import RT10yy_memcore
 
-class secBootRTxxxUi(memcore.secBootMem):
+class secBootRTxxxUi(RT10yy_memcore.secBootRT10yyMem):
 
     def __init__(self, parent):
-        memcore.secBootMem.__init__(self, parent)
+        RT10yy_memcore.secBootRT10yyMem.__init__(self, parent)
 

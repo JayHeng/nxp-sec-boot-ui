@@ -4,7 +4,7 @@ import wx
 import sys
 import os
 import uivar
-import uidef
+import RT10yy_uidef
 import uilang
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_UsdhcSd
@@ -14,7 +14,7 @@ class secBootUiUsdhcSd(bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd):
     def __init__(self, parent):
         bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd.__init__(self, parent)
         self._setLanguage()
-        usdhcSdOpt = uivar.getBootDeviceConfiguration(uidef.kBootDevice_UsdhcSd)
+        usdhcSdOpt = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcSd)
         self.usdhcSdOpt = usdhcSdOpt
         self._recoverLastSettings()
 
@@ -127,11 +127,11 @@ class secBootUiUsdhcSd(bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd):
         self._getPowerPolarity()
         self._getPowerUpTime()
         self._getPowerDownTime()
-        uivar.setBootDeviceConfiguration(uidef.kBootDevice_UsdhcSd, self.usdhcSdOpt)
+        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcSd, self.usdhcSdOpt)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

@@ -4,14 +4,14 @@ import wx
 import sys
 import os
 import uivar
-import uidef
+import RT10yy_uidef
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_SemcNor
 
 class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
     def __init__(self, parent):
         bootDeviceWin_SemcNor.bootDeviceWin_SemcNor.__init__(self, parent)
-        semcNorOpt, semcNorSetting = uivar.getBootDeviceConfiguration(uidef.kBootDevice_SemcNor)
+        semcNorOpt, semcNorSetting = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_SemcNor)
         self.semcNorOpt = semcNorOpt
         self.semcNorSetting = semcNorSetting
 
@@ -90,7 +90,7 @@ class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
         self._getDataPortSize()
         self._getTimingMode()
         self._getCommandSet()
-        uivar.setBootDeviceConfiguration(uidef.kBootDevice_SemcNor, self.semcNorOpt, self.semcNorSetting)
+        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_SemcNor, self.semcNorOpt, self.semcNorSetting)
         self.Show(False)
 
     def OnClose_SEMC_NOR(self, event):

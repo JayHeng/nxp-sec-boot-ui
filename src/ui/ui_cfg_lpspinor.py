@@ -5,7 +5,7 @@ import sys
 import os
 import math
 import uivar
-import uidef
+import RT10yy_uidef
 import uilang
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_LpspiNor
@@ -15,7 +15,7 @@ class secBootUiCfgLpspiNor(bootDeviceWin_LpspiNor.bootDeviceWin_LpspiNor):
     def __init__(self, parent):
         bootDeviceWin_LpspiNor.bootDeviceWin_LpspiNor.__init__(self, parent)
         self._setLanguage()
-        lpspiNorOpt0, lpspiNorOpt1 = uivar.getBootDeviceConfiguration(uidef.kBootDevice_LpspiNor)
+        lpspiNorOpt0, lpspiNorOpt1 = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_LpspiNor)
         #1. Prepare SPI NOR/EEPROM option block
         # bit [31:28] tag, fixed to 0x0c
         # bit [27:24] Size, (bytes/4) - 1
@@ -146,11 +146,11 @@ class secBootUiCfgLpspiNor(bootDeviceWin_LpspiNor.bootDeviceWin_LpspiNor):
         self._getSpiIndex()
         self._getSpiPcs()
         self._getSpiSpeed()
-        uivar.setBootDeviceConfiguration(uidef.kBootDevice_LpspiNor, self.lpspiNorOpt0, self.lpspiNorOpt1)
+        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_LpspiNor, self.lpspiNorOpt0, self.lpspiNorOpt1)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel(self, event):
         uivar.setRuntimeSettings(False)

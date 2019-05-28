@@ -3,14 +3,14 @@ import wx
 import sys
 import os
 import uivar
-import uidef
+import RT10yy_uidef
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_FlexspiNand
 
 class secBootUiFlexspiNand(bootDeviceWin_FlexspiNand.bootDeviceWin_FlexspiNand):
     def __init__(self, parent):
         bootDeviceWin_FlexspiNand.bootDeviceWin_FlexspiNand.__init__(self, parent)
-        flexspiNandOpt, flexspiNandFcbOpt, flexspiNandImageInfo, flexspiNandKeyBlob = uivar.getBootDeviceConfiguration(uidef.kBootDevice_FlexspiNand)
+        flexspiNandOpt, flexspiNandFcbOpt, flexspiNandImageInfo, flexspiNandKeyBlob = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_FlexspiNand)
         self.flexspiNandOpt = flexspiNandOpt
         self.flexspiNandFcbOpt = flexspiNandFcbOpt
         self.flexspiNandImageInfo = flexspiNandImageInfo
@@ -318,7 +318,7 @@ class secBootUiFlexspiNand(bootDeviceWin_FlexspiNand.bootDeviceWin_FlexspiNand):
         self._getImageIndex()
         self._getDekSize()
         self._getKeyBlobInfoSize()
-        uivar.setBootDeviceConfiguration(uidef.kBootDevice_FlexspiNand, self.flexspiNandOpt, self.flexspiNandFcbOpt, self.flexspiNandImageInfo, self.flexspiNandKeyBlob)
+        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_FlexspiNand, self.flexspiNandOpt, self.flexspiNandFcbOpt, self.flexspiNandImageInfo, self.flexspiNandKeyBlob)
         self.Show(False)
 
     def OnClose_FLEXSPI_NAND(self, event):

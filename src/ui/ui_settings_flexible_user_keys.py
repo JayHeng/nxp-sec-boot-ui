@@ -4,13 +4,13 @@ import wx
 import sys
 import os
 import random
-import uidef
+import RT10yy_uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
 from win import advSettingsWin_FlexibleUserKeys
-from gen import gendef
-from run import rundef
+from gen import RT10yy_gendef
+from run import RT10yy_rundef
 from utils import sound
 
 class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSettingsWin_FlexibleUserKeys):
@@ -18,13 +18,13 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
     def __init__(self, parent):
         advSettingsWin_FlexibleUserKeys.advSettingsWin_FlexibleUserKeys.__init__(self, parent)
         self._setLanguage()
-        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
+        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_UserKeys)
         self.userKeyCtrlDict = userKeyCtrlDict.copy()
         self.userKeyCmdDict = userKeyCmdDict.copy()
-        self.engine0FacStart = [None] * uidef.kMaxFacRegionCount
-        self.engine0FacLength = [None] * uidef.kMaxFacRegionCount
-        self.engine1FacStart = [None] * uidef.kMaxFacRegionCount
-        self.engine1FacLength = [None] * uidef.kMaxFacRegionCount
+        self.engine0FacStart = [None] * RT10yy_uidef.kMaxFacRegionCount
+        self.engine0FacLength = [None] * RT10yy_uidef.kMaxFacRegionCount
+        self.engine1FacStart = [None] * RT10yy_uidef.kMaxFacRegionCount
+        self.engine1FacLength = [None] * RT10yy_uidef.kMaxFacRegionCount
         self._recoverLastSettings()
 
     def _setLanguage( self ):
@@ -85,21 +85,21 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
             keySource = None
             engineSel = None
-            if mcuDevice == uidef.kMcuDevice_iMXRT1015:
-                keySource = uidef.kSupportedKeySource_iMXRT1015
-                engineSel = uidef.kSupportedEngineSel_iMXRT1015
-            elif mcuDevice == uidef.kMcuDevice_iMXRT102x:
-                keySource = uidef.kSupportedKeySource_iMXRT102x
-                engineSel = uidef.kSupportedEngineSel_iMXRT102x
-            elif mcuDevice == uidef.kMcuDevice_iMXRT105x:
-                keySource = uidef.kSupportedKeySource_iMXRT105x
-                engineSel = uidef.kSupportedEngineSel_iMXRT105x
-            elif mcuDevice == uidef.kMcuDevice_iMXRT106x:
-                keySource = uidef.kSupportedKeySource_iMXRT106x
-                engineSel = uidef.kSupportedEngineSel_iMXRT106x
-            elif mcuDevice == uidef.kMcuDevice_iMXRT1064:
-                keySource = uidef.kSupportedKeySource_iMXRT1064
-                engineSel = uidef.kSupportedEngineSel_iMXRT1064
+            if mcuDevice == RT10yy_uidef.kMcuDevice_iMXRT1015:
+                keySource = RT10yy_uidef.kSupportedKeySource_iMXRT1015
+                engineSel = RT10yy_uidef.kSupportedEngineSel_iMXRT1015
+            elif mcuDevice == RT10yy_uidef.kMcuDevice_iMXRT102x:
+                keySource = RT10yy_uidef.kSupportedKeySource_iMXRT102x
+                engineSel = RT10yy_uidef.kSupportedEngineSel_iMXRT102x
+            elif mcuDevice == RT10yy_uidef.kMcuDevice_iMXRT105x:
+                keySource = RT10yy_uidef.kSupportedKeySource_iMXRT105x
+                engineSel = RT10yy_uidef.kSupportedEngineSel_iMXRT105x
+            elif mcuDevice == RT10yy_uidef.kMcuDevice_iMXRT106x:
+                keySource = RT10yy_uidef.kSupportedKeySource_iMXRT106x
+                engineSel = RT10yy_uidef.kSupportedEngineSel_iMXRT106x
+            elif mcuDevice == RT10yy_uidef.kMcuDevice_iMXRT1064:
+                keySource = RT10yy_uidef.kSupportedKeySource_iMXRT1064
+                engineSel = RT10yy_uidef.kSupportedEngineSel_iMXRT1064
             else:
                 pass
             self.m_choice_engineSel.Clear()
@@ -120,21 +120,21 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
             self.userKeyCtrlDict['mcu_device'] = mcuDevice
 
     def _recoverLastSettings ( self ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0:
             self.m_choice_engineSel.SetSelection(0)
             self._recoverEngineInfo(0)
             self._updateKeySourceInfoField(0)
             self._updateFacRangeInfoField(0)
             self._updateEngineInfoField(0, True)
             self._updateEngineInfoField(1, False)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1:
             self.m_choice_engineSel.SetSelection(1)
             self._recoverEngineInfo(1)
             self._updateKeySourceInfoField(1)
             self._updateFacRangeInfoField(1)
             self._updateEngineInfoField(0, False)
             self._updateEngineInfoField(1, True)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             self.m_choice_engineSel.SetSelection(2)
             self._recoverEngineInfo(0)
             self._updateKeySourceInfoField(0)
@@ -186,7 +186,7 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         if engineIndex == 0:
             validateStatus, self.userKeyCmdDict['engine0_key'] = self._validateKeyData(engineIndex, self.m_textCtrl_engine0UserKeyData.GetLineText(0))
         elif engineIndex == 1:
-            if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+            if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
                 if self.userKeyCtrlDict['engine1_key_src'] == self.userKeyCtrlDict['engine0_key_src']:
                     validateStatus, self.userKeyCmdDict['engine1_key'] = self._validateKeyData(engineIndex, self.m_textCtrl_engine0UserKeyData.GetLineText(0))
                 else:
@@ -251,15 +251,15 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
             if facIndex == 0:
                 validateStatus, self.engine0FacStart[0] = self._validateEngineRange(self.m_textCtrl_engine0Fac0Start.GetLineText(0))
                 if validateStatus:
-                    if self.engine0FacStart[0] < rundef.kBootDeviceMemBase_FlexspiNor + gendef.kIvtOffset_NOR:
-                        self.popupMsgBox('Engine 0 Protected region 0 start address shouldn\'t less than 0x%x' %(rundef.kBootDeviceMemBase_FlexspiNor + gendef.kIvtOffset_NOR))
+                    if self.engine0FacStart[0] < RT10yy_rundef.kBootDeviceMemBase_FlexspiNor + RT10yy_gendef.kIvtOffset_NOR:
+                        self.popupMsgBox('Engine 0 Protected region 0 start address shouldn\'t less than 0x%x' %(RT10yy_rundef.kBootDeviceMemBase_FlexspiNor + RT10yy_gendef.kIvtOffset_NOR))
                         return False
                 else:
                     return False
                 validateStatus, self.engine0FacLength[0] = self._validateEngineRange(self.m_textCtrl_engine0Fac0Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine0FacLength[0] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 0 Protected region 0 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine0FacLength[0] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 0 Protected region 0 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -274,8 +274,8 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                     return False
                 validateStatus, self.engine0FacLength[1] = self._validateEngineRange(self.m_textCtrl_engine0Fac1Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine0FacLength[1] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 0 Protected region 1 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine0FacLength[1] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 0 Protected region 1 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -290,8 +290,8 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                     return False
                 validateStatus, self.engine0FacLength[2] = self._validateEngineRange(self.m_textCtrl_engine0Fac2Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine0FacLength[2] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 0 Protected region 2 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine0FacLength[2] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 0 Protected region 2 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -302,7 +302,7 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
             if facIndex == 0:
                 validateStatus, self.engine1FacStart[0] = self._validateEngineRange(self.m_textCtrl_engine1Fac0Start.GetLineText(0))
                 if validateStatus:
-                    if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+                    if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
                         if self.engine0FacStart[2] != None:
                             if self.engine1FacStart[0] < self.engine0FacStart[2] + self.engine0FacLength[2]:
                                 self.popupMsgBox('Engine 1 Protected region 0 start address shouldn\'t less than Engine 0 Protected region 2 end address 0x%x' %(self.engine0FacStart[2] + self.engine0FacLength[2]))
@@ -319,15 +319,15 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                             pass
                         # startRegion = self.engine0FacStart[2] + self.engine0FacLength[2]
                     else:
-                        if self.engine1FacStart[0] < rundef.kBootDeviceMemBase_FlexspiNor + gendef.kIvtOffset_NOR:
-                            self.popupMsgBox('Engine 1 Protected region 0 start address shouldn\'t less than 0x%x' %(rundef.kBootDeviceMemBase_FlexspiNor + gendef.kIvtOffset_NOR))
+                        if self.engine1FacStart[0] < RT10yy_rundef.kBootDeviceMemBase_FlexspiNor + RT10yy_gendef.kIvtOffset_NOR:
+                            self.popupMsgBox('Engine 1 Protected region 0 start address shouldn\'t less than 0x%x' %(RT10yy_rundef.kBootDeviceMemBase_FlexspiNor + RT10yy_gendef.kIvtOffset_NOR))
                             return False
                 else:
                     return False
                 validateStatus, self.engine1FacLength[0] = self._validateEngineRange(self.m_textCtrl_engine1Fac0Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine1FacLength[0] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 1 Protected region 0 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine1FacLength[0] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 1 Protected region 0 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -342,8 +342,8 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                     return False
                 validateStatus, self.engine1FacLength[1] = self._validateEngineRange(self.m_textCtrl_engine1Fac1Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine1FacLength[1] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 1 Protected region 1 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine1FacLength[1] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 1 Protected region 1 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -358,8 +358,8 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                     return False
                 validateStatus, self.engine1FacLength[2] = self._validateEngineRange(self.m_textCtrl_engine1Fac2Length.GetLineText(0))
                 if validateStatus:
-                    if self.engine1FacLength[2] % gendef.kSecFacRegionAlignedUnit != 0:
-                        self.popupMsgBox('Engine 1 Protected region 2 length should be aligned with %dKB' %(gendef.kSecFacRegionAlignedUnit / 0x400))
+                    if self.engine1FacLength[2] % RT10yy_gendef.kSecFacRegionAlignedUnit != 0:
+                        self.popupMsgBox('Engine 1 Protected region 2 length should be aligned with %dKB' %(RT10yy_gendef.kSecFacRegionAlignedUnit / 0x400))
                         return False
                 else:
                     return False
@@ -391,10 +391,10 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         for i in range(facCnt):
             status = self._getEngineRange(engineIndex, i)
             if not status:
-                self.engine0FacStart = [None] * uidef.kMaxFacRegionCount
-                self.engine0FacLength = [None] * uidef.kMaxFacRegionCount
-                self.engine1FacStart = [None] * uidef.kMaxFacRegionCount
-                self.engine1FacLength = [None] * uidef.kMaxFacRegionCount
+                self.engine0FacStart = [None] * RT10yy_uidef.kMaxFacRegionCount
+                self.engine0FacLength = [None] * RT10yy_uidef.kMaxFacRegionCount
+                self.engine1FacStart = [None] * RT10yy_uidef.kMaxFacRegionCount
+                self.engine1FacLength = [None] * RT10yy_uidef.kMaxFacRegionCount
                 return False
             self._getAccessPermision(engineIndex)
         return True
@@ -485,9 +485,9 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
     def _recoverEngineInfo( self, engineIndex ):
         if engineIndex == 0:
             if self.m_choice_engine0keySource.GetCount() == 2:
-                if self.userKeyCtrlDict['engine0_key_src'] == uidef.kUserKeySource_SW_GP2:
+                if self.userKeyCtrlDict['engine0_key_src'] == RT10yy_uidef.kUserKeySource_SW_GP2:
                     self.m_choice_engine0keySource.SetSelection(0)
-                elif self.userKeyCtrlDict['engine0_key_src'] == uidef.kUserKeySource_GP4:
+                elif self.userKeyCtrlDict['engine0_key_src'] == RT10yy_uidef.kUserKeySource_GP4:
                     self.m_choice_engine0keySource.SetSelection(1)
                 else:
                     pass
@@ -501,9 +501,9 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
                 self.m_choice_engine0Lock.SetSelection(0)
         elif engineIndex == 1:
             if self.m_choice_engine1keySource.GetCount() == 2:
-                if self.userKeyCtrlDict['engine1_key_src'] == uidef.kUserKeySource_SW_GP2:
+                if self.userKeyCtrlDict['engine1_key_src'] == RT10yy_uidef.kUserKeySource_SW_GP2:
                     self.m_choice_engine1keySource.SetSelection(0)
-                elif self.userKeyCtrlDict['engine1_key_src'] == uidef.kUserKeySource_GP4:
+                elif self.userKeyCtrlDict['engine1_key_src'] == RT10yy_uidef.kUserKeySource_GP4:
                     self.m_choice_engine1keySource.SetSelection(1)
                 else:
                     pass
@@ -521,14 +521,14 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
     def _updateKeySourceInfoField ( self, engineIndex=0 ):
         if engineIndex == 0:
             self.m_textCtrl_engine0UserKeyData.Enable( True )
-            if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+            if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
                 if self.userKeyCtrlDict['engine1_key_src'] == self.userKeyCtrlDict['engine0_key_src']:
                     self.m_textCtrl_engine1UserKeyData.Enable( False )
                     self.m_textCtrl_engine1UserKeyData.Clear()
                 else:
                     self.m_textCtrl_engine1UserKeyData.Enable( True )
         elif engineIndex == 1:
-            if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+            if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
                 if self.userKeyCtrlDict['engine1_key_src'] == self.userKeyCtrlDict['engine0_key_src']:
                     self.m_textCtrl_engine1UserKeyData.Enable( False )
                     self.m_textCtrl_engine1UserKeyData.Clear()
@@ -651,13 +651,13 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
 
     def _changeEngineSelection( self ):
         self._getEngineSelection()
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0:
             self._updateEngineInfoField(0, True)
             self._updateEngineInfoField(1, False)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1:
             self._updateEngineInfoField(0, False)
             self._updateEngineInfoField(1, True)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             self._updateEngineInfoField(0, True)
             self._updateEngineInfoField(1, True)
         else:
@@ -667,8 +667,8 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         self._changeEngineSelection()
 
     def callbackChangeEngine0KeySource( self, event ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0 or \
-           self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0 or \
+           self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             self._getKeySource(0)
             self._updateKeySourceInfoField(0)
 
@@ -677,14 +677,14 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         wx.MessageBox(messageText, "Error", wx.OK | wx.ICON_INFORMATION)
 
     def callbackChangeEngine0FacCnt( self, event ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0:
             self._getFacCount(0)
             self._updateFacRangeInfoField(0)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             region0FacCnt = self.m_choice_engine0FacCnt.GetSelection() + 1
-            if region0FacCnt + self.userKeyCtrlDict['engine1_fac_cnt'] > uidef.kMaxFacRegionCount:
+            if region0FacCnt + self.userKeyCtrlDict['engine1_fac_cnt'] > RT10yy_uidef.kMaxFacRegionCount:
                 self.m_choice_engine0FacCnt.SetSelection(self.userKeyCtrlDict['engine0_fac_cnt'] - 1)
-                self.popupMsgBox('The sum of Protected Region count of Engine0 and Engine1 must be no more than ' + str(uidef.kMaxFacRegionCount))
+                self.popupMsgBox('The sum of Protected Region count of Engine0 and Engine1 must be no more than ' + str(RT10yy_uidef.kMaxFacRegionCount))
             else:
                 self._getFacCount(0)
                 self._updateFacRangeInfoField(0)
@@ -692,21 +692,21 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
             pass
 
     def callbackChangeEngine1KeySource( self, event ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1 or \
-           self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1 or \
+           self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             self._getKeySource(1)
             self._updateKeySourceInfoField(1)
 
 
     def callbackChangeEngine1FacCnt( self, event ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1:
             self._getFacCount(1)
             self._updateFacRangeInfoField(1)
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             region1FacCnt = self.m_choice_engine1FacCnt.GetSelection() + 1
-            if region1FacCnt + self.userKeyCtrlDict['engine0_fac_cnt'] > uidef.kMaxFacRegionCount:
+            if region1FacCnt + self.userKeyCtrlDict['engine0_fac_cnt'] > RT10yy_uidef.kMaxFacRegionCount:
                 self.m_choice_engine1FacCnt.SetSelection(self.userKeyCtrlDict['engine1_fac_cnt'] - 1)
-                self.popupMsgBox('The sum of Protected Region count of Engine0 and Engine1 must be no more than ' + str(uidef.kMaxFacRegionCount))
+                self.popupMsgBox('The sum of Protected Region count of Engine0 and Engine1 must be no more than ' + str(RT10yy_uidef.kMaxFacRegionCount))
             else:
                 self._getFacCount(1)
                 self._updateFacRangeInfoField(1)
@@ -720,13 +720,13 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         return userKey
 
     def callbackGenRandomUserKey( self, event ):
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0:
             self.m_textCtrl_engine0UserKeyData.Clear()
             self.m_textCtrl_engine0UserKeyData.write(self._genRandomUserKeyData())
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1:
             self.m_textCtrl_engine1UserKeyData.Clear()
             self.m_textCtrl_engine1UserKeyData.write(self._genRandomUserKeyData())
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             self.m_textCtrl_engine0UserKeyData.Clear()
             self.m_textCtrl_engine0UserKeyData.write(self._genRandomUserKeyData())
             self.m_textCtrl_engine1UserKeyData.Clear()
@@ -736,13 +736,13 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
 
     def callbackOk( self, event ):
         self._getEngineSelection()
-        if self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine0:
+        if self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine0:
             if not self._getEngineInfo(0):
                 return
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_Engine1:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_Engine1:
             if not self._getEngineInfo(1):
                 return
-        elif self.userKeyCtrlDict['engine_sel'] == uidef.kUserEngineSel_BothEngines:
+        elif self.userKeyCtrlDict['engine_sel'] == RT10yy_uidef.kUserEngineSel_BothEngines:
             if not self._getEngineInfo(0):
                 return
             if not self._getEngineInfo(1):
@@ -761,11 +761,11 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         #      ' engine1_lock=' + self.userKeyCmdDict['engine1_lock']
         #print 'use_zero_key=' + self.userKeyCmdDict['use_zero_key']
         #print 'is_boot_image=' + self.userKeyCmdDict['is_boot_image']
-        uivar.setAdvancedSettings(uidef.kAdvancedSettings_UserKeys, self.userKeyCtrlDict, self.userKeyCmdDict)
+        uivar.setAdvancedSettings(RT10yy_uidef.kAdvancedSettings_UserKeys, self.userKeyCtrlDict, self.userKeyCmdDict)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

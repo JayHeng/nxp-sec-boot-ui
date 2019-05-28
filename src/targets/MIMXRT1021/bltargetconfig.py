@@ -31,8 +31,8 @@
 import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
-from ui import uidef
-from ui import uidef_efuse
+from ui import RT10yy_uidef
+from ui import RT10yy_uidef_efuse
 
 cpu = 'MIMXRT1021'
 board = 'EVK'
@@ -49,8 +49,8 @@ flashloaderJumpAddr = 0x20208400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = False
-availableBootDevices = uidef.kBootDevice_Latest
-flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
+availableBootDevices = RT10yy_uidef.kBootDevice_Latest
+flexspiNorDevice = RT10yy_uidef.kFlexspiNorDevice_ISSI_IS25LP064A
 flexspiNorMemBase = 0x60000000
 flexspiNorEfuseBootCfg0Bits = 10
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = False
@@ -91,12 +91,12 @@ efuse_0x470_bit13    = {'BT_uSDHC_HYS':            ['0', '1']}
 efuse_0x470_bit14    = {'BT_eMMC4.4':              ['0', '1']}
 efuse_0x470_bit15    = {'BT_SD2_Polar':            ['0 - Low Active', '1 - High Active']}
 efuse_0x470_bit30_24 = {'BT_eMMC4.4_DLL_Delayline':['N/A']}
-efuseDescDiffDict = {'0x400_lock_bit7' :        uidef_efuse.efuse_temp_reserved1,
+efuseDescDiffDict = {'0x400_lock_bit7' :        RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit14':        efuse_0x400_bit14,
                      '0x400_lock_bit15':        efuse_0x400_bit15,
-                     '0x400_lock_bit17':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit20':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit25_24':     uidef_efuse.efuse_temp_reserved2,
+                     '0x400_lock_bit17':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit20':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit25_24':     RT10yy_uidef_efuse.efuse_temp_reserved2,
 
                      '0x450_bootcfg0_bit7_4':   efuse_0x450_bit7_4,
 
@@ -117,16 +117,16 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        uidef_efuse.efuse_temp_reserved1
                      '0x470_bootcfg2_bit15':    efuse_0x470_bit15,
                      '0x470_bootcfg2_bit30_24': efuse_0x470_bit30_24,
 
-                     '0x6d0_miscconf0_bit19_16':uidef_efuse.efuse_0x6d0_flexramPartion256KB,
+                     '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion256KB,
 
-                     '0x6e0_miscconf1_bit0':    uidef_efuse.efuse_temp_reserved1,
-                     '0x6e0_miscconf1_bit3_1':  uidef_efuse.efuse_temp_reserved3,
-                     '0x6e0_miscconf1_bit5_4':  uidef_efuse.efuse_temp_reserved2,
-                     '0x6e0_miscconf1_bit6':    uidef_efuse.efuse_temp_reserved1,
-                     '0x6e0_miscconf1_bit11_8': uidef_efuse.efuse_temp_reserved4,
-                     '0x6e0_miscconf1_bit15_12':uidef_efuse.efuse_temp_reserved4,
-                     '0x6e0_miscconf1_bit23_16':uidef_efuse.efuse_temp_reserved8,
-                     '0x6e0_miscconf1_bit31_24':uidef_efuse.efuse_temp_reserved8,
+                     '0x6e0_miscconf1_bit0':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6e0_miscconf1_bit3_1':  RT10yy_uidef_efuse.efuse_temp_reserved3,
+                     '0x6e0_miscconf1_bit5_4':  RT10yy_uidef_efuse.efuse_temp_reserved2,
+                     '0x6e0_miscconf1_bit6':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6e0_miscconf1_bit11_8': RT10yy_uidef_efuse.efuse_temp_reserved4,
+                     '0x6e0_miscconf1_bit15_12':RT10yy_uidef_efuse.efuse_temp_reserved4,
+                     '0x6e0_miscconf1_bit23_16':RT10yy_uidef_efuse.efuse_temp_reserved8,
+                     '0x6e0_miscconf1_bit31_24':RT10yy_uidef_efuse.efuse_temp_reserved8,
                     }
 
 # memory map

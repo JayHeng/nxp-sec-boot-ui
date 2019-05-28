@@ -4,14 +4,14 @@ import wx
 import sys
 import os
 import uivar
-import uidef_efuse
+import RT10yy_uidef_efuse
 sys.path.append(os.path.abspath(".."))
-from win import efuseWin_MiscConf0
+from win import RT10yy_efuseWin_MiscConf0
 
-class secBootUiEfuseMiscConf0(efuseWin_MiscConf0.efuseWin_MiscConf0):
+class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):
 
     def __init__(self, parent):
-        efuseWin_MiscConf0.efuseWin_MiscConf0.__init__(self, parent)
+        RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0.__init__(self, parent)
         efuseDict = uivar.getEfuseSettings()
         self.efuseDict = efuseDict.copy()
 
@@ -33,33 +33,33 @@ class secBootUiEfuseMiscConf0(efuseWin_MiscConf0.efuseWin_MiscConf0):
     def _recoverLastSettings ( self ):
         self.m_textCtrl_bit5_0.Clear()
         self.m_textCtrl_bit5_0.write(self._convertLongIntHexText(str(hex(self.efuseDict['0x6d0_miscConf0'] & 0x0000003f))))
-        self.m_staticText_bit5_0.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit5_0.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit6.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000040) >> 6)
-        self.m_staticText_bit6.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit6.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit7.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000080) >> 7)
-        self.m_staticText_bit7.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit7.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
         self.m_choice_bit11_8.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000f00) >> 8)
-        self.m_staticText_bit11_8.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit11_8.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit12.Enable( False )
         self.m_choice_bit15_13.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x0000e000) >> 13)
-        self.m_staticText_bit15_13.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit15_13.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
         self.m_choice_bit19_16.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x000f0000) >> 16)
-        self.m_staticText_bit19_16.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit19_16.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit21_20.Enable( False )
         self.m_choice_bit23_22.Enable( False )
 
         self.m_choice_bit24.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x01000000) >> 24)
-        self.m_staticText_bit24.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit26_25.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x06000000) >> 25)
-        self.m_staticText_bit26_25.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit26_25.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit27.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x08000000) >> 27)
-        self.m_staticText_bit27.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit27.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit29_28.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x30000000) >> 28)
-        self.m_staticText_bit29_28.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit29_28.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit31_30.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0xc0000000) >> 30)
-        self.m_staticText_bit31_30.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit31_30.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
     def popupMsgBox( self, msgStr ):
         messageText = (msgStr)

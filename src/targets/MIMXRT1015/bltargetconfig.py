@@ -31,8 +31,8 @@
 import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
-from ui import uidef
-from ui import uidef_efuse
+from ui import RT10yy_uidef
+from ui import RT10yy_uidef_efuse
 
 cpu = 'MIMXRT1015'
 board = 'EVK'
@@ -49,8 +49,8 @@ flashloaderJumpAddr = 0x20208400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = False
-availableBootDevices = [uidef.kBootDevice_FlexspiNor, uidef.kBootDevice_LpspiNor]
-flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
+availableBootDevices = [RT10yy_uidef.kBootDevice_FlexspiNor, RT10yy_uidef.kBootDevice_LpspiNor]
+flexspiNorDevice = RT10yy_uidef.kFlexspiNorDevice_Adesto_AT25SF128A
 flexspiNorMemBase = 0x60000000
 flexspiNorEfuseBootCfg0Bits = 10
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = False
@@ -76,42 +76,42 @@ efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',
                                                     ]}
 efuse_0x460_bit13_12 = {'BEE_KEY0_SEL':            ['00 - From Register', '01 - Reserved', '10 - Reserved', '11 - From SW-GP2']}
 efuse_0x460_bit15_14 = {'BEE_KEY1_SEL':            ['00 - From Register', '01 - Reserved', '10 - Reserved', '11 - From SW-GP2']}
-efuseDescDiffDict = {'0x400_lock_bit7' :        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit14':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit15':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit17':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit20':        uidef_efuse.efuse_temp_reserved1,
-                     '0x400_lock_bit25_24':     uidef_efuse.efuse_temp_reserved2,
+efuseDescDiffDict = {'0x400_lock_bit7' :        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit14':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit15':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit17':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit20':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit25_24':     RT10yy_uidef_efuse.efuse_temp_reserved2,
 
                      '0x450_bootcfg0_bit7_4':   efuse_0x450_bit7_4,
 
                      '0x460_bootcfg1_bit13_12': efuse_0x460_bit13_12,
                      '0x460_bootcfg1_bit15_14': efuse_0x460_bit15_14,
-                     '0x460_bootcfg1_bit31_30': uidef_efuse.efuse_temp_reserved2,
+                     '0x460_bootcfg1_bit31_30': RT10yy_uidef_efuse.efuse_temp_reserved2,
 
-                     '0x470_bootcfg2_bit0':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit3':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit5':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit6':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit8':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit9':     uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit11':    uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit12':    uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit13':    uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit14':    uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit15':    uidef_efuse.efuse_temp_reserved1,
-                     '0x470_bootcfg2_bit30_24': uidef_efuse.efuse_temp_reserved7,
+                     '0x470_bootcfg2_bit0':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit3':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit5':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit6':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit8':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit9':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit11':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit12':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit13':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit14':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit15':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit30_24': RT10yy_uidef_efuse.efuse_temp_reserved7,
 
-                     '0x6d0_miscconf0_bit19_16':uidef_efuse.efuse_0x6d0_flexramPartion128KB,
+                     '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion128KB,
 
-                     '0x6e0_miscconf1_bit0':    uidef_efuse.efuse_temp_reserved1,
-                     '0x6e0_miscconf1_bit3_1':  uidef_efuse.efuse_temp_reserved3,
-                     '0x6e0_miscconf1_bit5_4':  uidef_efuse.efuse_temp_reserved2,
-                     '0x6e0_miscconf1_bit6':    uidef_efuse.efuse_temp_reserved1,
-                     '0x6e0_miscconf1_bit11_8': uidef_efuse.efuse_temp_reserved4,
-                     '0x6e0_miscconf1_bit15_12':uidef_efuse.efuse_temp_reserved4,
-                     '0x6e0_miscconf1_bit23_16':uidef_efuse.efuse_temp_reserved8,
-                     '0x6e0_miscconf1_bit31_24':uidef_efuse.efuse_temp_reserved8,
+                     '0x6e0_miscconf1_bit0':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6e0_miscconf1_bit3_1':  RT10yy_uidef_efuse.efuse_temp_reserved3,
+                     '0x6e0_miscconf1_bit5_4':  RT10yy_uidef_efuse.efuse_temp_reserved2,
+                     '0x6e0_miscconf1_bit6':    RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6e0_miscconf1_bit11_8': RT10yy_uidef_efuse.efuse_temp_reserved4,
+                     '0x6e0_miscconf1_bit15_12':RT10yy_uidef_efuse.efuse_temp_reserved4,
+                     '0x6e0_miscconf1_bit23_16':RT10yy_uidef_efuse.efuse_temp_reserved8,
+                     '0x6e0_miscconf1_bit31_24':RT10yy_uidef_efuse.efuse_temp_reserved8,
                     }
 
 # memory map

@@ -31,8 +31,8 @@
 import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
-from ui import uidef
-from ui import uidef_efuse
+from ui import RT10yy_uidef
+from ui import RT10yy_uidef_efuse
 
 cpu = 'MIMXRT1062'
 board = 'EVK'
@@ -49,8 +49,8 @@ flashloaderJumpAddr = 0x20000400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = True
-availableBootDevices = uidef.kBootDevice_Latest
-flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
+availableBootDevices = RT10yy_uidef.kBootDevice_Latest
+flexspiNorDevice = RT10yy_uidef.kFlexspiNorDevice_ISSI_IS25LP064A
 flexspiNorMemBase = 0x60000000
 flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
@@ -122,7 +122,7 @@ efuse_0x6e0_bit23_16 = {'FlexSPI_NOR_Secondary_Image_Offset (256KB * fuse value)
 efuse_0x6e0_bit31_24 = {'BT_Pin_SEL':              ['N/A']}
 
 efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
-                     '0x400_lock_bit14':        uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit14':        RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit15':        efuse_0x400_bit15,
                      '0x400_lock_bit17':        efuse_0x400_bit17,
                      '0x400_lock_bit20':        efuse_0x400_bit20,
@@ -149,7 +149,7 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x470_bootcfg2_bit15':    efuse_0x470_bit15,
                      '0x470_bootcfg2_bit30_24': efuse_0x470_bit30_24,
 
-                     '0x6d0_miscconf0_bit19_16':uidef_efuse.efuse_0x6d0_flexramPartion512KB,
+                     '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion512KB,
 
                      '0x6e0_miscconf1_bit0':    efuse_0x6e0_bit0,
                      '0x6e0_miscconf1_bit3_1':  efuse_0x6e0_bit3_1,

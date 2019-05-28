@@ -3,7 +3,7 @@
 import wx
 import sys
 import os
-import uidef
+import RT10yy_uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
@@ -16,7 +16,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         advSettingsWin_Cert.advSettingsWin_Cert.__init__(self, parent)
         self._setLanguage()
         self._initCstVersion()
-        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
         self.certSettingsDict = certSettingsDict.copy()
         self._recoverLastSettings()
 
@@ -36,26 +36,26 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
 
     def _initCstVersion( self ):
         self.m_choice_cstVersion.Clear()
-        self.m_choice_cstVersion.SetItems(uidef.kCstVersion_Avail)
+        self.m_choice_cstVersion.SetItems(RT10yy_uidef.kCstVersion_Avail)
         self.m_choice_cstVersion.SetSelection(0)
 
     def _setPkiTreeKeyLenItems( self ):
         keySel = None
-        if self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_1_0 and self.certSettingsDict['useEllipticCurveCrypto'] == 'y':
-            keySel = uidef.kPkiTreeKeySel_IsEcc
+        if self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0 and self.certSettingsDict['useEllipticCurveCrypto'] == 'y':
+            keySel = RT10yy_uidef.kPkiTreeKeySel_IsEcc
         else:
-            keySel = uidef.kPkiTreeKeySel_NotEcc
+            keySel = RT10yy_uidef.kPkiTreeKeySel_NotEcc
         self.m_choice_pkiTreeKeyLen.Clear()
         self.m_choice_pkiTreeKeyLen.SetItems(keySel)
         self.m_choice_pkiTreeKeyLen.SetSelection(0)
 
     def _recoverLastSettings ( self ):
         cstVersion = self.certSettingsDict['cstVersion']
-        if cstVersion == uidef.kCstVersion_v2_3_3:
+        if cstVersion == RT10yy_uidef.kCstVersion_v2_3_3:
             self.m_choice_cstVersion.SetSelection(0)
-        elif cstVersion == uidef.kCstVersion_v3_0_1:
+        elif cstVersion == RT10yy_uidef.kCstVersion_v3_0_1:
             self.m_choice_cstVersion.SetSelection(1)
-        elif cstVersion == uidef.kCstVersion_v3_1_0:
+        elif cstVersion == RT10yy_uidef.kCstVersion_v3_1_0:
             self.m_choice_cstVersion.SetSelection(2)
         else:
             pass
@@ -66,7 +66,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         else:
             pass
 
-        if self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_1_0:
+        if self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0:
             self.m_choice_useEcc.Enable( True )
             useEllipticCurveCrypto = self.certSettingsDict['useEllipticCurveCrypto']
             if useEllipticCurveCrypto == 'n':
@@ -75,7 +75,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
                 self.m_choice_useEcc.SetSelection(1)
             else:
                 pass
-        elif self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v2_3_3 or self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_0_1:
+        elif self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v2_3_3 or self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_0_1:
             self.m_choice_useEcc.Enable( False )
         else:
             pass
@@ -83,7 +83,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         self._setPkiTreeKeyLenItems()
 
         pkiTreeKeyLen = self.certSettingsDict['pkiTreeKeyLen']
-        if cstVersion == uidef.kCstVersion_v3_1_0 and useEllipticCurveCrypto == 'y':
+        if cstVersion == RT10yy_uidef.kCstVersion_v3_1_0 and useEllipticCurveCrypto == 'y':
             if pkiTreeKeyLen == 'p256':
                 self.m_choice_pkiTreeKeyLen.SetSelection(0)
             elif pkiTreeKeyLen == 'p384':
@@ -122,7 +122,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         self.certSettingsDict['useEllipticCurveCrypto'] = txt[0].lower()
 
     def _getPkiTreeKeyLen( self ):
-        if self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_1_0 and self.certSettingsDict['useEllipticCurveCrypto'] == 'y':
+        if self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0 and self.certSettingsDict['useEllipticCurveCrypto'] == 'y':
             self.certSettingsDict['pkiTreeKeyLen'] = self.m_choice_pkiTreeKeyLen.GetString(self.m_choice_pkiTreeKeyLen.GetSelection())
             if self.certSettingsDict['pkiTreeKeyLen'] == 'p256':
                 self.certSettingsDict['pkiTreeKeyCn'] = 'prime256v1'
@@ -147,9 +147,9 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
 
     def callbackSwitchCstVersion( self, event ):
         self._getCstVersion()
-        if self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_1_0:
+        if self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0:
             self.m_choice_useEcc.Enable( True )
-        elif self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v2_3_3 or self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_0_1:
+        elif self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v2_3_3 or self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_0_1:
             self.m_choice_useEcc.Enable( False )
         else:
             pass
@@ -157,7 +157,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
 
     def callbackUseEcc( self, event ):
         self._getUseEllipticCurveCrypto()
-        if self.certSettingsDict['cstVersion'] == uidef.kCstVersion_v3_1_0:
+        if self.certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0:
             self._setPkiTreeKeyLenItems()
 
     def callbackOk( self, event ):
@@ -168,11 +168,11 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         self._getPkiTreeDuration()
         self._getSRKs()
         self._getCaFlagSet()
-        uivar.setAdvancedSettings(uidef.kAdvancedSettings_Cert, self.certSettingsDict)
+        uivar.setAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert, self.certSettingsDict)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

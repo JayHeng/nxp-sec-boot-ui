@@ -4,14 +4,14 @@ import wx
 import sys
 import os
 import uivar
-import uidef_efuse
+import RT10yy_uidef_efuse
 sys.path.append(os.path.abspath(".."))
-from win import efuseWin_BootCfg2
+from win import RT10yy_efuseWin_BootCfg2
 
-class secBootUiEfuseBootCfg2(efuseWin_BootCfg2.efuseWin_BootCfg2):
+class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
 
     def __init__(self, parent):
-        efuseWin_BootCfg2.efuseWin_BootCfg2.__init__(self, parent)
+        RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2.__init__(self, parent)
         efuseDict = uivar.getEfuseSettings()
         self.efuseDict = efuseDict.copy()
 
@@ -86,98 +86,98 @@ class secBootUiEfuseBootCfg2(efuseWin_BootCfg2.efuseWin_BootCfg2):
         bit0Str = self.m_choice_bit0.GetString(self.m_choice_bit0.GetSelection())
         if bit0Str[0] != 'x':
             self.m_choice_bit0.SetSelection(self.efuseDict['0x470_bootCfg2'] & 0x00000001)
-            self.m_staticText_bit0.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit0.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit0.Enable( False )
         self.m_choice_bit1.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000002) >> 1)
-        self.m_staticText_bit1.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit1.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit2.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000004) >> 2)
-        self.m_staticText_bit2.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit2.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         bit3Str = self.m_choice_bit3.GetString(self.m_choice_bit3.GetSelection())
         if bit3Str[0] != 'x':
             self.m_choice_bit3.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000008) >> 3)
-            self.m_staticText_bit3.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit3.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit3.Enable( False )
         self.m_choice_bit4.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000010) >> 4)
-        self.m_staticText_bit4.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit4.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         bit5Str = self.m_choice_bit5.GetString(self.m_choice_bit5.GetSelection())
         if bit5Str[0] != 'x':
             self.m_choice_bit5.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000020) >> 5)
-            self.m_staticText_bit5.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit5.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit5.Enable( False )
         bit6Str = self.m_choice_bit6.GetString(self.m_choice_bit6.GetSelection())
         if bit6Str[0] != 'x':
             self.m_choice_bit6.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000040) >> 6)
-            self.m_staticText_bit6.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit6.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit6.Enable( False )
         self.m_choice_bit7.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000080) >> 7)
-        self.m_staticText_bit7.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit7.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         bit8Str = self.m_choice_bit8.GetString(self.m_choice_bit8.GetSelection())
         if bit8Str[0] != 'x':
             self.m_choice_bit8.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000100) >> 8)
-            self.m_staticText_bit8.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit8.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit8.Enable( False )
         bit9Str = self.m_choice_bit9.GetString(self.m_choice_bit9.GetSelection())
         if bit9Str[0] != 'x':
             self.m_choice_bit9.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000200) >> 9)
-            self.m_staticText_bit9.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit9.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit9.Enable( False )
         self.m_choice_bit10.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000400) >> 10)
-        self.m_staticText_bit10.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit10.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         bit11Str = self.m_choice_bit11.GetString(self.m_choice_bit11.GetSelection())
         if bit11Str[0] != 'x':
             self.m_choice_bit11.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000800) >> 11)
-            self.m_staticText_bit11.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit11.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit11.Enable( False )
         bit12Str = self.m_choice_bit12.GetString(self.m_choice_bit12.GetSelection())
         if bit12Str[0] != 'x':
             self.m_choice_bit12.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00001000) >> 12)
-            self.m_staticText_bit12.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit12.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit12.Enable( False )
         bit13Str = self.m_choice_bit13.GetString(self.m_choice_bit13.GetSelection())
         if bit13Str[0] != 'x':
             self.m_choice_bit13.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00002000) >> 13)
-            self.m_staticText_bit13.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit13.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit13.Enable( False )
         bit14Str = self.m_choice_bit14.GetString(self.m_choice_bit14.GetSelection())
         if bit14Str[0] != 'x':
             self.m_choice_bit14.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00004000) >> 14)
-            self.m_staticText_bit14.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit14.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit14.Enable( False )
         bit15Str = self.m_choice_bit15.GetString(self.m_choice_bit15.GetSelection())
         if bit15Str[0] != 'x':
             self.m_choice_bit15.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00008000) >> 15)
-            self.m_staticText_bit15.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit15.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit15.Enable( False )
 
         self.m_textCtrl_bit19_16.Clear()
         self.m_textCtrl_bit19_16.write(self._convertLongIntHexText(str(hex((self.efuseDict['0x470_bootCfg2'] & 0x000f0000) >> 16))))
-        self.m_staticText_bit19_16.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit19_16.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit20.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00100000) >> 20)
-        self.m_staticText_bit20.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit20.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit22_21.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00600000) >> 21)
-        self.m_staticText_bit22_21.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit22_21.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit23.Enable( False )
 
         bit30_24Label = self.m_staticText_bit30_24.GetLabel()
         if bit30_24Label != 'Reserved':
             self.m_textCtrl_bit30_24.Clear()
             self.m_textCtrl_bit30_24.write(self._convertLongIntHexText(str(hex((self.efuseDict['0x470_bootCfg2'] & 0x7f000000) >> 24))))
-            self.m_staticText_bit30_24.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+            self.m_staticText_bit30_24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_textCtrl_bit30_24.Enable( False )
         self.m_choice_bit31.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x80000000) >> 31)
-        self.m_staticText_bit31.SetBackgroundColour(uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit31.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
     def popupMsgBox( self, msgStr ):
         messageText = (msgStr)
