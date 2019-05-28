@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import fusecore
-import fusedef
+import RT10yy_fusecore
+import RT10yy_fusedef
 
-__all__ = ["fusecore", "fusedef"]
+__all__ = ["RT10yy_fusecore", "RT10yy_fusedef"]
 

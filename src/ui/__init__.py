@@ -2,8 +2,8 @@
 
 import RTxxx_uicore
 import RTxxx_uidef
-import uicore
-import uidef
+import RT10yy_uicore
+import RT10yy_uidef
 import uivar
 import uilang
 import ui_cfg_flexspinor
@@ -28,8 +28,8 @@ import ui_efuse_miscconf1_flexspinor
 
 __all__ = ["RTxxx_uicore",
            "RTxxx_uidef",
-           "uicore",
-           "uidef",
+           "RT10yy_uicore",
+           "RT10yy_uidef",
            "uivar",
            "uilang",
            "ui_cfg_flexspinor",

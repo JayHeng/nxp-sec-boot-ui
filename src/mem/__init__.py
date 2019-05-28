@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import memcore
-import memdef
+import RT10yy_memcore
+import RT10yy_memdef
 
-__all__ = ["memcore", "memdef"]
+__all__ = ["RT10yy_memcore", "RT10yy_memdef"]
 
