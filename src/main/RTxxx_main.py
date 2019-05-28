@@ -6,10 +6,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 sys.path.append(os.path.abspath(".."))
-from main import RT10yy_main
+from run import RTxxx_runcore
 
-class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
+class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
 
     def __init__(self, parent):
-        RT10yy_main.secBootRT10yyMain.__init__(self, parent)
+        RTxxx_runcore.secBootRTxxxRun.__init__(self, parent)
 
