@@ -11,6 +11,7 @@ import RT10yy_gendef
 sys.path.append(os.path.abspath(".."))
 from ui import RT10yy_uicore
 from ui import RT10yy_uidef
+from ui import uidef
 from ui import uivar
 from ui import uilang
 from run import RT10yy_rundef
@@ -119,7 +120,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
 
     def updateAllCstPathToCorrectVersion( self ):
         try:
-            certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+            certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
             if self.lastCstVersion != certSettingsDict['cstVersion']:
                 self.cstBinFolder = self.cstBinFolder.replace(self.lastCstVersion, certSettingsDict['cstVersion'])
                 self.cstKeysFolder = self.cstKeysFolder.replace(self.lastCstVersion, certSettingsDict['cstVersion'])
@@ -161,7 +162,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         return True
 
     def _updateCertBatfileContent( self ):
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         batArg = ''
         batArg += ' ' + certSettingsDict['useExistingCaKey']
         if certSettingsDict['cstVersion'] == RT10yy_uidef.kCstVersion_v3_1_0:
@@ -202,7 +203,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         self.printLog('Certificates are generated into these folders: ' + self.cstKeysFolder + ' , ' + self.cstCrtsFolder)
 
     def _setSrkFilenames( self ):
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         srkTableName = 'SRK'
         srkFuseName = 'SRK'
         for i in range(certSettingsDict['SRKs']):
@@ -214,7 +215,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         self.srkFuseFilename = os.path.join(self.srkFolder, srkFuseName)
 
     def _getCrtSrkCaPemFilenames( self ):
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         for i in range(certSettingsDict['SRKs']):
             self.crtSrkCaPemFileList[i] = self.cstCrtsFolder + '\\'
             self.crtSrkCaPemFileList[i] += 'SRK' + str(i + 1) + '_sha256'
@@ -226,7 +227,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
                 self.crtSrkCaPemFileList[i] += '_65537_v3_ca_crt.pem'
 
     def _getCrtCsfImgUsrPemFilenames( self ):
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         for i in range(certSettingsDict['SRKs']):
             self.crtCsfUsrPemFileList[i] = self.cstCrtsFolder + '\\'
             self.crtCsfUsrPemFileList[i] += 'CSF' + str(i + 1) + '_1_sha256'
@@ -249,7 +250,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         self._setSrkFilenames()
         self._getCrtSrkCaPemFilenames()
         self._getCrtCsfImgUsrPemFilenames()
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         batContent = "\"" + self.srktoolPath + "\""
         batContent += " -h 4"
         batContent += " -t " + "\"" + self.srkTableFilename + "\""
@@ -290,7 +291,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
                     os.remove(os.path.join(root, file))
 
     def backUpCertificate( self ):
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         backupFoldername = os.path.join(self.certBackupFolder, time.strftime('%Y-%m-%d_%Hh%Mm%Ss ',time.localtime(time.time())) + \
                                                                '(' + str(certSettingsDict['SRKs']) + 'srk_' + str(certSettingsDict['pkiTreeKeyLen']) + 'bits_' + str(certSettingsDict['pkiTreeDuration']) + 'years)')
         os.mkdir(backupFoldername)
@@ -1079,7 +1080,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         print commandOutput
 
     def encrypteImageUsingFlexibleUserKeys( self ):
-        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_UserKeys)
+        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
         if userKeyCmdDict['is_boot_image'] == '1':
             self._setDestAppFilenameForBee()
             self._updateEncBatfileContent(userKeyCtrlDict, userKeyCmdDict)

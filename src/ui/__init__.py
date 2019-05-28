@@ -4,6 +4,8 @@ import RTxxx_uicore
 import RTxxx_uidef
 import RT10yy_uicore
 import RT10yy_uidef
+import uicore
+import uidef
 import uivar
 import uilang
 import ui_cfg_flexspinor
@@ -30,6 +32,8 @@ __all__ = ["RTxxx_uicore",
            "RTxxx_uidef",
            "RT10yy_uicore",
            "RT10yy_uidef",
+           "uicore",
+           "uidef",
            "uivar",
            "uilang",
            "ui_cfg_flexspinor",

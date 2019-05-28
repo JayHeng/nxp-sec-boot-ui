@@ -14,13 +14,6 @@ kBootSeqColor_Optional = wx.Colour( 166, 255, 255 )
 kBootSeqColor_Active   = wx.Colour( 147, 255, 174 )
 kBootSeqColor_Failed   = wx.Colour( 255, 0, 0 )
 
-kMcuSeries_iMXRT   = 'i.MXRT'
-kMcuSeries_LPC     = 'LPC'
-kMcuSeries_Kinetis = 'Kinetis'
-
-kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT]
-kMcuSeries_Latest = kMcuSeries_v1_0_0
-
 kMcuDevice_iMXRT1015 = 'i.MXRT1015'
 kMcuDevice_iMXRT102x = 'i.MXRT102x'
 kMcuDevice_iMXRT105x = 'i.MXRT105x'
@@ -80,12 +73,6 @@ kSecureBootType_Latest = kSecureBootType_v1_0_0
 
 kKeyStorageRegion_FixedOtpmkKey    = 'Fixed Otpmk(SNVS) Key'
 kKeyStorageRegion_FlexibleUserKeys = 'Flexible User Keys'
-
-kAdvancedSettings_Tool      = 0
-kAdvancedSettings_Cert      = 1
-kAdvancedSettings_BD        = 2
-kAdvancedSettings_OtpmkKey  = 3
-kAdvancedSettings_UserKeys  = 4
 
 kCstVersion_Invalid = 'x.x.x'
 kCstVersion_v2_3_3  = '2.3.3'
@@ -154,11 +141,6 @@ kSecureBootSeqStep_ProgSrk    = 4
 kSecureBootSeqStep_OperBee    = 5
 kSecureBootSeqStep_FlashImage = 6
 kSecureBootSeqStep_ProgDek    = 7
-
-kSoundEffectFilename_Success  = 'levelwin_success.wav'
-kSoundEffectFilename_Failure  = 'dead_failure.wav'
-kSoundEffectFilename_Progress = 'getcoin_progress.wav'
-kSoundEffectFilename_Restart  = 'pluslife_restart.wav'
 
 kPageIndex_ImageGenerationSequence = 0
 kPageIndex_ImageLoadingSequence    = 1

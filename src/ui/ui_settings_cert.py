@@ -4,6 +4,7 @@ import wx
 import sys
 import os
 import RT10yy_uidef
+import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
@@ -16,7 +17,7 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         advSettingsWin_Cert.advSettingsWin_Cert.__init__(self, parent)
         self._setLanguage()
         self._initCstVersion()
-        certSettingsDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert)
+        certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         self.certSettingsDict = certSettingsDict.copy()
         self._recoverLastSettings()
 
@@ -168,11 +169,11 @@ class secBootUiSettingsCert(advSettingsWin_Cert.advSettingsWin_Cert):
         self._getPkiTreeDuration()
         self._getSRKs()
         self._getCaFlagSet()
-        uivar.setAdvancedSettings(RT10yy_uidef.kAdvancedSettings_Cert, self.certSettingsDict)
+        uivar.setAdvancedSettings(uidef.kAdvancedSettings_Cert, self.certSettingsDict)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

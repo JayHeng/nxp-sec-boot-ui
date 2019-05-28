@@ -5,6 +5,7 @@ import sys
 import os
 import random
 import RT10yy_uidef
+import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
@@ -18,7 +19,7 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
     def __init__(self, parent):
         advSettingsWin_FlexibleUserKeys.advSettingsWin_FlexibleUserKeys.__init__(self, parent)
         self._setLanguage()
-        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_UserKeys)
+        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
         self.userKeyCtrlDict = userKeyCtrlDict.copy()
         self.userKeyCmdDict = userKeyCmdDict.copy()
         self.engine0FacStart = [None] * RT10yy_uidef.kMaxFacRegionCount
@@ -761,11 +762,11 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         #      ' engine1_lock=' + self.userKeyCmdDict['engine1_lock']
         #print 'use_zero_key=' + self.userKeyCmdDict['use_zero_key']
         #print 'is_boot_image=' + self.userKeyCmdDict['is_boot_image']
-        uivar.setAdvancedSettings(RT10yy_uidef.kAdvancedSettings_UserKeys, self.userKeyCtrlDict, self.userKeyCmdDict)
+        uivar.setAdvancedSettings(uidef.kAdvancedSettings_UserKeys, self.userKeyCtrlDict, self.userKeyCmdDict)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

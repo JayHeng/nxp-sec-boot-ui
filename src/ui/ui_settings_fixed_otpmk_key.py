@@ -4,6 +4,7 @@ import wx
 import sys
 import os
 import RT10yy_uidef
+import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
@@ -17,7 +18,7 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
     def __init__(self, parent):
         advSettingsWin_FixedOtpmkKey.advSettingsWin_FixedOtpmkKey.__init__(self, parent)
         self._setLanguage()
-        otpmkKeyOpt, otpmkEncryptedRegionStartList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(RT10yy_uidef.kAdvancedSettings_OtpmkKey)
+        otpmkKeyOpt, otpmkEncryptedRegionStartList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
         self.otpmkKeyOpt = otpmkKeyOpt
         self.otpmkEncryptedRegionStartList = otpmkEncryptedRegionStartList[:]
         self.otpmkEncryptedRegionLengthList = otpmkEncryptedRegionLengthList[:]
@@ -196,11 +197,11 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
         self._getEncryptedRegionCount()
         if not self._getEncryptedRegionInfo():
             return
-        uivar.setAdvancedSettings(RT10yy_uidef.kAdvancedSettings_OtpmkKey, self.otpmkKeyOpt, self.otpmkEncryptedRegionStartList, self.otpmkEncryptedRegionLengthList)
+        uivar.setAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey, self.otpmkKeyOpt, self.otpmkEncryptedRegionStartList, self.otpmkEncryptedRegionLengthList)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

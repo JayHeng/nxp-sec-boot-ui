@@ -3,6 +3,7 @@
 import sys
 import os
 import json
+import uidef
 import RT10yy_uidef
 
 g_exeTopRoot = None
@@ -396,18 +397,18 @@ def setBootDeviceConfiguration( group, *args ):
         pass
 
 def getAdvancedSettings( group ):
-    if group == RT10yy_uidef.kAdvancedSettings_Tool:
+    if group == uidef.kAdvancedSettings_Tool:
         global g_toolCommDict
         return g_toolCommDict
-    elif group == RT10yy_uidef.kAdvancedSettings_Cert:
+    elif group == uidef.kAdvancedSettings_Cert:
         global g_certSettingsDict
         return g_certSettingsDict
-    elif group == RT10yy_uidef.kAdvancedSettings_OtpmkKey:
+    elif group == uidef.kAdvancedSettings_OtpmkKey:
         global g_otpmkKeyOpt
         global g_otpmkEncryptedRegionStartList
         global g_otpmkEncryptedRegionLengthList
         return g_otpmkKeyOpt, g_otpmkEncryptedRegionStartList, g_otpmkEncryptedRegionLengthList
-    elif group == RT10yy_uidef.kAdvancedSettings_UserKeys:
+    elif group == uidef.kAdvancedSettings_UserKeys:
         global g_userKeyCtrlDict
         global g_userKeyCmdDict
         return g_userKeyCtrlDict, g_userKeyCmdDict
@@ -415,20 +416,20 @@ def getAdvancedSettings( group ):
         pass
 
 def setAdvancedSettings( group, *args ):
-    if group == RT10yy_uidef.kAdvancedSettings_Tool:
+    if group == uidef.kAdvancedSettings_Tool:
         global g_toolCommDict
         g_toolCommDict = args[0]
-    elif group == RT10yy_uidef.kAdvancedSettings_Cert:
+    elif group == uidef.kAdvancedSettings_Cert:
         global g_certSettingsDict
         g_certSettingsDict = args[0]
-    elif group == RT10yy_uidef.kAdvancedSettings_OtpmkKey:
+    elif group == uidef.kAdvancedSettings_OtpmkKey:
         global g_otpmkKeyOpt
         global g_otpmkEncryptedRegionStartList
         global g_otpmkEncryptedRegionLengthList
         g_otpmkKeyOpt = args[0]
         g_otpmkEncryptedRegionStartList = args[1]
         g_otpmkEncryptedRegionLengthList = args[2]
-    elif group == RT10yy_uidef.kAdvancedSettings_UserKeys:
+    elif group == uidef.kAdvancedSettings_UserKeys:
         global g_userKeyCtrlDict
         global g_userKeyCmdDict
         g_userKeyCtrlDict = args[0]

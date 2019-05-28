@@ -5,6 +5,7 @@ import sys
 import os
 import math
 import RT10yy_uidef
+import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
@@ -336,7 +337,7 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()
-        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], RT10yy_uidef.kSoundEffectFilename_Progress)
+        sound.playSoundEffect(runtimeSettings[1], runtimeSettings[2], uidef.kSoundEffectFilename_Progress)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)
