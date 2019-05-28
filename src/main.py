@@ -9,7 +9,7 @@ import time
 import threading
 import inspect
 import ctypes
-from mem import memcore
+from run import RTxxx_runcore
 from ui import uidef
 from ui import uivar
 from ui import uilang
@@ -57,10 +57,10 @@ def _async_raise(tid, exctype):
         ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
         raise SystemError("PyThreadState_SetAsyncExc failed")
 
-class secBootMain(memcore.secBootMem):
+class secBootMain(RTxxx_runcore.secBootRTxxxRun):
 
     def __init__(self, parent):
-        memcore.secBootMem.__init__(self, parent)
+        RTxxx_runcore.secBootRTxxxRun.__init__(self, parent)
         self.connectStage = uidef.kConnectStage_Rom
         self.isBootableAppAllowedToView = False
         self.lastTime = None

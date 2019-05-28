@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import RTxxx_uicore
+import RTxxx_uidef
 import uicore
 import uidef
 import uivar
@@ -24,7 +26,9 @@ import ui_efuse_bootcfg2
 import ui_efuse_miscconf0
 import ui_efuse_miscconf1_flexspinor
 
-__all__ = ["uicore",
+__all__ = ["RTxxx_uicore",
+           "RTxxx_uidef",
+           "uicore",
            "uidef",
            "uivar",
            "uilang",
