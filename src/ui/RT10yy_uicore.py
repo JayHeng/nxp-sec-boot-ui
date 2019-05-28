@@ -210,12 +210,17 @@ class secBootRT10yyUi(secBootWin.secBootWin):
         if self.tgt.availableBootDevices != None:
             self.m_choice_bootDevice.Clear()
             self.m_choice_bootDevice.SetItems(self.tgt.availableBootDevices)
-            self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
+            retSel = self.m_choice_bootDevice.FindString(self.bootDevice)
+            if retSel != wx.NOT_FOUND:
+                self.m_choice_bootDevice.SetSelection(retSel)
+            else:
+                self.m_choice_bootDevice.SetSelection(0)
 
     def setTargetSetupValue( self ):
         self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageGenerationSequence)
         self.mcuSeries = self.m_choice_mcuSeries.GetString(self.m_choice_mcuSeries.GetSelection())
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
+        self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['mcuSeries'] = self.m_choice_mcuSeries.GetSelection()
         self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
         self.createMcuTarget()
