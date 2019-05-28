@@ -12,13 +12,13 @@ import bootDeviceWin_DCD
 import advSettingsWin_Cert
 import advSettingsWin_FixedOtpmkKey
 import advSettingsWin_FlexibleUserKeys
-import efuseWin_Lock
-import efuseWin_BootCfg0_FlexspiNor_10bits
-import efuseWin_BootCfg0_FlexspiNor_12bits
-import efuseWin_BootCfg1
-import efuseWin_BootCfg2
-import efuseWin_MiscConf0
-import efuseWin_MiscConf1_FlexspiNor
+import RT10yy_efuseWin_Lock
+import RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits
+import RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits
+import RT10yy_efuseWin_BootCfg1
+import RT10yy_efuseWin_BootCfg2
+import RT10yy_efuseWin_MiscConf0
+import RT10yy_efuseWin_MiscConf1_FlexspiNor
 
 __all__ = ["secBootWin",
            "bootDeviceWin_FlexspiNor",
@@ -32,11 +32,11 @@ __all__ = ["secBootWin",
            "advSettingsWin_Cert",
            "advSettingsWin_FixedOtpmkKey",
            "advSettingsWin_FlexibleUserKeys",
-           "efuseWin_Lock",
-           "efuseWin_BootCfg0_FlexspiNor_10bits",
-           "efuseWin_BootCfg0_FlexspiNor_12bits",
-           "efuseWin_BootCfg1",
-           "efuseWin_BootCfg2",
-           "efuseWin_MiscConf0",
-           "efuseWin_MiscConf1_FlexspiNor",
+           "RT10yy_efuseWin_Lock",
+           "RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits",
+           "RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits",
+           "RT10yy_efuseWin_BootCfg1",
+           "RT10yy_efuseWin_BootCfg2",
+           "RT10yy_efuseWin_MiscConf0",
+           "RT10yy_efuseWin_MiscConf1_FlexspiNor",
            ]

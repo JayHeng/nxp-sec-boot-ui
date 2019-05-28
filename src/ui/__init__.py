@@ -17,14 +17,14 @@ import ui_cfg_dcd
 import ui_settings_cert
 import ui_settings_fixed_otpmk_key
 import ui_settings_flexible_user_keys
-import uidef_efuse
-import ui_efuse_lock
-import ui_efuse_bootcfg0_flexspinor_10bits
-import ui_efuse_bootcfg0_flexspinor_12bits
-import ui_efuse_bootcfg1
-import ui_efuse_bootcfg2
-import ui_efuse_miscconf0
-import ui_efuse_miscconf1_flexspinor
+import RT10yy_uidef_efuse
+import RT10yy_ui_efuse_lock
+import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
+import RT10yy_ui_efuse_bootcfg0_flexspinor_12bits
+import RT10yy_ui_efuse_bootcfg1
+import RT10yy_ui_efuse_bootcfg2
+import RT10yy_ui_efuse_miscconf0
+import RT10yy_ui_efuse_miscconf1_flexspinor
 
 __all__ = ["RTxxx_uicore",
            "RTxxx_uidef",
@@ -43,13 +43,13 @@ __all__ = ["RTxxx_uicore",
            "ui_settings_cert",
            "ui_settings_fixed_otpmk_key",
            "ui_settings_flexible_user_keys",
-           "uidef_efuse",
-           "ui_efuse_lock",
-           "ui_efuse_bootcfg0_flexspinor_10bits",
-           "ui_efuse_bootcfg0_flexspinor_12bits",
-           "ui_efuse_bootcfg1",
-           "ui_efuse_bootcfg2",
-           "ui_efuse_miscconf0",
-           "ui_efuse_miscconf1_flexspinor",
+           "RT10yy_uidef_efuse",
+           "RT10yy_ui_efuse_lock",
+           "RT10yy_ui_efuse_bootcfg0_flexspinor_10bits",
+           "RT10yy_ui_efuse_bootcfg0_flexspinor_12bits",
+           "RT10yy_ui_efuse_bootcfg1",
+           "RT10yy_ui_efuse_bootcfg2",
+           "RT10yy_ui_efuse_miscconf0",
+           "RT10yy_ui_efuse_miscconf1_flexspinor",
            ]
 
