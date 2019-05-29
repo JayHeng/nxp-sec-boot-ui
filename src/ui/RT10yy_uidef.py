@@ -1,11 +1,6 @@
 import wx
 import sys, os
 
-kConnectStage_Rom            = 1
-kConnectStage_Flashloader    = 2
-kConnectStage_ExternalMemory = 3
-kConnectStage_Reset          = 4
-
 kConnectStep_Fast   = 3
 kConnectStep_Normal = 1
 

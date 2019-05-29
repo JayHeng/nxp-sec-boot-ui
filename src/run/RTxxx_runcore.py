@@ -14,8 +14,9 @@ from boot import bltest
 from boot import target
 from utils import misc
 
-def createTarget(device, exeBinRoot):
+def RTxxx_createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
+    cpu = "MIMXRT685"
     if device == RTxxx_uidef.kMcuDevice_iMXRT500:
         cpu = "MIMXRT595"
     elif device == RTxxx_uidef.kMcuDevice_iMXRT600:
@@ -57,8 +58,82 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
             self.RTxxx_initRun()
 
     def RTxxx_initRun( self ):
+        self.blhost = None
+        self.tgt = None
+        self.cpuDir = None
+        self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost2_3', 'win', 'vectors')
+
+        self.RTxxx_isDeviceEnabledToOperate = True
+
         self.RTxxx_createMcuTarget()
 
     def RTxxx_createMcuTarget( self ):
-        self.tgt, self.cpuDir = createTarget(self.mcuDevice, self.exeBinRoot)
+        self.tgt, self.cpuDir = RTxxx_createTarget(self.mcuDevice, self.exeBinRoot)
 
+    def RTxxx_getUsbid( self ):
+        self.RTxxx_createMcuTarget()
+        return [self.tgt.romUsbVid, self.tgt.romUsbPid]
+
+    def RTxxx_connectToDevice( self , connectStage):
+        if connectStage == uidef.kConnectStage_Rom:
+            # Create the target object.
+            self.RTxxx_createMcuTarget()
+            if self.isUartPortSelected:
+                blPeripheral = 'uart'
+                uartComPort = self.uartComPort
+                uartBaudrate = int(self.uartBaudrate)
+                usbVid = ''
+                usbPid = ''
+            elif self.isUsbhidPortSelected:
+                blPeripheral = 'usb'
+                uartComPort = ''
+                uartBaudrate = ''
+                usbVid = self.tgt.romUsbVid
+                usbPid = self.tgt.romUsbPid
+            else:
+                pass
+            self.blhost = bltest.createBootloader(self.tgt,
+                                                  self.blhostVectorsDir,
+                                                  blPeripheral,
+                                                  uartBaudrate, uartComPort,
+                                                  usbVid, usbPid,
+                                                  True)
+        elif connectStage == uidef.kConnectStage_Reset:
+            self.tgt = None
+        else:
+            pass
+
+    def RTxxx_pingRom( self ):
+        status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
+        self.printLog(cmdStr)
+        return (status == boot.status.kStatus_Success)
+
+    def RTxxx_getMcuDeviceInfoViaRom( self ):
+        self.printDeviceStatus("--------MCU device Register----------")
+
+    def RTxxx_getBootDeviceInfoViaRom ( self ):
+        if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor:
+            self.printDeviceStatus("--------FlexSPI NOR memory--------")
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+            self.printDeviceStatus("--------QuadSPI NOR memory--------")
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            self.printDeviceStatus("--Flexcomm SPI NOR/EEPROM memory--")
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcSd:
+            self.printDeviceStatus("--------uSDHC SD Card info--------")
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcMmc:
+            self.printDeviceStatus("--------uSDHC MMC Card info-------")
+            pass
+        else:
+            pass
+
+    def RTxxx_configureBootDevice ( self ):
+        return True
+
+    def RTxxx_resetMcuDevice( self ):
+        status, results, cmdStr = self.blhost.reset()
+        self.printLog(cmdStr)
+        return (status == boot.status.kStatus_Success)

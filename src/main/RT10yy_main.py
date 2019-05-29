@@ -41,25 +41,25 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def __init__(self, parent):
         RT10yy_memcore.secBootRT10yyMem.__init__(self, parent)
+        self.RT10yy_isAllInOneActionTaskPending = False
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self._RT10yy_initMain()
 
     def _RT10yy_initMain( self ):
-        self.connectStage = RT10yy_uidef.kConnectStage_Rom
+        self.connectStage = uidef.kConnectStage_Rom
         self.isBootableAppAllowedToView = False
         self.lastTime = None
-        self.isAllInOneActionTaskPending = False
         self.isAccessMemTaskPending = False
         self.accessMemType = ''
         self.isThereBoardConnection = False
 
-    def _startGaugeTimer( self ):
-        if not self.isAllInOneActionTaskPending:
+    def _RT10yy_startGaugeTimer( self ):
+        if not self.RT10yy_isAllInOneActionTaskPending:
             self.lastTime = time.time()
             self.initGauge()
 
-    def _stopGaugeTimer( self ):
-        if not self.isAllInOneActionTaskPending:
+    def _RT10yy_stopGaugeTimer( self ):
+        if not self.RT10yy_isAllInOneActionTaskPending:
             self.deinitGauge()
             self.updateCostTime()
 
@@ -138,31 +138,12 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         dcdFrame.setNecessaryInfo(self.dcdBinFilename, self.dcdCfgFilename, self.dcdModelFolder)
         dcdFrame.Show(True)
 
-    def _setUartUsbPort( self ):
-        usbIdList = self.getUsbid()
-        retryToDetectUsb = False
-        showError = True
-        self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb, showError)
-
-    def callbackSetUartPort( self, event ):
-        self._setUartUsbPort()
-
-    def callbackSetUsbhidPort( self, event ):
-        self._setUartUsbPort()
-
-    def callbackSetOneStep( self, event ):
-        if not self.isToolRunAsEntryMode:
-            self.getOneStepConnectMode()
-        else:
-            self.initOneStepConnectMode()
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_cannotSetOneStep'][self.languageIndex])
-
-    def _retryToPingBootloader( self, bootType ):
+    def _RT10yy_retryToPingBootloader( self, bootType ):
         pingStatus = False
         pingCnt = kRetryPingTimes
         while (not pingStatus) and pingCnt > 0:
             if bootType == kBootloaderType_Rom:
-                pingStatus = self.pingRom()
+                pingStatus = self.RT10yy_pingRom()
             elif bootType == kBootloaderType_Flashloader:
                 pingStatus = self.pingFlashloader()
             else:
@@ -174,41 +155,41 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 time.sleep(2)
         return pingStatus
 
-    def _connectFailureHandler( self ):
-        self.connectStage = RT10yy_uidef.kConnectStage_Rom
+    def _RT10yy_connectFailureHandler( self ):
+        self.connectStage = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
-        usbIdList = self.getUsbid()
+        usbIdList = self.RT10yy_getUsbid()
         self.setPortSetupValue(self.connectStage, usbIdList, False, False)
         self.isBootableAppAllowedToView = False
 
-    def _connectStateMachine( self, showError=True ):
+    def _RT10yy_connectStateMachine( self, showError=True ):
         connectSteps = RT10yy_uidef.kConnectStep_Normal
         self.getOneStepConnectMode()
         retryToDetectUsb = False
         if self.isOneStepConnectMode:
-            if self.connectStage == RT10yy_uidef.kConnectStage_Reset or self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory:
+            if self.connectStage == uidef.kConnectStage_Reset or self.connectStage == uidef.kConnectStage_ExternalMemory:
                 connectSteps = RT10yy_uidef.kConnectStep_Fast - 2
-            elif self.connectStage == RT10yy_uidef.kConnectStage_Flashloader:
+            elif self.connectStage == uidef.kConnectStage_Flashloader:
                 connectSteps = RT10yy_uidef.kConnectStep_Fast - 1
                 retryToDetectUsb = True
-            elif self.connectStage == RT10yy_uidef.kConnectStage_Rom:
+            elif self.connectStage == uidef.kConnectStage_Rom:
                 connectSteps = RT10yy_uidef.kConnectStep_Fast
                 retryToDetectUsb = True
             else:
                 pass
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb, showError):
-                self._connectFailureHandler()
+                self._RT10yy_connectFailureHandler()
                 return
-            if self.connectStage == RT10yy_uidef.kConnectStage_Rom:
-                self.connectToDevice(self.connectStage)
-                if self._retryToPingBootloader(kBootloaderType_Rom):
-                    self.getMcuDeviceInfoViaRom()
+            if self.connectStage == uidef.kConnectStage_Rom:
+                self.RT10yy_connectToDevice(self.connectStage)
+                if self._RT10yy_retryToPingBootloader(kBootloaderType_Rom):
+                    self.RT10yy_getMcuDeviceInfoViaRom()
                     self.getMcuDeviceHabStatus()
                     if self.jumpToFlashloader():
-                        self.connectStage = RT10yy_uidef.kConnectStage_Flashloader
+                        self.connectStage = uidef.kConnectStage_Flashloader
                         self.updateConnectStatus('yellow')
-                        usbIdList = self.getUsbid()
+                        usbIdList = self.RT10yy_getUsbid()
                         self.setPortSetupValue(self.connectStage, usbIdList, True, True)
                     else:
                         self.updateConnectStatus('red')
@@ -220,84 +201,84 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
                     return
-            elif self.connectStage == RT10yy_uidef.kConnectStage_Flashloader:
-                self.connectToDevice(self.connectStage)
-                if self._retryToPingBootloader(kBootloaderType_Flashloader):
+            elif self.connectStage == uidef.kConnectStage_Flashloader:
+                self.RT10yy_connectToDevice(self.connectStage)
+                if self._RT10yy_retryToPingBootloader(kBootloaderType_Flashloader):
                     self.getMcuDeviceInfoViaFlashloader()
                     self.getMcuDeviceBtFuseSel()
                     self.updateConnectStatus('green')
-                    self.connectStage = RT10yy_uidef.kConnectStage_ExternalMemory
+                    self.connectStage = uidef.kConnectStage_ExternalMemory
                 else:
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][self.languageIndex])
-                    self._connectFailureHandler()
+                    self._RT10yy_connectFailureHandler()
                     return
-            elif self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory:
-                if self.configureBootDevice():
+            elif self.connectStage == uidef.kConnectStage_ExternalMemory:
+                if self.RT10yy_configureBootDevice():
                     self.getBootDeviceInfoViaFlashloader()
-                    self.connectStage = RT10yy_uidef.kConnectStage_Reset
+                    self.connectStage = uidef.kConnectStage_Reset
                     self.updateConnectStatus('blue')
                 else:
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToCfgBootDevice'][self.languageIndex])
-                    self._connectFailureHandler()
+                    self._RT10yy_connectFailureHandler()
                     return
-            elif self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-                self.resetMcuDevice()
+            elif self.connectStage == uidef.kConnectStage_Reset:
+                self.RT10yy_resetMcuDevice()
                 self.isBootableAppAllowedToView = False
-                self.connectStage = RT10yy_uidef.kConnectStage_Rom
+                self.connectStage = uidef.kConnectStage_Rom
                 self.updateConnectStatus('black')
-                usbIdList = self.getUsbid()
+                usbIdList = self.RT10yy_getUsbid()
                 self.setPortSetupValue(self.connectStage, usbIdList, True, True)
-                self.connectToDevice(self.connectStage)
+                self.RT10yy_connectToDevice(self.connectStage)
             else:
                 pass
             connectSteps -= 1
 
-    def callbackConnectToDevice( self, event ):
-        self._startGaugeTimer()
+    def RT10yy_callbackConnectToDevice( self ):
+        self._RT10yy_startGaugeTimer()
         self.printLog("'Connect to xxx' button is clicked")
         if not self.isSbFileEnabledToGen:
-            self._connectStateMachine(True)
+            self._RT10yy_connectStateMachine(True)
         else:
             if not self.isThereBoardConnection:
-                if self.connectStage == RT10yy_uidef.kConnectStage_Rom:
+                if self.connectStage == uidef.kConnectStage_Rom:
                     self.initSbAppBdfilesContent()
                 else:
                     # It means there is board connection
                     self.isThereBoardConnection = True
-                self._connectStateMachine(False)
+                self._RT10yy_connectStateMachine(False)
                 if not self.isThereBoardConnection:
-                    if self.connectStage == RT10yy_uidef.kConnectStage_Rom:
+                    if self.connectStage == uidef.kConnectStage_Rom:
                         # It means there is no board connection, but we need to set it as True for SB generation
                         self.isThereBoardConnection = True
-                        self.connectToDevice(RT10yy_uidef.kConnectStage_Flashloader)
-                        self.isDeviceEnabledToOperate = False
+                        self.RT10yy_connectToDevice(uidef.kConnectStage_Flashloader)
+                        self.RT10yy_isDeviceEnabledToOperate = False
                         self.configureBootDevice()
-                        self.connectStage = RT10yy_uidef.kConnectStage_Reset
+                        self.connectStage = uidef.kConnectStage_Reset
                         self.updateConnectStatus('blue')
                 else:
                     self.isThereBoardConnection = False
             else:
                 self.isThereBoardConnection = False
-                self.isDeviceEnabledToOperate = True
-                self.connectStage = RT10yy_uidef.kConnectStage_Rom
+                self.RT10yy_isDeviceEnabledToOperate = True
+                self.connectStage = uidef.kConnectStage_Rom
                 self.updateConnectStatus('black')
-        self._stopGaugeTimer()
+        self._RT10yy_stopGaugeTimer()
 
     def callbackSetSecureBootType( self, event ):
         self.setCostTime(0)
         self.setSecureBootSeqColor()
 
-    def task_doAllInOneAction( self ):
+    def RT10yy_task_doAllInOneAction( self ):
         while True:
-            if self.isAllInOneActionTaskPending:
-                self._doAllInOneAction()
-                self.isAllInOneActionTaskPending = False
-                self._stopGaugeTimer()
+            if self.RT10yy_isAllInOneActionTaskPending:
+                self._RT10yy_doAllInOneAction()
+                self.RT10yy_isAllInOneActionTaskPending = False
+                self._RT10yy_stopGaugeTimer()
             time.sleep(1)
 
-    def _doAllInOneAction( self ):
+    def _RT10yy_doAllInOneAction( self ):
         allInOneSeqCnt = 1
         directReuseCert = False
         status = False
@@ -329,9 +310,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                            self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed1:
                            if not self.isSbFileEnabledToGen:
                                 self.enableHab()
-                                self._connectStateMachine()
-                                while self.connectStage != RT10yy_uidef.kConnectStage_Reset:
-                                    self._connectStateMachine()
+                                self._RT10yy_connectStateMachine()
+                                while self.connectStage != uidef.kConnectStage_Reset:
+                                    self._RT10yy_connectStateMachine()
                                 directReuseCert = True
                                 allInOneSeqCnt += 1
                 else:
@@ -352,9 +333,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self._doViewMem()
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_AllInOne, status)
 
-    def callbackAllInOneAction( self, event ):
-        self._startGaugeTimer()
-        self.isAllInOneActionTaskPending = True
+    def RT10yy_callbackAllInOneAction( self, event ):
+        self._RT10yy_startGaugeTimer()
+        self.RT10yy_isAllInOneActionTaskPending = True
 
     def callbackAdvCertSettings( self, event ):
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
@@ -410,7 +391,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
-                self._startGaugeTimer()
+                self._RT10yy_startGaugeTimer()
                 self.printLog("'Generate Certificate' button is clicked")
                 self.updateAllCstPathToCorrectVersion()
                 reuseCert = self._wantToReuseAvailableCert(directReuseCert)
@@ -427,7 +408,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                         status = True
                 else:
                     status = True
-                self._stopGaugeTimer()
+                self._RT10yy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_noNeedToGenForUnsigned'][self.languageIndex])
         if reuseCert != None:
@@ -457,7 +438,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         else:
-            self._startGaugeTimer()
+            self._RT10yy_startGaugeTimer()
             self.printLog("'Generate Bootable Image' button is clicked")
             if self.createMatchedAppBdfile():
                 # Need to update image picture for DCD
@@ -466,7 +447,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 if self.genBootableImage():
                     self.showHabDekIfApplicable()
                     status = True
-            self._stopGaugeTimer()
+            self._RT10yy_stopGaugeTimer()
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenImage, status)
         return status
 
@@ -505,9 +486,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
     def _doBeeEncryption( self ):
         status = False
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            self._startGaugeTimer()
+            self._RT10yy_startGaugeTimer()
             if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-                if self.connectStage == RT10yy_uidef.kConnectStage_Reset:
+                if self.connectStage == uidef.kConnectStage_Reset:
                     if not self.prepareForFixedOtpmkEncryption():
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_failToPrepareForSnvs'][self.languageIndex])
                     else:
@@ -519,7 +500,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 status = True
             else:
                 pass
-            self._stopGaugeTimer()
+            self._RT10yy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForBee'][self.languageIndex])
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_PrepBee, status)
@@ -543,13 +524,13 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
-                if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-                   self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-                    self._startGaugeTimer()
+                if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+                   self.connectStage == uidef.kConnectStage_Reset:
+                    self._RT10yy_startGaugeTimer()
                     self.printLog("'Load SRK data' button is clicked")
                     if self.burnSrkData():
                         status = True
-                    self._stopGaugeTimer()
+                    self._RT10yy_stopGaugeTimer()
                 else:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
         else:
@@ -567,12 +548,12 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         status = False
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
             if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-                   self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-                    self._startGaugeTimer()
+                if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+                   self.connectStage == uidef.kConnectStage_Reset:
+                    self._RT10yy_startGaugeTimer()
                     if self.burnBeeDekData():
                         status = True
-                    self._stopGaugeTimer()
+                    self._RT10yy_stopGaugeTimer()
                 else:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
             else:
@@ -597,8 +578,8 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         else:
-            if self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-                self._startGaugeTimer()
+            if self.connectStage == uidef.kConnectStage_Reset:
+                self._RT10yy_startGaugeTimer()
                 self.printLog("'Load Bootable Image' button is clicked")
                 if not self.flashBootableImage():
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
@@ -615,7 +596,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                                 status = True
                         else:
                             status = True
-                self._stopGaugeTimer()
+                self._RT10yy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_FlashImage, status)
@@ -636,20 +617,20 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
-            if self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-                self._startGaugeTimer()
+            if self.connectStage == uidef.kConnectStage_Reset:
+                self._RT10yy_startGaugeTimer()
                 self.printLog("'Load KeyBlob Data' button is clicked")
                 if self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed0 and \
                    self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed1:
                     if not self.isSbFileEnabledToGen:
                         self.enableHab()
-                        self._connectStateMachine()
-                        while self.connectStage != RT10yy_uidef.kConnectStage_Reset:
-                            self._connectStateMachine()
+                        self._RT10yy_connectStateMachine()
+                        while self.connectStage != uidef.kConnectStage_Reset:
+                            self._RT10yy_connectStateMachine()
                 self.flashHabDekToGenerateKeyBlob()
                 self.isBootableAppAllowedToView = True
                 status = True
-                self._stopGaugeTimer()
+                self._RT10yy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
         else:
@@ -726,7 +707,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf1Frame.Show(True)
 
-    def task_doAccessMem( self ):
+    def RT10yy_task_doAccessMem( self ):
         while True:
             if self.isAccessMemTaskPending:
                 if self.accessMemType == 'ScanFuse':
@@ -738,51 +719,51 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                     if self.isSbFileEnabledToGen:
                         self.genSbEfuseImage()
                 elif self.accessMemType == 'ReadMem':
-                    if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory:
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
                         self.readFlexramMemory()
-                    elif self.connectStage == RT10yy_uidef.kConnectStage_Reset:
+                    elif self.connectStage == uidef.kConnectStage_Reset:
                         self.readBootDeviceMemory()
                     else:
                         pass
                 elif self.accessMemType == 'EraseMem':
                     self.eraseBootDeviceMemory()
                 elif self.accessMemType == 'WriteMem':
-                    if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory:
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
                         self.writeFlexramMemory()
-                    elif self.connectStage == RT10yy_uidef.kConnectStage_Reset:
+                    elif self.connectStage == uidef.kConnectStage_Reset:
                         self.writeBootDeviceMemory()
                     else:
                         pass
                 else:
                     pass
                 self.isAccessMemTaskPending = False
-                self._stopGaugeTimer()
+                self._RT10yy_stopGaugeTimer()
             time.sleep(1)
 
     def callbackScanFuse( self, event ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-            self._startGaugeTimer()
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._RT10yy_startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'ScanFuse'
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
     def callbackBurnFuse( self, event ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-            self._startGaugeTimer()
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._RT10yy_startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'BurnFuse'
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
     def _doViewMem( self ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_Reset:
+        if self.connectStage == uidef.kConnectStage_Reset:
             if self.isBootableAppAllowedToView:
-                self._startGaugeTimer()
+                self._RT10yy_startGaugeTimer()
                 self.readProgrammedMemoryAndShow()
-                self._stopGaugeTimer()
+                self._RT10yy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotFlashImage'][self.languageIndex])
         else:
@@ -795,9 +776,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         self.clearMem()
 
     def _doReadMem( self ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-            self._startGaugeTimer()
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._RT10yy_startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'ReadMem'
         else:
@@ -810,8 +791,8 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def _doEraseMem( self ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-            self._startGaugeTimer()
+        if self.connectStage == uidef.kConnectStage_Reset:
+            self._RT10yy_startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'EraseMem'
         else:
@@ -824,9 +805,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def _doWriteMem( self ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == RT10yy_uidef.kConnectStage_Reset:
-            self._startGaugeTimer()
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._RT10yy_startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'WriteMem'
         else:
@@ -839,8 +820,8 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def _doExecuteApp( self ):
-        if self.connectStage == RT10yy_uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == RT10yy_uidef.kConnectStage_Reset:
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
             self.executeAppInFlexram()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
@@ -850,3 +831,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self._doExecuteApp()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
+
+    def RT10yy_switchToolRunMode( self ):
+        self.applyFuseOperToRunMode()
+        self.setSecureBootButtonColor()

@@ -1,10 +1,13 @@
 import wx
 import sys, os
 
-kMcuDevice_iMXRT500  = 'i.MXRT595'
-kMcuDevice_iMXRT500S = 'i.MXRT595S'
-kMcuDevice_iMXRT600  = 'i.MXRT685'
-kMcuDevice_iMXRT600S = 'i.MXRT685S'
+kConnectStep_Fast   = 2
+kConnectStep_Normal = 1
+
+kMcuDevice_iMXRT500  = 'i.MXRT5xx'
+kMcuDevice_iMXRT500S = 'i.MXRT5xxS'
+kMcuDevice_iMXRT600  = 'i.MXRT6xx'
+kMcuDevice_iMXRT600S = 'i.MXRT6xxS'
 
 kMcuDevice_v2_0_0 = [kMcuDevice_iMXRT500, kMcuDevice_iMXRT600]
 kMcuDevice_Latest = kMcuDevice_v2_0_0

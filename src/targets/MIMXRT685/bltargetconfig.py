@@ -39,10 +39,10 @@ compiler = 'iar'
 build = 'Release'
 
 availablePeripherals = 0x11
-romUsbVid = None
-romUsbPid = None
-flashloaderUsbVid = '0x15A2'
-flashloaderUsbPid = '0x0073'
+romUsbVid = '0x1FC9'
+romUsbPid = '0x0020'
+flashloaderUsbVid = None
+flashloaderUsbPid = None
 flashloaderLoadAddr = None
 flashloaderJumpAddr = None
 availableCommands = 0x5EFDF

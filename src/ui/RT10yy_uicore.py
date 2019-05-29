@@ -6,8 +6,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 import time
-import serial.tools.list_ports
-import pywinusb.hid
 import RT10yy_uidef
 import uidef
 import uivar
@@ -15,9 +13,8 @@ import uilang
 import uicore
 sys.path.append(os.path.abspath(".."))
 from run import RT10yy_rundef
+from run import rundef
 from fuse import RT10yy_fusedef
-
-kRetryDetectTimes = 5
 
 class secBootRT10yyUi(uicore.secBootUi):
 
@@ -27,8 +24,6 @@ class secBootRT10yyUi(uicore.secBootUi):
             self.RT10yy_initUi()
 
     def RT10yy_initUi( self ):
-        self.RT10yy_setLanguage()
-
         self.isNandDevice = False
         self.isSdmmcCard = False
         self.sbEnableBootDeviceMagic = None
@@ -36,23 +31,13 @@ class secBootRT10yyUi(uicore.secBootUi):
         self._RT10yy_initTargetSetupValue()
         self.RT10yy_setTargetSetupValue()
 
-        self.isUartPortSelected = None
-        self.isUsbhidPortSelected = None
-        self.uartComPort = None
-        self.uartBaudrate = None
-        self.usbhidVid = None
-        self.usbhidPid = None
-        self.isUsbhidConnected = False
-        self.usbhidToConnect = [None] * 2
-        self._initPortSetupValue()
-
-        self.soundEffectFilenameForTask = None
-
         self.secureBootType = None
         self.keyStorageRegion = None
         self.isCertEnabledForBee = None
         self._initSecureBootSeqValue()
         self._initSecureBootSeqColor()
+
+        self.RT10yy_setLanguage()
 
     def _RT10yy_initTargetSetupValue( self ):
         self.m_choice_mcuDevice.Clear()
@@ -154,144 +139,6 @@ class secBootRT10yyUi(uicore.secBootUi):
             self.sbAccessBootDeviceMagic = 'mmccard'
         else:
             pass
-
-    def _initPortSetupValue( self ):
-        if self.toolCommDict['isUsbhidPortSelected']:
-            self.m_radioBtn_uart.SetValue(False)
-            self.m_radioBtn_usbhid.SetValue(True)
-        else:
-            self.m_radioBtn_uart.SetValue(True)
-            self.m_radioBtn_usbhid.SetValue(False)
-        usbIdList = self.getUsbid()
-        self.setPortSetupValue(RT10yy_uidef.kConnectStage_Rom, usbIdList)
-
-    def task_doDetectUsbhid( self ):
-        while True:
-            if self.isUsbhidPortSelected:
-                self._retryToDetectUsbhidDevice(False)
-            time.sleep(1)
-
-    def task_doPlaySound( self ):
-        while True:
-            if self.soundEffectFilenameForTask != None:
-                self.playSoundEffect(self.soundEffectFilenameForTask)
-                self.soundEffectFilenameForTask = None
-            time.sleep(1)
-
-    def _retryToDetectUsbhidDevice( self, needToRetry = True ):
-        usbVid = [None]
-        usbPid = [None]
-        self.isUsbhidConnected = False
-        retryCnt = 1
-        if needToRetry:
-            retryCnt = kRetryDetectTimes
-        while retryCnt > 0:
-            # Auto detect USB-HID device
-            hidFilter = pywinusb.hid.HidDeviceFilter(vendor_id = int(self.usbhidToConnect[0], 16), product_id = int(self.usbhidToConnect[1], 16))
-            hidDevice = hidFilter.get_devices()
-            if (not self.isDymaticUsbDetection) or (len(hidDevice) > 0):
-                self.isUsbhidConnected = True
-                usbVid[0] = self.usbhidToConnect[0]
-                usbPid[0] = self.usbhidToConnect[1]
-                break
-            retryCnt = retryCnt - 1
-            if retryCnt != 0:
-                time.sleep(2)
-            else:
-                usbVid[0] = 'N/A - Not Found'
-                usbPid[0] = usbVid[0]
-        if self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection()) != usbVid[0] or \
-           self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection()) != usbPid[0]:
-            self.m_choice_portVid.Clear()
-            self.m_choice_portVid.SetItems(usbVid)
-            self.m_choice_portVid.SetSelection(0)
-            self.m_choice_baudPid.Clear()
-            self.m_choice_baudPid.SetItems(usbPid)
-            self.m_choice_baudPid.SetSelection(0)
-
-    def adjustPortSetupValue( self, connectStage=RT10yy_uidef.kConnectStage_Rom, usbIdList=[] ):
-        self.hasDynamicLableBeenInit = True
-        self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
-        self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
-        if self.isUartPortSelected:
-            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_comPort'][self.languageIndex])
-            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_baudrate'][self.languageIndex])
-            # Auto detect available ports
-            comports = list(serial.tools.list_ports.comports())
-            ports = [None] * len(comports)
-            for i in range(len(comports)):
-                comport = list(comports[i])
-                ports[i] = comport[0]
-            lastPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-            lastBaud = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-            self.m_choice_portVid.Clear()
-            self.m_choice_portVid.SetItems(ports)
-            if lastPort in ports:
-                self.m_choice_portVid.SetSelection(self.m_choice_portVid.FindString(lastPort))
-            else:
-                self.m_choice_portVid.SetSelection(0)
-            baudItems = ['115200']
-            if connectStage == RT10yy_uidef.kConnectStage_Rom:
-                baudItems = RT10yy_rundef.kUartSpeed_Sdphost
-            elif connectStage == RT10yy_uidef.kConnectStage_Flashloader:
-                baudItems = RT10yy_rundef.kUartSpeed_Blhost
-            else:
-                pass
-            self.m_choice_baudPid.Clear()
-            self.m_choice_baudPid.SetItems(baudItems)
-            if lastBaud in baudItems:
-                self.m_choice_baudPid.SetSelection(self.m_choice_baudPid.FindString(lastBaud))
-            else:
-                self.m_choice_baudPid.SetSelection(0)
-        elif self.isUsbhidPortSelected:
-            self.m_staticText_portVid.SetLabel(uilang.kMainLanguageContentDict['sText_vid'][self.languageIndex])
-            self.m_staticText_baudPid.SetLabel(uilang.kMainLanguageContentDict['sText_pid'][self.languageIndex])
-            if connectStage == RT10yy_uidef.kConnectStage_Rom:
-                self.usbhidToConnect[0] = usbIdList[0]
-                self.usbhidToConnect[1] = usbIdList[1]
-                self._retryToDetectUsbhidDevice(False)
-            elif connectStage == RT10yy_uidef.kConnectStage_Flashloader:
-                self.usbhidToConnect[0] = usbIdList[2]
-                self.usbhidToConnect[1] = usbIdList[3]
-                self._retryToDetectUsbhidDevice(False)
-            else:
-                pass
-        else:
-            pass
-
-    def setPortSetupValue( self, connectStage=RT10yy_uidef.kConnectStage_Rom, usbIdList=[], retryToDetectUsb=False, showError=False ):
-        self.adjustPortSetupValue(connectStage, usbIdList)
-        self.updatePortSetupValue(retryToDetectUsb, showError)
-
-    def updatePortSetupValue( self, retryToDetectUsb=False, showError=False ):
-        status = True
-        self.isUartPortSelected = self.m_radioBtn_uart.GetValue()
-        self.isUsbhidPortSelected = self.m_radioBtn_usbhid.GetValue()
-        if self.isUartPortSelected:
-            self.uartComPort = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-            self.uartBaudrate = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-        elif self.isUsbhidPortSelected:
-            if self.isUsbhidConnected:
-                self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-                self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-            else:
-                self._retryToDetectUsbhidDevice(retryToDetectUsb)
-                if not self.isUsbhidConnected:
-                    status = False
-                    if showError:
-                        if self.languageIndex == uilang.kLanguageIndex_English:
-                            self.popupMsgBox('Cannnot find USB-HID device (vid=%s, pid=%s), Please connect USB cable to your board first!' %(self.usbhidToConnect[0], self.usbhidToConnect[1]))
-                        elif self.languageIndex == uilang.kLanguageIndex_Chinese:
-                            self.popupMsgBox(u"找不到USB-HID设备 (vid=%s, pid=%s), 请先将USB线连接到板子！" %(self.usbhidToConnect[0], self.usbhidToConnect[1]))
-                        else:
-                            pass
-                else:
-                    self.usbhidVid = self.m_choice_portVid.GetString(self.m_choice_portVid.GetSelection())
-                    self.usbhidPid = self.m_choice_baudPid.GetString(self.m_choice_baudPid.GetSelection())
-        else:
-            pass
-        self.toolCommDict['isUsbhidPortSelected'] = self.isUsbhidPortSelected
-        return status
 
     def _initSecureBootSeqValue( self ):
         self.m_choice_secureBootType.Clear()

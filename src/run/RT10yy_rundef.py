@@ -1,8 +1,5 @@
 import sys, os
 
-kUartSpeed_Blhost = ['115200', '57600', '19200', '9600', '4800']
-kUartSpeed_Sdphost = ['115200']
-
 kActionFrom_AllInOne = 0x0
 kActionFrom_BurnFuse = 0x1
 

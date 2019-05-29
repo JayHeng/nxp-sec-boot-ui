@@ -18,8 +18,9 @@ from boot import bltest
 from boot import target
 from utils import misc
 
-def createTarget(device, exeBinRoot):
+def RT10yy_createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
+    cpu = "MIMXRT1052"
     if device == RT10yy_uidef.kMcuDevice_iMXRT1015:
         cpu = "MIMXRT1015"
     elif device == RT10yy_uidef.kMcuDevice_iMXRT102x:
@@ -76,7 +77,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         self.sdphostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'sdphost', 'win', 'vectors')
         self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost', 'win', 'vectors')
 
-        self.isDeviceEnabledToOperate = True
+        self.RT10yy_isDeviceEnabledToOperate = True
         self.bootDeviceMemId = None
         self.bootDeviceMemBase = None
         self.semcNandImageCopies = None
@@ -97,16 +98,16 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         self.RT10yy_createMcuTarget()
 
     def RT10yy_createMcuTarget( self ):
-        self.tgt, self.cpuDir = createTarget(self.mcuDevice, self.exeBinRoot)
+        self.tgt, self.cpuDir = RT10yy_createTarget(self.mcuDevice, self.exeBinRoot)
 
-    def getUsbid( self ):
-        self.createMcuTarget()
+    def RT10yy_getUsbid( self ):
+        self.RT10yy_createMcuTarget()
         return [self.tgt.romUsbVid, self.tgt.romUsbPid, self.tgt.flashloaderUsbVid, self.tgt.flashloaderUsbPid]
 
-    def connectToDevice( self , connectStage):
-        if connectStage == RT10yy_uidef.kConnectStage_Rom:
+    def RT10yy_connectToDevice( self , connectStage):
+        if connectStage == uidef.kConnectStage_Rom:
             # Create the target object.
-            self.createMcuTarget()
+            self.RT10yy_createMcuTarget()
             if self.isUartPortSelected:
                 sdpPeripheral = 'sdp_uart'
                 uartComPort = self.uartComPort
@@ -126,7 +127,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
                                                    sdpPeripheral,
                                                    uartBaudrate, uartComPort,
                                                    usbVid, usbPid)
-        elif connectStage == RT10yy_uidef.kConnectStage_Flashloader:
+        elif connectStage == uidef.kConnectStage_Flashloader:
             if self.isUartPortSelected:
                 blPeripheral = 'uart'
                 uartComPort = self.uartComPort
@@ -147,12 +148,12 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
                                                   uartBaudrate, uartComPort,
                                                   usbVid, usbPid,
                                                   True)
-        elif connectStage == RT10yy_uidef.kConnectStage_Reset:
+        elif connectStage == uidef.kConnectStage_Reset:
             self.tgt = None
         else:
             pass
 
-    def pingRom( self ):
+    def RT10yy_pingRom( self ):
         status, results, cmdStr = self.sdphost.errorStatus()
         self.printLog(cmdStr)
         return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
@@ -184,7 +185,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR1, 'SRC->SMBR1')
         self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR2, 'SRC->SMBR2')
 
-    def getMcuDeviceInfoViaRom( self ):
+    def RT10yy_getMcuDeviceInfoViaRom( self ):
         self.printDeviceStatus("--------MCU device Register----------")
         self._readMcuDeviceRegisterUuid()
         self._readMcuDeviceRegisterSrcSmbr()
@@ -229,7 +230,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         return (status == boot.status.kStatus_Success)
 
     def readMcuDeviceFuseByBlhost( self, fuseIndex, fuseName, needToShow=True):
-        if not self.isDeviceEnabledToOperate and self.isSbFileEnabledToGen:
+        if not self.RT10yy_isDeviceEnabledToOperate and self.isSbFileEnabledToGen:
             return RT10yy_fusedef.kEfuseValue_Blank
         status, results, cmdStr = self.blhost.efuseReadOnce(fuseIndex)
         self.printLog(cmdStr)
@@ -387,7 +388,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         return True
 
     def _getFlexspiNorDeviceInfo ( self ):
-        if not self.isDeviceEnabledToOperate and self.isSbFileEnabledToGen:
+        if not self.RT10yy_isDeviceEnabledToOperate and self.isSbFileEnabledToGen:
             return True
         filename = 'flexspiNorCfg.dat'
         filepath = os.path.join(self.blhostVectorsDir, filename)
@@ -502,7 +503,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def _eraseFlexspiNorForConfigBlockLoading( self ):
         status = boot.status.kStatus_Success
-        if self.isDeviceEnabledToOperate:
+        if self.RT10yy_isDeviceEnabledToOperate:
             status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, RT10yy_rundef.kFlexspiNorCfgInfo_Length, RT10yy_rundef.kBootDeviceMemId_FlexspiNor)
             self.printLog(cmdStr)
         if self.isSbFileEnabledToGen:
@@ -514,14 +515,14 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         if True:
             status = boot.status.kStatus_Success
             # 0xf000000f is the tag to notify Flashloader to program FlexSPI NOR config block to the start of device
-            if self.isDeviceEnabledToOperate:
+            if self.RT10yy_isDeviceEnabledToOperate:
                 status, results, cmdStr = self.blhost.fillMemory(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, RT10yy_rundef.kFlexspiNorCfgInfo_Notify)
                 self.printLog(cmdStr)
             if self.isSbFileEnabledToGen:
                 self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kFlexspiNorCfgInfo_Notify))) + " > " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock))) + ";\n")
             if status != boot.status.kStatus_Success:
                 return False
-            if self.isDeviceEnabledToOperate:
+            if self.RT10yy_isDeviceEnabledToOperate:
                 status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock)
                 self.printLog(cmdStr)
             if self.isSbFileEnabledToGen:
@@ -535,7 +536,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             self.printLog(cmdStr)
             return (status == boot.status.kStatus_Success)
 
-    def configureBootDevice ( self ):
+    def RT10yy_configureBootDevice ( self ):
         self._prepareForBootDeviceOperation()
         configOptList = []
         if self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
@@ -562,14 +563,14 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             pass
         status = boot.status.kStatus_Success
         for i in range(len(configOptList)):
-            if self.isDeviceEnabledToOperate:
+            if self.RT10yy_isDeviceEnabledToOperate:
                 status, results, cmdStr = self.blhost.fillMemory(RT10yy_rundef.kRamFreeSpaceStart_LoadCommOpt + 4 * i, 0x4, configOptList[i])
                 self.printLog(cmdStr)
             if self.isSbFileEnabledToGen:
                 self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(configOptList[i]))) + " > " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kRamFreeSpaceStart_LoadCommOpt + 4 * i))) + ";\n")
             if status != boot.status.kStatus_Success:
                 return False
-        if self.isDeviceEnabledToOperate:
+        if self.RT10yy_isDeviceEnabledToOperate:
             status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RT10yy_rundef.kRamFreeSpaceStart_LoadCommOpt)
             self.printLog(cmdStr)
         if self.isSbFileEnabledToGen:
@@ -1188,7 +1189,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
                     return False
         return True
 
-    def resetMcuDevice( self ):
+    def RT10yy_resetMcuDevice( self ):
         status, results, cmdStr = self.blhost.reset()
         self.printLog(cmdStr)
         return (status == boot.status.kStatus_Success)

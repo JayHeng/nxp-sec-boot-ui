@@ -18,10 +18,11 @@ from ui import uilang
 g_main_win = None
 g_task_detectUsbhid = None
 g_task_playSound = None
-g_task_allInOneAction = None
-g_task_accessMem = None
 g_task_increaseGauge = None
-g_task_showSettedEfuse = None
+g_RT10yy_task_allInOneAction = None
+g_RTxxx_task_allInOneAction = None
+g_RT10yy_task_accessMem = None
+g_RT10yy_task_showSettedEfuse = None
 
 def _async_raise(tid, exctype):
     tid = ctypes.c_long(tid)
@@ -41,6 +42,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetMcuSeries( self, event ):
         self.setTargetSetupValue()
+        self._setUartUsbPort()
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.RT10yy_callbackSetMcuSeries()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
@@ -64,6 +66,47 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         else:
             pass
 
+    def _setUartUsbPort( self ):
+        usbIdList = []
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            usbIdList = self.RT10yy_getUsbid()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            usbIdList = self.RTxxx_getUsbid()
+        else:
+            pass
+        retryToDetectUsb = False
+        showError = True
+        self.setPortSetupValue(self.connectStage, usbIdList, retryToDetectUsb, showError)
+
+    def callbackSetUartPort( self, event ):
+        self._setUartUsbPort()
+
+    def callbackSetUsbhidPort( self, event ):
+        self._setUartUsbPort()
+
+    def callbackSetOneStep( self, event ):
+        if not self.isToolRunAsEntryMode:
+            self.getOneStepConnectMode()
+        else:
+            self.initOneStepConnectMode()
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_cannotSetOneStep'][self.languageIndex])
+
+    def callbackConnectToDevice( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackConnectToDevice()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackConnectToDevice()
+        else:
+            pass
+
+    def callbackAllInOneAction( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackAllInOneAction()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackAllInOneAction()
+        else:
+            pass
+
     def callbackClearLog( self, event ):
         self.clearLog()
 
@@ -79,10 +122,11 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         #exit(0)
         self._stopTask(g_task_detectUsbhid)
         self._stopTask(g_task_playSound)
-        self._stopTask(g_task_allInOneAction)
-        self._stopTask(g_task_accessMem)
         self._stopTask(g_task_increaseGauge)
-        self._stopTask(g_task_showSettedEfuse)
+        self._stopTask(g_RT10yy_task_allInOneAction)
+        self._stopTask(g_RTxxx_task_allInOneAction)
+        self._stopTask(g_RT10yy_task_accessMem)
+        self._stopTask(g_RT10yy_task_showSettedEfuse)
         global g_main_win
         g_main_win.Show(False)
         try:
@@ -97,8 +141,12 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self._deinitToolToExit()
 
     def _switchToolRunMode( self ):
-        self.applyFuseOperToRunMode()
-        self.setSecureBootButtonColor()
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_switchToolRunMode()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_switchToolRunMode()
+        else:
+            pass
         self.enableOneStepForEntryMode()
 
     def callbackSetRunModeAsEntry( self, event ):
@@ -180,18 +228,24 @@ if __name__ == '__main__':
     g_task_playSound = threading.Thread(target=g_main_win.task_doPlaySound)
     g_task_playSound.setDaemon(True)
     g_task_playSound.start()
-    g_task_allInOneAction = threading.Thread(target=g_main_win.task_doAllInOneAction)
-    g_task_allInOneAction.setDaemon(True)
-    g_task_allInOneAction.start()
-    g_task_accessMem = threading.Thread(target=g_main_win.task_doAccessMem)
-    g_task_accessMem.setDaemon(True)
-    g_task_accessMem.start()
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
-    g_task_showSettedEfuse = threading.Thread(target=g_main_win.task_doShowSettedEfuse)
-    g_task_showSettedEfuse.setDaemon(True)
-    g_task_showSettedEfuse.start()
+
+    g_RT10yy_task_allInOneAction = threading.Thread(target=g_main_win.RT10yy_task_doAllInOneAction)
+    g_RT10yy_task_allInOneAction.setDaemon(True)
+    g_RT10yy_task_allInOneAction.start()
+    g_RTxxx_task_allInOneAction = threading.Thread(target=g_main_win.RTxxx_task_doAllInOneAction)
+    g_RTxxx_task_allInOneAction.setDaemon(True)
+    g_RTxxx_task_allInOneAction.start()
+
+    g_RT10yy_task_accessMem = threading.Thread(target=g_main_win.RT10yy_task_doAccessMem)
+    g_RT10yy_task_accessMem.setDaemon(True)
+    g_RT10yy_task_accessMem.start()
+
+    g_RT10yy_task_showSettedEfuse = threading.Thread(target=g_main_win.RT10yy_task_doShowSettedEfuse)
+    g_RT10yy_task_showSettedEfuse.setDaemon(True)
+    g_RT10yy_task_showSettedEfuse.start()
 
     app.MainLoop()
 
