@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(".."))
 from run import RT10yy_runcore
 from run import RT10yy_rundef
 from ui import RT10yy_uidef
+from ui import uidef
 from ui import uivar
 from ui import uilang
 
@@ -16,7 +17,10 @@ class secBootRT10yyFuse(RT10yy_runcore.secBootRT10yyRun):
 
     def __init__(self, parent):
         RT10yy_runcore.secBootRT10yyRun.__init__(self, parent)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_initFuse()
 
+    def RT10yy_initFuse( self ):
         self.needToScanFuse = None
         self.scannedFuseList = [None] * RT10yy_fusedef.kMaxEfuseWords
         self.toBeBurnnedFuseList = [None] * RT10yy_fusedef.kMaxEfuseWords

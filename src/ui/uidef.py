@@ -1,12 +1,14 @@
 import wx
 import sys, os
 
-kMcuSeries_iMXRT   = 'i.MXRT'
-kMcuSeries_LPC     = 'LPC'
-kMcuSeries_Kinetis = 'Kinetis'
+kMcuSeries_iMXRT10yy = 'i.MXRT10yy'
+kMcuSeries_iMXRTxxx  = 'i.MXRTxxx'
+kMcuSeries_LPC       = 'LPC'
+kMcuSeries_Kinetis   = 'Kinetis'
 
-kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT]
-kMcuSeries_Latest = kMcuSeries_v1_0_0
+kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT10yy]
+kMcuSeries_v2_0_0 = [kMcuSeries_iMXRT10yy, kMcuSeries_iMXRTxxx]
+kMcuSeries_Latest = kMcuSeries_v2_0_0
 
 kAdvancedSettings_Tool      = 0
 kAdvancedSettings_Cert      = 1

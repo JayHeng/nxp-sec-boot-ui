@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(".."))
 from fuse import RT10yy_fusecore
 from run import RT10yy_rundef
 from ui import RT10yy_uidef
+from ui import uidef
 from ui import uivar
 from ui import uilang
 from utils import misc
@@ -20,7 +21,10 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
 
     def __init__(self, parent):
         RT10yy_fusecore.secBootRT10yyFuse.__init__(self, parent)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_initMem()
 
+    def RT10yy_initMem( self ):
         self.userFolder = os.path.join(self.exeTopRoot, 'gen', 'user_file')
         self.userFilename = os.path.join(self.exeTopRoot, 'gen', 'user_file', 'user.dat')
 

@@ -68,6 +68,8 @@ class secBootUi(secBootWin.secBootWin):
         self.updateConnectStatus()
 
         self.mcuSeries = None
+        self.mcuDevice = None
+        self.bootDevice = None
         self._initTargetSetupValue()
         self.setTargetSetupValue()
 

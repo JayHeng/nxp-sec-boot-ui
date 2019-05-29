@@ -12,8 +12,8 @@ import RT10yy_uidef
 import uidef
 import uivar
 import uilang
+import uicore
 sys.path.append(os.path.abspath(".."))
-from ui import uicore
 from run import RT10yy_rundef
 from fuse import RT10yy_fusedef
 
@@ -23,11 +23,12 @@ class secBootRT10yyUi(uicore.secBootUi):
 
     def __init__(self, parent):
         uicore.secBootUi.__init__(self, parent)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_initUi()
 
+    def RT10yy_initUi( self ):
         self.RT10yy_setLanguage()
 
-        self.mcuDevice = None
-        self.bootDevice = None
         self.isNandDevice = False
         self.isSdmmcCard = False
         self.sbEnableBootDeviceMagic = None
@@ -58,8 +59,16 @@ class secBootRT10yyUi(uicore.secBootUi):
         self.m_choice_bootDevice.Clear()
         self.m_choice_mcuDevice.SetItems(RT10yy_uidef.kMcuDevice_Latest)
         self.m_choice_bootDevice.SetItems(RT10yy_uidef.kBootDevice_Latest)
-        self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
-        self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
+        totalSel = self.m_choice_mcuDevice.GetCount()
+        if self.toolCommDict['mcuDevice'] < totalSel:
+            self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
+        else:
+            self.m_choice_mcuDevice.SetSelection(0)
+        totalSel = self.m_choice_bootDevice.GetCount()
+        if self.toolCommDict['bootDevice'] < totalSel:
+            self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
+        else:
+            self.m_choice_bootDevice.SetSelection(0)
 
     def _setFlexspiNorDeviceForEvkBoard( self ):
         try:
@@ -88,7 +97,7 @@ class secBootRT10yyUi(uicore.secBootUi):
         except:
             pass
 
-    def _refreshBootDeviceList( self ):
+    def _RT10yy_refreshBootDeviceList( self ):
         if self.tgt.availableBootDevices != None:
             self.m_choice_bootDevice.Clear()
             self.m_choice_bootDevice.SetItems(self.tgt.availableBootDevices)
@@ -103,8 +112,8 @@ class secBootRT10yyUi(uicore.secBootUi):
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
-        self.createMcuTarget()
-        self._refreshBootDeviceList()
+        self.RT10yy_createMcuTarget()
+        self._RT10yy_refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:

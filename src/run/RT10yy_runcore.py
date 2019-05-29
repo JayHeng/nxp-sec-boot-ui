@@ -10,6 +10,7 @@ from gen import RT10yy_gencore
 from gen import RT10yy_gendef
 from fuse import RT10yy_fusedef
 from ui import RT10yy_uidef
+from ui import uidef
 from ui import uivar
 from ui import uilang
 from mem import RT10yy_memdef
@@ -64,6 +65,10 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def __init__(self, parent):
         RT10yy_gencore.secBootRT10yyGen.__init__(self, parent)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_initRun()
+
+    def RT10yy_initRun( self ):
         self.blhost = None
         self.sdphost = None
         self.tgt = None
@@ -89,9 +94,9 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
         self.sbLastSharedFuseBootCfg1 = RT10yy_fusedef.kEfuseValue_Invalid
 
-        self.createMcuTarget()
+        self.RT10yy_createMcuTarget()
 
-    def createMcuTarget( self ):
+    def RT10yy_createMcuTarget( self ):
         self.tgt, self.cpuDir = createTarget(self.mcuDevice, self.exeBinRoot)
 
     def getUsbid( self ):

@@ -6,8 +6,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
 import time
+sys.path.append(os.path.abspath(".."))
 from mem import RT10yy_memcore
 from ui import RT10yy_uidef
+from ui import uidef
 from ui import uivar
 from ui import uilang
 from fuse import RT10yy_fusedef
@@ -39,6 +41,10 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def __init__(self, parent):
         RT10yy_memcore.secBootRT10yyMem.__init__(self, parent)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self._RT10yy_initMain()
+
+    def _RT10yy_initMain( self ):
         self.connectStage = RT10yy_uidef.kConnectStage_Rom
         self.isBootableAppAllowedToView = False
         self.lastTime = None
@@ -57,17 +63,23 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self.deinitGauge()
             self.updateCostTime()
 
-    def callbackSetMcuSeries( self, event ):
+    def RT10yy_callbackSetMcuSeries( self ):
+        self.RT10yy_initUi()
+        self.RT10yy_initGen()
+        self.RT10yy_initRun()
+        self.RT10yy_initFuse()
+        self.RT10yy_initMem()
+        self._RT10yy_initMain()
         self.RT10yy_setTargetSetupValue()
 
-    def callbackSetMcuDevice( self, event ):
+    def RT10yy_callbackSetMcuDevice( self ):
         self.RT10yy_setTargetSetupValue()
         self._setUartUsbPort()
         self.applyFuseOperToRunMode()
         needToPlaySound = False
         self.setSecureBootSeqColor(needToPlaySound)
 
-    def callbackSetBootDevice( self, event ):
+    def RT10yy_callbackSetBootDevice( self ):
         self.RT10yy_setTargetSetupValue()
         needToPlaySound = False
         self.setSecureBootSeqColor(needToPlaySound)

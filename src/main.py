@@ -39,6 +39,31 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def __init__(self, parent):
         RTxxx_main.secBootRTxxxMain.__init__(self, parent)
 
+    def callbackSetMcuSeries( self, event ):
+        self.setTargetSetupValue()
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackSetMcuSeries()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackSetMcuSeries()
+        else:
+            pass
+
+    def callbackSetMcuDevice( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackSetMcuDevice()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackSetMcuDevice()
+        else:
+            pass
+
+    def callbackSetBootDevice( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackSetBootDevice()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackSetBootDevice()
+        else:
+            pass
+
     def callbackClearLog( self, event ):
         self.clearLog()
 
