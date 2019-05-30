@@ -304,7 +304,7 @@ def deinitVar(cfgFilename=None):
             "cfgSnvsKey": [g_otpmkKeyOpt, g_otpmkEncryptedRegionStartList, g_otpmkEncryptedRegionLengthList],
             "cfgUserKey": [g_userKeyCtrlDict, g_userKeyCmdDict]
         }
-        json.dump(cfgDict, fileObj)
+        json.dump(cfgDict, fileObj, indent=1)
         fileObj.close()
 
 def getBootDeviceConfiguration( group ):
