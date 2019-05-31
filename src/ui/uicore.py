@@ -408,6 +408,47 @@ class secBootUi(secBootWin.secBootWin):
     def clearDeviceStatus( self ):
         self.m_textCtrl_deviceStatus.Clear()
 
+    def getUserAppFilePath( self ):
+        appPath = self.m_filePicker_appPath.GetPath()
+        self.toolCommDict['appFilename'] = appPath.encode("utf-8")
+        return appPath.encode('utf-8').encode("gbk")
+
+    def _setUserBinaryBaseField( self ):
+        txt = self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
+        if txt == uidef.kAppImageFormat_AutoDetect or txt == uidef.kAppImageFormat_RawBinary:
+            self.m_textCtrl_appBaseAddr.Enable(True)
+        else:
+            self.m_textCtrl_appBaseAddr.Enable(False)
+
+    def getUserAppFileFormat( self ):
+        self.toolCommDict['appFormat'] = self.m_choice_appFormat.GetSelection()
+        self._setUserBinaryBaseField()
+        return self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
+
+    def getUserBinaryBaseAddress( self ):
+        self.toolCommDict['appBinBaseAddr'] = self.m_textCtrl_appBaseAddr.GetLineText(0)
+        return self.getVal32FromHexText(self.m_textCtrl_appBaseAddr.GetLineText(0))
+
+    def convertLongIntHexText( self, hexText ):
+        lastStr = hexText[len(hexText) - 1]
+        if lastStr == 'l' or lastStr == 'L':
+            return hexText[0:len(hexText) - 1]
+        else:
+            return hexText
+
+    def getVal32FromHexText( self, hexText ):
+        status = False
+        val32 = None
+        if len(hexText) > 2 and hexText[0:2] == '0x':
+            try:
+                val32 = int(hexText[2:len(hexText)], 16)
+                status = True
+            except:
+                pass
+        if not status:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['inputError_illegalFormat'][self.languageIndex])
+        return status, val32
+
     def _initLanguage( self ):
         if self.toolCommDict['isEnglishLanguage']:
             self.m_menuItem_english.Check(True)

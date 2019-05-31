@@ -6,8 +6,8 @@ kConnectStage_Flashloader    = 2
 kConnectStage_ExternalMemory = 3
 kConnectStage_Reset          = 4
 
-kMcuSeries_iMXRT10yy = 'i.MXRT10yy'
-kMcuSeries_iMXRTxxx  = 'i.MXRTxxx'
+kMcuSeries_iMXRT10yy = 'RT10yy - CM7'
+kMcuSeries_iMXRTxxx  = 'RTxxx - CM33'
 kMcuSeries_LPC       = 'LPC'
 kMcuSeries_Kinetis   = 'Kinetis'
 
@@ -20,6 +20,15 @@ kAdvancedSettings_Cert      = 1
 kAdvancedSettings_BD        = 2
 kAdvancedSettings_OtpmkKey  = 3
 kAdvancedSettings_UserKeys  = 4
+
+kAppImageFormat_AutoDetect  = 'Auto-detect image format'
+kAppImageFormat_AxfFromMdk  = '.out(axf) from Keil MDK'
+kAppImageFormat_ElfFromIar  = '.out(elf) from IAR EWARM'
+kAppImageFormat_AxfFromMcux = '.out(axf) from MCUXpresso'
+kAppImageFormat_ElfFromGcc  = '.out(elf) from GCC ARM'
+kAppImageFormat_MotoSrec    = 'Motorola S-Records (.srec/.s19)'
+kAppImageFormat_IntelHex    = 'Intel Extended Hex (.hex)'
+kAppImageFormat_RawBinary   = 'Raw Binary (.bin)'
 
 kSoundEffectFilename_Success  = 'levelwin_success.wav'
 kSoundEffectFilename_Failure  = 'dead_failure.wav'

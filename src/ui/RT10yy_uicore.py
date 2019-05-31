@@ -34,8 +34,8 @@ class secBootRT10yyUi(uicore.secBootUi):
         self.secureBootType = None
         self.keyStorageRegion = None
         self.isCertEnabledForBee = None
-        self._initSecureBootSeqValue()
-        self._initSecureBootSeqColor()
+        self._RT10yy_initSecureBootSeqValue()
+        self._RT10yy_initSecureBootSeqColor()
 
         self.RT10yy_setLanguage()
 
@@ -140,10 +140,14 @@ class secBootRT10yyUi(uicore.secBootUi):
         else:
             pass
 
-    def _initSecureBootSeqValue( self ):
+    def _RT10yy_initSecureBootSeqValue( self ):
         self.m_choice_secureBootType.Clear()
         self.m_choice_secureBootType.SetItems(RT10yy_uidef.kSecureBootType_Latest)
-        self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])
+        totalSel = self.m_choice_secureBootType.GetCount()
+        if self.toolCommDict['secBootType'] < totalSel:
+            self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])
+        else:
+            self.m_choice_secureBootType.SetSelection(0)
         self.m_textCtrl_serial.Clear()
         self.m_textCtrl_serial.write(self.toolCommDict['certSerial'])
         self.m_textCtrl_keyPass.Clear()
@@ -157,7 +161,7 @@ class secBootRT10yyUi(uicore.secBootUi):
         self.m_choice_keyStorageRegion.SetSelection(self.toolCommDict['keyStoreRegion'])
         self.m_choice_enableCertForBee.SetSelection(self.toolCommDict['certOptForBee'])
 
-    def _initSecureBootSeqColor ( self ):
+    def _RT10yy_initSecureBootSeqColor ( self ):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.keyStorageRegion = self.m_choice_keyStorageRegion.GetString(self.m_choice_keyStorageRegion.GetSelection())
         self.setSecureBootSeqColor()
@@ -525,27 +529,6 @@ class secBootRT10yyUi(uicore.secBootUi):
             pass
         self.Refresh()
 
-    def getUserAppFilePath( self ):
-        appPath = self.m_filePicker_appPath.GetPath()
-        self.toolCommDict['appFilename'] = appPath.encode("utf-8")
-        return appPath.encode('utf-8').encode("gbk")
-
-    def _setUserBinaryBaseField( self ):
-        txt = self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
-        if txt == RT10yy_uidef.kAppImageFormat_AutoDetect or txt == RT10yy_uidef.kAppImageFormat_RawBinary:
-            self.m_textCtrl_appBaseAddr.Enable(True)
-        else:
-            self.m_textCtrl_appBaseAddr.Enable(False)
-
-    def getUserAppFileFormat( self ):
-        self.toolCommDict['appFormat'] = self.m_choice_appFormat.GetSelection()
-        self._setUserBinaryBaseField()
-        return self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
-
-    def getUserBinaryBaseAddress( self ):
-        self.toolCommDict['appBinBaseAddr'] = self.m_textCtrl_appBaseAddr.GetLineText(0)
-        return self._getVal32FromHexText(self.m_textCtrl_appBaseAddr.GetLineText(0))
-
     def printSrkData( self, srkStr ):
         self.m_textCtrl_srk256bit.write(srkStr + "\n")
 
@@ -578,31 +561,11 @@ class secBootRT10yyUi(uicore.secBootUi):
     def clearSwGp2DekData( self ):
         self.m_textCtrl_swgp2Dek128bit.Clear()
 
-    def convertLongIntHexText( self, hexText ):
-        lastStr = hexText[len(hexText) - 1]
-        if lastStr == 'l' or lastStr == 'L':
-            return hexText[0:len(hexText) - 1]
-        else:
-            return hexText
-
-    def _getVal32FromHexText( self, hexText ):
-        status = False
-        val32 = None
-        if len(hexText) > 2 and hexText[0:2] == '0x':
-            try:
-                val32 = int(hexText[2:len(hexText)], 16)
-                status = True
-            except:
-                pass
-        if not status:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['inputError_illegalFormat'][self.languageIndex])
-        return status, val32
-
     def getComMemStartAddress( self ):
-        return self._getVal32FromHexText(self.m_textCtrl_memStart.GetLineText(0))
+        return self.getVal32FromHexText(self.m_textCtrl_memStart.GetLineText(0))
 
     def getComMemByteLength( self ):
-        return self._getVal32FromHexText(self.m_textCtrl_memLength.GetLineText(0))
+        return self.getVal32FromHexText(self.m_textCtrl_memLength.GetLineText(0))
 
     def getComMemBinFile( self ):
         memBinFile = self.m_filePicker_memBinFile.GetPath()

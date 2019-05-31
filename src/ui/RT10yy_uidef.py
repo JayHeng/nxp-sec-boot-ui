@@ -82,15 +82,6 @@ kCstKeysToolFileList = ['libcrypto-1_1.dll', 'libssl-1_1.dll', 'openssl.exe']
 kPkiTreeKeySel_IsEcc  = ['p256', 'p384', 'p521']
 kPkiTreeKeySel_NotEcc = ['1024', '2048', '3072', '4096']
 
-kAppImageFormat_AutoDetect  = 'Auto-detect image format'
-kAppImageFormat_AxfFromMdk  = '.out(axf) from Keil MDK'
-kAppImageFormat_ElfFromIar  = '.out(elf) from IAR EWARM'
-kAppImageFormat_AxfFromMcux = '.out(axf) from MCUXpresso'
-kAppImageFormat_ElfFromGcc  = '.out(elf) from GCC ARM'
-kAppImageFormat_MotoSrec    = 'Motorola S-Records (.srec/.s19)'
-kAppImageFormat_IntelHex    = 'Intel Extended Hex (.hex)'
-kAppImageFormat_RawBinary   = 'Raw Binary (.bin)'
-
 kUserEngineSel_Engine0     = 'Engine 0'
 kUserEngineSel_Engine1     = 'Engine 1'
 kUserEngineSel_BothEngines = 'Both Engines'

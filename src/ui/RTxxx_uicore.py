@@ -23,6 +23,10 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
         self._RTxxx_initTargetSetupValue()
         self.RTxxx_setTargetSetupValue()
 
+        self.secureBootType = None
+        self._RTxxx_initSecureBootSeqValue()
+        self._RTxxx_initSecureBootSeqColor()
+
     def _RTxxx_initTargetSetupValue( self ):
         self.m_choice_mcuDevice.Clear()
         self.m_choice_bootDevice.Clear()
@@ -57,3 +61,15 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
         self._RTxxx_refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
+
+    def _RTxxx_initSecureBootSeqValue( self ):
+        self.m_choice_secureBootType.Clear()
+        self.m_choice_secureBootType.SetItems(RTxxx_uidef.kSecureBootType_Latest)
+        totalSel = self.m_choice_secureBootType.GetCount()
+        if self.toolCommDict['secBootType'] < totalSel:
+            self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])
+        else:
+            self.m_choice_secureBootType.SetSelection(0)
+
+    def _RTxxx_initSecureBootSeqColor ( self ):
+        self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
