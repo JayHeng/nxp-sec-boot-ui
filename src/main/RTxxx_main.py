@@ -10,6 +10,8 @@ sys.path.append(os.path.abspath(".."))
 from run import RTxxx_runcore
 from ui import RTxxx_uidef
 from ui import uidef
+from ui import uivar
+from ui import uilang
 
 kRetryPingTimes = 5
 
@@ -185,6 +187,28 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
     def RTxxx_callbackGenImage( self ):
         if not self.isToolRunAsEntryMode:
             self._RTxxx_doGenImage()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
+
+    def _RTxxx_doFlashImage( self ):
+        status = False
+        if self.connectStage == uidef.kConnectStage_Reset:
+            self._RTxxx_startGaugeTimer()
+            self.printLog("'Load Bootable Image' button is clicked")
+            if not self.RTxxx_flashBootableImage():
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
+            else:
+                self.isBootableAppAllowedToView = True
+                status = True
+            self._RTxxx_stopGaugeTimer()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
+        #self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_FlashImage, status)
+        return status
+
+    def RTxxx_callbackFlashImage( self ):
+        if not self.isToolRunAsEntryMode:
+            self._RTxxx_doFlashImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 

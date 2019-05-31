@@ -4,6 +4,7 @@ import sys
 import os
 import math
 import RT10yy_rundef
+import rundef
 import boot
 sys.path.append(os.path.abspath(".."))
 from gen import RT10yy_gencore
@@ -314,27 +315,27 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             else:
                 pass
 
-    def _prepareForBootDeviceOperation ( self ):
+    def _RT10yy_prepareForBootDeviceOperation ( self ):
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_FlexspiNor
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_FlexspiNor
             self.bootDeviceMemBase = self.tgt.flexspiNorMemBase
         elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNand:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_FlexspiNand
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_FlexspiNand
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_FlexspiNand
         elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_SemcNor
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_SemcNor
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_SemcNor
         elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_SemcNand
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_SemcNand
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_SemcNand
         elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcSd:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_UsdhcSd
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_UsdhcSd
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_UsdhcSd
         elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcMmc:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_UsdhcMmc
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_UsdhcMmc
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_UsdhcMmc
         elif self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
-            self.bootDeviceMemId = RT10yy_rundef.kBootDeviceMemId_LpspiNor
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_SpiNor
             self.bootDeviceMemBase = RT10yy_rundef.kBootDeviceMemBase_LpspiNor
         else:
             pass
@@ -504,7 +505,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
     def _eraseFlexspiNorForConfigBlockLoading( self ):
         status = boot.status.kStatus_Success
         if self.RT10yy_isDeviceEnabledToOperate:
-            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, RT10yy_rundef.kFlexspiNorCfgInfo_Length, RT10yy_rundef.kBootDeviceMemId_FlexspiNor)
+            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, RT10yy_rundef.kFlexspiNorCfgInfo_Length, rundef.kBootDeviceMemId_FlexspiNor)
             self.printLog(cmdStr)
         if self.isSbFileEnabledToGen:
             self._addFlashActionIntoSbAppBdContent("    erase " + self.sbAccessBootDeviceMagic + " " + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase))) + ".." + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase + RT10yy_rundef.kFlexspiNorCfgInfo_Length))) + ";\n")
@@ -537,7 +538,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             return (status == boot.status.kStatus_Success)
 
     def RT10yy_configureBootDevice ( self ):
-        self._prepareForBootDeviceOperation()
+        self._RT10yy_prepareForBootDeviceOperation()
         configOptList = []
         if self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
             semcNandOpt, semcNandFcbOpt, semcNandImageInfoList = uivar.getBootDeviceConfiguration(self.bootDevice)
@@ -593,7 +594,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         if self.isSbFileEnabledToGen:
             self._addFlashActionIntoSbAppBdContent("    erase " + self.sbAccessBootDeviceMagic + " " + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase))) + ".." + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase + memEraseLen))) + ";\n")
         else:
-            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, memEraseLen, RT10yy_rundef.kBootDeviceMemId_FlexspiNor)
+            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, memEraseLen, rundef.kBootDeviceMemId_FlexspiNor)
             self.printLog(cmdStr)
             if status != boot.status.kStatus_Success:
                 return False
@@ -601,7 +602,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         return True
 
     def prepareForFixedOtpmkEncryption( self ):
-        self._prepareForBootDeviceOperation()
+        self._RT10yy_prepareForBootDeviceOperation()
         #self._showOtpmkDek()
         if not self._eraseFlexspiNorForImageLoading():
             return False
@@ -838,8 +839,8 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             fileObj.write(imageData)
             fileObj.close()
 
-    def flashBootableImage ( self ):
-        self._prepareForBootDeviceOperation()
+    def RT10yy_flashBootableImage ( self ):
+        self._RT10yy_prepareForBootDeviceOperation()
         imageLen = os.path.getsize(self.destAppFilename)
         if self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
             semcNandOpt, semcNandFcbOpt, semcNandImageInfoList = uivar.getBootDeviceConfiguration(self.bootDevice)
@@ -1076,7 +1077,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def flashHabDekToGenerateKeyBlob ( self ):
         if os.path.isfile(self.habDekFilename) and self.habDekDataOffset != None:
-            self._prepareForBootDeviceOperation()
+            self._RT10yy_prepareForBootDeviceOperation()
             imageLen = os.path.getsize(self.destAppFilename)
             imageCopies = 0x1
             if self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:

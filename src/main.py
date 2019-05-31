@@ -136,6 +136,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         else:
             pass
 
+    def callbackFlashImage( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackFlashImage()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackFlashImage()
+        else:
+            pass
+
     def callbackClearLog( self, event ):
         self.clearLog()
 

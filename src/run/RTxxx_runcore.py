@@ -3,6 +3,7 @@
 import sys
 import os
 import RTxxx_rundef
+import rundef
 import boot
 sys.path.append(os.path.abspath(".."))
 from gen import RTxxx_gencore
@@ -64,6 +65,13 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
         self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost2_3', 'win', 'vectors')
 
         self.RTxxx_isDeviceEnabledToOperate = True
+        self.bootDeviceMemId = None
+        self.bootDeviceMemBase = None
+        self.isXspiNorErasedForImage = False
+
+        self.comMemWriteUnit = 0x1
+        self.comMemEraseUnit = 0x1
+        self.comMemReadUnit = 0x1
 
         self.RTxxx_createMcuTarget()
 
@@ -130,7 +138,104 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
         else:
             pass
 
+    def _RTxxx_prepareForBootDeviceOperation ( self ):
+        if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor:
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_FlexspiNor
+            self.bootDeviceMemBase = self.tgt.flexspiNorMemBase
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_QuadspiNor
+            self.bootDeviceMemBase = self.tgt.quadspiNorMemBase
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcSd:
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_UsdhcSd
+            self.bootDeviceMemBase = RTxxx_rundef.kBootDeviceMemBase_UsdhcSd
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcMmc:
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_UsdhcMmc
+            self.bootDeviceMemBase = RTxxx_rundef.kBootDeviceMemBase_UsdhcMmc
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            self.bootDeviceMemId = rundef.kBootDeviceMemId_SpiNor
+            self.bootDeviceMemBase = RTxxx_rundef.kBootDeviceMemBase_FlexcommSpiNor
+        else:
+            pass
+
+    def _programXspiNorConfigBlock ( self ):
+        status = boot.status.kStatus_Success
+        # 0xf000000f is the tag to notify Flashloader to program FlexSPI/QuadSPI NOR config block to the start of device
+        if self.RTxxx_isDeviceEnabledToOperate:
+            status, results, cmdStr = self.blhost.fillMemory(RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, RTxxx_rundef.kFlexspiNorCfgInfo_Notify)
+            self.printLog(cmdStr)
+            if status != boot.status.kStatus_Success:
+                return False
+        if self.RTxxx_isDeviceEnabledToOperate:
+            status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock)
+            self.printLog(cmdStr)
+            return (status == boot.status.kStatus_Success)
+
     def RTxxx_configureBootDevice ( self ):
+        self._RTxxx_prepareForBootDeviceOperation()
+        configOptList = []
+        if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor:
+            configOptList.extend([0xc0000003])
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+            configOptList.extend([0xc0000003])
+        else:
+            pass
+        status = boot.status.kStatus_Success
+        for i in range(len(configOptList)):
+            if self.RTxxx_isDeviceEnabledToOperate:
+                status, results, cmdStr = self.blhost.fillMemory(RTxxx_rundef.kRamFreeSpaceStart_LoadCommOpt + 4 * i, 0x4, configOptList[i])
+                self.printLog(cmdStr)
+                if status != boot.status.kStatus_Success:
+                    return False
+        if self.RTxxx_isDeviceEnabledToOperate:
+            status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RTxxx_rundef.kRamFreeSpaceStart_LoadCommOpt)
+            self.printLog(cmdStr)
+            if status != boot.status.kStatus_Success:
+                return False
+        return True
+
+    def _eraseXspiNorForImageLoading( self ):
+        imageLen = os.path.getsize(self.destAppFilename)
+        memEraseLen = misc.align_up(imageLen, self.comMemEraseUnit)
+        status = None
+        cmdStr = ''
+        if self.bootDeviceMemId == rundef.kBootDeviceMemId_FlexspiNor:
+            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, memEraseLen, self.bootDeviceMemId)
+        elif self.bootDeviceMemId == rundef.kBootDeviceMemId_QuadspiNor:
+            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.quadspiNorMemBase, memEraseLen, self.bootDeviceMemId)
+        else:
+            pass
+        self.printLog(cmdStr)
+        if status != boot.status.kStatus_Success:
+            return False
+        self.isXspiNorErasedForImage = True
+        return True
+
+    def RTxxx_flashBootableImage ( self ):
+        self._RTxxx_prepareForBootDeviceOperation()
+        imageLen = os.path.getsize(self.destAppFilename)
+        if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor:
+            if not self.isXspiNorErasedForImage:
+                if not self._eraseXspiNorForImageLoading():
+                    return False
+                if self.secureBootType == RTxxx_uidef.kSecureBootType_PlainUnsigned or \
+                   self.secureBootType == RTxxx_uidef.kSecureBootType_PlainCrc:
+                    if not self._programXspiNorConfigBlock():
+                        self.isXspiNorErasedForImage = False
+                        return False
+            imageLoadAddr = self.bootDeviceMemBase + RTxxx_gendef.kBootImageOffset_NOR_SD_EEPROM
+            status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, self.destAppFilename, self.bootDeviceMemId)
+            self.printLog(cmdStr)
+            self.isXspiNorErasedForImage = False
+            if status != boot.status.kStatus_Success:
+                return False
+        else:
+            pass
+        if self.isConvertedAppUsed:
+            try:
+                os.remove(self.srcAppFilename)
+            except:
+                pass
+            self.isConvertedAppUsed = False
         return True
 
     def RTxxx_resetMcuDevice( self ):

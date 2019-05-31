@@ -317,7 +317,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                                 allInOneSeqCnt += 1
                 else:
                     pass
-            status = self._doFlashImage()
+            status = self._RT10yy_doFlashImage()
             if not status:
                 break
             if self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
@@ -561,7 +561,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def _doFlashImage( self ):
+    def _RT10yy_doFlashImage( self ):
         status = False
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
@@ -573,7 +573,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if self.connectStage == uidef.kConnectStage_Reset:
                 self._RT10yy_startGaugeTimer()
                 self.printLog("'Load Bootable Image' button is clicked")
-                if not self.flashBootableImage():
+                if not self.RT10yy_flashBootableImage():
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
                 else:
                     self.isBootableAppAllowedToView = True
@@ -594,9 +594,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_FlashImage, status)
         return status
 
-    def callbackFlashImage( self, event ):
+    def RT10yy_callbackFlashImage( self ):
         if not self.isToolRunAsEntryMode:
-            self._doFlashImage()
+            self._RT10yy_doFlashImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
