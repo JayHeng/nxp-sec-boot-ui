@@ -73,3 +73,54 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
 
     def _RTxxx_initSecureBootSeqColor ( self ):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
+        self.RTxxx_setSecureBootSeqColor()
+
+    def RTxxx_setSecureBootButtonColor( self, needToPlaySound=True ):
+        activeColor = None
+        optionalColor = None
+        setEnable = None
+        if self.isToolRunAsEntryMode:
+            activeColor = uidef.kBootSeqColor_Invalid
+            optionalColor = uidef.kBootSeqColor_Invalid
+        else:
+            activeColor = uidef.kBootSeqColor_Active
+            optionalColor = uidef.kBootSeqColor_Optional
+        setEnable = not self.isToolRunAsEntryMode
+        self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
+        if self.secureBootType == RTxxx_uidef.kSecureBootType_PlainUnsigned or \
+           self.secureBootType == RTxxx_uidef.kSecureBootType_PlainCrc:
+            self.m_button_genImage.Enable( setEnable )
+            self.m_button_genImage.SetBackgroundColour( activeColor )
+            self.m_button_flashImage.Enable( setEnable )
+            self.m_button_flashImage.SetBackgroundColour( activeColor )
+        else:
+            pass
+        self.m_button_allInOneAction.Enable( True )
+        self.m_button_allInOneAction.SetBackgroundColour( uidef.kBootSeqColor_Active )
+        self.Refresh()
+        if needToPlaySound:
+            self.soundEffectFilenameForTask = uidef.kSoundEffectFilename_Restart
+
+    def RTxxx_setSecureBootSeqColor( self , needToPlaySound=True ):
+        self.hasDynamicLableBeenInit = True
+        self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
+        self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
+        self.resetSecureBootSeqColor()
+        if self.secureBootType == RTxxx_uidef.kSecureBootType_PlainUnsigned:
+            self.m_panel_genImage1_browseApp.Enable( True )
+            self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
+            self.m_panel_flashImage1_showImage.Enable( True )
+            self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_u'][self.languageIndex])
+        elif self.secureBootType == RTxxx_uidef.kSecureBootType_PlainCrc:
+            self.m_panel_genImage1_browseApp.Enable( True )
+            self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_c'][self.languageIndex])
+            self.m_panel_flashImage1_showImage.Enable( True )
+            self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_c'][self.languageIndex])
+        else:
+            pass
+        self.RTxxx_setSecureBootButtonColor(needToPlaySound)
+        self.Refresh()

@@ -164,79 +164,18 @@ class secBootRT10yyUi(gencore.secBootGen):
     def _RT10yy_initSecureBootSeqColor ( self ):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.keyStorageRegion = self.m_choice_keyStorageRegion.GetString(self.m_choice_keyStorageRegion.GetSelection())
-        self.setSecureBootSeqColor()
-
-    def _resetSecureBootSeqColor( self ):
-        self._resetCertificateColor()
-        self.m_panel_genImage1_browseApp.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_genImage1_browseApp.Enable( False )
-        self.m_panel_genImage2_habCryptoAlgo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_genImage2_habCryptoAlgo.Enable( False )
-        self.m_panel_genImage3_enableCertForBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_genImage3_enableCertForBee.Enable( False )
-        self.m_button_genImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_genImage.Enable( False )
-        self._resetKeyStorageRegionColor()
-        self.m_panel_flashImage1_showImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_flashImage1_showImage.Enable( False )
-        self.m_button_flashImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_flashImage.Enable( False )
-        self.m_panel_progDek1_showHabDek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_progDek1_showHabDek.Enable( False )
-        self.m_textCtrl_habDek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_textCtrl_habDek128bit.Enable( False )
-        self.m_button_progDek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_progDek.Enable( False )
-        self.Refresh()
-
-    def _resetKeyStorageRegionColor( self ):
-        self.m_panel_prepBee1_beeKeyRegion.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_prepBee1_beeKeyRegion.Enable( False )
-        self.m_panel_prepBee2_beeCryptoAlgo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_prepBee2_beeCryptoAlgo.Enable( False )
-        self.m_button_prepBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_prepBee.Enable( False )
-        self.m_panel_operBee1_beeKeyInfo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee1_beeKeyInfo.Enable( False )
-        self.m_panel_operBee2_showGp4Dek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee2_showGp4Dek.Enable( False )
-        self.m_textCtrl_gp4Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_textCtrl_gp4Dek128bit.Enable( False )
-        self.m_panel_operBee3_showSwgp2Dek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee3_showSwgp2Dek.Enable( False )
-        self.m_textCtrl_swgp2Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_textCtrl_swgp2Dek128bit.Enable( False )
-        self.m_button_operBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_operBee.Enable( False )
-        self.Refresh()
-
-    def _resetCertificateColor( self ):
-        self.m_panel_doAuth1_certInput.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_textCtrl_serial.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_textCtrl_keyPass.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_panel_doAuth1_certInput.Enable( False )
-        self.m_panel_doAuth2_certFmt.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_doAuth2_certFmt.Enable( False )
-        self.m_button_genCert.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_genCert.Enable( False )
-        self.m_panel_progSrk1_showSrk.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_panel_progSrk1_showSrk.Enable( False )
-        self.m_textCtrl_srk256bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
-        self.m_textCtrl_srk256bit.Enable( False )
-        self.m_button_progSrk.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Invalid )
-        self.m_button_progSrk.Enable( False )
-        self.Refresh()
+        self.RT10yy_setSecureBootSeqColor()
 
     def invalidateStepButtonColor( self, stepName, excuteResult ):
         invalidColor = None
         allInOneSoundEffect = None
         stepSoundEffect = None
         if excuteResult:
-            invalidColor = RT10yy_uidef.kBootSeqColor_Invalid
+            invalidColor = uidef.kBootSeqColor_Invalid
             allInOneSoundEffect = uidef.kSoundEffectFilename_Success
             stepSoundEffect = uidef.kSoundEffectFilename_Progress
         else:
-            invalidColor = RT10yy_uidef.kBootSeqColor_Failed
+            invalidColor = uidef.kBootSeqColor_Failed
             allInOneSoundEffect = uidef.kSoundEffectFilename_Failure
         if stepName == RT10yy_uidef.kSecureBootSeqStep_AllInOne:
             self.m_button_allInOneAction.SetBackgroundColour( invalidColor )
@@ -266,16 +205,16 @@ class secBootRT10yyUi(gencore.secBootGen):
                 self.playSoundEffect(stepSoundEffect)
         self.Refresh()
 
-    def setSecureBootButtonColor( self, needToPlaySound=True ):
+    def RT10yy_setSecureBootButtonColor( self, needToPlaySound=True ):
         activeColor = None
         optionalColor = None
         setEnable = None
         if self.isToolRunAsEntryMode:
-            activeColor = RT10yy_uidef.kBootSeqColor_Invalid
-            optionalColor = RT10yy_uidef.kBootSeqColor_Invalid
+            activeColor = uidef.kBootSeqColor_Invalid
+            optionalColor = uidef.kBootSeqColor_Invalid
         else:
-            activeColor = RT10yy_uidef.kBootSeqColor_Active
-            optionalColor = RT10yy_uidef.kBootSeqColor_Optional
+            activeColor = uidef.kBootSeqColor_Active
+            optionalColor = uidef.kBootSeqColor_Optional
         setEnable = not self.isToolRunAsEntryMode
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         if self.secureBootType == RT10yy_uidef.kSecureBootType_Development:
@@ -329,7 +268,7 @@ class secBootRT10yyUi(gencore.secBootGen):
         else:
             pass
         self.m_button_allInOneAction.Enable( True )
-        self.m_button_allInOneAction.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+        self.m_button_allInOneAction.SetBackgroundColour( uidef.kBootSeqColor_Active )
         self.Refresh()
         if needToPlaySound:
             self.soundEffectFilenameForTask = uidef.kSoundEffectFilename_Restart
@@ -353,40 +292,40 @@ class secBootRT10yyUi(gencore.secBootGen):
         if pageIndex != self.m_notebook_imageSeq.GetSelection():
             self.m_notebook_imageSeq.SetSelection(pageIndex)
 
-    def setSecureBootSeqColor( self , needToPlaySound=True ):
+    def RT10yy_setSecureBootSeqColor( self , needToPlaySound=True ):
         self.hasDynamicLableBeenInit = True
         self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageGenerationSequence)
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
-        self._resetSecureBootSeqColor()
+        self.resetSecureBootSeqColor()
         self.m_button_genCert.SetLabel(uilang.kMainLanguageContentDict['button_genCert'][self.languageIndex])
         self.m_button_progSrk.SetLabel(uilang.kMainLanguageContentDict['button_progSrk'][self.languageIndex])
         self.m_button_operBee.SetLabel(uilang.kMainLanguageContentDict['button_operBee'][self.languageIndex])
         self.m_button_progDek.SetLabel(uilang.kMainLanguageContentDict['button_progDek'][self.languageIndex])
         if self.secureBootType == RT10yy_uidef.kSecureBootType_Development:
             self.m_panel_genImage1_browseApp.Enable( True )
-            self.m_panel_genImage1_browseApp.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
             self.m_panel_flashImage1_showImage.Enable( True )
-            self.m_panel_flashImage1_showImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             strMemType, strHasDcd = self._getImgName()
             imgPath = "../img/" + strMemType + "image_" + strHasDcd + "unsigned.png"
             self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_u'][self.languageIndex])
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabAuth:
             self.m_panel_doAuth1_certInput.Enable( True )
-            self.m_panel_doAuth1_certInput.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_doAuth1_certInput.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_textCtrl_serial.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
             self.m_textCtrl_keyPass.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
             self.m_panel_doAuth2_certFmt.Enable( True )
-            self.m_panel_doAuth2_certFmt.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_doAuth2_certFmt.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_genImage1_browseApp.Enable( True )
-            self.m_panel_genImage1_browseApp.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_s'][self.languageIndex])
             self.m_panel_progSrk1_showSrk.Enable( True )
-            self.m_panel_progSrk1_showSrk.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_progSrk1_showSrk.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_flashImage1_showImage.Enable( True )
-            self.m_panel_flashImage1_showImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             strMemType, strHasDcd = self._getImgName()
             imgPath = "../img/" + strMemType + "image_" + strHasDcd + "signed.png"
             self.showImageLayout(imgPath.encode('utf-8'))
@@ -394,44 +333,44 @@ class secBootRT10yyUi(gencore.secBootGen):
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
             if (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
                (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
-                self._resetSecureBootSeqColor()
+                self.resetSecureBootSeqColor()
             else:
                 self.m_panel_doAuth1_certInput.Enable( True )
-                self.m_panel_doAuth1_certInput.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_doAuth1_certInput.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_textCtrl_serial.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
                 self.m_textCtrl_keyPass.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
                 self.m_panel_doAuth2_certFmt.Enable( True )
-                self.m_panel_doAuth2_certFmt.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_doAuth2_certFmt.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_panel_genImage1_browseApp.Enable( True )
-                self.m_panel_genImage1_browseApp.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_panel_genImage2_habCryptoAlgo.Enable( True )
-                self.m_panel_genImage2_habCryptoAlgo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_genImage2_habCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_se'][self.languageIndex])
                 self.m_panel_progSrk1_showSrk.Enable( True )
-                self.m_panel_progSrk1_showSrk.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_progSrk1_showSrk.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_panel_flashImage1_showImage.Enable( True )
-                self.m_panel_flashImage1_showImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 strMemType, strHasDcd = self._getImgName()
                 imgPath = "../img/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted_nodek.png"
                 self.showImageLayout(imgPath.encode('utf-8'))
                 self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
                 self.m_panel_progDek1_showHabDek.Enable( True )
-                self.m_panel_progDek1_showHabDek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_progDek1_showHabDek.SetBackgroundColour( uidef.kBootSeqColor_Active )
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto:
             if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
                 self.m_panel_genImage1_browseApp.Enable( True )
-                self.m_panel_genImage1_browseApp.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_panel_genImage3_enableCertForBee.Enable( True )
-                self.m_panel_genImage3_enableCertForBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_genImage3_enableCertForBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.setKeyStorageRegionColor()
                 self.setBeeCertColor()
                 self.m_panel_flashImage1_showImage.Enable( True )
-                self.m_panel_flashImage1_showImage.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+                self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             else:
-                self._resetSecureBootSeqColor()
+                self.resetSecureBootSeqColor()
         else:
             pass
-        self.setSecureBootButtonColor(needToPlaySound)
+        self.RT10yy_setSecureBootButtonColor(needToPlaySound)
         self.Refresh()
 
     def updateImgPictureAfterFlashDek( self ):
@@ -463,13 +402,13 @@ class secBootRT10yyUi(gencore.secBootGen):
             pass
         self.showImageLayout(imgPath.encode('utf-8'))
         self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
-        self._resetCertificateColor()
+        self.resetCertificateColor()
         if self.isCertEnabledForBee:
             activeColor = None
             if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-                activeColor = RT10yy_uidef.kBootSeqColor_Active
+                activeColor = uidef.kBootSeqColor_Active
             elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                activeColor = RT10yy_uidef.kBootSeqColor_Optional
+                activeColor = uidef.kBootSeqColor_Optional
             else:
                 pass
             self.m_panel_doAuth1_certInput.Enable( True )
@@ -489,11 +428,11 @@ class secBootRT10yyUi(gencore.secBootGen):
     def setKeyStorageRegionColor( self ):
         self.keyStorageRegion = self.m_choice_keyStorageRegion.GetString(self.m_choice_keyStorageRegion.GetSelection())
         self.toolCommDict['keyStoreRegion'] = self.m_choice_keyStorageRegion.GetSelection()
-        self._resetKeyStorageRegionColor()
+        self.resetKeyStorageRegionColor()
         self.m_panel_prepBee1_beeKeyRegion.Enable( True )
-        self.m_panel_prepBee1_beeKeyRegion.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+        self.m_panel_prepBee1_beeKeyRegion.SetBackgroundColour( uidef.kBootSeqColor_Active )
         self.m_panel_prepBee2_beeCryptoAlgo.Enable( True )
-        self.m_panel_prepBee2_beeCryptoAlgo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+        self.m_panel_prepBee2_beeCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Active )
         if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
             self.m_choice_enableCertForBee.Clear()
             self.m_choice_enableCertForBee.SetItems(['Yes'])
@@ -504,7 +443,7 @@ class secBootRT10yyUi(gencore.secBootGen):
             self.m_choice_availBeeEngines.SetSelection(0)
             self.m_button_prepBee.Enable( True )
             self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_p'][self.languageIndex])
-            self.m_button_prepBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_button_prepBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
         elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
             enableCertForBeeTxt = self.m_choice_enableCertForBee.GetString(self.m_choice_enableCertForBee.GetSelection())
             self.m_choice_enableCertForBee.Clear()
@@ -516,15 +455,15 @@ class secBootRT10yyUi(gencore.secBootGen):
             self.m_choice_availBeeEngines.SetSelection(0)
             self.m_button_prepBee.Enable( True )
             self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_e'][self.languageIndex])
-            self.m_button_prepBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_button_prepBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_operBee1_beeKeyInfo.Enable( True )
-            self.m_panel_operBee1_beeKeyInfo.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_operBee1_beeKeyInfo.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_operBee2_showGp4Dek.Enable( True )
-            self.m_panel_operBee2_showGp4Dek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_operBee2_showGp4Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_operBee3_showSwgp2Dek.Enable( True )
-            self.m_panel_operBee3_showSwgp2Dek.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_panel_operBee3_showSwgp2Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_button_operBee.Enable( True )
-            self.m_button_operBee.SetBackgroundColour( RT10yy_uidef.kBootSeqColor_Active )
+            self.m_button_operBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
         else:
             pass
         self.Refresh()
@@ -1001,7 +940,7 @@ class secBootRT10yyUi(gencore.secBootGen):
         self.m_staticText_habDek128bit.SetLabel(uilang.kMainLanguageContentDict['sText_habDek128bit'][langIndex])
 
         if self.hasDynamicLableBeenInit:
-            self.setSecureBootSeqColor(False)
+            self.RT10yy_setSecureBootSeqColor(False)
             if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_p'][self.languageIndex])
             elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:

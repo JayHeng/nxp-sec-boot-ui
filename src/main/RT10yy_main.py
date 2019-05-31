@@ -77,12 +77,12 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         self._setUartUsbPort()
         self.applyFuseOperToRunMode()
         needToPlaySound = False
-        self.setSecureBootSeqColor(needToPlaySound)
+        self.RT10yy_setSecureBootSeqColor(needToPlaySound)
 
     def RT10yy_callbackSetBootDevice( self ):
         self.RT10yy_setTargetSetupValue()
         needToPlaySound = False
-        self.setSecureBootSeqColor(needToPlaySound)
+        self.RT10yy_setSecureBootSeqColor(needToPlaySound)
 
     def _checkIfSubWinHasBeenOpened( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -266,9 +266,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self.updateConnectStatus('black')
         self._RT10yy_stopGaugeTimer()
 
-    def callbackSetSecureBootType( self, event ):
+    def RT10yy_callbackSetSecureBootType( self ):
         self.setCostTime(0)
-        self.setSecureBootSeqColor()
+        self.RT10yy_setSecureBootSeqColor()
 
     def RT10yy_task_doAllInOneAction( self ):
         while True:
@@ -292,7 +292,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 status = self._doProgramSrk()
                 if not status:
                     break
-            status = self._doGenImage()
+            status = self._RT10yy_doGenImage()
             if not status:
                 break
             if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
@@ -333,7 +333,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self._doViewMem()
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_AllInOne, status)
 
-    def RT10yy_callbackAllInOneAction( self, event ):
+    def RT10yy_callbackAllInOneAction( self ):
         self._RT10yy_startGaugeTimer()
         self.RT10yy_isAllInOneActionTaskPending = True
 
@@ -400,7 +400,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 elif not reuseCert:
                     self.cleanUpCertificate()
                     if self.createSerialAndKeypassfile():
-                        self.setSecureBootButtonColor()
+                        self.RT10yy_setSecureBootButtonColor()
                         self.genCertificate()
                         self.genSuperRootKeys()
                         self.showSuperRootKeys()
@@ -421,15 +421,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def callbackChangedAppFile( self, event ):
-        self.getUserAppFilePath()
-        self.setCostTime(0)
-        self.setSecureBootButtonColor()
-
-    def callbackSetAppFormat( self, event ):
-        self.getUserAppFileFormat()
-
-    def _doGenImage( self ):
+    def _RT10yy_doGenImage( self ):
         status = False
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
@@ -443,17 +435,17 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if self.createMatchedAppBdfile():
                 # Need to update image picture for DCD
                 needToPlaySound = False
-                self.setSecureBootSeqColor(needToPlaySound)
-                if self.genBootableImage():
+                self.RT10yy_setSecureBootSeqColor(needToPlaySound)
+                if self.RT10yy_genBootableImage():
                     self.showHabDekIfApplicable()
                     status = True
             self._RT10yy_stopGaugeTimer()
         self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenImage, status)
         return status
 
-    def callbackGenImage( self, event ):
+    def RT10yy_callbackGenImage( self ):
         if not self.isToolRunAsEntryMode:
-            self._doGenImage()
+            self._RT10yy_doGenImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
@@ -834,4 +826,4 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def RT10yy_switchToolRunMode( self ):
         self.applyFuseOperToRunMode()
-        self.setSecureBootButtonColor()
+        self.RT10yy_setSecureBootButtonColor()

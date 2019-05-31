@@ -6,6 +6,7 @@ import time
 import shutil
 import subprocess
 import bincopy
+import gendef
 import RT10yy_gendef
 sys.path.append(os.path.abspath(".."))
 from ui import RT10yy_uicore
@@ -300,116 +301,6 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         shutil.make_archive(backupFoldername, 'zip', root_dir=backupFoldername)
         shutil.rmtree(backupFoldername)
 
-    def _convertElfOrAxfToSrec( self, appFilename, destSrecAppFilename, appFormat):
-        batContent = ''
-        # below are conv results:
-        # ----------------------------------------------------------------
-        # |                       |    IAR     |    MDK     |    MCUX    |
-        # ----------------------------------------------------------------
-        # |      ielftool         |    Yes     |    Yes     |    No      |   // Start address is always 0x0000_0000
-        # ----------------------------------------------------------------
-        # | arm-none-eabi-objcopy |    Yes     |    No      |    Yes     |   // Error content in last three lines
-        # ----------------------------------------------------------------
-        # |      fromelf          |    No      |    Yes     |    No      |   // A folder will be generated for IAR, All contents are error for MCUX
-        # ----------------------------------------------------------------
-        if appFormat == uidef.kAppImageFormat_ElfFromIar or appFormat == uidef.kAppImageFormat_AxfFromMdk:
-            batContent = "\"" + self.iarElfConvToolPath + "\" --srec-s3only \"" + appFilename +"\" \"" + destSrecAppFilename + "\""
-        elif appFormat == uidef.kAppImageFormat_AxfFromMcux or appFormat == uidef.kAppImageFormat_ElfFromGcc:
-            batContent = "\"" + self.mcuxAxfConvToolPath + "\" -O srec \"" + appFilename +"\" \"" + destSrecAppFilename + "\""
-        #elif appFormat == uidef.kAppImageFormat_AxfFromMdk:
-        #    batContent = "\"" + self.mdkAxfConvToolPath + "\" --m32 \"" + appFilename +"\" --output \"" + destSrecAppFilename + "\""
-        else:
-            pass
-        with open(self.appFmtBatFilename, 'wb') as fileObj:
-            fileObj.write(batContent)
-            fileObj.close()
-        try:
-            #os.system(self.appFmtBatFilename)
-            process = subprocess.Popen(self.appFmtBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        except:
-            pass
-        if os.path.isfile(destSrecAppFilename):
-            self.srcAppFilename = destSrecAppFilename
-            appType = gendef.kAppImageFileExtensionList_S19[0]
-            self.isConvertedAppUsed = True
-            self.printLog('User image file has been converted to S-Records successfully')
-            return self.srcAppFilename, appType
-        else:
-            appType = gendef.kAppImageFileExtensionList_Elf[0]
-            return appFilename, appType
-
-    def _getSrecDataWithoutS6Frame( self, srecData ):
-        s6FrameStartLoc = srecData.find('S6')
-        if s6FrameStartLoc != -1:
-            newSrecData = srecData[0:s6FrameStartLoc]
-            s6FrameEndLoc = srecData.find('\n', s6FrameStartLoc)
-            if s6FrameEndLoc != -1:
-                if len(srecData) > s6FrameEndLoc:
-                    newSrecData += srecData[s6FrameEndLoc + 1:len(srecData)]
-                else:
-                    newSrecData += '\n'
-            else:
-                newSrecData += '\n'
-            return newSrecData
-        else:
-            return srecData
-
-    def _convertHexOrBinToSrec( self, appFilename, destSrecAppFilename, appType):
-        status = True
-        fmtObj = None
-        if appType.lower() in gendef.kAppImageFileExtensionList_Hex:
-            fmtObj = bincopy.BinFile(str(appFilename))
-        elif appType.lower() in gendef.kAppImageFileExtensionList_Bin:
-            fmtObj = bincopy.BinFile()
-            status, baseAddr = self.getUserBinaryBaseAddress()
-            if status:
-                fmtObj.add_binary_file(str(appFilename), baseAddr)
-            else:
-                appType = None
-        if status:
-            self.srcAppFilename = destSrecAppFilename
-            with open(self.srcAppFilename, 'wb') as fileObj:
-                # Prototype: as_srec(number_of_data_bytes=32, address_length_bits=32)
-                #    Format the binary file as Motorola S-Records records and return them as a string.
-                #    number_of_data_bytes is the number of data bytes in each record.
-                #    address_length_bits is the number of address bits in each record.
-                fileObj.write(self._getSrecDataWithoutS6Frame(fmtObj.as_srec(16, 32)))
-                fileObj.close()
-            appFilename = self.srcAppFilename
-            appType = gendef.kAppImageFileExtensionList_S19[0]
-            self.isConvertedAppUsed = True
-        return appFilename, appType
-
-    def _convertImageFormatToSrec( self, appFilename, appName, appType):
-        appFormat = self.getUserAppFileFormat()
-        destSrecAppFilename = os.path.join(self.userFileFolder, appName + gendef.kAppImageFileExtensionList_S19[0])
-        if appFormat == uidef.kAppImageFormat_AutoDetect:
-            if appType.lower() in gendef.kAppImageFileExtensionList_S19:
-                return appFilename, appType
-            elif (appType.lower() in gendef.kAppImageFileExtensionList_Hex) or (appType.lower() in gendef.kAppImageFileExtensionList_Bin):
-                return self._convertHexOrBinToSrec(appFilename, destSrecAppFilename, appType)
-            else:
-                appFilename, appType = self._convertElfOrAxfToSrec(appFilename, destSrecAppFilename, uidef.kAppImageFormat_ElfFromIar)
-                if appType.lower() in gendef.kAppImageFileExtensionList_S19:
-                    return appFilename, appType
-                appFilename, appType = self._convertElfOrAxfToSrec(appFilename, destSrecAppFilename, uidef.kAppImageFormat_AxfFromMcux)
-                if appType.lower() in gendef.kAppImageFileExtensionList_S19:
-                    return appFilename, appType
-                return self._convertElfOrAxfToSrec(appFilename, destSrecAppFilename, uidef.kAppImageFormat_AxfFromMdk)
-        elif appFormat == uidef.kAppImageFormat_AxfFromMdk or \
-             appFormat == uidef.kAppImageFormat_ElfFromIar or \
-             appFormat == uidef.kAppImageFormat_AxfFromMcux or \
-             appFormat == uidef.kAppImageFormat_ElfFromGcc:
-            return self._convertElfOrAxfToSrec(appFilename, destSrecAppFilename, appFormat)
-        elif appFormat == uidef.kAppImageFormat_IntelHex:
-            return self._convertHexOrBinToSrec(appFilename, destSrecAppFilename, gendef.kAppImageFileExtensionList_Hex[0])
-        elif appFormat == uidef.kAppImageFormat_RawBinary:
-            return self._convertHexOrBinToSrec(appFilename, destSrecAppFilename, gendef.kAppImageFileExtensionList_Bin[0])
-        elif appFormat == uidef.kAppImageFormat_MotoSrec:
-            return appFilename, gendef.kAppImageFileExtensionList_S19[0]
-        else:
-            pass
-
     def _getIvtInfoFromIvtBlockBytes( self, ivtBlockBytes ):
         ivtEntry= self.getVal32FromByteArray(ivtBlockBytes[RT10yy_memdef.kMemberOffsetInIvt_Entry:RT10yy_memdef.kMemberOffsetInIvt_Entry + 4])
         ivtDcd= self.getVal32FromByteArray(ivtBlockBytes[RT10yy_memdef.kMemberOffsetInIvt_Dcd:RT10yy_memdef.kMemberOffsetInIvt_Dcd + 4])
@@ -461,14 +352,14 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         self.printLog('Origianl image file is a bootable image file')
         return True
 
-    def _getImageInfo( self, srcAppFilename ):
+    def _RT10yy_getImageInfo( self, srcAppFilename ):
         startAddress = None
         entryPointAddress = None
         lengthInByte = 0
         if os.path.isfile(srcAppFilename):
             appPath, appFilename = os.path.split(srcAppFilename)
             appName, appType = os.path.splitext(appFilename)
-            srcAppFilename, appType = self._convertImageFormatToSrec(srcAppFilename, appName, appType)
+            srcAppFilename, appType = self.convertImageFormatToSrec(srcAppFilename, appName, appType)
             isConvSuccessed = False
             if appType.lower() in gendef.kAppImageFileExtensionList_Elf:
                 try:
@@ -851,7 +742,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         else:
             return False
 
-    def _isValidNonXipAppImage( self, imageStartAddr ):
+    def _RT10yy_isValidNonXipAppImage( self, imageStartAddr ):
         if self.isInTheRangeOfFlexram(imageStartAddr, 1):
             return True
         elif ((imageStartAddr >= RT10yy_rundef.kBootDeviceMemBase_SemcSdram) and (imageStartAddr < RT10yy_rundef.kBootDeviceMemBase_SemcSdram + RT10yy_rundef.kBootDeviceMemMaxSize_SemcSdram)):
@@ -860,7 +751,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_invalidNonXipRange'][self.languageIndex])
             return False
 
-    def _isValidAppImage( self, imageStartAddr ):
+    def _RT10yy_isValidAppImage( self, imageStartAddr ):
         if self.isXipApp:
             if self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_xipNotForHabCrypto'][self.languageIndex])
@@ -877,12 +768,12 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
                (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
                self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_nonXipNotAppliable'][self.languageIndex])
                return False
-            return self._isValidNonXipAppImage(imageStartAddr)
+            return self._RT10yy_isValidNonXipAppImage(imageStartAddr)
 
     def createMatchedAppBdfile( self ):
         self.srcAppFilename = self.getUserAppFilePath()
         self._setDestAppInitialBootHeaderInfo(self.bootDevice)
-        imageStartAddr, imageEntryAddr, imageLength = self._getImageInfo(self.srcAppFilename)
+        imageStartAddr, imageEntryAddr, imageLength = self._RT10yy_getImageInfo(self.srcAppFilename)
         if imageStartAddr == None or imageEntryAddr == None:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_notFound'][self.languageIndex])
             return False
@@ -910,7 +801,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
                 self.destAppVectorOffset = RT10yy_gendef.kInitialLoadSize_NOR
         else:
             pass
-        if not self._isValidAppImage(imageStartAddr):
+        if not self._RT10yy_isValidAppImage(imageStartAddr):
             return False
         self.destAppBinaryBytes = imageLength
         if not self.isCertificateGenerated(self.secureBootType):
@@ -950,7 +841,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
             fileObj.write(batContent)
             fileObj.close()
 
-    def _parseBootableImageGenerationResult( self, output ):
+    def _RT10yy_parseBootableImageGenerationResult( self, output ):
         # elftosb ouput template:
         # (Signed)     CSF Processed successfully and signed data available in csf.bin
         # (All)                Section: xxx
@@ -976,7 +867,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_failToGen'][self.languageIndex])
             return False
 
-    def genBootableImage( self ):
+    def RT10yy_genBootableImage( self ):
         self._updateBdBatfileContent()
         # We have to change system dir to the path of elftosb.exe, or elftosb.exe may not be ran successfully
         curdir = os.getcwd()
@@ -986,7 +877,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         commandOutput = process.communicate()[0]
         print commandOutput
         self._recoverDcdBecauseOfSrcApp()
-        if self._parseBootableImageGenerationResult(commandOutput):
+        if self._RT10yy_parseBootableImageGenerationResult(commandOutput):
             return True
         else:
             return False
@@ -1089,7 +980,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
 
     def _createSignedFlBdfile( self, srcFlFilename):
         self._setDestAppInitialBootHeaderInfo(RT10yy_uidef.kBootDevice_RamFlashloader)
-        imageStartAddr, imageEntryAddr, imageLength = self._getImageInfo(srcFlFilename)
+        imageStartAddr, imageEntryAddr, imageLength = self._RT10yy_getImageInfo(srcFlFilename)
         if imageStartAddr == None or imageEntryAddr == None:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_invalidFl'][self.languageIndex])
             return False

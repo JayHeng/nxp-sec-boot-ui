@@ -1,6 +1,11 @@
 import wx
 import sys, os
 
+kBootSeqColor_Invalid  = wx.Colour( 64, 64, 64 )
+kBootSeqColor_Optional = wx.Colour( 166, 255, 255 )
+kBootSeqColor_Active   = wx.Colour( 147, 255, 174 )
+kBootSeqColor_Failed   = wx.Colour( 255, 0, 0 )
+
 kConnectStage_Rom            = 1
 kConnectStage_Flashloader    = 2
 kConnectStage_ExternalMemory = 3

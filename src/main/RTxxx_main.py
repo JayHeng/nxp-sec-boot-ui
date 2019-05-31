@@ -150,6 +150,10 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
                 self.updateConnectStatus('black')
         self._RTxxx_stopGaugeTimer()
 
+    def RTxxx_callbackSetSecureBootType( self ):
+        self.setCostTime(0)
+        self.RTxxx_setSecureBootSeqColor()
+
     def RTxxx_task_doAllInOneAction( self ):
         while True:
             if self.RTxxx_isAllInOneActionTaskPending:
@@ -161,9 +165,28 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
     def _RTxxx_doAllInOneAction( self ):
         pass
 
-    def RTxxx_callbackAllInOneAction( self, event ):
+    def RTxxx_callbackAllInOneAction( self ):
         self._RTxxx_startGaugeTimer()
         self.RTxxx_isAllInOneActionTaskPending = True
+
+    def _RTxxx_doGenImage( self ):
+        status = False
+        self._RTxxx_startGaugeTimer()
+        self.printLog("'Generate Bootable Image' button is clicked")
+        if self.createMatchedAppJsonfile():
+            #needToPlaySound = False
+            #self.setSecureBootSeqColor(needToPlaySound)
+            if self.RTxxx_genBootableImage():
+                status = True
+        self._RTxxx_stopGaugeTimer()
+        #self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenImage, status)
+        return status
+
+    def RTxxx_callbackGenImage( self ):
+        if not self.isToolRunAsEntryMode:
+            self._RTxxx_doGenImage()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def RTxxx_switchToolRunMode( self ):
         pass

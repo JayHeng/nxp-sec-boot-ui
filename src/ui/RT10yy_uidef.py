@@ -4,11 +4,6 @@ import sys, os
 kConnectStep_Fast   = 3
 kConnectStep_Normal = 1
 
-kBootSeqColor_Invalid  = wx.Colour( 64, 64, 64 )
-kBootSeqColor_Optional = wx.Colour( 166, 255, 255 )
-kBootSeqColor_Active   = wx.Colour( 147, 255, 174 )
-kBootSeqColor_Failed   = wx.Colour( 255, 0, 0 )
-
 kMcuDevice_iMXRT1015 = 'i.MXRT1015'
 kMcuDevice_iMXRT102x = 'i.MXRT102x'
 kMcuDevice_iMXRT105x = 'i.MXRT105x'

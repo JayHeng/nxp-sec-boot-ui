@@ -99,11 +99,40 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         else:
             pass
 
+    def callbackSetSecureBootType( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackSetSecureBootType()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackSetSecureBootType()
+        else:
+            pass
+
     def callbackAllInOneAction( self, event ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.RT10yy_callbackAllInOneAction()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackAllInOneAction()
+        else:
+            pass
+
+    def callbackChangedAppFile( self, event ):
+        self.getUserAppFilePath()
+        self.setCostTime(0)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_setSecureBootButtonColor()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_setSecureBootButtonColor()
+        else:
+            pass
+
+    def callbackSetAppFormat( self, event ):
+        self.getUserAppFileFormat()
+
+    def callbackGenImage( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackGenImage()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackGenImage()
         else:
             pass
 
