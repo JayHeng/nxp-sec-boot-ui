@@ -63,6 +63,10 @@ class Target(object):
         self.isNonXipImageAppliableForXipableDeviceUnderClosedHab = misc.get_dict_default(kwargs, 'isNonXipImageAppliableForXipableDeviceUnderClosedHab', None)
         self.isSipFlexspiNorDevice = misc.get_dict_default(kwargs, 'isSipFlexspiNorDevice', None)
         self.isEccTypeSetInFuseMiscConf = misc.get_dict_default(kwargs, 'isEccTypeSetInFuseMiscConf', None)
+
+        self.quadspiNorDevice = misc.get_dict_default(kwargs, 'quadspiNorDevice', None)
+        self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
+
         self.efuseDescDiffDict = misc.get_dict_default(kwargs, 'efuseDescDiffDict', None)
 
     ##

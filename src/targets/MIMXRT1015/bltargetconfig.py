@@ -57,6 +57,9 @@ isNonXipImageAppliableForXipableDeviceUnderClosedHab = False
 isSipFlexspiNorDevice = False
 isEccTypeSetInFuseMiscConf = False
 
+quadspiNorDevice = None
+quadspiNorMemBase = None
+
 efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',
                                                     '0001 - Reserved',
                                                     '0010 - Reserved',

@@ -56,6 +56,9 @@ isSipFlexspiNorDevice = None
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = None
 isEccTypeSetInFuseMiscConf = None
 
+quadspiNorDevice = None
+quadspiNorMemBase = None
+
 # memory map
 memoryRange = {
     # SRAM, 3MByte

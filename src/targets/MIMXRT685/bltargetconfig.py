@@ -50,11 +50,14 @@ supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verif
 hasRemappedFuse = None
 availableBootDevices = [RTxxx_uidef.kBootDevice_QuadspiNor]
 flexspiNorDevice = None
-flexspiNorMemBase = 0x08000000
+flexspiNorMemBase = None
 flexspiNorEfuseBootCfg0Bits = None
 isSipFlexspiNorDevice = None
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = None
 isEccTypeSetInFuseMiscConf = None
+
+quadspiNorDevice = None
+quadspiNorMemBase = 0x08000000
 
 # memory map
 memoryRange = {
