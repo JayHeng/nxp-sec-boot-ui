@@ -12,14 +12,6 @@ kSecKeyLengthInBits_DEK = 128
 
 kSecFacRegionAlignedUnit = 0x400
 
-kToolchainSymbolList_EntryAddr = ['Reset_Handler', '__iar_program_start']
-kToolchainSymbolList_VectorAddr = ['__VECTOR_TABLE', '__vector_table', '__Vectors']
-
-kAppImageFileExtensionList_Elf = ['.out', '.elf', '.axf']
-kAppImageFileExtensionList_S19 = ['.srec', '.s19', '.mot', '.mxt', '.m32', '.s28', '.s37']
-kAppImageFileExtensionList_Hex = ['.hex']
-kAppImageFileExtensionList_Bin = ['.bin']
-
 #define NOR_EEPROM_IROM_DATA_HEADER_OFFSET      (0x400)
 #define FLEXSPI_NOR_IROM_DATA_HEADER_OFFSET     (0x1000)
 #define FLEXSPI_NAND_IROM_DATA_HEADER_OFFSET    (0x400)
