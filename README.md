@@ -9,12 +9,16 @@ English | [中文](./README-zh.md)
 　　NXP-MCUBootUtility is a GUI tool specially designed for NXP MCU secure boot. Its features correspond to the BootROM function in NXP MCU. Currently, it mainly supports i.MXRT series MCU chips, Compared to NXP official security enablement toolset (OpenSSL, CST, sdphost, blhost, elftosb, BD, MfgTool2), NXP-MCUBootUtility is a real one-stop tool, a tool that includes all the features of NXP's official security enablement toolset, and what's more, it supports full graphical user interface operation. With NXP-MCUBootUtility, you can easily get started with NXP MCU secure boot.  
 　　The main features of NXP-MCUBootUtility include：  
 
-> * Support i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
+-------------------------------------------------------
 > * Support both UART and USB-HID serial downloader modes  
 > * Support various user application image file formats (elf/axf/srec/hex/bin)  
 > * Can validate the range and applicability of user application image
-> * User image file can be either bare image file or bootable image file 
 > * Support for converting bare image into bootable image  
+> * Support for loading bootable image into external boot devices  
+> * Support common boot device memory operation (Flash Programmer)  
+-------------------------------------------------------
+> * Support i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
+> * User image file can be either bare image file or bootable image file 
 > * Support for converting bare image into .sb file for MfgTool and RT-Flash
 > * Support for loading bootable image into FlexSPI NOR boot device  
 > * Support for loading bootable image into SEMC NAND boot device  
@@ -27,8 +31,13 @@ English | [中文](./README-zh.md)
 > * Support BEE encryption secure boot case (SNVS Key, User Keys)  
 > * Support common eFuse memory operation (eFuse Programmer)  
 > * Support common FlexRAM memory operation (ISP Boot)  
-> * Support common boot device memory operation (Flash Programmer)  
 > * Support for reading back and marking bootable image(NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob) from boot device  
+-------------------------------------------------------
+> * Support i.MXRT533/535/553/555/583/585/593/595, i.MXRT633/635/685  
+> * Support for loading bootable image into FlexSPI/QuadSPI NOR boot device  
+> * Support development boot case (Unsigned, CRC)  
+> * Support common SRAM memory operation (ISP Boot)  
+> * Support for reading back and marking bootable image(OTFAD KeyBlob/FDCB/KeyStore/Image) from boot device  
 
 #### 1.2 Download
 　　NXP-MCUBootUtility is developed in Python, and it is open source. The development environment is Python 2.7.15 (32bit), wxPython 4.0.3, pySerial 3.4, pywinusb 0.4.2, bincopy 15.0.0, PyAudio 0.2.11, PyInstaller 3.3.1 (or higher).  

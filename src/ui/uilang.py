@@ -351,7 +351,7 @@ kRevision_1_2_0_en =  "【v1.2.0】 \n" + \
                       "  Improvement: \n" + \
                       "     1. Non-XIP image can also be supported for BEE Encryption case \n" + \
                       "     2. Display guage in real time \n" + \
-                      "  Bug: \n" + \
+                      "  Bugfix: \n" + \
                       "     1. Region count cannot be set more than 1 for Fixed OTPMK Key case \n" + \
                       "     2. Option1 field is not implemented for FlexSPI NOR configuration \n\n"
 kRevision_1_2_0_zh = u"【v1.2.0】 \n" + \
@@ -361,7 +361,7 @@ kRevision_1_2_0_zh = u"【v1.2.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. BEE加密模式下也能支持Non-XIP应用程序 \n" + \
                      u"     2. 进度条可以实时更新，更新速度由快到慢 \n" + \
-                     u"  缺陷: \n" + \
+                     u"  修复: \n" + \
                      u"     1. 使用Fixed OTPMK Key的BEE加密模式下，加密区域不能被设超过1 \n" + \
                      u"     2. FlexSPI NOR启动设备配置界面，Option1不能被有效设置 \n\n"
 kRevision_1_3_0_en =  "【v1.3.0】 \n" + \
@@ -374,7 +374,7 @@ kRevision_1_3_0_en =  "【v1.3.0】 \n" + \
                       "     4. Can generate .sb file without board connection when boot device type is NOR \n" + \
                       "     5. Automatic image readback can be disabled to save operation time \n" + \
                       "     6. The text of language option in menu bar should be static and easy understanding \n" + \
-                      "  Bug: \n" + \
+                      "  Bugfix: \n" + \
                       "     1. Cannot generate bootable image when original image (hex/bin) size is larger than 64KB \n" + \
                       "     2. Cannot download large image file (eg 6.8MB) in some case \n" + \
                       "     3. There is language switch issue with some dynamic labels \n" + \
@@ -389,7 +389,7 @@ kRevision_1_3_0_zh = u"【v1.3.0】 \n" + \
                       "     4. 当启动设备是NOR型Flash时，可以不用连接板子直接生成.sb文件 \n" + \
                      u"     5. 一键操作下的自动程序回读可以被禁掉，用以节省操作时间 \n" + \
                      u"     6. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
-                     u"  缺陷: \n" + \
+                     u"  修复: \n" + \
                      u"     1. 当输入的源image文件格式为hex或者bin且其大小超过64KB时，生成可启动程序会失败 \n" + \
                      u"     2. 当输入的源image文件非常大时(比如6.8MB)，下载可能会超时失败 \n" + \
                      u"     3. 当切换显示语言时，有一些控件标签(如Connect按钮)不能实时更新 \n" + \
@@ -410,18 +410,30 @@ kRevision_1_4_0_zh = u"【v1.4.0】 \n" + \
                      u"     2. 为通用Flash编程器里的操作添加实时进度条显示 \n\n"
 kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. Add Execute action support for memory programmer \n" + \
+                      "     1. Support i.MXRT5xx, i.MXRT6xx \n" + \
+                      "     2. [RTxxx] Support both UART and USB-HID ISP modes \n" + \
+                      "     3. [RTxxx] Support for converting bare image into bootable image \n" + \
+                      "     4. [RTxxx] Support for loading bootable image into FlexSPI/QuadSPI NOR boot device \n" + \
+                      "     5. [RTxxx] Support development boot case (Unsigned, CRC) \n" + \
+                      "     6. [RT10yy] Add Execute action support for memory programmer \n" + \
                       "  Improvement: \n" + \
-                      "     1. Can write/read FlexRAM via memory programmer \n" + \
-                      "  Bug: \n" + \
-                      "     1. Sometimes tool will report error \"xx.bat file cannot be found\" \n\n"
+                      "     1. [RT10yy] Improve stability of USB connection of i.MXRT105x board \n" + \
+                      "     2. [RT10yy] Can write/read FlexRAM via memory programmer \n" + \
+                      "  Bugfix: \n" + \
+                      "     1. [RT10yy] Sometimes tool will report error \"xx.bat file cannot be found\" \n\n"
 kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
+                     u"     1. 支持i.MXRT5xx, i.MXRT6xx \n" + \
+                     u"     2. [RTxxx] 支持UART和USB-HID两种串行编程方式（COM端口/USB设备自动识别） \n" + \
+                     u"     3. [RTxxx] 支持将裸源image文件自动转换成i.MXRT能启动的Bootable image \n" + \
+                     u"     4. [RTxxx] 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI NOR接口Flash \n" + \
+                     u"     5. [RTxxx] 支持用于开发阶段的非安全加密启动（未签名，CRC校验） \n" + \
+                     u"     6. [RT10yy] 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
                      u"  改进: \n" + \
-                     u"     1. 通用Flash编程器里也支持读写FlexRAM \n" + \
-                     u"  缺陷: \n" + \
-                     u"     1. 有时候生成证书时会提示bat文件无法找到，导致证书无法生成 \n\n"
+                     u"     1. [RT10yy] 提高i.MXRT105x目标板USB连接稳定性 \n" + \
+                     u"     2. [RT10yy] 通用Flash编程器里也支持读写FlexRAM \n" + \
+                     u"  修复: \n" + \
+                     u"     1. [RT10yy] 有时候生成证书时会提示bat文件无法找到，导致证书无法生成 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
