@@ -33,6 +33,7 @@ sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
 from ui import RT10yy_uidef
 from ui import RT10yy_uidef_efuse
+from ui import uidef
 
 cpu = 'MIMXRT1052'
 board = 'EVK'
@@ -50,7 +51,7 @@ availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = False
 availableBootDevices = RT10yy_uidef.kBootDevice_Latest
-flexspiNorDevice = RT10yy_uidef.kFlexspiNorDevice_ISSI_IS26KS512S
+flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS26KS512S
 flexspiNorMemBase = 0x60000000
 flexspiNorEfuseBootCfg0Bits = 12
 isSipFlexspiNorDevice = False

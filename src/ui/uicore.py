@@ -157,6 +157,14 @@ class secBootUi(secBootWin.secBootWin):
         self.isAutomaticImageReadback = self.m_menuItem_imageReadbackAutomatic.IsChecked()
         self.toolCommDict['isAutomaticImageReadback'] = self.isAutomaticImageReadback
 
+    def checkIfSubWinHasBeenOpened( self ):
+        runtimeSettings = uivar.getRuntimeSettings()
+        if not runtimeSettings[0]:
+            uivar.setRuntimeSettings(True)
+            return False
+        else:
+            return True
+
     def _initTargetSetupValue( self ):
         self.m_choice_mcuSeries.Clear()
         self.m_choice_mcuSeries.SetItems(uidef.kMcuSeries_Latest)

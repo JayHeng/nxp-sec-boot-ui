@@ -32,6 +32,7 @@ import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
 from ui import RTxxx_uidef
+from ui import uidef
 
 cpu = 'MIMXRT685'
 board = 'EVK'
@@ -49,10 +50,10 @@ availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 hasRemappedFuse = None
 availableBootDevices = [RTxxx_uidef.kBootDevice_QuadspiNor]
-flexspiNorDevice = None
+flexspiNorDevice = uidef.kFlexspiNorDevice_None
 flexspiNorMemBase = None
 flexspiNorEfuseBootCfg0Bits = None
-isSipFlexspiNorDevice = None
+isSipFlexspiNorDevice = False
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = None
 isEccTypeSetInFuseMiscConf = None
 

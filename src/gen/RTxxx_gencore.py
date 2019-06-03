@@ -14,6 +14,7 @@ from ui import RTxxx_uidef
 from ui import uidef
 from ui import uivar
 from ui import uilang
+from run import RTxxx_rundef
 from utils import elf
 
 class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):

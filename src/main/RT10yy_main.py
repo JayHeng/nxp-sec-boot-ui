@@ -13,13 +13,6 @@ from ui import uidef
 from ui import uivar
 from ui import uilang
 from fuse import RT10yy_fusedef
-from ui import ui_cfg_flexspinor
-from ui import ui_cfg_flexspinand
-from ui import ui_cfg_semcnor
-from ui import ui_cfg_semcnand
-from ui import ui_cfg_usdhcsd
-from ui import ui_cfg_usdhcmmc
-from ui import ui_cfg_lpspinor
 from ui import ui_cfg_dcd
 from ui import ui_settings_cert
 from ui import ui_settings_fixed_otpmk_key
@@ -84,54 +77,8 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         needToPlaySound = False
         self.RT10yy_setSecureBootSeqColor(needToPlaySound)
 
-    def _checkIfSubWinHasBeenOpened( self ):
-        runtimeSettings = uivar.getRuntimeSettings()
-        if not runtimeSettings[0]:
-            uivar.setRuntimeSettings(True)
-            return False
-        else:
-            return True
-
-    def callbackBootDeviceConfiguration( self, event ):
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            if self.tgt.isSipFlexspiNorDevice:
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['bootDeviceInfo_hasOnchipSerialNor'][self.languageIndex])
-                return
-        if self._checkIfSubWinHasBeenOpened():
-            return
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            flexspiNorFrame = ui_cfg_flexspinor.secBootUiCfgFlexspiNor(None)
-            flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['flexspinor_title'][self.languageIndex])
-            flexspiNorFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNand:
-            flexspiNandFrame = ui_cfg_flexspinand.secBootUiFlexspiNand(None)
-            flexspiNandFrame.SetTitle(u"FlexSPI NAND Device Configuration")
-            flexspiNandFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor:
-            semcNorFrame = ui_cfg_semcnor.secBootUiSemcNor(None)
-            semcNorFrame.SetTitle(u"SEMC NOR Device Configuration")
-            semcNorFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
-            semcNandFrame = ui_cfg_semcnand.secBootUiCfgSemcNand(None)
-            semcNandFrame.SetTitle(uilang.kSubLanguageContentDict['semcnand_title'][self.languageIndex])
-            semcNandFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcSd:
-            usdhcSdFrame = ui_cfg_usdhcsd.secBootUiUsdhcSd(None)
-            usdhcSdFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcsd_title'][self.languageIndex])
-            usdhcSdFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcMmc:
-            usdhcMmcFrame = ui_cfg_usdhcmmc.secBootUiUsdhcMmc(None)
-            usdhcMmcFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcmmc_title'][self.languageIndex])
-            usdhcMmcFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
-            lpspiNorFrame = ui_cfg_lpspinor.secBootUiCfgLpspiNor(None)
-            lpspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['lpspinor_title'][self.languageIndex])
-            lpspiNorFrame.Show(True)
-        else:
-            pass
-
     def callbackDeviceConfigurationData( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         dcdFrame = ui_cfg_dcd.secBootUiCfgDcd(None)
         dcdFrame.SetTitle(uilang.kSubLanguageContentDict['dcd_title'][self.languageIndex])
@@ -348,7 +295,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
-                if self._checkIfSubWinHasBeenOpened():
+                if self.checkIfSubWinHasBeenOpened():
                     return
                 certSettingsFrame = ui_settings_cert.secBootUiSettingsCert(None)
                 certSettingsFrame.SetTitle(uilang.kSubLanguageContentDict['cert_title'][self.languageIndex])
@@ -459,7 +406,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def callbackAdvKeySettings( self, event ):
         if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            if self._checkIfSubWinHasBeenOpened():
+            if self.checkIfSubWinHasBeenOpened():
                 return
             if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 otpmkKeySettingsFrame = ui_settings_fixed_otpmk_key.secBootUiSettingsFixedOtpmkKey(None)
@@ -637,7 +584,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def callbackSetEfuseLock( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseLockFrame = RT10yy_ui_efuse_lock.secBootUiEfuseLock(None)
         efuseLockFrame.SetTitle("eFuse 0x400 Lock")
@@ -645,7 +592,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseLockFrame.Show(True)
 
     def callbackSetEfuseBootCfg0( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseBootCfg0Frame = None
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
@@ -663,7 +610,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseBootCfg0Frame.Show(True)
 
     def callbackSetEfuseBootCfg1( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseBootCfg1Frame = RT10yy_ui_efuse_bootcfg1.secBootUiEfuseBootCfg1(None)
         efuseBootCfg1Frame.SetTitle("eFuse 0x460 Boot Cfg1")
@@ -671,7 +618,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseBootCfg1Frame.Show(True)
 
     def callbackSetEfuseBootCfg2( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseBootCfg2Frame = RT10yy_ui_efuse_bootcfg2.secBootUiEfuseBootCfg2(None)
         efuseBootCfg2Frame.SetTitle("eFuse 0x470 Boot Cfg2")
@@ -679,7 +626,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseBootCfg2Frame.Show(True)
 
     def callbackSetEfuseMiscConf0( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseMiscConf0Frame = RT10yy_ui_efuse_miscconf0.secBootUiEfuseMiscConf0(None)
         efuseMiscConf0Frame.SetTitle("eFuse 0x6d0 Misc Conf0")
@@ -687,7 +634,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseMiscConf0Frame.Show(True)
 
     def callbackSetEfuseMiscConf1( self, event ):
-        if self._checkIfSubWinHasBeenOpened():
+        if self.checkIfSubWinHasBeenOpened():
             return
         efuseMiscConf1Frame = None
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:

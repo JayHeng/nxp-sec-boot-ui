@@ -340,18 +340,6 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         else:
             pass
 
-    def _showAsOptimalMemoryUnit( self, memSizeBytes ):
-        strMemSize = ''
-        if memSizeBytes >= 0x40000000:
-            strMemSize = str(memSizeBytes / 0x40000000) + ' GB'
-        elif memSizeBytes >= 0x100000:
-            strMemSize = str(memSizeBytes / 0x100000) + ' MB'
-        elif memSizeBytes >= 0x400:
-            strMemSize = str(memSizeBytes / 0x400) + ' KB'
-        else:
-            strMemSize = str(memSizeBytes) + ' Bytes'
-        return strMemSize
-
     def _getSemcNandDeviceInfo ( self ):
         filename = 'semcNandFcb.dat'
         filepath = os.path.join(self.blhostVectorsDir, filename)
@@ -367,7 +355,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             pagesInBlock = self.getVal32FromBinFile(filepath, RT10yy_rundef.kSemcNandFcbOffset_PagesInBlock)
             blocksInPlane = self.getVal32FromBinFile(filepath, RT10yy_rundef.kSemcNandFcbOffset_BlocksInPlane)
             planesInDevice = self.getVal32FromBinFile(filepath, RT10yy_rundef.kSemcNandFcbOffset_PlanesInDevice)
-            self.printDeviceStatus("Page Size         = " + self._showAsOptimalMemoryUnit(pageByteSize))
+            self.printDeviceStatus("Page Size         = " + self.showAsOptimalMemoryUnit(pageByteSize))
             self.printDeviceStatus("Pages In Block    = " + str(pagesInBlock))
             self.printDeviceStatus("Blocks In Plane   = " + str(blocksInPlane))
             self.printDeviceStatus("Planes In Device  = " + str(planesInDevice))
@@ -393,18 +381,18 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             return True
         filename = 'flexspiNorCfg.dat'
         filepath = os.path.join(self.blhostVectorsDir, filename)
-        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + RT10yy_rundef.kFlexspiNorCfgInfo_StartAddr, RT10yy_rundef.kFlexspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + rundef.kFlexspiNorCfgInfo_StartAddr, rundef.kFlexspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False
-        flexspiTag = self.getVal32FromBinFile(filepath, RT10yy_rundef.kFlexspiNorCfgOffset_FlexspiTag)
-        if flexspiTag == RT10yy_rundef.kFlexspiNorCfgTag_Flexspi:
-            pageByteSize = self.getVal32FromBinFile(filepath, RT10yy_rundef.kFlexspiNorCfgOffset_PageByteSize)
-            sectorByteSize = self.getVal32FromBinFile(filepath, RT10yy_rundef.kFlexspiNorCfgOffset_SectorByteSize)
-            blockByteSize = self.getVal32FromBinFile(filepath, RT10yy_rundef.kFlexspiNorCfgOffset_BlockByteSize)
-            self.printDeviceStatus("Page Size   = " + self._showAsOptimalMemoryUnit(pageByteSize))
-            self.printDeviceStatus("Sector Size = " + self._showAsOptimalMemoryUnit(sectorByteSize))
-            self.printDeviceStatus("Block Size  = " + self._showAsOptimalMemoryUnit(blockByteSize))
+        flexspiTag = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_FlexspiTag)
+        if flexspiTag == rundef.kFlexspiNorCfgTag_Flexspi:
+            pageByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_PageByteSize)
+            sectorByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_SectorByteSize)
+            blockByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_BlockByteSize)
+            self.printDeviceStatus("Page Size   = " + self.showAsOptimalMemoryUnit(pageByteSize))
+            self.printDeviceStatus("Sector Size = " + self.showAsOptimalMemoryUnit(sectorByteSize))
+            self.printDeviceStatus("Block Size  = " + self.showAsOptimalMemoryUnit(blockByteSize))
             self.comMemWriteUnit = pageByteSize
             self.comMemEraseUnit = sectorByteSize
             self.comMemReadUnit = pageByteSize
@@ -439,9 +427,9 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             totalByteSize = int(math.pow(2, val + 19))
         else:
             totalByteSize = int(math.pow(2, val + 3))
-        self.printDeviceStatus("Page Size   = " + self._showAsOptimalMemoryUnit(pageByteSize))
-        self.printDeviceStatus("Sector Size = " + self._showAsOptimalMemoryUnit(sectorByteSize))
-        self.printDeviceStatus("Total Size  = " + self._showAsOptimalMemoryUnit(totalByteSize))
+        self.printDeviceStatus("Page Size   = " + self.showAsOptimalMemoryUnit(pageByteSize))
+        self.printDeviceStatus("Sector Size = " + self.showAsOptimalMemoryUnit(sectorByteSize))
+        self.printDeviceStatus("Total Size  = " + self.showAsOptimalMemoryUnit(totalByteSize))
         self.comMemWriteUnit = pageByteSize
         self.comMemEraseUnit = sectorByteSize
         self.comMemReadUnit = pageByteSize
@@ -462,7 +450,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             #} external_memory_property_store_t;
             blockByteSize = results[5]
             totalSizeKB = results[2]
-            self.printDeviceStatus("Block Size  = " + self._showAsOptimalMemoryUnit(blockByteSize))
+            self.printDeviceStatus("Block Size  = " + self.showAsOptimalMemoryUnit(blockByteSize))
             strTotalSizeGB = ("%.2f" % (totalSizeKB / 1024.0 / 1024))
             self.printDeviceStatus("Total Size  = " + self.convertLongIntHexText(strTotalSizeGB)) + ' GB'
             self.comMemWriteUnit = blockByteSize
@@ -505,10 +493,10 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
     def _eraseFlexspiNorForConfigBlockLoading( self ):
         status = boot.status.kStatus_Success
         if self.RT10yy_isDeviceEnabledToOperate:
-            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, RT10yy_rundef.kFlexspiNorCfgInfo_Length, rundef.kBootDeviceMemId_FlexspiNor)
+            status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase, rundef.kFlexspiNorCfgInfo_Length, rundef.kBootDeviceMemId_FlexspiNor)
             self.printLog(cmdStr)
         if self.isSbFileEnabledToGen:
-            self._addFlashActionIntoSbAppBdContent("    erase " + self.sbAccessBootDeviceMagic + " " + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase))) + ".." + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase + RT10yy_rundef.kFlexspiNorCfgInfo_Length))) + ";\n")
+            self._addFlashActionIntoSbAppBdContent("    erase " + self.sbAccessBootDeviceMagic + " " + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase))) + ".." + self.convertLongIntHexText(str(hex(self.tgt.flexspiNorMemBase + rundef.kFlexspiNorCfgInfo_Length))) + ";\n")
         return (status == boot.status.kStatus_Success)
 
     def _programFlexspiNorConfigBlock ( self ):
@@ -517,10 +505,10 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             status = boot.status.kStatus_Success
             # 0xf000000f is the tag to notify Flashloader to program FlexSPI NOR config block to the start of device
             if self.RT10yy_isDeviceEnabledToOperate:
-                status, results, cmdStr = self.blhost.fillMemory(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, RT10yy_rundef.kFlexspiNorCfgInfo_Notify)
+                status, results, cmdStr = self.blhost.fillMemory(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, rundef.kFlexspiNorCfgInfo_Notify)
                 self.printLog(cmdStr)
             if self.isSbFileEnabledToGen:
-                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kFlexspiNorCfgInfo_Notify))) + " > " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock))) + ";\n")
+                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(rundef.kFlexspiNorCfgInfo_Notify))) + " > " + self.convertLongIntHexText(str(hex(RT10yy_rundef.kRamFreeSpaceStart_LoadCfgBlock))) + ";\n")
             if status != boot.status.kStatus_Success:
                 return False
             if self.RT10yy_isDeviceEnabledToOperate:
@@ -549,7 +537,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
                 else:
                     break
         elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            flexspiNorOpt0, flexspiNorOpt1, flexspiNorDeviceModel = uivar.getBootDeviceConfiguration(self.bootDevice)
+            flexspiNorOpt0, flexspiNorOpt1, flexspiNorDeviceModel = uivar.getBootDeviceConfiguration(uidef.kBootDevice_XspiNor)
             configOptList.extend([flexspiNorOpt0, flexspiNorOpt1])
         elif self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
             lpspiNorOpt0, lpspiNorOpt1 = uivar.getBootDeviceConfiguration(self.bootDevice)
@@ -832,8 +820,8 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         imageData = None
         with open(self.destEncAppFilename, 'rb') as fileObj:
             imageData = fileObj.read(imageLen)
-            if len(imageData) > RT10yy_rundef.kFlexspiNorCfgInfo_Length:
-                imageData = imageData[RT10yy_rundef.kFlexspiNorCfgInfo_Length:len(imageData)]
+            if len(imageData) > rundef.kFlexspiNorCfgInfo_Length:
+                imageData = imageData[rundef.kFlexspiNorCfgInfo_Length:len(imageData)]
             fileObj.close()
         with open(self.destEncAppNoCfgBlockFilename, 'wb') as fileObj:
             fileObj.write(imageData)
@@ -871,7 +859,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
                         return False
             if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 self._genDestEncAppFileWithoutCfgBlock()
-                imageLoadAddr = self.bootDeviceMemBase + RT10yy_rundef.kFlexspiNorCfgInfo_Length
+                imageLoadAddr = self.bootDeviceMemBase + rundef.kFlexspiNorCfgInfo_Length
                 if self.isSbFileEnabledToGen:
                     self._addFlashActionIntoSbAppBdContent("    load " + self.sbAccessBootDeviceMagic + " myBinFile > " + self.convertLongIntHexText(str(hex(imageLoadAddr))) + ";\n")
                     status = boot.status.kStatus_Success

@@ -31,7 +31,7 @@
 > * 支持MCU芯片内部FlexRAM的读/写/执行操作（即专用FlexRAM编程器，可用于ISP启动）  
 > * 支持从外部启动设备回读Bootable image，并对其组成部分（NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob）进行标注  
 -------------------------------------------------------
-> * 支持i.MXRTxx全系列MCU，包含i.MXRT533/535/553/555/583/585/593/595、i.MXRT633/635/685  
+> * 支持i.MXRTxxx全系列MCU，包含i.MXRT533/535/553/555/583/585/593/595、i.MXRT633/635/685  
 > * 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI接口NOR Flash  
 > * 支持用于开发阶段的非安全加密启动（未签名，CRC校验）  
 > * 支持MCU芯片内部SRAM的读/写/执行操作（即专用SRAM编程器，可用于ISP启动）  

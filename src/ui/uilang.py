@@ -158,8 +158,9 @@ kSubLanguageContentDict = {
         'button_dcd_ok':                      ['Ok',                                    u"确定"],
         'button_dcd_cancel':                  ['Cancel',                                u"取消"],
 
-        #flexspinor
+        #flexspinor/quadspinor
         'flexspinor_title':                   ['FlexSPI NOR Device Configuration',      u"配置FlexSPI接口NOR Flash启动设备"],
+        'quadspinor_title':                   ['QuadSPI NOR Device Configuration',      u"配置QuadSPI接口NOR Flash启动设备"],
         'sText_deviceModel':                  ['Use Typical Device Model:',             u"使用典型设备型号："],
         'panel_norOpt0':                      ['Nor Option0',                           u"NOR选项0"],
         'sText_deviceType':                   ['Device Type:',                          u"设备类型："],

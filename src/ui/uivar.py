@@ -308,7 +308,7 @@ def deinitVar(cfgFilename=None):
         fileObj.close()
 
 def getBootDeviceConfiguration( group ):
-    if group == RT10yy_uidef.kBootDevice_FlexspiNor:
+    if group == uidef.kBootDevice_XspiNor:
         global g_flexspiNorOpt0
         global g_flexspiNorOpt1
         global g_flexspiNorDeviceModel
@@ -347,7 +347,7 @@ def getBootDeviceConfiguration( group ):
         pass
 
 def setBootDeviceConfiguration( group, *args ):
-    if group == RT10yy_uidef.kBootDevice_FlexspiNor:
+    if group == uidef.kBootDevice_XspiNor:
         global g_flexspiNorOpt0
         global g_flexspiNorOpt1
         global g_flexspiNorDeviceModel

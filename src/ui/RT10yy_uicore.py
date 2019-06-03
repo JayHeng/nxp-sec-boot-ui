@@ -11,15 +11,15 @@ import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
-from gen import gencore
+from run import runcore
 from run import RT10yy_rundef
 from run import rundef
 from fuse import RT10yy_fusedef
 
-class secBootRT10yyUi(gencore.secBootGen):
+class secBootRT10yyUi(runcore.secBootRun):
 
     def __init__(self, parent):
-        gencore.secBootGen.__init__(self, parent)
+        runcore.secBootRun.__init__(self, parent)
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.RT10yy_initUi()
 

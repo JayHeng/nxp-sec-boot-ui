@@ -4,7 +4,6 @@ import wx
 import sys
 import os
 import math
-import RT10yy_uidef
 import uidef
 import uivar
 import uilang
@@ -17,7 +16,7 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
     def __init__(self, parent):
         bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor.__init__(self, parent)
         self._setLanguage()
-        flexspiNorOpt0, flexspiNorOpt1, flexspiDeviceModel = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_FlexspiNor)
+        flexspiNorOpt0, flexspiNorOpt1, flexspiDeviceModel = uivar.getBootDeviceConfiguration(uidef.kBootDevice_XspiNor)
         #1. Prepare Flash option
         # 0xc0000006 is the tag for Serial NOR parameter selection
         # bit [31:28] Tag fixed to 0x0C
@@ -281,28 +280,28 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
     def callbackUseTypicalDeviceModel( self, event ):
         txt = self.m_choice_deviceMode.GetString(self.m_choice_deviceMode.GetSelection())
         self.flexspiDeviceModel = txt
-        if txt == RT10yy_uidef.kFlexspiNorDevice_ISSI_IS25LP064A:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_ISSI_IS25LP064A
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_ISSI_IS26KS512S:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_ISSI_IS26KS512S
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_MXIC_MX25UM51245G:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_MXIC_MX25UM51245G
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_MXIC_MX25UM51345G:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_MXIC_MX25UM51345G
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_Micron_MT35X:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_Micron_MT35X
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_Adesto_AT25SF128A:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_Adesto_AT25SF128A
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_Adesto_ATXP032:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_Adesto_ATXP032
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_Cypress_S26KS512S:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_Cypress_S26KS512S
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_GigaDevice_GD25LB256E:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_GigaDevice_GD25LB256E
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_GigaDevice_GD25LT256E:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_GigaDevice_GD25LT256E
-        elif txt == RT10yy_uidef.kFlexspiNorDevice_GigaDevice_GD25LX256E:
-            self.flexspiNorOpt0 = RT10yy_uidef.kFlexspiNorOpt0_GigaDevice_GD25LX256E
+        if txt == uidef.kFlexspiNorDevice_ISSI_IS25LP064A:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_ISSI_IS25LP064A
+        elif txt == uidef.kFlexspiNorDevice_ISSI_IS26KS512S:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_ISSI_IS26KS512S
+        elif txt == uidef.kFlexspiNorDevice_MXIC_MX25UM51245G:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_MXIC_MX25UM51245G
+        elif txt == uidef.kFlexspiNorDevice_MXIC_MX25UM51345G:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_MXIC_MX25UM51345G
+        elif txt == uidef.kFlexspiNorDevice_Micron_MT35X:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Micron_MT35X
+        elif txt == uidef.kFlexspiNorDevice_Adesto_AT25SF128A:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Adesto_AT25SF128A
+        elif txt == uidef.kFlexspiNorDevice_Adesto_ATXP032:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Adesto_ATXP032
+        elif txt == uidef.kFlexspiNorDevice_Cypress_S26KS512S:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Cypress_S26KS512S
+        elif txt == uidef.kFlexspiNorDevice_GigaDevice_GD25LB256E:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LB256E
+        elif txt == uidef.kFlexspiNorDevice_GigaDevice_GD25LT256E:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LT256E
+        elif txt == uidef.kFlexspiNorDevice_GigaDevice_GD25LX256E:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LX256E
         else:
             pass
         if txt != 'No':
@@ -333,7 +332,7 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
             self._getEnableSecondPinmux()
             self._getStatusOverride()
             self._getDummyCycles()
-        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_FlexspiNor, self.flexspiNorOpt0, self.flexspiNorOpt1, self.flexspiDeviceModel)
+        uivar.setBootDeviceConfiguration(uidef.kBootDevice_XspiNor, self.flexspiNorOpt0, self.flexspiNorOpt1, self.flexspiDeviceModel)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()

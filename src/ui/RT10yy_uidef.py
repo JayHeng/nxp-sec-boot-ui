@@ -28,31 +28,6 @@ kBootDevice_v1_0_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand,             
 kBootDevice_v1_4_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand, kBootDevice_UsdhcSd, kBootDevice_UsdhcMmc, kBootDevice_LpspiNor]
 kBootDevice_Latest = kBootDevice_v1_4_0
 
-kFlexspiNorDevice_None                  = 'No'
-kFlexspiNorDevice_ISSI_IS25LP064A       = 'ISSI_IS25LP064A_IS25WP064A'
-kFlexspiNorDevice_ISSI_IS26KS512S       = 'ISSI_IS26KS512S'
-kFlexspiNorDevice_MXIC_MX25UM51245G     = 'MXIC_MX25UM51245G_MX66UM51245G_MX25LM51245G'
-kFlexspiNorDevice_MXIC_MX25UM51345G     = 'MXIC_MX25UM51345G'
-kFlexspiNorDevice_Micron_MT35X          = 'Micron_MT35X'
-kFlexspiNorDevice_Adesto_AT25SF128A     = 'Adesto_AT25SF128A'
-kFlexspiNorDevice_Adesto_ATXP032        = 'Adesto_ATXP032'
-kFlexspiNorDevice_Cypress_S26KS512S     = 'Cypress_S26KS512S'
-kFlexspiNorDevice_GigaDevice_GD25LB256E = 'GigaDevice_GD25LB256E'
-kFlexspiNorDevice_GigaDevice_GD25LT256E = 'GigaDevice_GD25LT256E'
-kFlexspiNorDevice_GigaDevice_GD25LX256E = 'GigaDevice_GD25LX256E'
-
-kFlexspiNorOpt0_ISSI_IS25LP064A       = 0xc0000007
-kFlexspiNorOpt0_ISSI_IS26KS512S       = 0xc0233007
-kFlexspiNorOpt0_MXIC_MX25UM51245G     = 0xc0403037
-kFlexspiNorOpt0_MXIC_MX25UM51345G     = 0xc0403007
-kFlexspiNorOpt0_Micron_MT35X          = 0xc0600006
-kFlexspiNorOpt0_Adesto_AT25SF128A     = 0xc0000007
-kFlexspiNorOpt0_Adesto_ATXP032        = 0xc0803007
-kFlexspiNorOpt0_Cypress_S26KS512S     = 0xc0233007
-kFlexspiNorOpt0_GigaDevice_GD25LB256E = 0xc0000007
-kFlexspiNorOpt0_GigaDevice_GD25LT256E = 0xc0000008
-kFlexspiNorOpt0_GigaDevice_GD25LX256E = 0xc0600008
-
 kSecureBootType_Development = 'DEV Unsigned Image Boot'
 kSecureBootType_HabAuth     = 'HAB Signed Image Boot'
 kSecureBootType_HabCrypto   = 'HAB Encrypted Image Boot'

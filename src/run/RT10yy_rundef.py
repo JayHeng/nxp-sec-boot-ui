@@ -61,15 +61,4 @@ kSemcNandFcbOffset_PagesInBlock            = 0x1a8
 kSemcNandFcbOffset_BlocksInPlane           = 0x1ac
 kSemcNandFcbOffset_PlanesInDevice          = 0x1b0
 
-#----------------FlexSPI NOR---------------------
-kFlexspiNorCfgTag_Flexspi = 0x42464346  # 'FCFB'
-
-kFlexspiNorCfgInfo_StartAddr = 0x0
-kFlexspiNorCfgInfo_Length    = 0x400
-kFlexspiNorCfgInfo_Notify    = 0xF000000F
-
-kFlexspiNorCfgOffset_FlexspiTag     = 0x000
-kFlexspiNorCfgOffset_PageByteSize   = 0x1c0
-kFlexspiNorCfgOffset_SectorByteSize = 0x1c4
-kFlexspiNorCfgOffset_BlockByteSize  = 0x1d0
 

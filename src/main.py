@@ -11,9 +11,18 @@ import inspect
 import ctypes
 from main import RTxxx_main
 from main import RT10yy_main
+from ui import RT10yy_uidef
+from ui import RTxxx_uidef
 from ui import uidef
 from ui import uivar
 from ui import uilang
+from ui import ui_cfg_flexspinor
+from ui import ui_cfg_flexspinand
+from ui import ui_cfg_semcnor
+from ui import ui_cfg_semcnand
+from ui import ui_cfg_usdhcsd
+from ui import ui_cfg_usdhcmmc
+from ui import ui_cfg_lpspinor
 
 g_main_win = None
 g_task_detectUsbhid = None
@@ -63,6 +72,51 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             self.RT10yy_callbackSetBootDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetBootDevice()
+        else:
+            pass
+
+    def callbackBootDeviceConfiguration( self, event ):
+        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or \
+           self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor or \
+           self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+            if self.tgt.isSipFlexspiNorDevice:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['bootDeviceInfo_hasOnchipSerialNor'][self.languageIndex])
+                return
+        if self.checkIfSubWinHasBeenOpened():
+            return
+        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or \
+           self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor or \
+           self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+            flexspiNorFrame = ui_cfg_flexspinor.secBootUiCfgFlexspiNor(None)
+            if self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
+                flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['quadspinor_title'][self.languageIndex])
+            else:
+                flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['flexspinor_title'][self.languageIndex])
+            flexspiNorFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNand:
+            flexspiNandFrame = ui_cfg_flexspinand.secBootUiFlexspiNand(None)
+            flexspiNandFrame.SetTitle(u"FlexSPI NAND Device Configuration")
+            flexspiNandFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor:
+            semcNorFrame = ui_cfg_semcnor.secBootUiSemcNor(None)
+            semcNorFrame.SetTitle(u"SEMC NOR Device Configuration")
+            semcNorFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
+            semcNandFrame = ui_cfg_semcnand.secBootUiCfgSemcNand(None)
+            semcNandFrame.SetTitle(uilang.kSubLanguageContentDict['semcnand_title'][self.languageIndex])
+            semcNandFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcSd:
+            usdhcSdFrame = ui_cfg_usdhcsd.secBootUiUsdhcSd(None)
+            usdhcSdFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcsd_title'][self.languageIndex])
+            usdhcSdFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcMmc:
+            usdhcMmcFrame = ui_cfg_usdhcmmc.secBootUiUsdhcMmc(None)
+            usdhcMmcFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcmmc_title'][self.languageIndex])
+            usdhcMmcFrame.Show(True)
+        elif self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
+            lpspiNorFrame = ui_cfg_lpspinor.secBootUiCfgLpspiNor(None)
+            lpspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['lpspinor_title'][self.languageIndex])
+            lpspiNorFrame.Show(True)
         else:
             pass
 
