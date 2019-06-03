@@ -166,12 +166,6 @@ class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):
 
         return True
 
-    def isInTheRangeOfSram( self, start, length ):
-        if ((start >= self.tgt.memoryRange['sram'].start) and (start + length <= self.tgt.memoryRange['sram'].start + self.tgt.memoryRange['sram'].length)):
-            return True
-        else:
-            return False
-
     def _RTxxx_isValidNonXipAppImage( self, imageStartAddr ):
         if self.isInTheRangeOfSram(imageStartAddr, 1):
             return True

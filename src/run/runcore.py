@@ -16,6 +16,18 @@ class secBootRun(gencore.secBootGen):
     def __init__(self, parent):
         gencore.secBootGen.__init__(self, parent)
 
+        self.blhost = None
+        self.tgt = None
+        self.cpuDir = None
+        self.blhostVectorsDir = None
+
+        self.bootDeviceMemId = None
+        self.bootDeviceMemBase = None
+
+        self.comMemWriteUnit = 0x1
+        self.comMemEraseUnit = 0x1
+        self.comMemReadUnit = 0x1
+
     def showAsOptimalMemoryUnit( self, memSizeBytes ):
         strMemSize = ''
         if memSizeBytes >= 0x40000000:

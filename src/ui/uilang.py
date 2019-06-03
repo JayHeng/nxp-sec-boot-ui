@@ -586,7 +586,7 @@ kMsgLanguageContentDict = {
 
         'operImgError_hasnotProgImage':       ['You should program your image first!',
                                               u"请首先下载image文件！"],
-        'operImgError_notInFlexram':          ['Your specified area is not in the range of FlexRAM (ITCM, DTCM, OCRAM), Please double check!',
-                                              u"当前指定的访问区域超出有效FlexRAM(ITCM, DTCM, OCRAM)范围，请仔细检查！"],
+        'operImgError_notInRam':              ['Your specified area is not in the range of RAM, Please double check!',
+                                              u"当前指定的访问区域超出有效RAM范围，请仔细检查！"],
 
 }

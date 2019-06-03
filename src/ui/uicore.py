@@ -518,6 +518,33 @@ class secBootUi(secBootWin.secBootWin):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['inputError_illegalFormat'][self.languageIndex])
         return status, val32
 
+    def getComMemStartAddress( self ):
+        return self.getVal32FromHexText(self.m_textCtrl_memStart.GetLineText(0))
+
+    def getComMemByteLength( self ):
+        return self.getVal32FromHexText(self.m_textCtrl_memLength.GetLineText(0))
+
+    def getComMemBinFile( self ):
+        memBinFile = self.m_filePicker_memBinFile.GetPath()
+        return memBinFile.encode('utf-8').encode("gbk")
+
+    def needToSaveReadbackImageData( self ):
+        return self.m_checkBox_saveImageData.GetValue()
+
+    def getImageDataFileToSave( self ):
+        savedBinFile = self.m_filePicker_savedBinFile.GetPath()
+        return savedBinFile.encode('utf-8').encode("gbk")
+
+    def setImageDataFilePath( self, filePath ):
+        self.m_filePicker_savedBinFile.SetPath(filePath)
+
+    def printMem( self , memStr, strColor=uidef.kMemBlockColor_Padding ):
+        self.m_textCtrl_bootDeviceMem.SetDefaultStyle(wx.TextAttr(strColor, uidef.kMemBlockColor_Background))
+        self.m_textCtrl_bootDeviceMem.AppendText(memStr + "\n")
+
+    def clearMem( self ):
+        self.m_textCtrl_bootDeviceMem.Clear()
+
     def _initLanguage( self ):
         if self.toolCommDict['isEnglishLanguage']:
             self.m_menuItem_english.Check(True)

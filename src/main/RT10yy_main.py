@@ -42,8 +42,6 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         self.connectStage = uidef.kConnectStage_Rom
         self.isBootableAppAllowedToView = False
         self.lastTime = None
-        self.isAccessMemTaskPending = False
-        self.accessMemType = ''
         self.isThereBoardConnection = False
 
     def _RT10yy_startGaugeTimer( self ):
@@ -646,57 +644,6 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf1Frame.Show(True)
 
-    def RT10yy_task_doAccessMem( self ):
-        while True:
-            if self.isAccessMemTaskPending:
-                if self.accessMemType == 'ScanFuse':
-                    self.scanAllFuseRegions()
-                    if self.isSbFileEnabledToGen:
-                        self.initSbEfuseBdfileContent()
-                elif self.accessMemType == 'BurnFuse':
-                    self.burnAllFuseRegions()
-                    if self.isSbFileEnabledToGen:
-                        self.genSbEfuseImage()
-                elif self.accessMemType == 'ReadMem':
-                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
-                        self.readFlexramMemory()
-                    elif self.connectStage == uidef.kConnectStage_Reset:
-                        self.readBootDeviceMemory()
-                    else:
-                        pass
-                elif self.accessMemType == 'EraseMem':
-                    self.eraseBootDeviceMemory()
-                elif self.accessMemType == 'WriteMem':
-                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
-                        self.writeFlexramMemory()
-                    elif self.connectStage == uidef.kConnectStage_Reset:
-                        self.writeBootDeviceMemory()
-                    else:
-                        pass
-                else:
-                    pass
-                self.isAccessMemTaskPending = False
-                self._RT10yy_stopGaugeTimer()
-            time.sleep(1)
-
-    def callbackScanFuse( self, event ):
-        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == uidef.kConnectStage_Reset:
-            self._RT10yy_startGaugeTimer()
-            self.isAccessMemTaskPending = True
-            self.accessMemType = 'ScanFuse'
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
-
-    def callbackBurnFuse( self, event ):
-        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == uidef.kConnectStage_Reset:
-            self._RT10yy_startGaugeTimer()
-            self.isAccessMemTaskPending = True
-            self.accessMemType = 'BurnFuse'
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
-
     def _doViewMem( self ):
         if self.connectStage == uidef.kConnectStage_Reset:
             if self.isBootableAppAllowedToView:
@@ -710,66 +657,6 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def callbackViewMem( self, event ):
         self._doViewMem()
-
-    def callbackClearMem( self, event ):
-        self.clearMem()
-
-    def _doReadMem( self ):
-        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == uidef.kConnectStage_Reset:
-            self._RT10yy_startGaugeTimer()
-            self.isAccessMemTaskPending = True
-            self.accessMemType = 'ReadMem'
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
-
-    def callbackReadMem( self, event ):
-        if not self.isToolRunAsEntryMode:
-            self._doReadMem()
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
-
-    def _doEraseMem( self ):
-        if self.connectStage == uidef.kConnectStage_Reset:
-            self._RT10yy_startGaugeTimer()
-            self.isAccessMemTaskPending = True
-            self.accessMemType = 'EraseMem'
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
-
-    def callbackEraseMem( self, event ):
-        if not self.isToolRunAsEntryMode:
-            self._doEraseMem()
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
-
-    def _doWriteMem( self ):
-        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == uidef.kConnectStage_Reset:
-            self._RT10yy_startGaugeTimer()
-            self.isAccessMemTaskPending = True
-            self.accessMemType = 'WriteMem'
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
-
-    def callbackWriteMem( self, event ):
-        if not self.isToolRunAsEntryMode:
-            self._doWriteMem()
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
-
-    def _doExecuteApp( self ):
-        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
-           self.connectStage == uidef.kConnectStage_Reset:
-            self.executeAppInFlexram()
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
-
-    def callbackExecuteApp( self, event ):
-        if not self.isToolRunAsEntryMode:
-            self._doExecuteApp()
-        else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
 
     def RT10yy_switchToolRunMode( self ):
         self.applyFuseOperToRunMode()

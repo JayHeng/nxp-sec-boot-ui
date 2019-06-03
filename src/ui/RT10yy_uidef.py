@@ -74,8 +74,6 @@ kSupportedKeySource_iMXRT1064 = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
 
 kMaxFacRegionCount = 3
 
-kMemBlockColor_Background = wx.WHITE
-kMemBlockColor_Padding    = wx.BLACK
 kMemBlockColor_NFCB       = wx.Colour( 0xf9, 0xb5, 0x00 ) #
 kMemBlockColor_DBBT       = wx.Colour( 0xcc, 0x7f, 0x32 ) #wx.GOLD
 kMemBlockColor_MBRDPT     = wx.Colour( 0xc1, 0x9f, 0x32 ) #

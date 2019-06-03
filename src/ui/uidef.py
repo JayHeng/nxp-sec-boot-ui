@@ -66,3 +66,6 @@ kSoundEffectFilename_Success  = 'levelwin_success.wav'
 kSoundEffectFilename_Failure  = 'dead_failure.wav'
 kSoundEffectFilename_Progress = 'getcoin_progress.wav'
 kSoundEffectFilename_Restart  = 'pluslife_restart.wav'
+
+kMemBlockColor_Background = wx.WHITE
+kMemBlockColor_Padding    = wx.BLACK

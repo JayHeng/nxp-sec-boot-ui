@@ -11,15 +11,15 @@ import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
-from run import runcore
+from mem import memcore
 from run import RT10yy_rundef
 from run import rundef
 from fuse import RT10yy_fusedef
 
-class secBootRT10yyUi(runcore.secBootRun):
+class secBootRT10yyUi(memcore.secBootMem):
 
     def __init__(self, parent):
-        runcore.secBootRun.__init__(self, parent)
+        memcore.secBootMem.__init__(self, parent)
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.RT10yy_initUi()
 
@@ -499,33 +499,6 @@ class secBootRT10yyUi(runcore.secBootRun):
 
     def clearSwGp2DekData( self ):
         self.m_textCtrl_swgp2Dek128bit.Clear()
-
-    def getComMemStartAddress( self ):
-        return self.getVal32FromHexText(self.m_textCtrl_memStart.GetLineText(0))
-
-    def getComMemByteLength( self ):
-        return self.getVal32FromHexText(self.m_textCtrl_memLength.GetLineText(0))
-
-    def getComMemBinFile( self ):
-        memBinFile = self.m_filePicker_memBinFile.GetPath()
-        return memBinFile.encode('utf-8').encode("gbk")
-
-    def needToSaveReadbackImageData( self ):
-        return self.m_checkBox_saveImageData.GetValue()
-
-    def getImageDataFileToSave( self ):
-        savedBinFile = self.m_filePicker_savedBinFile.GetPath()
-        return savedBinFile.encode('utf-8').encode("gbk")
-
-    def setImageDataFilePath( self, filePath ):
-        self.m_filePicker_savedBinFile.SetPath(filePath)
-
-    def printMem( self , memStr, strColor=RT10yy_uidef.kMemBlockColor_Padding ):
-        self.m_textCtrl_bootDeviceMem.SetDefaultStyle(wx.TextAttr(strColor, RT10yy_uidef.kMemBlockColor_Background))
-        self.m_textCtrl_bootDeviceMem.AppendText(memStr + "\n")
-
-    def clearMem( self ):
-        self.m_textCtrl_bootDeviceMem.Clear()
 
     def showImageLayout( self , imgPath ):
         self.m_bitmap_bootableImage.SetBitmap(wx.Bitmap( imgPath, wx.BITMAP_TYPE_ANY ))

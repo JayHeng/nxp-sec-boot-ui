@@ -734,14 +734,6 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         else:
             pass
 
-    def isInTheRangeOfFlexram( self, start, length ):
-        if ((start >= self.tgt.memoryRange['itcm'].start) and (start + length <= self.tgt.memoryRange['itcm'].start + self.tgt.memoryRange['itcm'].length)) or \
-           ((start >= self.tgt.memoryRange['dtcm'].start) and (start + length <= self.tgt.memoryRange['dtcm'].start + self.tgt.memoryRange['dtcm'].length)) or \
-           ((start >= self.tgt.memoryRange['ocram'].start) and (start + length <= self.tgt.memoryRange['ocram'].start + self.tgt.memoryRange['ocram'].length)):
-            return True
-        else:
-            return False
-
     def _RT10yy_isValidNonXipAppImage( self, imageStartAddr ):
         if self.isInTheRangeOfFlexram(imageStartAddr, 1):
             return True

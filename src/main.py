@@ -28,9 +28,9 @@ g_main_win = None
 g_task_detectUsbhid = None
 g_task_playSound = None
 g_task_increaseGauge = None
+g_task_accessMem = None
 g_RT10yy_task_allInOneAction = None
 g_RTxxx_task_allInOneAction = None
-g_RT10yy_task_accessMem = None
 g_RT10yy_task_showSettedEfuse = None
 
 def _async_raise(tid, exctype):
@@ -48,6 +48,18 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def __init__(self, parent):
         RTxxx_main.secBootRTxxxMain.__init__(self, parent)
+
+        self.isAccessMemTaskPending = False
+        self.accessMemType = ''
+        self.lastTime = None
+
+    def _startGaugeTimer( self ):
+        self.lastTime = time.time()
+        self.initGauge()
+
+    def _stopGaugeTimer( self ):
+        self.deinitGauge()
+        self.updateCostTime()
 
     def callbackSetMcuSeries( self, event ):
         self.setTargetSetupValue()
@@ -198,6 +210,117 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         else:
             pass
 
+    def task_doAccessMem( self ):
+        while True:
+            if self.isAccessMemTaskPending:
+                if self.accessMemType == 'ScanFuse':
+                    self.scanAllFuseRegions()
+                    if self.isSbFileEnabledToGen:
+                        self.initSbEfuseBdfileContent()
+                elif self.accessMemType == 'BurnFuse':
+                    self.burnAllFuseRegions()
+                    if self.isSbFileEnabledToGen:
+                        self.genSbEfuseImage()
+                elif self.accessMemType == 'ReadMem':
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
+                        self.readRamMemory()
+                    elif self.connectStage == uidef.kConnectStage_Reset:
+                        self.readBootDeviceMemory()
+                    else:
+                        pass
+                elif self.accessMemType == 'EraseMem':
+                    self.eraseBootDeviceMemory()
+                elif self.accessMemType == 'WriteMem':
+                    if self.connectStage == uidef.kConnectStage_ExternalMemory:
+                        self.writeRamMemory()
+                    elif self.connectStage == uidef.kConnectStage_Reset:
+                        self.writeBootDeviceMemory()
+                    else:
+                        pass
+                else:
+                    pass
+                self.isAccessMemTaskPending = False
+                self._stopGaugeTimer()
+            time.sleep(1)
+
+    def callbackScanFuse( self, event ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'ScanFuse'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackBurnFuse( self, event ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'BurnFuse'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackClearMem( self, event ):
+        self.clearMem()
+
+    def _doReadMem( self ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'ReadMem'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackReadMem( self, event ):
+        if not self.isToolRunAsEntryMode:
+            self._doReadMem()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
+
+    def _doEraseMem( self ):
+        if self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'EraseMem'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
+
+    def callbackEraseMem( self, event ):
+        if not self.isToolRunAsEntryMode:
+            self._doEraseMem()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
+
+    def _doWriteMem( self ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'WriteMem'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackWriteMem( self, event ):
+        if not self.isToolRunAsEntryMode:
+            self._doWriteMem()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
+
+    def _doExecuteApp( self ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self.executeAppInFlexram()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackExecuteApp( self, event ):
+        if not self.isToolRunAsEntryMode:
+            self._doExecuteApp()
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operMemError_notAvailUnderEntry'][self.languageIndex])
+
     def callbackClearLog( self, event ):
         self.clearLog()
 
@@ -214,9 +337,9 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self._stopTask(g_task_detectUsbhid)
         self._stopTask(g_task_playSound)
         self._stopTask(g_task_increaseGauge)
+        self._stopTask(g_task_accessMem)
         self._stopTask(g_RT10yy_task_allInOneAction)
         self._stopTask(g_RTxxx_task_allInOneAction)
-        self._stopTask(g_RT10yy_task_accessMem)
         self._stopTask(g_RT10yy_task_showSettedEfuse)
         global g_main_win
         g_main_win.Show(False)
@@ -322,6 +445,9 @@ if __name__ == '__main__':
     g_task_increaseGauge = threading.Thread(target=g_main_win.task_doIncreaseGauge)
     g_task_increaseGauge.setDaemon(True)
     g_task_increaseGauge.start()
+    g_task_accessMem = threading.Thread(target=g_main_win.task_doAccessMem)
+    g_task_accessMem.setDaemon(True)
+    g_task_accessMem.start()
 
     g_RT10yy_task_allInOneAction = threading.Thread(target=g_main_win.RT10yy_task_doAllInOneAction)
     g_RT10yy_task_allInOneAction.setDaemon(True)
@@ -329,10 +455,6 @@ if __name__ == '__main__':
     g_RTxxx_task_allInOneAction = threading.Thread(target=g_main_win.RTxxx_task_doAllInOneAction)
     g_RTxxx_task_allInOneAction.setDaemon(True)
     g_RTxxx_task_allInOneAction.start()
-
-    g_RT10yy_task_accessMem = threading.Thread(target=g_main_win.RT10yy_task_doAccessMem)
-    g_RT10yy_task_accessMem.setDaemon(True)
-    g_RT10yy_task_accessMem.start()
 
     g_RT10yy_task_showSettedEfuse = threading.Thread(target=g_main_win.RT10yy_task_doShowSettedEfuse)
     g_RT10yy_task_showSettedEfuse.setDaemon(True)

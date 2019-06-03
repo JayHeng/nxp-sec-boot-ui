@@ -25,6 +25,20 @@ class secBootGen(uicore.secBootUi):
         self.appFmtBatFilename = os.path.join(self.exeTopRoot, 'gen', 'user_file', 'imx_format_conv.bat')
         self.isConvertedAppUsed = False
 
+    def isInTheRangeOfFlexram( self, start, length ):
+        if ((start >= self.tgt.memoryRange['itcm'].start) and (start + length <= self.tgt.memoryRange['itcm'].start + self.tgt.memoryRange['itcm'].length)) or \
+           ((start >= self.tgt.memoryRange['dtcm'].start) and (start + length <= self.tgt.memoryRange['dtcm'].start + self.tgt.memoryRange['dtcm'].length)) or \
+           ((start >= self.tgt.memoryRange['ocram'].start) and (start + length <= self.tgt.memoryRange['ocram'].start + self.tgt.memoryRange['ocram'].length)):
+            return True
+        else:
+            return False
+
+    def isInTheRangeOfSram( self, start, length ):
+        if ((start >= self.tgt.memoryRange['sram'].start) and (start + length <= self.tgt.memoryRange['sram'].start + self.tgt.memoryRange['sram'].length)):
+            return True
+        else:
+            return False
+
     def _convertElfOrAxfToSrec( self, appFilename, destSrecAppFilename, appFormat):
         batContent = ''
         # below are conv results:
