@@ -12,6 +12,7 @@ from ui import RTxxx_uidef
 from ui import uidef
 from ui import uivar
 from ui import uilang
+from mem import RTxxx_memdef
 from boot import bltest
 from boot import target
 from utils import misc
@@ -212,15 +213,20 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
     def _programXspiNorConfigBlock ( self ):
         status = boot.status.kStatus_Success
         # 0xf000000f is the tag to notify Flashloader to program FlexSPI/QuadSPI NOR config block to the start of device
-        if self.RTxxx_isDeviceEnabledToOperate:
-            status, results, cmdStr = self.blhost.fillMemory(RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, rundef.kFlexspiNorCfgInfo_Notify)
-            self.printLog(cmdStr)
-            if status != boot.status.kStatus_Success:
-                return False
-        if self.RTxxx_isDeviceEnabledToOperate:
-            status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock)
-            self.printLog(cmdStr)
-            return (status == boot.status.kStatus_Success)
+        if self.isFdcbFromSrcApp:
+            if self.RTxxx_isDeviceEnabledToOperate:
+                status, results, cmdStr = self.blhost.writeMemory(self.bootDeviceMemBase + RTxxx_memdef.kMemBlockOffset_FDCB, self.fdcbBinFilename, self.bootDeviceMemId)
+                self.printLog(cmdStr)
+        else:
+            if self.RTxxx_isDeviceEnabledToOperate:
+                status, results, cmdStr = self.blhost.fillMemory(RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock, 0x4, rundef.kFlexspiNorCfgInfo_Notify)
+                self.printLog(cmdStr)
+                if status != boot.status.kStatus_Success:
+                    return False
+            if self.RTxxx_isDeviceEnabledToOperate:
+                status, results, cmdStr = self.blhost.configureMemory(self.bootDeviceMemId, RTxxx_rundef.kRamFreeSpaceStart_LoadCfgBlock)
+                self.printLog(cmdStr)
+        return (status == boot.status.kStatus_Success)
 
     def RTxxx_configureBootDevice ( self ):
         self._RTxxx_prepareForBootDeviceOperation()
@@ -275,11 +281,13 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
                    self.secureBootType == RTxxx_uidef.kSecureBootType_PlainCrc:
                     if not self._programXspiNorConfigBlock():
                         self.isXspiNorErasedForImage = False
+                        self.isFdcbFromSrcApp = False
                         return False
             imageLoadAddr = self.bootDeviceMemBase + RTxxx_gendef.kBootImageOffset_NOR_SD_EEPROM
             status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, self.destAppFilename, self.bootDeviceMemId)
             self.printLog(cmdStr)
             self.isXspiNorErasedForImage = False
+            self.isFdcbFromSrcApp = False
             if status != boot.status.kStatus_Success:
                 return False
         else:

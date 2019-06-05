@@ -341,7 +341,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
         self.isConvertedAppUsed = True
         return ivtEntry, imageEntryPoint, len(imageDataBytes)
 
-    def _isSrcAppBootableImage( self, initialLoadAppBytes ):
+    def _RT10yy_isSrcAppBootableImage( self, initialLoadAppBytes ):
         ivtTag = initialLoadAppBytes[self.destAppIvtOffset + RT10yy_memdef.kMemberOffsetInIvt_Tag]
         ivtLen = initialLoadAppBytes[self.destAppIvtOffset + RT10yy_memdef.kMemberOffsetInIvt_Len]
         if ivtTag != RT10yy_memdef.kBootHeaderTag_IVT or ivtLen != RT10yy_memdef.kMemBlockSize_IVT:
@@ -397,7 +397,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
                     srecObj = bincopy.BinFile(str(srcAppFilename))
                     startAddress = srecObj.minimum_address
                     initialLoadAppBytes = srecObj.as_binary(startAddress, startAddress + self.destAppInitialLoadSize)
-                    if self._isSrcAppBootableImage(initialLoadAppBytes):
+                    if self._RT10yy_isSrcAppBootableImage(initialLoadAppBytes):
                         self._extractDcdDataFromSrcApp(initialLoadAppBytes)
                         startAddress, entryPointAddress, lengthInByte = self._extractImageDataFromSrcApp(srecObj.as_binary(), appName)
                     else:
