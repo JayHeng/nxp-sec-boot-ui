@@ -11,8 +11,8 @@ kConnectStage_Flashloader    = 2
 kConnectStage_ExternalMemory = 3
 kConnectStage_Reset          = 4
 
-kMcuSeries_iMXRT10yy = 'RT10yy - CM7'
-kMcuSeries_iMXRTxxx  = 'RTxxx - CM33'
+kMcuSeries_iMXRT10yy = 'RT10xx'
+kMcuSeries_iMXRTxxx  = 'RTxxx'
 kMcuSeries_LPC       = 'LPC'
 kMcuSeries_Kinetis   = 'Kinetis'
 
