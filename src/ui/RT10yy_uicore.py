@@ -309,7 +309,7 @@ class secBootRT10yyUi(memcore.secBootMem):
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             strMemType, strHasDcd = self._getImgName()
-            imgPath = "../img/" + strMemType + "image_" + strHasDcd + "unsigned.png"
+            imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "unsigned.png"
             self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_u'][self.languageIndex])
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabAuth:
@@ -327,7 +327,7 @@ class secBootRT10yyUi(memcore.secBootMem):
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             strMemType, strHasDcd = self._getImgName()
-            imgPath = "../img/" + strMemType + "image_" + strHasDcd + "signed.png"
+            imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed.png"
             self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_s'][self.languageIndex])
         elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
@@ -351,7 +351,7 @@ class secBootRT10yyUi(memcore.secBootMem):
                 self.m_panel_flashImage1_showImage.Enable( True )
                 self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 strMemType, strHasDcd = self._getImgName()
-                imgPath = "../img/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted_nodek.png"
+                imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted_nodek.png"
                 self.showImageLayout(imgPath.encode('utf-8'))
                 self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
                 self.m_panel_progDek1_showHabDek.Enable( True )
@@ -375,7 +375,7 @@ class secBootRT10yyUi(memcore.secBootMem):
 
     def updateImgPictureAfterFlashDek( self ):
         strMemType, strHasDcd = self._getImgName()
-        imgPath = "../img/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted.png"
+        imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted.png"
         self.showImageLayout(imgPath.encode('utf-8'))
 
     def getSerialAndKeypassContent( self ):
@@ -393,11 +393,11 @@ class secBootRT10yyUi(memcore.secBootMem):
         if txt == 'No':
             self.isCertEnabledForBee = False
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
-            imgPath = "../img/nor_image_" + strHasDcd + "unsigned_bee_encrypted.png"
+            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "unsigned_bee_encrypted.png"
         elif txt == 'Yes':
             self.isCertEnabledForBee = True
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_s'][self.languageIndex])
-            imgPath = "../img/nor_image_" + strHasDcd + "signed_bee_encrypted.png"
+            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "signed_bee_encrypted.png"
         else:
             pass
         self.showImageLayout(imgPath.encode('utf-8'))
