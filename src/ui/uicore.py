@@ -75,6 +75,7 @@ class secBootUi(secBootWin.secBootWin):
         self.mcuSeries = None
         self.mcuDevice = None
         self.bootDevice = None
+        self.isMcuSeriesChanged = False
         self._initTargetSetupValue()
         self.setTargetSetupValue()
 
@@ -168,11 +169,30 @@ class secBootUi(secBootWin.secBootWin):
     def _initTargetSetupValue( self ):
         self.m_choice_mcuSeries.Clear()
         self.m_choice_mcuSeries.SetItems(uidef.kMcuSeries_Latest)
+        self.toolCommDict['mcuSeries'] = 0
         self.m_choice_mcuSeries.SetSelection(self.toolCommDict['mcuSeries'])
 
+        self.m_choice_mcuDevice.Clear()
+        self.m_choice_mcuDevice.SetItems(uidef.kMcuDevice_Latest)
+        self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
+
+    def _detectMcuSeries( self ):
+        mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
+        mcuSeries = uidef.kMcuSeries_iMXRT10yy
+        if mcuDevice in uidef.kMcuDevice_iMXRTxxx:
+            mcuSeries = uidef.kMcuSeries_iMXRTxxx
+        elif mcuDevice in uidef.kMcuDevice_iMXRT10yy:
+            mcuSeries = uidef.kMcuSeries_iMXRT10yy
+        else:
+            pass
+        if self.mcuSeries != None and self.mcuSeries != mcuSeries:
+            self.isMcuSeriesChanged = True
+        self.mcuSeries = mcuSeries
+
     def setTargetSetupValue( self ):
-        self.mcuSeries = self.m_choice_mcuSeries.GetString(self.m_choice_mcuSeries.GetSelection())
-        self.toolCommDict['mcuSeries'] = self.m_choice_mcuSeries.GetSelection()
+        self._detectMcuSeries()
+        self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
+        self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
 
     def task_doPlaySound( self ):
         while True:

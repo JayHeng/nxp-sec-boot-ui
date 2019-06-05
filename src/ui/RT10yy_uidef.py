@@ -4,16 +4,6 @@ import sys, os
 kConnectStep_Fast   = 3
 kConnectStep_Normal = 1
 
-kMcuDevice_iMXRT1015 = 'i.MXRT1015'
-kMcuDevice_iMXRT102x = 'i.MXRT102x'
-kMcuDevice_iMXRT105x = 'i.MXRT105x'
-kMcuDevice_iMXRT106x = 'i.MXRT106x'
-kMcuDevice_iMXRT1064 = 'i.MXRT1064 SIP'
-
-kMcuDevice_v1_0_0 = [                      kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
-kMcuDevice_v1_1_0 = [kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
-kMcuDevice_Latest = kMcuDevice_v1_1_0
-
 kBootDevice_FlexspiNor     = 'FLEXSPI NOR'
 kBootDevice_FlexspiNand    = 'FLEXSPI NAND'
 kBootDevice_SemcNor        = 'SEMC NOR'

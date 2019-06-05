@@ -11,14 +11,33 @@ kConnectStage_Flashloader    = 2
 kConnectStage_ExternalMemory = 3
 kConnectStage_Reset          = 4
 
-kMcuSeries_iMXRT10yy = 'RT10xx'
+kMcuSeries_iMXRT     = 'i.MXRT'
+kMcuSeries_iMXRT10yy = 'RT10yy'
 kMcuSeries_iMXRTxxx  = 'RTxxx'
 kMcuSeries_LPC       = 'LPC'
 kMcuSeries_Kinetis   = 'Kinetis'
 
-kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT10yy]
-kMcuSeries_v2_0_0 = [kMcuSeries_iMXRT10yy, kMcuSeries_iMXRTxxx]
+kMcuSeries_v1_0_0 = [kMcuSeries_iMXRT]
+kMcuSeries_v2_0_0 = [kMcuSeries_iMXRT]
 kMcuSeries_Latest = kMcuSeries_v2_0_0
+
+kMcuDevice_iMXRT500  = 'i.MXRT5xx'
+kMcuDevice_iMXRT500S = 'i.MXRT5xxS'
+kMcuDevice_iMXRT600  = 'i.MXRT6xx'
+kMcuDevice_iMXRT600S = 'i.MXRT6xxS'
+kMcuDevice_iMXRTxxx = [kMcuDevice_iMXRT500, kMcuDevice_iMXRT600]
+
+kMcuDevice_iMXRT1015 = 'i.MXRT1015'
+kMcuDevice_iMXRT102x = 'i.MXRT102x'
+kMcuDevice_iMXRT105x = 'i.MXRT105x'
+kMcuDevice_iMXRT106x = 'i.MXRT106x'
+kMcuDevice_iMXRT1064 = 'i.MXRT1064 SIP'
+kMcuDevice_iMXRT10yy = [kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+
+kMcuDevice_v1_0_0 = [                                          kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_v1_1_0 = [                                          kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_v2_0_0 = [kMcuDevice_iMXRT500, kMcuDevice_iMXRT600, kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_Latest = kMcuDevice_v2_0_0
 
 kBootDevice_XspiNor        = 'XSPI NOR'
 

@@ -20,9 +20,9 @@ from utils import misc
 def RTxxx_createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
     cpu = "MIMXRT685"
-    if device == RTxxx_uidef.kMcuDevice_iMXRT500:
+    if device == uidef.kMcuDevice_iMXRT500:
         cpu = "MIMXRT595"
-    elif device == RTxxx_uidef.kMcuDevice_iMXRT600:
+    elif device == uidef.kMcuDevice_iMXRT600:
         cpu = "MIMXRT685"
     else:
         pass

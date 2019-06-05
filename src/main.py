@@ -62,16 +62,19 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self.updateCostTime()
 
     def callbackSetMcuSeries( self, event ):
-        self.setTargetSetupValue()
-        self._setUartUsbPort()
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-            self.RT10yy_callbackSetMcuSeries()
-        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
-            self.RTxxx_callbackSetMcuSeries()
-        else:
-            pass
+        pass
 
     def callbackSetMcuDevice( self, event ):
+        self.setTargetSetupValue()
+        if self.isMcuSeriesChanged:
+            self._setUartUsbPort()
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                self.RT10yy_callbackSetMcuSeries()
+            elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+                self.RTxxx_callbackSetMcuSeries()
+            else:
+                pass
+            self.isMcuSeriesChanged = False
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.RT10yy_callbackSetMcuDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:

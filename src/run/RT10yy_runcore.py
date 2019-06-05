@@ -22,15 +22,15 @@ from utils import misc
 def RT10yy_createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
     cpu = "MIMXRT1052"
-    if device == RT10yy_uidef.kMcuDevice_iMXRT1015:
+    if device == uidef.kMcuDevice_iMXRT1015:
         cpu = "MIMXRT1015"
-    elif device == RT10yy_uidef.kMcuDevice_iMXRT102x:
+    elif device == uidef.kMcuDevice_iMXRT102x:
         cpu = "MIMXRT1021"
-    elif device == RT10yy_uidef.kMcuDevice_iMXRT105x:
+    elif device == uidef.kMcuDevice_iMXRT105x:
         cpu = "MIMXRT1052"
-    elif device == RT10yy_uidef.kMcuDevice_iMXRT106x:
+    elif device == uidef.kMcuDevice_iMXRT106x:
         cpu = "MIMXRT1062"
-    elif device == RT10yy_uidef.kMcuDevice_iMXRT1064:
+    elif device == uidef.kMcuDevice_iMXRT1064:
         cpu = "MIMXRT1064"
     else:
         pass

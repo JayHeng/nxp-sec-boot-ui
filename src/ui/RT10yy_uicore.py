@@ -40,15 +40,8 @@ class secBootRT10yyUi(memcore.secBootMem):
         self.RT10yy_setLanguage()
 
     def _RT10yy_initTargetSetupValue( self ):
-        self.m_choice_mcuDevice.Clear()
         self.m_choice_bootDevice.Clear()
-        self.m_choice_mcuDevice.SetItems(RT10yy_uidef.kMcuDevice_Latest)
         self.m_choice_bootDevice.SetItems(RT10yy_uidef.kBootDevice_Latest)
-        totalSel = self.m_choice_mcuDevice.GetCount()
-        if self.toolCommDict['mcuDevice'] < totalSel:
-            self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
-        else:
-            self.m_choice_mcuDevice.SetSelection(0)
         totalSel = self.m_choice_bootDevice.GetCount()
         if self.toolCommDict['bootDevice'] < totalSel:
             self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
@@ -94,9 +87,7 @@ class secBootRT10yyUi(memcore.secBootMem):
 
     def RT10yy_setTargetSetupValue( self ):
         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
-        self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
-        self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
         self.RT10yy_createMcuTarget()
         self._RT10yy_refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())

@@ -28,15 +28,8 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
         self._RTxxx_initSecureBootSeqColor()
 
     def _RTxxx_initTargetSetupValue( self ):
-        self.m_choice_mcuDevice.Clear()
         self.m_choice_bootDevice.Clear()
-        self.m_choice_mcuDevice.SetItems(RTxxx_uidef.kMcuDevice_Latest)
         self.m_choice_bootDevice.SetItems(RTxxx_uidef.kBootDevice_Latest)
-        totalSel = self.m_choice_mcuDevice.GetCount()
-        if self.toolCommDict['mcuDevice'] < totalSel:
-            self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
-        else:
-            self.m_choice_mcuDevice.SetSelection(0)
         totalSel = self.m_choice_bootDevice.GetCount()
         if self.toolCommDict['bootDevice'] < totalSel:
             self.m_choice_bootDevice.SetSelection(self.toolCommDict['bootDevice'])
@@ -54,9 +47,7 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
                 self.m_choice_bootDevice.SetSelection(0)
 
     def RTxxx_setTargetSetupValue( self ):
-        self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
-        self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
         self.RTxxx_createMcuTarget()
         self._RTxxx_refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
