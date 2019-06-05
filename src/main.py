@@ -261,6 +261,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
+    def callbackViewMem( self, event ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self.RT10yy_callbackViewMem()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_callbackViewMem()
+        else:
+            pass
+
     def callbackClearMem( self, event ):
         self.clearMem()
 

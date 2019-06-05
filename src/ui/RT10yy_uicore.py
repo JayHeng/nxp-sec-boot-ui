@@ -93,7 +93,7 @@ class secBootRT10yyUi(memcore.secBootMem):
                 self.m_choice_bootDevice.SetSelection(0)
 
     def RT10yy_setTargetSetupValue( self ):
-        self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageGenerationSequence)
+        self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['mcuDevice'] = self.m_choice_mcuDevice.GetSelection()
@@ -166,45 +166,6 @@ class secBootRT10yyUi(memcore.secBootMem):
         self.keyStorageRegion = self.m_choice_keyStorageRegion.GetString(self.m_choice_keyStorageRegion.GetSelection())
         self.RT10yy_setSecureBootSeqColor()
 
-    def invalidateStepButtonColor( self, stepName, excuteResult ):
-        invalidColor = None
-        allInOneSoundEffect = None
-        stepSoundEffect = None
-        if excuteResult:
-            invalidColor = uidef.kBootSeqColor_Invalid
-            allInOneSoundEffect = uidef.kSoundEffectFilename_Success
-            stepSoundEffect = uidef.kSoundEffectFilename_Progress
-        else:
-            invalidColor = uidef.kBootSeqColor_Failed
-            allInOneSoundEffect = uidef.kSoundEffectFilename_Failure
-        if stepName == RT10yy_uidef.kSecureBootSeqStep_AllInOne:
-            self.m_button_allInOneAction.SetBackgroundColour( invalidColor )
-            self.soundEffectFilenameForTask = allInOneSoundEffect
-        else:
-            if stepName == RT10yy_uidef.kSecureBootSeqStep_GenCert:
-                self.m_button_genCert.SetBackgroundColour( invalidColor )
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_GenImage:
-                self.m_button_genImage.SetBackgroundColour( invalidColor )
-                if excuteResult and self.secureBootType != RT10yy_uidef.kSecureBootType_BeeCrypto:
-                    self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageLoadingSequence)
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_PrepBee:
-                self.m_button_prepBee.SetBackgroundColour( invalidColor )
-                if excuteResult:
-                    self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageLoadingSequence)
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_ProgSrk:
-                self.m_button_progSrk.SetBackgroundColour( invalidColor )
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_OperBee:
-                self.m_button_operBee.SetBackgroundColour( invalidColor )
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_FlashImage:
-                self.m_button_flashImage.SetBackgroundColour( invalidColor )
-            elif stepName == RT10yy_uidef.kSecureBootSeqStep_ProgDek:
-                self.m_button_progDek.SetBackgroundColour( invalidColor )
-            else:
-                pass
-            if stepSoundEffect != None:
-                self.playSoundEffect(stepSoundEffect)
-        self.Refresh()
-
     def RT10yy_setSecureBootButtonColor( self, needToPlaySound=True ):
         activeColor = None
         optionalColor = None
@@ -273,7 +234,7 @@ class secBootRT10yyUi(memcore.secBootMem):
         if needToPlaySound:
             self.soundEffectFilenameForTask = uidef.kSoundEffectFilename_Restart
 
-    def _getImgName( self ):
+    def _RT10yy_getImgName( self ):
         memType = ''
         hasDcd = ''
         if self.isNandDevice:
@@ -288,13 +249,9 @@ class secBootRT10yyUi(memcore.secBootMem):
             hasDcd = 'dcd_'
         return memType, hasDcd
 
-    def showPageInMainBootSeqWin(self, pageIndex ):
-        if pageIndex != self.m_notebook_imageSeq.GetSelection():
-            self.m_notebook_imageSeq.SetSelection(pageIndex)
-
     def RT10yy_setSecureBootSeqColor( self , needToPlaySound=True ):
         self.hasDynamicLableBeenInit = True
-        self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_ImageGenerationSequence)
+        self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
         self.resetSecureBootSeqColor()
@@ -308,7 +265,7 @@ class secBootRT10yyUi(memcore.secBootMem):
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            strMemType, strHasDcd = self._getImgName()
+            strMemType, strHasDcd = self._RT10yy_getImgName()
             imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "unsigned.png"
             self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_u'][self.languageIndex])
@@ -326,7 +283,7 @@ class secBootRT10yyUi(memcore.secBootMem):
             self.m_panel_progSrk1_showSrk.SetBackgroundColour( uidef.kBootSeqColor_Active )
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            strMemType, strHasDcd = self._getImgName()
+            strMemType, strHasDcd = self._RT10yy_getImgName()
             imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed.png"
             self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_s'][self.languageIndex])
@@ -350,7 +307,7 @@ class secBootRT10yyUi(memcore.secBootMem):
                 self.m_panel_progSrk1_showSrk.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.m_panel_flashImage1_showImage.Enable( True )
                 self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
-                strMemType, strHasDcd = self._getImgName()
+                strMemType, strHasDcd = self._RT10yy_getImgName()
                 imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted_nodek.png"
                 self.showImageLayout(imgPath.encode('utf-8'))
                 self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
@@ -374,7 +331,7 @@ class secBootRT10yyUi(memcore.secBootMem):
         self.Refresh()
 
     def updateImgPictureAfterFlashDek( self ):
-        strMemType, strHasDcd = self._getImgName()
+        strMemType, strHasDcd = self._RT10yy_getImgName()
         imgPath = "../img/RT10yy/" + strMemType + "image_" + strHasDcd + "signed_hab_encrypted.png"
         self.showImageLayout(imgPath.encode('utf-8'))
 
@@ -388,7 +345,7 @@ class secBootRT10yyUi(memcore.secBootMem):
     def setBeeCertColor( self ):
         txt = self.m_choice_enableCertForBee.GetString(self.m_choice_enableCertForBee.GetSelection())
         self.toolCommDict['certOptForBee'] = self.m_choice_enableCertForBee.GetSelection()
-        strMemType, strHasDcd = self._getImgName()
+        strMemType, strHasDcd = self._RT10yy_getImgName()
         imgPath = ""
         if txt == 'No':
             self.isCertEnabledForBee = False
@@ -499,9 +456,6 @@ class secBootRT10yyUi(memcore.secBootMem):
 
     def clearSwGp2DekData( self ):
         self.m_textCtrl_swgp2Dek128bit.Clear()
-
-    def showImageLayout( self , imgPath ):
-        self.m_bitmap_bootableImage.SetBitmap(wx.Bitmap( imgPath, wx.BITMAP_TYPE_ANY ))
 
     def updateFuseRegionField( self ):
         color = None

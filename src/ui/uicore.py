@@ -352,6 +352,52 @@ class secBootUi(secBootWin.secBootWin):
             self.m_checkBox_oneStepConnect.SetValue(True)
             self.toolCommDict['isOneStepChecked'] = True
 
+    def showPageInMainBootSeqWin(self, pageIndex ):
+        if pageIndex != self.m_notebook_imageSeq.GetSelection():
+            self.m_notebook_imageSeq.SetSelection(pageIndex)
+
+    def invalidateStepButtonColor( self, stepName, excuteResult ):
+        invalidColor = None
+        allInOneSoundEffect = None
+        stepSoundEffect = None
+        if excuteResult:
+            invalidColor = uidef.kBootSeqColor_Invalid
+            allInOneSoundEffect = uidef.kSoundEffectFilename_Success
+            stepSoundEffect = uidef.kSoundEffectFilename_Progress
+        else:
+            invalidColor = uidef.kBootSeqColor_Failed
+            allInOneSoundEffect = uidef.kSoundEffectFilename_Failure
+        if stepName == uidef.kSecureBootSeqStep_AllInOne:
+            self.m_button_allInOneAction.SetBackgroundColour( invalidColor )
+            self.soundEffectFilenameForTask = allInOneSoundEffect
+        else:
+            if stepName == uidef.kSecureBootSeqStep_GenCert:
+                self.m_button_genCert.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_GenImage:
+                self.m_button_genImage.SetBackgroundColour( invalidColor )
+                if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                    if excuteResult and self.secureBootType != RT10yy_uidef.kSecureBootType_BeeCrypto:
+                        self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
+                elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+                    self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
+            elif stepName == uidef.kSecureBootSeqStep_PrepBee:
+                self.m_button_prepBee.SetBackgroundColour( invalidColor )
+                if excuteResult:
+                    self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
+            elif stepName == uidef.kSecureBootSeqStep_ProgSrk:
+                self.m_button_progSrk.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_OperBee:
+                self.m_button_operBee.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_FlashImage:
+                self.m_button_flashImage.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_ProgDek:
+                self.m_button_progDek.SetBackgroundColour( invalidColor )
+            else:
+                pass
+            if stepSoundEffect != None:
+                self.playSoundEffect(stepSoundEffect)
+        self.Refresh()
+
     def resetSecureBootSeqColor( self ):
         self.resetCertificateColor()
         self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
@@ -544,6 +590,9 @@ class secBootUi(secBootWin.secBootWin):
 
     def clearMem( self ):
         self.m_textCtrl_bootDeviceMem.Clear()
+
+    def showImageLayout( self , imgPath ):
+        self.m_bitmap_bootableImage.SetBitmap(wx.Bitmap( imgPath, wx.BITMAP_TYPE_ANY ))
 
     def _initLanguage( self ):
         if self.toolCommDict['isEnglishLanguage']:

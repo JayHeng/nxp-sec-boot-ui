@@ -150,7 +150,7 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
             pass
         return True
 
-    def readProgrammedMemoryAndShow( self ):
+    def RT10yy_readProgrammedMemoryAndShow( self ):
         if not os.path.isfile(self.destAppFilename):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotProgImage'][self.languageIndex])
             return

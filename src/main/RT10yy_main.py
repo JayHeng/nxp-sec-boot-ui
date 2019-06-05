@@ -274,9 +274,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             status = self.genSbAppImages()
         else:
             if status and self.isAutomaticImageReadback:
-                self.showPageInMainBootSeqWin(RT10yy_uidef.kPageIndex_BootDeviceMemory)
-                self._doViewMem()
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_AllInOne, status)
+                self.showPageInMainBootSeqWin(uidef.kPageIndex_BootDeviceMemory)
+                self._RT10yy_doViewMem()
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_AllInOne, status)
 
     def RT10yy_callbackAllInOneAction( self ):
         self._RT10yy_startGaugeTimer()
@@ -357,7 +357,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_noNeedToGenForUnsigned'][self.languageIndex])
         if reuseCert != None:
-            self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenCert, status)
+            self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_GenCert, status)
         return status
 
     def callbackGenCert( self, event ):
@@ -385,7 +385,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                     self.showHabDekIfApplicable()
                     status = True
             self._RT10yy_stopGaugeTimer()
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenImage, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_GenImage, status)
         return status
 
     def RT10yy_callbackGenImage( self ):
@@ -440,7 +440,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             self._RT10yy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForBee'][self.languageIndex])
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_PrepBee, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_PrepBee, status)
         return status
 
     def callbackDoBeeEncryption( self, event ):
@@ -472,7 +472,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_srkNotForUnsigned'][self.languageIndex])
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_ProgSrk, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_ProgSrk, status)
         return status
 
     def callbackProgramSrk( self, event ):
@@ -497,7 +497,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekNotForSnvs'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekOnlyForBee'][self.languageIndex])
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_OperBee, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_OperBee, status)
         return status
 
     def callbackProgramBeeDek( self, event ):
@@ -536,7 +536,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self._RT10yy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_FlashImage, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_FlashImage, status)
         return status
 
     def RT10yy_callbackFlashImage( self ):
@@ -572,7 +572,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_keyBlobOnlyForHab'][self.languageIndex])
-        self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_ProgDek, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_ProgDek, status)
         return status
 
     def callbackFlashHabDek( self, event ):
@@ -644,19 +644,19 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf1Frame.Show(True)
 
-    def _doViewMem( self ):
+    def _RT10yy_doViewMem( self ):
         if self.connectStage == uidef.kConnectStage_Reset:
             if self.isBootableAppAllowedToView:
                 self._RT10yy_startGaugeTimer()
-                self.readProgrammedMemoryAndShow()
+                self.RT10yy_readProgrammedMemoryAndShow()
                 self._RT10yy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotFlashImage'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
 
-    def callbackViewMem( self, event ):
-        self._doViewMem()
+    def RT10yy_callbackViewMem( self, event ):
+        self._RT10yy_doViewMem()
 
     def RT10yy_switchToolRunMode( self ):
         self.applyFuseOperToRunMode()

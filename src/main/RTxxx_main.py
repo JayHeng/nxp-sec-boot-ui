@@ -7,7 +7,7 @@ sys.setdefaultencoding('utf-8')
 import os
 import time
 sys.path.append(os.path.abspath(".."))
-from run import RTxxx_runcore
+from mem import RTxxx_memcore
 from ui import RTxxx_uidef
 from ui import uidef
 from ui import uivar
@@ -15,10 +15,10 @@ from ui import uilang
 
 kRetryPingTimes = 5
 
-class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
+class secBootRTxxxMain(RTxxx_memcore.secBootRTxxxMem):
 
     def __init__(self, parent):
-        RTxxx_runcore.secBootRTxxxRun.__init__(self, parent)
+        RTxxx_memcore.secBootRTxxxMem.__init__(self, parent)
         self.RTxxx_isAllInOneActionTaskPending = False
         if self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self._RTxxx_initMain()
@@ -165,7 +165,20 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
             time.sleep(1)
 
     def _RTxxx_doAllInOneAction( self ):
-        pass
+        allInOneSeqCnt = 1
+        status = False
+        while allInOneSeqCnt:
+            status = self._RTxxx_doGenImage()
+            if not status:
+                break
+            status = self._RTxxx_doFlashImage()
+            if not status:
+                break
+            allInOneSeqCnt -= 1
+        if status and self.isAutomaticImageReadback:
+            self.showPageInMainBootSeqWin(uidef.kPageIndex_BootDeviceMemory)
+            self._RTxxx_doViewMem()
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_AllInOne, status)
 
     def RTxxx_callbackAllInOneAction( self ):
         self._RTxxx_startGaugeTimer()
@@ -176,12 +189,10 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
         self._RTxxx_startGaugeTimer()
         self.printLog("'Generate Bootable Image' button is clicked")
         if self.createMatchedAppJsonfile():
-            #needToPlaySound = False
-            #self.setSecureBootSeqColor(needToPlaySound)
             if self.RTxxx_genBootableImage():
                 status = True
         self._RTxxx_stopGaugeTimer()
-        #self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_GenImage, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_GenImage, status)
         return status
 
     def RTxxx_callbackGenImage( self ):
@@ -203,7 +214,7 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
             self._RTxxx_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
-        #self.invalidateStepButtonColor(RT10yy_uidef.kSecureBootSeqStep_FlashImage, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_FlashImage, status)
         return status
 
     def RTxxx_callbackFlashImage( self ):
@@ -211,6 +222,20 @@ class secBootRTxxxMain(RTxxx_runcore.secBootRTxxxRun):
             self._RTxxx_doFlashImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
+
+    def _RTxxx_doViewMem( self ):
+        if self.connectStage == uidef.kConnectStage_Reset:
+            if self.isBootableAppAllowedToView:
+                self._RTxxx_startGaugeTimer()
+                self.RTxxx_readProgrammedMemoryAndShow()
+                self._RTxxx_stopGaugeTimer()
+            else:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotFlashImage'][self.languageIndex])
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
+
+    def RTxxx_callbackViewMem( self ):
+        self._RTxxx_doViewMem()
 
     def RTxxx_switchToolRunMode( self ):
         pass

@@ -101,6 +101,11 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
         if needToPlaySound:
             self.soundEffectFilenameForTask = uidef.kSoundEffectFilename_Restart
 
+    def _RTxxx_getImgName( self ):
+        memType = ''
+        memType = 'nor_'
+        return memType
+
     def RTxxx_setSecureBootSeqColor( self , needToPlaySound=True ):
         self.hasDynamicLableBeenInit = True
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
@@ -112,6 +117,9 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            strMemType = self._RTxxx_getImgName()
+            imgPath = "../img/RTxxx/" + strMemType + "image_unsigned.png"
+            self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_u'][self.languageIndex])
         elif self.secureBootType == RTxxx_uidef.kSecureBootType_PlainCrc:
             self.m_panel_genImage1_browseApp.Enable( True )
@@ -119,6 +127,9 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_c'][self.languageIndex])
             self.m_panel_flashImage1_showImage.Enable( True )
             self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            strMemType = self._RTxxx_getImgName()
+            imgPath = "../img/RTxxx/" + strMemType + "image_crc.png"
+            self.showImageLayout(imgPath.encode('utf-8'))
             self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_c'][self.languageIndex])
         else:
             pass

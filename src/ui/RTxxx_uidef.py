@@ -30,3 +30,7 @@ kSecureBootType_CryptoSignedKeyStore = 'Encrypted Signed Image Boot with KeyStor
 
 kSecureBootType_v2_0_0 = [kSecureBootType_PlainUnsigned, kSecureBootType_PlainCrc]
 kSecureBootType_Latest = kSecureBootType_v2_0_0
+
+kMemBlockColor_FDCB       = wx.Colour( 0x9f, 0x9f, 0x5f ) #wx.KHAKI
+kMemBlockColor_Image      = wx.BLUE
+
