@@ -66,8 +66,8 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()
+        self._setUartUsbPort()
         if self.isMcuSeriesChanged:
-            self._setUartUsbPort()
             if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
                 self.RT10yy_callbackSetMcuSeries()
             elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:

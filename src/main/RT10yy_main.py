@@ -65,7 +65,6 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def RT10yy_callbackSetMcuDevice( self ):
         self.RT10yy_setTargetSetupValue()
-        self._setUartUsbPort()
         self.applyFuseOperToRunMode()
         needToPlaySound = False
         self.RT10yy_setSecureBootSeqColor(needToPlaySound)

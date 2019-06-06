@@ -50,9 +50,13 @@ class secBootRTxxxMain(RTxxx_memcore.secBootRTxxxMem):
 
     def RTxxx_callbackSetMcuDevice( self ):
         self.RTxxx_setTargetSetupValue()
+        needToPlaySound = False
+        self.RTxxx_setSecureBootSeqColor(needToPlaySound)
 
     def RTxxx_callbackSetBootDevice( self ):
         self.RTxxx_setTargetSetupValue()
+        needToPlaySound = False
+        self.RTxxx_setSecureBootSeqColor(needToPlaySound)
 
     def _RTxxx_retryToPingBootloader( self ):
         pingStatus = False
