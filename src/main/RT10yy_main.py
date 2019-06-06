@@ -123,6 +123,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 pass
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb, showError):
+                if self.connectStage == uidef.kConnectStage_Rom:
+                    if showError:
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
                 self._RT10yy_connectFailureHandler()
                 return
             if self.connectStage == uidef.kConnectStage_Rom:

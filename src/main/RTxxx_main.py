@@ -91,6 +91,9 @@ class secBootRTxxxMain(RTxxx_memcore.secBootRTxxxMem):
                 pass
         while connectSteps:
             if not self.updatePortSetupValue(retryToDetectUsb, showError):
+                if self.connectStage == uidef.kConnectStage_Rom:
+                    if showError:
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckIsp'][self.languageIndex])
                 self._RTxxx_connectFailureHandler()
                 return
             if self.connectStage == uidef.kConnectStage_Rom:
@@ -102,7 +105,7 @@ class secBootRTxxxMain(RTxxx_memcore.secBootRTxxxMem):
                 else:
                     self.updateConnectStatus('red')
                     if showError:
-                        self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckIsp'][self.languageIndex])
                     return
             elif self.connectStage == uidef.kConnectStage_ExternalMemory:
                 if self.RTxxx_configureBootDevice():

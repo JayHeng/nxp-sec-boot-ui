@@ -591,4 +591,7 @@ kMsgLanguageContentDict = {
         'operImgError_notInRam':              ['Your specified area is not in the range of RAM, Please double check!',
                                               u"当前指定的访问区域超出有效RAM范围，请仔细检查！"],
 
+        'connectError_doubleCheckIsp':        ['Make sure that you have put MCU in ISP (In-System Programming) modes (ISP[2:0] pins = 3\'b010 (USB) or 3\'b110 (UART))!',
+                                              u"请检查ISP[2:0]引脚状态是否为3\'b010 (USB)或3\'b110 (UART)以确认微控制器处于ROM ISP模式！"],
+
 }
