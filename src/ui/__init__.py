@@ -21,6 +21,7 @@ import ui_settings_fixed_otpmk_key
 import ui_settings_flexible_user_keys
 import RT10yy_uidef_efuse
 import RT10yy_ui_efuse_lock
+import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
 import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
 import RT10yy_ui_efuse_bootcfg0_flexspinor_12bits
 import RT10yy_ui_efuse_bootcfg1
@@ -49,6 +50,7 @@ __all__ = ["RTxxx_uicore",
            "ui_settings_flexible_user_keys",
            "RT10yy_uidef_efuse",
            "RT10yy_ui_efuse_lock",
+           "RT10yy_ui_efuse_bootcfg0_flexspinor_3bits",
            "RT10yy_ui_efuse_bootcfg0_flexspinor_10bits",
            "RT10yy_ui_efuse_bootcfg0_flexspinor_12bits",
            "RT10yy_ui_efuse_bootcfg1",

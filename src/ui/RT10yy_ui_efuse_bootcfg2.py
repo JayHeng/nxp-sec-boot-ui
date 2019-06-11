@@ -36,6 +36,11 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
             self.m_choice_bit6.Clear()
             self.m_choice_bit6.SetItems(efuseDescDiffDict['0x470_bootcfg2_bit6'][key])
             self.m_choice_bit6.SetSelection(0)
+        for key in efuseDescDiffDict['0x470_bootcfg2_bit7'].keys():
+            self.m_staticText_bit7.SetLabel(key)
+            self.m_choice_bit7.Clear()
+            self.m_choice_bit7.SetItems(efuseDescDiffDict['0x470_bootcfg2_bit7'][key])
+            self.m_choice_bit7.SetSelection(0)
         for key in efuseDescDiffDict['0x470_bootcfg2_bit8'].keys():
             self.m_staticText_bit8.SetLabel(key)
             self.m_choice_bit8.Clear()
@@ -73,6 +78,11 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
             self.m_choice_bit15.SetSelection(0)
         for key in efuseDescDiffDict['0x470_bootcfg2_bit30_24'].keys():
             self.m_staticText_bit30_24.SetLabel(key)
+        for key in efuseDescDiffDict['0x470_bootcfg2_bit31'].keys():
+            self.m_staticText_bit31.SetLabel(key)
+            self.m_choice_bit31.Clear()
+            self.m_choice_bit31.SetItems(efuseDescDiffDict['0x470_bootcfg2_bit31'][key])
+            self.m_choice_bit31.SetSelection(0)
         self._recoverLastSettings()
 
     def _convertLongIntHexText( self, hexText ):
@@ -113,8 +123,12 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
             self.m_staticText_bit6.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_choice_bit6.Enable( False )
-        self.m_choice_bit7.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000080) >> 7)
-        self.m_staticText_bit7.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit7Str = self.m_choice_bit7.GetString(self.m_choice_bit7.GetSelection())
+        if bit7Str[0] != 'x':
+            self.m_choice_bit7.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000080) >> 7)
+            self.m_staticText_bit7.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit7.Enable( False )
         bit8Str = self.m_choice_bit8.GetString(self.m_choice_bit8.GetSelection())
         if bit8Str[0] != 'x':
             self.m_choice_bit8.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x00000100) >> 8)
@@ -176,8 +190,12 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
             self.m_staticText_bit30_24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         else:
             self.m_textCtrl_bit30_24.Enable( False )
-        self.m_choice_bit31.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x80000000) >> 31)
-        self.m_staticText_bit31.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit31Str = self.m_choice_bit31.GetString(self.m_choice_bit31.GetSelection())
+        if bit31Str[0] != 'x':
+            self.m_choice_bit31.SetSelection((self.efuseDict['0x470_bootCfg2'] & 0x80000000) >> 31)
+            self.m_staticText_bit31.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit31.Enable( False )
 
     def popupMsgBox( self, msgStr ):
         messageText = (msgStr)
@@ -199,7 +217,9 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
         bit6Str = self.m_choice_bit6.GetString(self.m_choice_bit6.GetSelection())
         if bit6Str[0] != 'x':
             self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0xffffffbf) | (self.m_choice_bit6.GetSelection() << 6)
-        self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0xffffff7f) | (self.m_choice_bit7.GetSelection() << 7)
+        bit7Str = self.m_choice_bit7.GetString(self.m_choice_bit7.GetSelection())
+        if bit7Str[0] != 'x':
+            self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0xffffff7f) | (self.m_choice_bit7.GetSelection() << 7)
         bit8Str = self.m_choice_bit8.GetString(self.m_choice_bit8.GetSelection())
         if bit8Str[0] != 'x':
             self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0xfffffeff) | (self.m_choice_bit8.GetSelection() << 8)
@@ -248,7 +268,9 @@ class secBootUiEfuseBootCfg2(RT10yy_efuseWin_BootCfg2.efuseWin_BootCfg2):
                 self.popupMsgBox('Illegal input detected! You should input like this format: 0x20')
                 return False
             self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0x80ffffff) | (emmc4p4DllDelayline << 24)
-        self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0x7fffffff) | (self.m_choice_bit31.GetSelection() << 31)
+        bit31Str = self.m_choice_bit31.GetString(self.m_choice_bit31.GetSelection())
+        if bit31Str[0] != 'x':
+            self.efuseDict['0x470_bootCfg2'] = (self.efuseDict['0x470_bootCfg2'] & 0x7fffffff) | (self.m_choice_bit31.GetSelection() << 31)
         return True
 
     def callbackOk( self, event ):

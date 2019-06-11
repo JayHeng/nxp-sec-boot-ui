@@ -16,6 +16,11 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
         self.efuseDict = efuseDict.copy()
 
     def setNecessaryInfo( self, efuseDescDiffDict ):
+        for key in efuseDescDiffDict['0x460_bootcfg1_bit6'].keys():
+            self.m_staticText_bit6.SetLabel(key)
+            self.m_choice_bit6.Clear()
+            self.m_choice_bit6.SetItems(efuseDescDiffDict['0x460_bootcfg1_bit6'][key])
+            self.m_choice_bit6.SetSelection(0)
         for key in efuseDescDiffDict['0x460_bootcfg1_bit13_12'].keys():
             self.m_staticText_bit13_12.SetLabel(key)
             self.m_choice_bit13_12.Clear()
@@ -26,6 +31,16 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
             self.m_choice_bit15_14.Clear()
             self.m_choice_bit15_14.SetItems(efuseDescDiffDict['0x460_bootcfg1_bit15_14'][key])
             self.m_choice_bit15_14.SetSelection(0)
+        for key in efuseDescDiffDict['0x460_bootcfg1_bit24'].keys():
+            self.m_staticText_bit24.SetLabel(key)
+            self.m_choice_bit24.Clear()
+            self.m_choice_bit24.SetItems(efuseDescDiffDict['0x460_bootcfg1_bit24'][key])
+            self.m_choice_bit24.SetSelection(0)
+        for key in efuseDescDiffDict['0x460_bootcfg1_bit29'].keys():
+            self.m_staticText_bit29.SetLabel(key)
+            self.m_choice_bit29.Clear()
+            self.m_choice_bit29.SetItems(efuseDescDiffDict['0x460_bootcfg1_bit29'][key])
+            self.m_choice_bit29.SetSelection(0)
         for key in efuseDescDiffDict['0x460_bootcfg1_bit31_30'].keys():
             self.m_staticText_bit31_30.SetLabel(key)
             self.m_choice_bit31_30.Clear()
@@ -52,7 +67,12 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
         self.m_staticText_bit4.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit5.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x00000020) >> 5)
         self.m_staticText_bit5.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
-        self.m_choice_bit6.Enable( False )
+        bit6Str = self.m_choice_bit6.GetString(self.m_choice_bit6.GetSelection())
+        if bit6Str[0] != 'x':
+            self.m_choice_bit6.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x00000040) >> 6)
+            self.m_staticText_bit6.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit6.Enable( False )
         self.m_choice_bit7.Enable( False )
 
         self.m_textCtrl_bit11_8.Clear()
@@ -78,16 +98,24 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
         self.m_choice_bit23_22.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x00c00000) >> 22)
         self.m_staticText_bit23_22.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
-        self.m_choice_bit24.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x01000000) >> 24)
-        self.m_staticText_bit24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit24Str = self.m_choice_bit24.GetString(self.m_choice_bit24.GetSelection())
+        if bit24Str[0] != 'x':
+            self.m_choice_bit24.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x01000000) >> 24)
+            self.m_staticText_bit24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit24.Enable( False )
         self.m_choice_bit25.Enable( False )
         self.m_choice_bit26.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x04000000) >> 26)
         self.m_staticText_bit26.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit27.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x08000000) >> 27)
         self.m_staticText_bit27.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit28.Enable( False )
-        self.m_choice_bit29.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x20000000) >> 29)
-        self.m_staticText_bit29.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit29Str = self.m_choice_bit29.GetString(self.m_choice_bit29.GetSelection())
+        if bit29Str[0] != 'x':
+            self.m_choice_bit29.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0x20000000) >> 29)
+            self.m_staticText_bit29.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit29.Enable( False )
         bit31_30Str = self.m_choice_bit31_30.GetString(self.m_choice_bit31_30.GetSelection())
         if bit31_30Str[0] != 'x':
             self.m_choice_bit31_30.SetSelection((self.efuseDict['0x460_bootCfg1'] & 0xc0000000) >> 30)
@@ -105,6 +133,9 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xfffffff7) | (self.m_choice_bit3.GetSelection() << 3)
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xffffffef) | (self.m_choice_bit4.GetSelection() << 4)
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xffffffdf) | (self.m_choice_bit5.GetSelection() << 5)
+        bit6Str = self.m_choice_bit6.GetString(self.m_choice_bit6.GetSelection())
+        if bit6Str[0] != 'x':
+            self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xffffffbf) | (self.m_choice_bit6.GetSelection() << 6)
 
         sdramConfigOptionsStr = self.m_textCtrl_bit11_8.GetLineText(0)
         sdramConfigOptions = 0
@@ -128,10 +159,14 @@ class secBootUiEfuseBootCfg1(RT10yy_efuseWin_BootCfg1.efuseWin_BootCfg1):
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xffdfffff) | (self.m_choice_bit21.GetSelection() << 21)
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xff3fffff) | (self.m_choice_bit23_22.GetSelection() << 22)
 
-        self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xfeffffff) | (self.m_choice_bit24.GetSelection() << 24)
+        bit24Str = self.m_choice_bit24.GetString(self.m_choice_bit24.GetSelection())
+        if bit24Str[0] != 'x':
+            self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xfeffffff) | (self.m_choice_bit24.GetSelection() << 24)
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xfbffffff) | (self.m_choice_bit26.GetSelection() << 26)
         self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xf7ffffff) | (self.m_choice_bit27.GetSelection() << 27)
-        self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xdfffffff) | (self.m_choice_bit29.GetSelection() << 29)
+        bit29Str = self.m_choice_bit29.GetString(self.m_choice_bit29.GetSelection())
+        if bit29Str[0] != 'x':
+            self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0xdfffffff) | (self.m_choice_bit29.GetSelection() << 29)
         bit31_30Str = self.m_choice_bit31_30.GetString(self.m_choice_bit31_30.GetSelection())
         if bit31_30Str[0] != 'x':
             self.efuseDict['0x460_bootCfg1'] = (self.efuseDict['0x460_bootCfg1'] & 0x3fffffff) | (self.m_choice_bit31_30.GetSelection() << 30)

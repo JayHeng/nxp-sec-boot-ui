@@ -16,11 +16,41 @@ class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):
         self.efuseDict = efuseDict.copy()
 
     def setNecessaryInfo( self, efuseDescDiffDict ):
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit11_8'].keys():
+            self.m_staticText_bit11_8.SetLabel(key)
+            self.m_choice_bit11_8.Clear()
+            self.m_choice_bit11_8.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit11_8'][key])
+            self.m_choice_bit11_8.SetSelection(0)
         for key in efuseDescDiffDict['0x6d0_miscconf0_bit19_16'].keys():
             self.m_staticText_bit19_16.SetLabel(key)
             self.m_choice_bit19_16.Clear()
             self.m_choice_bit19_16.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit19_16'][key])
             self.m_choice_bit19_16.SetSelection(0)
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit24'].keys():
+            self.m_staticText_bit24.SetLabel(key)
+            self.m_choice_bit24.Clear()
+            self.m_choice_bit24.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit24'][key])
+            self.m_choice_bit24.SetSelection(0)
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit26_25'].keys():
+            self.m_staticText_bit26_25.SetLabel(key)
+            self.m_choice_bit26_25.Clear()
+            self.m_choice_bit26_25.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit26_25'][key])
+            self.m_choice_bit26_25.SetSelection(0)
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit27'].keys():
+            self.m_staticText_bit27.SetLabel(key)
+            self.m_choice_bit27.Clear()
+            self.m_choice_bit27.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit27'][key])
+            self.m_choice_bit27.SetSelection(0)
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit29_28'].keys():
+            self.m_staticText_bit29_28.SetLabel(key)
+            self.m_choice_bit29_28.Clear()
+            self.m_choice_bit29_28.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit29_28'][key])
+            self.m_choice_bit29_28.SetSelection(0)
+        for key in efuseDescDiffDict['0x6d0_miscconf0_bit31_30'].keys():
+            self.m_staticText_bit31_30.SetLabel(key)
+            self.m_choice_bit31_30.Clear()
+            self.m_choice_bit31_30.SetItems(efuseDescDiffDict['0x6d0_miscconf0_bit31_30'][key])
+            self.m_choice_bit31_30.SetSelection(0)
         self._recoverLastSettings()
 
     def _convertLongIntHexText( self, hexText ):
@@ -39,8 +69,12 @@ class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):
         self.m_choice_bit7.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000080) >> 7)
         self.m_staticText_bit7.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
 
-        self.m_choice_bit11_8.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000f00) >> 8)
-        self.m_staticText_bit11_8.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit11_8Str = self.m_choice_bit11_8.GetString(self.m_choice_bit11_8.GetSelection())
+        if bit11_8Str[0] != 'x':
+            self.m_choice_bit11_8.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x00000f00) >> 8)
+            self.m_staticText_bit11_8.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit11_8.Enable( False )
         self.m_choice_bit12.Enable( False )
         self.m_choice_bit15_13.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x0000e000) >> 13)
         self.m_staticText_bit15_13.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
@@ -50,16 +84,36 @@ class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):
         self.m_choice_bit21_20.Enable( False )
         self.m_choice_bit23_22.Enable( False )
 
-        self.m_choice_bit24.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x01000000) >> 24)
-        self.m_staticText_bit24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
-        self.m_choice_bit26_25.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x06000000) >> 25)
-        self.m_staticText_bit26_25.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
-        self.m_choice_bit27.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x08000000) >> 27)
-        self.m_staticText_bit27.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
-        self.m_choice_bit29_28.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x30000000) >> 28)
-        self.m_staticText_bit29_28.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
-        self.m_choice_bit31_30.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0xc0000000) >> 30)
-        self.m_staticText_bit31_30.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        bit24Str = self.m_choice_bit24.GetString(self.m_choice_bit24.GetSelection())
+        if bit24Str[0] != 'x':
+            self.m_choice_bit24.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x01000000) >> 24)
+            self.m_staticText_bit24.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit24.Enable( False )
+        bit26_25Str = self.m_choice_bit26_25.GetString(self.m_choice_bit26_25.GetSelection())
+        if bit26_25Str[0] != 'x':
+            self.m_choice_bit26_25.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x06000000) >> 25)
+            self.m_staticText_bit26_25.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit26_25.Enable( False )
+        bit27Str = self.m_choice_bit27.GetString(self.m_choice_bit27.GetSelection())
+        if bit27Str[0] != 'x':
+            self.m_choice_bit27.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x08000000) >> 27)
+            self.m_staticText_bit27.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit27.Enable( False )
+        bit29_28Str = self.m_choice_bit29_28.GetString(self.m_choice_bit29_28.GetSelection())
+        if bit29_28Str[0] != 'x':
+            self.m_choice_bit29_28.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0x30000000) >> 28)
+            self.m_staticText_bit29_28.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit29_28.Enable( False )
+        bit31_30Str = self.m_choice_bit31_30.GetString(self.m_choice_bit31_30.GetSelection())
+        if bit31_30Str[0] != 'x':
+            self.m_choice_bit31_30.SetSelection((self.efuseDict['0x6d0_miscConf0'] & 0xc0000000) >> 30)
+            self.m_staticText_bit31_30.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        else:
+            self.m_choice_bit31_30.Enable( False )
 
     def popupMsgBox( self, msgStr ):
         messageText = (msgStr)
@@ -79,14 +133,26 @@ class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):
         self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xffffffc0) | padSetting
         self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xffffffbf) | (self.m_choice_bit6.GetSelection() << 6)
         self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xffffff7f) | (self.m_choice_bit7.GetSelection() << 7)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xfffff0ff) | (self.m_choice_bit11_8.GetSelection() << 8)
+        bit11_8Str = self.m_choice_bit11_8.GetString(self.m_choice_bit11_8.GetSelection())
+        if bit11_8Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xfffff0ff) | (self.m_choice_bit11_8.GetSelection() << 8)
         self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xffff1fff) | (self.m_choice_bit15_13.GetSelection() << 13)
         self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xfff0ffff) | (self.m_choice_bit19_16.GetSelection() << 16)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xfeffffff) | (self.m_choice_bit24.GetSelection() << 24)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xf9ffffff) | (self.m_choice_bit26_25.GetSelection() << 25)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xf7ffffff) | (self.m_choice_bit27.GetSelection() << 27)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xcfffffff) | (self.m_choice_bit29_28.GetSelection() << 28)
-        self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0x3fffffff) | (self.m_choice_bit31_30.GetSelection() << 30)
+        bit24Str = self.m_choice_bit24.GetString(self.m_choice_bit24.GetSelection())
+        if bit24Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xfeffffff) | (self.m_choice_bit24.GetSelection() << 24)
+        bit26_25Str = self.m_choice_bit26_25.GetString(self.m_choice_bit26_25.GetSelection())
+        if bit26_25Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xf9ffffff) | (self.m_choice_bit26_25.GetSelection() << 25)
+        bit27Str = self.m_choice_bit27.GetString(self.m_choice_bit27.GetSelection())
+        if bit27Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xf7ffffff) | (self.m_choice_bit27.GetSelection() << 27)
+        bit29_28Str = self.m_choice_bit29_28.GetString(self.m_choice_bit29_28.GetSelection())
+        if bit29_28Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0xcfffffff) | (self.m_choice_bit29_28.GetSelection() << 28)
+        bit31_30Str = self.m_choice_bit31_30.GetString(self.m_choice_bit31_30.GetSelection())
+        if bit31_30Str[0] != 'x':
+            self.efuseDict['0x6d0_miscConf0'] = (self.efuseDict['0x6d0_miscConf0'] & 0x3fffffff) | (self.m_choice_bit31_30.GetSelection() << 30)
         return True
 
     def callbackOk( self, event ):

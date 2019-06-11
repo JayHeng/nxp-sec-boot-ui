@@ -59,7 +59,7 @@ availableBootDevices = [RT10yy_uidef.kBootDevice_FlexspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
 flexspiNorMemBase = 0x60000000
 xspiNorCfgInfoOffset = 0x400
-flexspiNorEfuseBootCfg0Bits = 10
+flexspiNorEfuseBootCfg0Bits = 3
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
 isSipFlexspiNorDevice = False
 isEccTypeSetInFuseMiscConf = False
@@ -67,25 +67,8 @@ isEccTypeSetInFuseMiscConf = False
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
-efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',
-                                                    '0001 - Reserved',
-                                                    '0010 - Reserved',
-                                                    '0011 - Reserved',
-                                                    '0100 - Reserved',
-                                                    '0101 - Reserved',
-                                                    '0110 - Reserved',
-                                                    '0111 - Reserved',
-                                                    '1000 - Reserved',
-                                                    '1001 - Reserved',
-                                                    '1010 - Reserved',
-                                                    '1011 - Reserved',
-                                                    '1100 - FlexSPI NAND',
-                                                    '1101 - FlexSPI NAND',
-                                                    '1110 - FlexSPI NAND',
-                                                    '1111 - FlexSPI NAND',
-                                                    ]}
-efuse_0x460_bit13_12 = {'BEE_KEY0_SEL':            ['00 - From Register', '01 - Reserved', '10 - Reserved', '11 - From SW-GP2']}
-efuse_0x460_bit15_14 = {'BEE_KEY1_SEL':            ['00 - From Register', '01 - Reserved', '10 - Reserved', '11 - From SW-GP2']}
+efuse_0x460_bit6     = {'BL_UART_INT':               ['0 - Enabled', '1 - Disabled']}
+efuse_0x460_bit13_12 = {'OTFAD_KEY0_SEL':            ['00 - From OTPMK[127:0]', '01 - From OTPMK[255:128]', '10 - From SW-GP2', '11 - From SW-GP2']}
 efuseDescDiffDict = {'0x400_lock_bit7' :        RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit14':        RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit15':        RT10yy_uidef_efuse.efuse_temp_reserved1,
@@ -93,16 +76,18 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        RT10yy_uidef_efuse.efuse_temp_re
                      '0x400_lock_bit20':        RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit25_24':     RT10yy_uidef_efuse.efuse_temp_reserved2,
 
-                     '0x450_bootcfg0_bit7_4':   efuse_0x450_bit7_4,
-
+                     '0x460_bootcfg1_bit6'    : efuse_0x460_bit6,
                      '0x460_bootcfg1_bit13_12': efuse_0x460_bit13_12,
-                     '0x460_bootcfg1_bit15_14': efuse_0x460_bit15_14,
+                     '0x460_bootcfg1_bit15_14': RT10yy_uidef_efuse.efuse_temp_reserved2,
+                     '0x460_bootcfg1_bit24'   : RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x460_bootcfg1_bit29'   : RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x460_bootcfg1_bit31_30': RT10yy_uidef_efuse.efuse_temp_reserved2,
 
                      '0x470_bootcfg2_bit0':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit3':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit5':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit6':     RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x470_bootcfg2_bit7':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit8':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit9':     RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit11':    RT10yy_uidef_efuse.efuse_temp_reserved1,
@@ -111,8 +96,15 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        RT10yy_uidef_efuse.efuse_temp_re
                      '0x470_bootcfg2_bit14':    RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit15':    RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x470_bootcfg2_bit30_24': RT10yy_uidef_efuse.efuse_temp_reserved7,
+                     '0x470_bootcfg2_bit31':    RT10yy_uidef_efuse.efuse_temp_reserved1,
 
+                     '0x6d0_miscconf0_bit11_8': RT10yy_uidef_efuse.efuse_temp_reserved4,
                      '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion128KB,
+                     '0x6d0_miscconf0_bit24':   RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6d0_miscconf0_bit26_25':RT10yy_uidef_efuse.efuse_temp_reserved2,
+                     '0x6d0_miscconf0_bit27':   RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x6d0_miscconf0_bit29_28':RT10yy_uidef_efuse.efuse_temp_reserved2,
+                     '0x6d0_miscconf0_bit31_30':RT10yy_uidef_efuse.efuse_temp_reserved2,
 
                      '0x6e0_miscconf1_bit0':    RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x6e0_miscconf1_bit3_1':  RT10yy_uidef_efuse.efuse_temp_reserved3,

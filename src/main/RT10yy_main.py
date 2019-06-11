@@ -18,6 +18,7 @@ from ui import ui_settings_cert
 from ui import ui_settings_fixed_otpmk_key
 from ui import ui_settings_flexible_user_keys
 from ui import RT10yy_ui_efuse_lock
+from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
 from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
 from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_12bits
 from ui import RT10yy_ui_efuse_bootcfg1
@@ -596,7 +597,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             return
         efuseBootCfg0Frame = None
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            if self.tgt.flexspiNorEfuseBootCfg0Bits == 10:
+            if self.tgt.flexspiNorEfuseBootCfg0Bits == 3:
+                efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_3bits.secBootUiEfuseBootCfg0FlexspiNor3bits(None)
+            elif self.tgt.flexspiNorEfuseBootCfg0Bits == 10:
                 efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_10bits.secBootUiEfuseBootCfg0FlexspiNor10bits(None)
             elif self.tgt.flexspiNorEfuseBootCfg0Bits == 12:
                 efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_12bits.secBootUiEfuseBootCfg0FlexspiNor12bits(None)

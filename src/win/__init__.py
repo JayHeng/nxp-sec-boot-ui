@@ -13,6 +13,7 @@ import advSettingsWin_Cert
 import advSettingsWin_FixedOtpmkKey
 import advSettingsWin_FlexibleUserKeys
 import RT10yy_efuseWin_Lock
+import RT10yy_efuseWin_BootCfg0_FlexspiNor_3bits
 import RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits
 import RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits
 import RT10yy_efuseWin_BootCfg1
@@ -33,6 +34,7 @@ __all__ = ["secBootWin",
            "advSettingsWin_FixedOtpmkKey",
            "advSettingsWin_FlexibleUserKeys",
            "RT10yy_efuseWin_Lock",
+           "RT10yy_efuseWin_BootCfg0_FlexspiNor_3bits",
            "RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits",
            "RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits",
            "RT10yy_efuseWin_BootCfg1",

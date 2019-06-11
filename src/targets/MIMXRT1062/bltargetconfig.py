@@ -93,11 +93,14 @@ efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',
                                                     ]}
 efuse_0x460_bit13_12 = {'BEE_KEY0_SEL':            ['00 - From Register', '01 - GP4[127:0]', '10 - From OTPMK[255:128]', '11 - From SW-GP2']}
 efuse_0x460_bit15_14 = {'BEE_KEY1_SEL':            ['00 - From Register', '01 - GP4[127:0]', '10 - From OTPMK[255:128]', '11 - From SW-GP2']}
+efuse_0x460_bit24    = {'SD_BT_DLL':               ['0 - Disabled', '1 - Enabled']}
+efuse_0x460_bit29    = {'PWR_STA_SEL':             ['0 - 5ms', '1 - 2.5ms']}
 efuse_0x460_bit31_30 = {'SD_BT_Power_Cycle_SEL':   ['00 - 20ms', '01 - 10ms', '10 - 5ms', '11 - 2.5ms']}
 efuse_0x470_bit0     = {'BT_SD_Pad':               ['0 - Normal', '1 - Overridden']}
 efuse_0x470_bit3     = {'BT_SDMMC':                ['0 - Enabled', '1 - Disabled']}
 efuse_0x470_bit5     = {'BT_SD2_Volt':             ['0 - 3.3V', '1 - 1.8V']}
 efuse_0x470_bit6     = {'BT_SD1_Polar':            ['0 - Low Active', '1 - High Active']}
+efuse_0x470_bit7     = {'SD_BT_DLL_M':             ['0 - Slave', '1 - Override']}
 efuse_0x470_bit8     = {'BT_uSDHC_SRE':            ['0 - Enabled', '1 - Disabled']}
 efuse_0x470_bit9     = {'BT_uSDHC_SION':           ['0 - Enabled', '1 - Disabled']}
 efuse_0x470_bit11    = {'BT_eMMC_Pullup':          ['0 - 47K', '1 - 22K']}
@@ -106,6 +109,29 @@ efuse_0x470_bit13    = {'BT_uSDHC_HYS':            ['0', '1']}
 efuse_0x470_bit14    = {'BT_eMMC4.4':              ['0', '1']}
 efuse_0x470_bit15    = {'BT_SD2_Polar':            ['0 - Low Active', '1 - High Active']}
 efuse_0x470_bit30_24 = {'BT_eMMC4.4_DLL_Delayline':['N/A']}
+efuse_0x470_bit31    = {'BT_NAND_Pad':             ['0 - Normal', '1 - Overridden']}
+efuse_0x6d0_bit11_8  = {'BT_Read_Retry_Sequence':  ['0000 - Don\'t use read retry(RR) sequence',
+                                                    '0001 - Micron 20nm RR sequence',
+                                                    '0010 - Toshiba A19nm RR sequence',
+                                                    '0011 - Toshiba 19nm RR sequence',
+                                                    '0100 - SanDisk 19nm RR sequence',
+                                                    '0101 - SanDisk 1ynmRR sequence',
+                                                    '0110 - Reserved',
+                                                    '0111 - Reserved',
+                                                    '1000 - Reserved',
+                                                    '1001 - Reserved',
+                                                    '1010 - Reserved',
+                                                    '1011 - Reserved',
+                                                    '1100 - Reserved',
+                                                    '1101 - Reserved',
+                                                    '1110 - Reserved',
+                                                    '1111 - Reserved',
+                                                    ]}
+efuse_0x6d0_bit24    = {'Recovery_BT':             ['0 - Disabled', '1 - Enabled']}
+efuse_0x6d0_bit26_25 = {'BT_LPSPI_Port':           ['00 - LPSPI1', '01 - LPSPI2','10 - LPSPI3','11 - LPSPI4']}
+efuse_0x6d0_bit27    = {'BT_LPSPI_Addr':           ['0 - 3bytes(24-bit)', '1 - 2bytes(16-bit)']}
+efuse_0x6d0_bit29_28 = {'BT_LPSPI_Speed':          ['00 - 20MHz', '01 - 10MHz', '10 - 5MHz', '11 - 2MHz']}
+efuse_0x6d0_bit31_30 = {'SD_Calibration_Step':     ['00 - 1', '01 - Reserved', '10 - Reserved', '11 - Reserved']}
 efuse_0x6e0_bit0     = {'SIP_Test':                ['0 - Disabled', '1 - Enabled']}
 efuse_0x6e0_bit3_1   = {'xSPI_Flash_BT_Frequency': ['000 - 100MHz', '001 - 120MHz', '010 - 133MHz', '011 - 166MHz', '100 - Reserved', '101 - 80MHz', '110 - 60MHz', '111 - Reserved']}
 efuse_0x6e0_bit5_4   = {'xSPI_Flash_Hold_Time':    ['00 - 500us', '01 - 1ms', '10 - 3ms', '11 - 10ms']}
@@ -142,14 +168,18 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x450_bootcfg0_bit3_2':   efuse_0x450_bit3_2,
                      '0x450_bootcfg0_bit7_4':   efuse_0x450_bit7_4,
 
+                     '0x460_bootcfg1_bit6'    : RT10yy_uidef_efuse.efuse_temp_reserved1,
                      '0x460_bootcfg1_bit13_12': efuse_0x460_bit13_12,
                      '0x460_bootcfg1_bit15_14': efuse_0x460_bit15_14,
+                     '0x460_bootcfg1_bit24'   : efuse_0x460_bit24,
+                     '0x460_bootcfg1_bit29'   : efuse_0x460_bit29,
                      '0x460_bootcfg1_bit31_30': efuse_0x460_bit31_30,
 
                      '0x470_bootcfg2_bit0':     efuse_0x470_bit0,
                      '0x470_bootcfg2_bit3':     efuse_0x470_bit3,
                      '0x470_bootcfg2_bit5':     efuse_0x470_bit5,
                      '0x470_bootcfg2_bit6':     efuse_0x470_bit6,
+                     '0x470_bootcfg2_bit7':     efuse_0x470_bit7,
                      '0x470_bootcfg2_bit8':     efuse_0x470_bit8,
                      '0x470_bootcfg2_bit9':     efuse_0x470_bit9,
                      '0x470_bootcfg2_bit11':    efuse_0x470_bit11,
@@ -158,8 +188,15 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x470_bootcfg2_bit14':    efuse_0x470_bit14,
                      '0x470_bootcfg2_bit15':    efuse_0x470_bit15,
                      '0x470_bootcfg2_bit30_24': efuse_0x470_bit30_24,
+                     '0x470_bootcfg2_bit31':    efuse_0x470_bit31,
 
+                     '0x6d0_miscconf0_bit11_8': efuse_0x6d0_bit11_8,
                      '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion512KB,
+                     '0x6d0_miscconf0_bit24':   efuse_0x6d0_bit24,
+                     '0x6d0_miscconf0_bit26_25':efuse_0x6d0_bit26_25,
+                     '0x6d0_miscconf0_bit27':   efuse_0x6d0_bit27,
+                     '0x6d0_miscconf0_bit29_28':efuse_0x6d0_bit29_28,
+                     '0x6d0_miscconf0_bit31_30':efuse_0x6d0_bit31_30,
 
                      '0x6e0_miscconf1_bit0':    efuse_0x6e0_bit0,
                      '0x6e0_miscconf1_bit3_1':  efuse_0x6e0_bit3_1,
