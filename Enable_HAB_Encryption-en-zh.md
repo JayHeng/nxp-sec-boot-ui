@@ -1,3 +1,10 @@
+```text
+  为了便于大家快速验证软件HAB加密功能，特将已开启HAB加密功能的cst工具上传至百度网盘，仅用作个人学习用途，违者后果自负。
+  -- 链接: https://pan.baidu.com/s/1lcFverYPDDp0qjxCcWpkug
+  -- 提取码: 3873
+  使用方法：将下载到的压缩包cst_3.0.1_hab_crypto.zip解压后将其所有文件拷贝到 \NXP-MCUBootUtility\tools\cst 文件夹下即可。
+```
+
 ### 1 Reason for enabling HAB encryption function 为什么要开启HAB加密功能
 　　NXP-MCUBootUtility is a tool designed for NXP MCU secure encryption boot. It fully supports secure encryption boot functions (signature only, signature and encryption) based on HAB implementation. HAB related functions are based on NXP's official HAB enablement tools. Due to the restriction of export control on security product, HAB Code Signing Tool cannot be directly integrated into NXP-MCUBootUtility installation package, so if you want to enbale HAB signature and encryption function for NXP-MCUBootUtility, You need to add HAB Code Signing Tool into NXP-MCUBootUtility manually. This article teaches you how to add HAB Code Signing Tool into NXP-MCUBootUtility to activate HAB encryption function.  
 

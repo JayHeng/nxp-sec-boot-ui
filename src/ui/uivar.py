@@ -207,7 +207,7 @@ def initVar(cfgFilename):
 
         g_flexspiNorOpt0 = 0xc0000007
         g_flexspiNorOpt1 = 0x00000000
-        g_flexspiNorDeviceModel = RT10yy_uidef.kFlexspiNorDevice_None
+        g_flexspiNorDeviceModel = uidef.kFlexspiNorDevice_None
 
         g_semcNandOpt = 0xD0010101
         g_semcNandFcbOpt = 0x00010101
