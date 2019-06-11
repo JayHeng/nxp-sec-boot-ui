@@ -75,21 +75,11 @@ class secBootRT10yyUi(memcore.secBootMem):
         except:
             pass
 
-    def _RT10yy_refreshBootDeviceList( self ):
-        if self.tgt.availableBootDevices != None:
-            self.m_choice_bootDevice.Clear()
-            self.m_choice_bootDevice.SetItems(self.tgt.availableBootDevices)
-            retSel = self.m_choice_bootDevice.FindString(self.bootDevice)
-            if retSel != wx.NOT_FOUND:
-                self.m_choice_bootDevice.SetSelection(retSel)
-            else:
-                self.m_choice_bootDevice.SetSelection(0)
-
     def RT10yy_setTargetSetupValue( self ):
         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.RT10yy_createMcuTarget()
-        self._RT10yy_refreshBootDeviceList()
+        self.refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
@@ -244,6 +234,7 @@ class secBootRT10yyUi(memcore.secBootMem):
         self.hasDynamicLableBeenInit = True
         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
+        self.refreshSecureBootTypeList()
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
         self.resetSecureBootSeqColor()
         self.m_button_genCert.SetLabel(uilang.kMainLanguageContentDict['button_genCert'][self.languageIndex])

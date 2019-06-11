@@ -126,7 +126,7 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
             return True
         filename = 'xspiNorCfg.dat'
         filepath = os.path.join(self.blhostVectorsDir, filename)
-        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + rundef.kXspiNorCfgInfo_StartAddr, rundef.kXspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + self.tgt.xspiNorCfgInfoOffset, rundef.kXspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False
@@ -202,9 +202,9 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
         status = boot.status.kStatus_Success
         if self.RTxxx_isDeviceEnabledToOperate:
             if self.bootDeviceMemId == rundef.kBootDeviceMemId_FlexspiNor:
-                status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase + rundef.kXspiNorCfgInfo_StartAddr, rundef.kXspiNorCfgInfo_Length, rundef.kBootDeviceMemId_FlexspiNor)
+                status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.flexspiNorMemBase + self.tgt.xspiNorCfgInfoOffset, rundef.kXspiNorCfgInfo_Length, rundef.kBootDeviceMemId_FlexspiNor)
             elif self.bootDeviceMemId == rundef.kBootDeviceMemId_QuadspiNor:
-                status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.quadspiNorMemBase + rundef.kXspiNorCfgInfo_StartAddr, rundef.kXspiNorCfgInfo_Length, rundef.kBootDeviceMemId_QuadspiNor)
+                status, results, cmdStr = self.blhost.flashEraseRegion(self.tgt.quadspiNorMemBase + self.tgt.xspiNorCfgInfoOffset, rundef.kXspiNorCfgInfo_Length, rundef.kBootDeviceMemId_QuadspiNor)
             else:
                 pass
             self.printLog(cmdStr)

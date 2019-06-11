@@ -43,16 +43,22 @@ build = 'Release'
 availablePeripherals = 0x11
 romUsbVid = '0x1FC9'
 romUsbPid = '0x0135'
+hasSdpReadRegisterCmd = True
 flashloaderUsbVid = '0x15A2'
 flashloaderUsbPid = '0x0073'
 flashloaderLoadAddr = 0x20000000
 flashloaderJumpAddr = 0x20000400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
+availableSecureBootTypes = [RT10yy_uidef.kSecureBootType_Development,
+                            RT10yy_uidef.kSecureBootType_HabAuth,
+                            RT10yy_uidef.kSecureBootType_HabCrypto,
+                            RT10yy_uidef.kSecureBootType_BeeCrypto]
 hasRemappedFuse = True
 availableBootDevices = RT10yy_uidef.kBootDevice_Latest
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
 flexspiNorMemBase = 0x60000000
+xspiNorCfgInfoOffset = 0x1000
 flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
 isSipFlexspiNorDevice = False

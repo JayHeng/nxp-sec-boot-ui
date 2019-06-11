@@ -177,6 +177,16 @@ class secBootUi(secBootWin.secBootWin):
         self.m_choice_mcuDevice.SetItems(uidef.kMcuDevice_Latest)
         self.m_choice_mcuDevice.SetSelection(self.toolCommDict['mcuDevice'])
 
+    def refreshBootDeviceList( self ):
+        if self.tgt.availableBootDevices != None:
+            self.m_choice_bootDevice.Clear()
+            self.m_choice_bootDevice.SetItems(self.tgt.availableBootDevices)
+            retSel = self.m_choice_bootDevice.FindString(self.bootDevice)
+            if retSel != wx.NOT_FOUND:
+                self.m_choice_bootDevice.SetSelection(retSel)
+            else:
+                self.m_choice_bootDevice.SetSelection(0)
+
     def _detectMcuSeries( self ):
         mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         mcuSeries = uidef.kMcuSeries_iMXRT10yy
@@ -376,6 +386,16 @@ class secBootUi(secBootWin.secBootWin):
     def showPageInMainBootSeqWin(self, pageIndex ):
         if pageIndex != self.m_notebook_imageSeq.GetSelection():
             self.m_notebook_imageSeq.SetSelection(pageIndex)
+
+    def refreshSecureBootTypeList( self ):
+        if self.tgt.availableSecureBootTypes != None:
+            self.m_choice_secureBootType.Clear()
+            self.m_choice_secureBootType.SetItems(self.tgt.availableSecureBootTypes)
+            retSel = self.m_choice_secureBootType.FindString(self.secureBootType)
+            if retSel != wx.NOT_FOUND:
+                self.m_choice_secureBootType.SetSelection(retSel)
+            else:
+                self.m_choice_secureBootType.SetSelection(0)
 
     def invalidateStepButtonColor( self, stepName, excuteResult ):
         invalidColor = None

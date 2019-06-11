@@ -49,7 +49,7 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
     def RTxxx_setTargetSetupValue( self ):
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.RTxxx_createMcuTarget()
-        self._RTxxx_refreshBootDeviceList()
+        self.refreshBootDeviceList()
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
 
@@ -100,6 +100,7 @@ class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
     def RTxxx_setSecureBootSeqColor( self , needToPlaySound=True ):
         self.hasDynamicLableBeenInit = True
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
+        self.refreshSecureBootTypeList()
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
         self.resetSecureBootSeqColor()
         if self.secureBootType == RTxxx_uidef.kSecureBootType_PlainUnsigned:

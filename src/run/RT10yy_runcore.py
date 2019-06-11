@@ -162,23 +162,24 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
 
     def _getDeviceRegisterBySdphost( self, regAddr, regName, needToShow=True):
-        filename = 'readReg.dat'
-        filepath = os.path.join(self.sdphostVectorsDir, filename)
-        status, results, cmdStr = self.sdphost.readRegister(regAddr, 32, 4, filename)
-        self.printLog(cmdStr)
-        if (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled):
-            regVal = self.getVal32FromBinFile(filepath)
-            if needToShow:
-                self.printDeviceStatus(regName + " = " + self.convertLongIntHexText(str(hex(regVal))))
-            return regVal
-        else:
-            if needToShow:
-                self.printDeviceStatus(regName + " = --------")
-            return None
-        try:
-            os.remove(filepath)
-        except:
-            pass
+        if self.tgt.hasSdpReadRegisterCmd:
+            filename = 'readReg.dat'
+            filepath = os.path.join(self.sdphostVectorsDir, filename)
+            status, results, cmdStr = self.sdphost.readRegister(regAddr, 32, 4, filename)
+            self.printLog(cmdStr)
+            if (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled):
+                regVal = self.getVal32FromBinFile(filepath)
+                if needToShow:
+                    self.printDeviceStatus(regName + " = " + self.convertLongIntHexText(str(hex(regVal))))
+                return regVal
+            else:
+                if needToShow:
+                    self.printDeviceStatus(regName + " = --------")
+                return None
+            try:
+                os.remove(filepath)
+            except:
+                pass
 
     def _readMcuDeviceRegisterUuid( self ):
         self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_UUID1, 'OCOTP->B0W1 UUID[31:00]')
@@ -194,15 +195,27 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         self._readMcuDeviceRegisterSrcSmbr()
 
     def getMcuDeviceHabStatus( self ):
-        secConfig = self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR2, '', False)
-        if secConfig != None:
-            self.mcuDeviceHabStatus = ((secConfig & RT10yy_rundef.kRegisterMask_SecConfig) >> RT10yy_rundef.kRegisterShift_SecConfig)
-            if self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_FAB:
-                self.printDeviceStatus('HAB status = FAB')
-            elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Open:
-                self.printDeviceStatus('HAB status = Open')
-            elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed1:
+        if self.tgt.hasSdpReadRegisterCmd:
+            secConfig = self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR2, '', False)
+            if secConfig != None:
+                self.mcuDeviceHabStatus = ((secConfig & RT10yy_rundef.kRegisterMask_SecConfig) >> RT10yy_rundef.kRegisterShift_SecConfig)
+                if self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_FAB:
+                    self.printDeviceStatus('HAB status = FAB')
+                elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Open:
+                    self.printDeviceStatus('HAB status = Open')
+                elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed1:
+                    self.printDeviceStatus('HAB status = Closed')
+                else:
+                    pass
+        else:
+            status, results, cmdStr = self.sdphost.errorStatus()
+            self.printLog(cmdStr)
+            if status == boot.status.kSDP_Status_HabEnabled:
+                self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Closed0
                 self.printDeviceStatus('HAB status = Closed')
+            elif status == boot.status.kSDP_Status_HabDisabled:
+                self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Open
+                self.printDeviceStatus('HAB status = Open')
             else:
                 pass
 
@@ -383,7 +396,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             return True
         filename = 'flexspiNorCfg.dat'
         filepath = os.path.join(self.blhostVectorsDir, filename)
-        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + rundef.kFlexspiNorCfgInfo_StartAddr, rundef.kFlexspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase + self.tgt.xspiNorCfgInfoOffset, rundef.kFlexspiNorCfgInfo_Length, filename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False

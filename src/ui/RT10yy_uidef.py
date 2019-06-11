@@ -22,9 +22,11 @@ kSecureBootType_Development = 'DEV Unsigned Image Boot'
 kSecureBootType_HabAuth     = 'HAB Signed Image Boot'
 kSecureBootType_HabCrypto   = 'HAB Encrypted Image Boot'
 kSecureBootType_BeeCrypto   = 'BEE Encrypted Image Boot'
+kSecureBootType_OtfadCrypto = 'OTFAD Encrypted Image Boot'
 
 kSecureBootType_v1_0_0 = [kSecureBootType_Development, kSecureBootType_HabAuth, kSecureBootType_HabCrypto, kSecureBootType_BeeCrypto]
-kSecureBootType_Latest = kSecureBootType_v1_0_0
+kSecureBootType_v2_0_0 = [kSecureBootType_Development, kSecureBootType_HabAuth, kSecureBootType_HabCrypto, kSecureBootType_BeeCrypto, kSecureBootType_OtfadCrypto]
+kSecureBootType_Latest = kSecureBootType_v2_0_0
 
 kKeyStorageRegion_FixedOtpmkKey    = 'Fixed Otpmk(SNVS) Key'
 kKeyStorageRegion_FlexibleUserKeys = 'Flexible User Keys'
