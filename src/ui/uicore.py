@@ -9,6 +9,7 @@ import time
 import math
 import serial.tools.list_ports
 import pywinusb.hid
+import RT10yy_uidef
 import uidef
 import uivar
 import uilang

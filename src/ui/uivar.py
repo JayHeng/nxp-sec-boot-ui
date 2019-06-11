@@ -192,7 +192,7 @@ def initVar(cfgFilename):
                           'isEnglishLanguage':True,
                           'secBootType':0,
                           'mcuSeries':0,
-                          'mcuDevice':4,
+                          'mcuDevice':5,
                           'bootDevice':0,
                           'isUsbhidPortSelected':True,
                           'isOneStepChecked':True,
