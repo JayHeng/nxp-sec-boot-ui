@@ -224,7 +224,7 @@ class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_xipSizeTooLarge'][self.languageIndex] + u"0x%s !" %(RTxxx_rundef.kBootDeviceMemXipSize_FlexspiNor))
                     return False
             else:
-                #self.destAppVectorOffset = RT10yy_gendef.kInitialLoadSize_NOR
+                #self.destAppVectorOffset = RTyyyy_gendef.kInitialLoadSize_NOR
                 pass
         elif self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
             if ((imageStartAddr >= self.tgt.quadspiNorMemBase) and (imageStartAddr < self.tgt.quadspiNorMemBase + RTxxx_rundef.kBootDeviceMemXipSize_QuadspiNor)):
@@ -235,7 +235,7 @@ class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_xipSizeTooLarge'][self.languageIndex] + u"0x%s !" %(RTxxx_rundef.kBootDeviceMemXipSize_QuadspiNor))
                     return False
             else:
-                #self.destAppVectorOffset = RT10yy_gendef.kInitialLoadSize_NOR
+                #self.destAppVectorOffset = RTyyyy_gendef.kInitialLoadSize_NOR
                 pass
         else:
             pass

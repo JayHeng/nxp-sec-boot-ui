@@ -4,7 +4,7 @@ import wx
 import sys
 import os
 import uivar
-import RT10yy_uidef_efuse
+import RTyyyy_uidef_efuse
 sys.path.append(os.path.abspath(".."))
 from win import RT10yy_efuseWin_BootCfg0_FlexspiNor_3bits
 
@@ -20,9 +20,9 @@ class secBootUiEfuseBootCfg0FlexspiNor3bits(RT10yy_efuseWin_BootCfg0_FlexspiNor_
 
     def _recoverLastSettings ( self ):
         self.m_choice_bit0.SetSelection(self.efuseDict['0x450_bootCfg0'] & 0x00000001)
-        self.m_staticText_bit0.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit0.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit2_1.SetSelection((self.efuseDict['0x450_bootCfg0'] & 0x00000006) >> 1)
-        self.m_staticText_bit2_1.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit2_1.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit3.Enable( False )
         self.m_choice_bit4.Enable( False )
         self.m_choice_bit5.Enable( False )

@@ -4,7 +4,7 @@ import sys
 import os
 import json
 import uidef
-import RT10yy_uidef
+import RTyyyy_uidef
 
 g_exeTopRoot = None
 g_isQuietSoundEffect = None
@@ -240,7 +240,7 @@ def initVar(cfgFilename):
         g_dcdSettingsDict['deviceModel'] = 'No'
         g_dcdSettingsDict['dcdDesc'] = None
 
-        g_certSettingsDict['cstVersion'] = RT10yy_uidef.kCstVersion_v3_0_1
+        g_certSettingsDict['cstVersion'] = RTyyyy_uidef.kCstVersion_v3_0_1
         g_certSettingsDict['useExistingCaKey'] = 'n'
         g_certSettingsDict['useEllipticCurveCrypto'] = 'n'
         g_certSettingsDict['pkiTreeKeyLen'] = 2048
@@ -252,10 +252,10 @@ def initVar(cfgFilename):
         g_otpmkEncryptedRegionStartList = [None] * 3
         g_otpmkEncryptedRegionLengthList = [None] * 3
 
-        g_userKeyCtrlDict['engine_sel'] = RT10yy_uidef.kUserEngineSel_Engine0
-        g_userKeyCtrlDict['engine0_key_src'] = RT10yy_uidef.kUserKeySource_SW_GP2
+        g_userKeyCtrlDict['engine_sel'] = RTyyyy_uidef.kUserEngineSel_Engine0
+        g_userKeyCtrlDict['engine0_key_src'] = RTyyyy_uidef.kUserKeySource_SW_GP2
         g_userKeyCtrlDict['engine0_fac_cnt'] = 1
-        g_userKeyCtrlDict['engine1_key_src'] = RT10yy_uidef.kUserKeySource_SW_GP2
+        g_userKeyCtrlDict['engine1_key_src'] = RTyyyy_uidef.kUserKeySource_SW_GP2
         g_userKeyCtrlDict['engine1_fac_cnt'] = 1
         g_userKeyCmdDict['base_addr'] = '0x60000000'
         g_userKeyCmdDict['engine0_key'] = '0123456789abcdeffedcba9876543210'
@@ -313,33 +313,33 @@ def getBootDeviceConfiguration( group ):
         global g_flexspiNorOpt1
         global g_flexspiNorDeviceModel
         return g_flexspiNorOpt0, g_flexspiNorOpt1, g_flexspiNorDeviceModel
-    elif group == RT10yy_uidef.kBootDevice_FlexspiNand:
+    elif group == RTyyyy_uidef.kBootDevice_FlexspiNand:
         global g_flexspiNandOpt
         global g_flexspiNandFcbOpt
         global g_flexspiNandKeyBlob
         global g_flexspiNandImageInfo
         return g_flexspiNandOpt, g_flexspiNandFcbOpt, g_flexspiNandImageInfo, g_flexspiNandKeyBlob
-    elif group == RT10yy_uidef.kBootDevice_SemcNor:
+    elif group == RTyyyy_uidef.kBootDevice_SemcNor:
         global g_semcNorOpt
         global g_semcNorSetting
         return g_semcNorOpt, g_semcNorSetting
-    elif group == RT10yy_uidef.kBootDevice_SemcNand:
+    elif group == RTyyyy_uidef.kBootDevice_SemcNand:
         global g_semcNandOpt
         global g_semcNandFcbOpt
         global g_semcNandImageInfoList
         return g_semcNandOpt, g_semcNandFcbOpt, g_semcNandImageInfoList
-    elif group == RT10yy_uidef.kBootDevice_UsdhcSd:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd:
         global g_usdhcSdOpt
         return g_usdhcSdOpt
-    elif group == RT10yy_uidef.kBootDevice_UsdhcMmc:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc:
         global g_usdhcMmcOpt0
         global g_usdhcMmcOpt1
         return g_usdhcMmcOpt0, g_usdhcMmcOpt1
-    elif group == RT10yy_uidef.kBootDevice_LpspiNor:
+    elif group == RTyyyy_uidef.kBootDevice_LpspiNor:
         global g_lpspiNorOpt0
         global g_lpspiNorOpt1
         return g_lpspiNorOpt0, g_lpspiNorOpt1
-    elif group == RT10yy_uidef.kBootDevice_Dcd:
+    elif group == RTyyyy_uidef.kBootDevice_Dcd:
         global g_dcdCtrlDict
         global g_dcdSettingsDict
         return g_dcdCtrlDict, g_dcdSettingsDict
@@ -354,7 +354,7 @@ def setBootDeviceConfiguration( group, *args ):
         g_flexspiNorOpt0 = args[0]
         g_flexspiNorOpt1 = args[1]
         g_flexspiNorDeviceModel = args[2]
-    elif group == RT10yy_uidef.kBootDevice_FlexspiNand:
+    elif group == RTyyyy_uidef.kBootDevice_FlexspiNand:
         global g_flexspiNandOpt
         global g_flexspiNandFcbOpt
         global g_flexspiNandKeyBlob
@@ -363,32 +363,32 @@ def setBootDeviceConfiguration( group, *args ):
         g_flexspiNandFcbOpt = args[1]
         g_flexspiNandImageInfo = args[2]
         g_flexspiNandKeyBlob = args[3]
-    elif group == RT10yy_uidef.kBootDevice_SemcNor:
+    elif group == RTyyyy_uidef.kBootDevice_SemcNor:
         global g_semcNorOpt
         global g_semcNorSetting
         g_semcNorOpt = args[0]
         g_semcNorSetting = args[1]
-    elif group == RT10yy_uidef.kBootDevice_SemcNand:
+    elif group == RTyyyy_uidef.kBootDevice_SemcNand:
         global g_semcNandOpt
         global g_semcNandFcbOpt
         global g_semcNandImageInfoList
         g_semcNandOpt = args[0]
         g_semcNandFcbOpt = args[1]
         g_semcNandImageInfoList = args[2]
-    elif group == RT10yy_uidef.kBootDevice_UsdhcSd:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd:
         global g_usdhcSdOpt
         g_usdhcSdOpt = args[0]
-    elif group == RT10yy_uidef.kBootDevice_UsdhcMmc:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc:
         global g_usdhcMmcOpt0
         global g_usdhcMmcOpt1
         g_usdhcMmcOpt0 = args[0]
         g_usdhcMmcOpt1 = args[1]
-    elif group == RT10yy_uidef.kBootDevice_LpspiNor:
+    elif group == RTyyyy_uidef.kBootDevice_LpspiNor:
         global g_lpspiNorOpt0
         global g_lpspiNorOpt1
         g_lpspiNorOpt0 = args[0]
         g_lpspiNorOpt1 = args[1]
-    elif group == RT10yy_uidef.kBootDevice_Dcd:
+    elif group == RTyyyy_uidef.kBootDevice_Dcd:
         global g_dcdCtrlDict
         global g_dcdSettingsDict
         g_dcdCtrlDict = args[0]

@@ -9,7 +9,7 @@ import time
 import math
 import serial.tools.list_ports
 import pywinusb.hid
-import RT10yy_uidef
+import RTyyyy_uidef
 import uidef
 import uivar
 import uilang
@@ -223,7 +223,7 @@ class secBootUi(secBootWin.secBootWin):
             self.m_radioBtn_usbhid.SetValue(False)
         usbIdList = []
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            usbIdList = self.RT10yy_getUsbid()
+            usbIdList = self.RTyyyy_getUsbid()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             usbIdList = self.RTxxx_getUsbid()
         else:
@@ -419,7 +419,7 @@ class secBootUi(secBootWin.secBootWin):
             elif stepName == uidef.kSecureBootSeqStep_GenImage:
                 self.m_button_genImage.SetBackgroundColour( invalidColor )
                 if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-                    if excuteResult and self.secureBootType != RT10yy_uidef.kSecureBootType_BeeCrypto:
+                    if excuteResult and self.secureBootType != RTyyyy_uidef.kSecureBootType_BeeCrypto:
                         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
                 elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
                     self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)

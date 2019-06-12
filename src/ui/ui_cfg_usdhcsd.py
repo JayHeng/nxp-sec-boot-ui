@@ -3,7 +3,7 @@
 import wx
 import sys
 import os
-import RT10yy_uidef
+import RTyyyy_uidef
 import uidef
 import uivar
 import uilang
@@ -15,7 +15,7 @@ class secBootUiUsdhcSd(bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd):
     def __init__(self, parent):
         bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd.__init__(self, parent)
         self._setLanguage()
-        usdhcSdOpt = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcSd)
+        usdhcSdOpt = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_UsdhcSd)
         self.usdhcSdOpt = usdhcSdOpt
         self._recoverLastSettings()
 
@@ -128,7 +128,7 @@ class secBootUiUsdhcSd(bootDeviceWin_UsdhcSd.bootDeviceWin_UsdhcSd):
         self._getPowerPolarity()
         self._getPowerUpTime()
         self._getPowerDownTime()
-        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcSd, self.usdhcSdOpt)
+        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_UsdhcSd, self.usdhcSdOpt)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()

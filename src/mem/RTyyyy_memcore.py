@@ -4,24 +4,24 @@ import sys
 import os
 import shutil
 import boot
-import RT10yy_memdef
+import RTyyyy_memdef
 sys.path.append(os.path.abspath(".."))
-from fuse import RT10yy_fusecore
-from run import RT10yy_rundef
-from ui import RT10yy_uidef
+from fuse import RTyyyy_fusecore
+from run import RTyyyy_rundef
+from ui import RTyyyy_uidef
 from ui import uidef
 from ui import uivar
 from ui import uilang
 from utils import misc
 
-class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
+class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
 
     def __init__(self, parent):
-        RT10yy_fusecore.secBootRT10yyFuse.__init__(self, parent)
+        RTyyyy_fusecore.secBootRTyyyyFuse.__init__(self, parent)
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_initMem()
+            self.RTyyyy_initMem()
 
-    def RT10yy_initMem( self ):
+    def RTyyyy_initMem( self ):
 
         self.needToShowCfgIntr = None
         self.needToShowEkib0Intr = None
@@ -56,13 +56,13 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
         self.needToShowMbrdptIntr = True
 
     def _getCsfBlockInfo( self ):
-        self.destAppCsfAddress = self.getVal32FromBinFile(self.destAppFilename, self.destAppIvtOffset + RT10yy_memdef.kMemberOffsetInIvt_Csf)
+        self.destAppCsfAddress = self.getVal32FromBinFile(self.destAppFilename, self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Csf)
 
     def _getInfoFromIvt( self ):
         self._getCsfBlockInfo()
 
     def _getDcdInfo( self ):
-        dcdCtrlDict, dcdSettingsDict = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_Dcd)
+        dcdCtrlDict, dcdSettingsDict = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_Dcd)
         if dcdCtrlDict['isDcdEnabled']:
             self.destAppDcdLength = os.path.getsize(self.dcdBinFilename)
         else:
@@ -73,7 +73,7 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
         memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
         nfcbAddr = self.bootDeviceMemBase
         dbbtAddr = 0
-        status, results, cmdStr = self.blhost.readMemory(nfcbAddr, RT10yy_memdef.kMemBlockSize_NFCB, memFilename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(nfcbAddr, RTyyyy_memdef.kMemBlockSize_NFCB, memFilename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False, 0
@@ -85,13 +85,13 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
                 memLeft -= len(memContent)
                 nfcbAddr += len(memContent)
                 if self.needToShowNfcbIntr:
-                    self.printMem('------------------------------------NFCB----------------------------------------------', RT10yy_uidef.kMemBlockColor_NFCB)
+                    self.printMem('------------------------------------NFCB----------------------------------------------', RTyyyy_uidef.kMemBlockColor_NFCB)
                     self.needToShowNfcbIntr = False
-                self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_NFCB)
-        fingerprint = self.getVal32FromBinFile(memFilepath, RT10yy_rundef.kSemcNandFcbOffset_Fingerprint)
-        semcTag = self.getVal32FromBinFile(memFilepath, RT10yy_rundef.kSemcNandFcbOffset_SemcTag)
-        if fingerprint == RT10yy_rundef.kSemcNandFcbTag_Fingerprint and semcTag == RT10yy_rundef.kSemcNandFcbTag_Semc:
-            dbbtStartPage = self.getVal32FromBinFile(memFilepath, RT10yy_rundef.kSemcNandFcbOffset_DBBTSerachAreaStartPage)
+                self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_NFCB)
+        fingerprint = self.getVal32FromBinFile(memFilepath, RTyyyy_rundef.kSemcNandFcbOffset_Fingerprint)
+        semcTag = self.getVal32FromBinFile(memFilepath, RTyyyy_rundef.kSemcNandFcbOffset_SemcTag)
+        if fingerprint == RTyyyy_rundef.kSemcNandFcbTag_Fingerprint and semcTag == RTyyyy_rundef.kSemcNandFcbTag_Semc:
+            dbbtStartPage = self.getVal32FromBinFile(memFilepath, RTyyyy_rundef.kSemcNandFcbOffset_DBBTSerachAreaStartPage)
             dbbtAddr = self.bootDeviceMemBase + dbbtStartPage * self.comMemReadUnit
         else:
             return False, 0
@@ -104,7 +104,7 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
     def _showSemcNandDbbt( self, dbbtAddr ):
         memFilename = 'semcNandDbbt.dat'
         memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
-        status, results, cmdStr = self.blhost.readMemory(dbbtAddr, RT10yy_memdef.kMemBlockSize_DBBT, memFilename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(dbbtAddr, RTyyyy_memdef.kMemBlockSize_DBBT, memFilename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False
@@ -116,9 +116,9 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
                 memLeft -= len(memContent)
                 dbbtAddr += len(memContent)
                 if self.needToShowDbbtIntr:
-                    self.printMem('------------------------------------DBBT----------------------------------------------', RT10yy_uidef.kMemBlockColor_DBBT)
+                    self.printMem('------------------------------------DBBT----------------------------------------------', RTyyyy_uidef.kMemBlockColor_DBBT)
                     self.needToShowDbbtIntr = False
-                self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_DBBT)
+                self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_DBBT)
         try:
             os.remove(memFilepath)
         except:
@@ -129,7 +129,7 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
         memFilename = 'usdhcSdMmcMbrdpt.dat'
         memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
         mbrdptAddr = self.bootDeviceMemBase
-        status, results, cmdStr = self.blhost.readMemory(mbrdptAddr, RT10yy_memdef.kMemBlockSize_MBRDPT, memFilename, self.bootDeviceMemId)
+        status, results, cmdStr = self.blhost.readMemory(mbrdptAddr, RTyyyy_memdef.kMemBlockSize_MBRDPT, memFilename, self.bootDeviceMemId)
         self.printLog(cmdStr)
         if status != boot.status.kStatus_Success:
             return False
@@ -141,16 +141,16 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
                 memLeft -= len(memContent)
                 mbrdptAddr += len(memContent)
                 if self.needToShowMbrdptIntr:
-                    self.printMem('----------------------------------MBR&DPT---------------------------------------------', RT10yy_uidef.kMemBlockColor_MBRDPT)
+                    self.printMem('----------------------------------MBR&DPT---------------------------------------------', RTyyyy_uidef.kMemBlockColor_MBRDPT)
                     self.needToShowMbrdptIntr = False
-                self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_MBRDPT)
+                self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_MBRDPT)
         try:
             os.remove(memFilepath)
         except:
             pass
         return True
 
-    def RT10yy_readProgrammedMemoryAndShow( self ):
+    def RTyyyy_readProgrammedMemoryAndShow( self ):
         if not os.path.isfile(self.destAppFilename):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotProgImage'][self.languageIndex])
             return
@@ -161,24 +161,24 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
         imageMemBase = 0
         readoutMemLen = 0
         imageFileLen = os.path.getsize(self.destAppFilename)
-        if self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
             semcNandOpt, semcNandFcbOpt, semcNandImageInfoList = uivar.getBootDeviceConfiguration(self.bootDevice)
             status, dbbtAddr = self._showSemcNandFcb()
             if status:
                 self._showSemcNandDbbt(dbbtAddr)
             # Only Readout first image
             imageMemBase = self.bootDeviceMemBase + (semcNandImageInfoList[0] >> 16) * self.semcNandBlockSize
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or \
-             self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or \
+             self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
             imageMemBase = self.bootDeviceMemBase
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcSd or \
-             self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcMmc:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd or \
+             self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcMmc:
             self._showUsdhcSdMmcMbrdpt()
             imageMemBase = self.bootDeviceMemBase
         else:
             pass
-        if self.habDekDataOffset != None and (self.habDekDataOffset + RT10yy_memdef.kMemBlockSize_KeyBlob > imageFileLen):
-            readoutMemLen += self.habDekDataOffset + RT10yy_memdef.kMemBlockSize_KeyBlob
+        if self.habDekDataOffset != None and (self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_KeyBlob > imageFileLen):
+            readoutMemLen += self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_KeyBlob
         else:
             readoutMemLen += imageFileLen
 
@@ -197,93 +197,93 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
                 contentToShow, memContent = self.getOneLineContentToShow(addr, memLeft, fileObj)
                 memLeft -= len(memContent)
                 addr += len(memContent)
-                if addr <= imageMemBase + RT10yy_memdef.kMemBlockSize_FDCB:
+                if addr <= imageMemBase + RTyyyy_memdef.kMemBlockSize_FDCB:
                     if not self.isSdmmcCard:
                         if self.needToShowCfgIntr:
-                            self.printMem('------------------------------------FDCB----------------------------------------------', RT10yy_uidef.kMemBlockColor_FDCB)
+                            self.printMem('------------------------------------FDCB----------------------------------------------', RTyyyy_uidef.kMemBlockColor_FDCB)
                             self.needToShowCfgIntr = False
-                        self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_FDCB)
+                        self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_FDCB)
                     else:
-                        if addr >= self.bootDeviceMemBase + RT10yy_memdef.kMemBlockSize_MBRDPT:
+                        if addr >= self.bootDeviceMemBase + RTyyyy_memdef.kMemBlockSize_MBRDPT:
                             self.printMem(contentToShow)
                 elif addr <= imageMemBase + self.destAppIvtOffset:
-                    if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto:
-                        ekib0Start = imageMemBase + RT10yy_memdef.kMemBlockOffset_EKIB0
-                        eprdb0Start = imageMemBase + RT10yy_memdef.kMemBlockOffset_EPRDB0
-                        ekib1Start = imageMemBase + RT10yy_memdef.kMemBlockOffset_EKIB1
-                        eprdb1Start = imageMemBase + RT10yy_memdef.kMemBlockOffset_EPRDB1
-                        if addr > ekib0Start and addr <= ekib0Start + RT10yy_memdef.kMemBlockSize_EKIB:
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                        ekib0Start = imageMemBase + RTyyyy_memdef.kMemBlockOffset_EKIB0
+                        eprdb0Start = imageMemBase + RTyyyy_memdef.kMemBlockOffset_EPRDB0
+                        ekib1Start = imageMemBase + RTyyyy_memdef.kMemBlockOffset_EKIB1
+                        eprdb1Start = imageMemBase + RTyyyy_memdef.kMemBlockOffset_EPRDB1
+                        if addr > ekib0Start and addr <= ekib0Start + RTyyyy_memdef.kMemBlockSize_EKIB:
                             if self.needToShowEkib0Intr:
-                                self.printMem('-----------------------------------EKIB0----------------------------------------------', RT10yy_uidef.kMemBlockColor_EKIB)
+                                self.printMem('-----------------------------------EKIB0----------------------------------------------', RTyyyy_uidef.kMemBlockColor_EKIB)
                                 self.needToShowEkib0Intr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_EKIB)
-                        elif addr > eprdb0Start and addr <= eprdb0Start + RT10yy_memdef.kMemBlockSize_EPRDB:
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_EKIB)
+                        elif addr > eprdb0Start and addr <= eprdb0Start + RTyyyy_memdef.kMemBlockSize_EPRDB:
                             if self.needToShowEprdb0Intr:
-                                self.printMem('-----------------------------------EPRDB0---------------------------------------------', RT10yy_uidef.kMemBlockColor_EPRDB)
+                                self.printMem('-----------------------------------EPRDB0---------------------------------------------', RTyyyy_uidef.kMemBlockColor_EPRDB)
                                 self.needToShowEprdb0Intr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_EPRDB)
-                        elif addr > ekib1Start and addr <= ekib1Start + RT10yy_memdef.kMemBlockSize_EKIB:
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_EPRDB)
+                        elif addr > ekib1Start and addr <= ekib1Start + RTyyyy_memdef.kMemBlockSize_EKIB:
                             if self.needToShowEkib1Intr:
-                                self.printMem('-----------------------------------EKIB1----------------------------------------------', RT10yy_uidef.kMemBlockColor_EKIB)
+                                self.printMem('-----------------------------------EKIB1----------------------------------------------', RTyyyy_uidef.kMemBlockColor_EKIB)
                                 self.needToShowEkib1Intr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_EKIB)
-                        elif addr > eprdb1Start and addr <= eprdb1Start + RT10yy_memdef.kMemBlockSize_EPRDB:
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_EKIB)
+                        elif addr > eprdb1Start and addr <= eprdb1Start + RTyyyy_memdef.kMemBlockSize_EPRDB:
                             if self.needToShowEprdb1Intr:
-                                self.printMem('-----------------------------------EPRDB1---------------------------------------------', RT10yy_uidef.kMemBlockColor_EPRDB)
+                                self.printMem('-----------------------------------EPRDB1---------------------------------------------', RTyyyy_uidef.kMemBlockColor_EPRDB)
                                 self.needToShowEprdb1Intr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_EPRDB)
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_EPRDB)
                         else:
                             self.printMem(contentToShow)
                     else:
                         self.printMem(contentToShow)
-                elif addr <= imageMemBase + self.destAppIvtOffset + RT10yy_memdef.kMemBlockSize_IVT:
+                elif addr <= imageMemBase + self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT:
                     if self.needToShowIvtIntr:
-                        self.printMem('------------------------------------IVT-----------------------------------------------', RT10yy_uidef.kMemBlockColor_IVT)
+                        self.printMem('------------------------------------IVT-----------------------------------------------', RTyyyy_uidef.kMemBlockColor_IVT)
                         self.needToShowIvtIntr = False
-                    self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_IVT)
-                elif addr <= imageMemBase + self.destAppIvtOffset + RT10yy_memdef.kMemBlockSize_IVT + RT10yy_memdef.kMemBlockSize_BootData:
+                    self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_IVT)
+                elif addr <= imageMemBase + self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT + RTyyyy_memdef.kMemBlockSize_BootData:
                     if self.needToShowBootDataIntr:
-                        self.printMem('---------------------------------Boot Data--------------------------------------------', RT10yy_uidef.kMemBlockColor_BootData)
+                        self.printMem('---------------------------------Boot Data--------------------------------------------', RTyyyy_uidef.kMemBlockColor_BootData)
                         self.needToShowBootDataIntr = False
-                    self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_BootData)
-                elif addr <= imageMemBase + self.destAppIvtOffset + RT10yy_memdef.kMemBlockOffsetToIvt_DCD:
+                    self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_BootData)
+                elif addr <= imageMemBase + self.destAppIvtOffset + RTyyyy_memdef.kMemBlockOffsetToIvt_DCD:
                     self.printMem(contentToShow)
-                elif addr <= imageMemBase + self.destAppIvtOffset + RT10yy_memdef.kMemBlockOffsetToIvt_DCD + self.destAppDcdLength:
+                elif addr <= imageMemBase + self.destAppIvtOffset + RTyyyy_memdef.kMemBlockOffsetToIvt_DCD + self.destAppDcdLength:
                     if self.needToShowDcdIntr:
-                        self.printMem('------------------------------------DCD-----------------------------------------------', RT10yy_uidef.kMemBlockColor_DCD)
+                        self.printMem('------------------------------------DCD-----------------------------------------------', RTyyyy_uidef.kMemBlockColor_DCD)
                         self.needToShowDcdIntr = False
-                    self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_DCD)
+                    self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_DCD)
                 elif addr <= imageMemBase + self.destAppVectorOffset:
                     self.printMem(contentToShow)
                 elif addr <= imageMemBase + self.destAppVectorOffset + self.destAppBinaryBytes:
                     if self.needToShowImageIntr:
-                        self.printMem('-----------------------------------Image----------------------------------------------', RT10yy_uidef.kMemBlockColor_Image)
+                        self.printMem('-----------------------------------Image----------------------------------------------', RTyyyy_uidef.kMemBlockColor_Image)
                         self.needToShowImageIntr = False
-                    self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_Image)
+                    self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_Image)
                 else:
                     hasShowed = False
-                    if self.secureBootType == RT10yy_uidef.kSecureBootType_HabAuth or self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto or \
-                       (self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
+                       (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
                         csfStart = imageMemBase + (self.destAppCsfAddress - self.destAppVectorAddress) + self.destAppInitialLoadSize
-                        if addr > csfStart and addr <= csfStart + RT10yy_memdef.kMemBlockSize_CSF:
+                        if addr > csfStart and addr <= csfStart + RTyyyy_memdef.kMemBlockSize_CSF:
                             if self.needToShowCsfIntr:
-                                self.printMem('------------------------------------CSF-----------------------------------------------', RT10yy_uidef.kMemBlockColor_CSF)
+                                self.printMem('------------------------------------CSF-----------------------------------------------', RTyyyy_uidef.kMemBlockColor_CSF)
                                 self.needToShowCsfIntr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_CSF)
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_CSF)
                             hasShowed = True
-                    if self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and self.habDekDataOffset != None:
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and self.habDekDataOffset != None:
                         keyBlobStart = imageMemBase + (self.destAppVectorOffset - self.destAppInitialLoadSize) + self.habDekDataOffset
-                        if addr > keyBlobStart and addr <= keyBlobStart + RT10yy_memdef.kMemBlockSize_KeyBlob:
+                        if addr > keyBlobStart and addr <= keyBlobStart + RTyyyy_memdef.kMemBlockSize_KeyBlob:
                             if self.needToShowKeyBlobIntr:
-                                self.printMem('--------------------------------DEK KeyBlob-------------------------------------------', RT10yy_uidef.kMemBlockColor_KeyBlob)
+                                self.printMem('--------------------------------DEK KeyBlob-------------------------------------------', RTyyyy_uidef.kMemBlockColor_KeyBlob)
                                 self.needToShowKeyBlobIntr = False
-                            self.printMem(contentToShow, RT10yy_uidef.kMemBlockColor_KeyBlob)
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_KeyBlob)
                             hasShowed = True
                     if not hasShowed:
                         if not self.isSdmmcCard:
                             self.printMem(contentToShow)
                         else:
-                            if addr >= self.bootDeviceMemBase + RT10yy_memdef.kMemBlockSize_MBRDPT:
+                            if addr >= self.bootDeviceMemBase + RTyyyy_memdef.kMemBlockSize_MBRDPT:
                                 self.printMem(contentToShow)
             fileObj.close()
         self._initShowIntr()

@@ -4,14 +4,14 @@ import wx
 import sys
 import os
 import shutil
-import RT10yy_uidef
+import RTyyyy_uidef
 import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_DCD
-from gen import RT10yy_gendef
-from run import RT10yy_rundef
+from gen import RTyyyy_gendef
+from run import RTyyyy_rundef
 from utils import sound
 
 class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
@@ -19,7 +19,7 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
     def __init__(self, parent):
         bootDeviceWin_DCD.bootDeviceWin_DCD.__init__(self, parent)
         self._setLanguage()
-        dcdCtrlDict, dcdSettingsDict = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_Dcd)
+        dcdCtrlDict, dcdSettingsDict = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_Dcd)
         self.dcdCtrlDict = dcdCtrlDict.copy()
         self.dcdSettingsDict = dcdSettingsDict.copy()
         self.destBinFilename = None
@@ -110,7 +110,7 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
             if os.path.isfile(dcdBinFile):
                 shutil.copy(dcdBinFile, self.destBinFilename)
                 self.dcdSettingsDict['userBinFile'] = dcdBinFile.decode("gbk")
-                self.dcdCtrlDict['dcdFileType'] = RT10yy_gendef.kUserDcdFileType_Bin
+                self.dcdCtrlDict['dcdFileType'] = RTyyyy_gendef.kUserDcdFileType_Bin
             else:
                 status = False
                 self.dcdSettingsDict['userBinFile'] = 'N/A'
@@ -124,7 +124,7 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
             if os.path.isfile(dcdCfgFile):
                 shutil.copy(dcdCfgFile, self.destCfgFilename)
                 self.dcdSettingsDict['userCfgFile'] = dcdCfgFile.decode("gbk")
-                self.dcdCtrlDict['dcdFileType'] = RT10yy_gendef.kUserDcdFileType_Cfg
+                self.dcdCtrlDict['dcdFileType'] = RTyyyy_gendef.kUserDcdFileType_Cfg
             else:
                 status = False
                 self.dcdSettingsDict['userCfgFile'] = 'N/A'
@@ -153,11 +153,11 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
             if len(hexText) > 2 and hexText[0:2] == '0x':
                 try:
                     val32 = int(hexText[2:len(hexText)], 16)
-                    if val32 >= RT10yy_rundef.kBootDeviceMemBase_SemcSdram and val32 < RT10yy_rundef.kBootDeviceMemBase_SemcSdram + RT10yy_rundef.kBootDeviceMemMaxSize_SemcSdram:
+                    if val32 >= RTyyyy_rundef.kBootDeviceMemBase_SemcSdram and val32 < RTyyyy_rundef.kBootDeviceMemBase_SemcSdram + RTyyyy_rundef.kBootDeviceMemMaxSize_SemcSdram:
                         status = True
                         self.dcdSettingsDict['sdramBase'] = hexText
                     else:
-                        self.popupMsgBox('SDRAM base should be in the range of 0x%x - 0x%x' %(RT10yy_rundef.kBootDeviceMemBase_SemcSdram, (RT10yy_rundef.kBootDeviceMemBase_SemcSdram + RT10yy_rundef.kBootDeviceMemMaxSize_SemcSdram - 1)))
+                        self.popupMsgBox('SDRAM base should be in the range of 0x%x - 0x%x' %(RTyyyy_rundef.kBootDeviceMemBase_SemcSdram, (RTyyyy_rundef.kBootDeviceMemBase_SemcSdram + RTyyyy_rundef.kBootDeviceMemMaxSize_SemcSdram - 1)))
                 except:
                     self.popupMsgBox('Illegal input detected! You should input like this format: 0x80000000')
             else:
@@ -171,10 +171,10 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
             txt = self.m_choice_dcdModel.GetString(self.m_choice_dcdModel.GetSelection())
             if txt == 'No':
                 self.m_textCtrl_dcdDesc.Clear()
-                self.m_textCtrl_dcdDesc.LoadFile(os.path.join(self.dcdModelFolder, 'template', RT10yy_gendef.kStdDcdFilename_Cfg))
+                self.m_textCtrl_dcdDesc.LoadFile(os.path.join(self.dcdModelFolder, 'template', RTyyyy_gendef.kStdDcdFilename_Cfg))
             elif txt == 'Micron_MT48LC16M16A2' or txt == 'ISSI_IS42S16160J':
                 self.m_textCtrl_dcdDesc.Clear()
-                self.m_textCtrl_dcdDesc.LoadFile(os.path.join(self.dcdModelFolder, txt, RT10yy_gendef.kStdDcdFilename_Cfg))
+                self.m_textCtrl_dcdDesc.LoadFile(os.path.join(self.dcdModelFolder, txt, RTyyyy_gendef.kStdDcdFilename_Cfg))
             else:
                 pass
             self.dcdSettingsDict['deviceModel'] = txt
@@ -184,7 +184,7 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
         if self.dcdSettingsDict['dcdSource'] == 'Use DCD descriptor':
             if self.m_textCtrl_dcdDesc.GetLineLength(0):
                 self.m_textCtrl_dcdDesc.SaveFile(self.destCfgFilename)
-                self.dcdCtrlDict['dcdFileType'] = RT10yy_gendef.kUserDcdFileType_Cfg
+                self.dcdCtrlDict['dcdFileType'] = RTyyyy_gendef.kUserDcdFileType_Cfg
                 fileLen = os.path.getsize(self.destCfgFilename)
                 with open(self.destCfgFilename, 'rb') as fileObj:
                     self.dcdSettingsDict['dcdDesc'] = fileObj.read(fileLen)
@@ -213,7 +213,7 @@ class secBootUiCfgDcd(bootDeviceWin_DCD.bootDeviceWin_DCD):
             return
         if not self._getDcdDesc():
             return
-        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_Dcd, self.dcdCtrlDict, self.dcdSettingsDict)
+        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_Dcd, self.dcdCtrlDict, self.dcdSettingsDict)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()

@@ -10,8 +10,8 @@ import threading
 import inspect
 import ctypes
 from main import RTxxx_main
-from main import RT10yy_main
-from ui import RT10yy_uidef
+from main import RTyyyy_main
+from ui import RTyyyy_uidef
 from ui import RTxxx_uidef
 from ui import uidef
 from ui import uivar
@@ -29,9 +29,9 @@ g_task_detectUsbhid = None
 g_task_playSound = None
 g_task_increaseGauge = None
 g_task_accessMem = None
-g_RT10yy_task_allInOneAction = None
+g_RTyyyy_task_allInOneAction = None
 g_RTxxx_task_allInOneAction = None
-g_RT10yy_task_showSettedEfuse = None
+g_RTyyyy_task_showSettedEfuse = None
 
 def _async_raise(tid, exctype):
     tid = ctypes.c_long(tid)
@@ -69,14 +69,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self._setUartUsbPort()
         if self.isMcuSeriesChanged:
             if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-                self.RT10yy_callbackSetMcuSeries()
+                self.RTyyyy_callbackSetMcuSeries()
             elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
                 self.RTxxx_callbackSetMcuSeries()
             else:
                 pass
             self.isMcuSeriesChanged = False
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackSetMcuDevice()
+            self.RTyyyy_callbackSetMcuDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetMcuDevice()
         else:
@@ -84,14 +84,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetBootDevice( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackSetBootDevice()
+            self.RTyyyy_callbackSetBootDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetBootDevice()
         else:
             pass
 
     def callbackBootDeviceConfiguration( self, event ):
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or \
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or \
            self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor or \
            self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
             if self.tgt.isSipFlexspiNorDevice:
@@ -99,7 +99,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                 return
         if self.checkIfSubWinHasBeenOpened():
             return
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or \
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or \
            self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor or \
            self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
             flexspiNorFrame = ui_cfg_flexspinor.secBootUiCfgFlexspiNor(None)
@@ -108,27 +108,27 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             else:
                 flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['flexspinor_title'][self.languageIndex])
             flexspiNorFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNand:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNand:
             flexspiNandFrame = ui_cfg_flexspinand.secBootUiFlexspiNand(None)
             flexspiNandFrame.SetTitle(u"FlexSPI NAND Device Configuration")
             flexspiNandFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
             semcNorFrame = ui_cfg_semcnor.secBootUiSemcNor(None)
             semcNorFrame.SetTitle(u"SEMC NOR Device Configuration")
             semcNorFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_SemcNand:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
             semcNandFrame = ui_cfg_semcnand.secBootUiCfgSemcNand(None)
             semcNandFrame.SetTitle(uilang.kSubLanguageContentDict['semcnand_title'][self.languageIndex])
             semcNandFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcSd:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd:
             usdhcSdFrame = ui_cfg_usdhcsd.secBootUiUsdhcSd(None)
             usdhcSdFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcsd_title'][self.languageIndex])
             usdhcSdFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_UsdhcMmc:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcMmc:
             usdhcMmcFrame = ui_cfg_usdhcmmc.secBootUiUsdhcMmc(None)
             usdhcMmcFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcmmc_title'][self.languageIndex])
             usdhcMmcFrame.Show(True)
-        elif self.bootDevice == RT10yy_uidef.kBootDevice_LpspiNor:
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
             lpspiNorFrame = ui_cfg_lpspinor.secBootUiCfgLpspiNor(None)
             lpspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['lpspinor_title'][self.languageIndex])
             lpspiNorFrame.Show(True)
@@ -138,7 +138,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def _setUartUsbPort( self ):
         usbIdList = []
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            usbIdList = self.RT10yy_getUsbid()
+            usbIdList = self.RTyyyy_getUsbid()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             usbIdList = self.RTxxx_getUsbid()
         else:
@@ -162,7 +162,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackConnectToDevice( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackConnectToDevice()
+            self.RTyyyy_callbackConnectToDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackConnectToDevice()
         else:
@@ -170,7 +170,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetSecureBootType( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackSetSecureBootType()
+            self.RTyyyy_callbackSetSecureBootType()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetSecureBootType()
         else:
@@ -178,7 +178,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackAllInOneAction( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackAllInOneAction()
+            self.RTyyyy_callbackAllInOneAction()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackAllInOneAction()
         else:
@@ -188,7 +188,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self.getUserAppFilePath()
         self.setCostTime(0)
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_setSecureBootButtonColor()
+            self.RTyyyy_setSecureBootButtonColor()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_setSecureBootButtonColor()
         else:
@@ -199,7 +199,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackGenImage( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackGenImage()
+            self.RTyyyy_callbackGenImage()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackGenImage()
         else:
@@ -207,7 +207,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackFlashImage( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackFlashImage()
+            self.RTyyyy_callbackFlashImage()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackFlashImage()
         else:
@@ -266,7 +266,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackViewMem( self, event ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_callbackViewMem()
+            self.RTyyyy_callbackViewMem()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackViewMem()
         else:
@@ -349,9 +349,9 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self._stopTask(g_task_playSound)
         self._stopTask(g_task_increaseGauge)
         self._stopTask(g_task_accessMem)
-        self._stopTask(g_RT10yy_task_allInOneAction)
+        self._stopTask(g_RTyyyy_task_allInOneAction)
         self._stopTask(g_RTxxx_task_allInOneAction)
-        self._stopTask(g_RT10yy_task_showSettedEfuse)
+        self._stopTask(g_RTyyyy_task_showSettedEfuse)
         global g_main_win
         g_main_win.Show(False)
         try:
@@ -367,7 +367,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def _switchToolRunMode( self ):
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self.RT10yy_switchToolRunMode()
+            self.RTyyyy_switchToolRunMode()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_switchToolRunMode()
         else:
@@ -460,16 +460,16 @@ if __name__ == '__main__':
     g_task_accessMem.setDaemon(True)
     g_task_accessMem.start()
 
-    g_RT10yy_task_allInOneAction = threading.Thread(target=g_main_win.RT10yy_task_doAllInOneAction)
-    g_RT10yy_task_allInOneAction.setDaemon(True)
-    g_RT10yy_task_allInOneAction.start()
+    g_RTyyyy_task_allInOneAction = threading.Thread(target=g_main_win.RTyyyy_task_doAllInOneAction)
+    g_RTyyyy_task_allInOneAction.setDaemon(True)
+    g_RTyyyy_task_allInOneAction.start()
     g_RTxxx_task_allInOneAction = threading.Thread(target=g_main_win.RTxxx_task_doAllInOneAction)
     g_RTxxx_task_allInOneAction.setDaemon(True)
     g_RTxxx_task_allInOneAction.start()
 
-    g_RT10yy_task_showSettedEfuse = threading.Thread(target=g_main_win.RT10yy_task_doShowSettedEfuse)
-    g_RT10yy_task_showSettedEfuse.setDaemon(True)
-    g_RT10yy_task_showSettedEfuse.start()
+    g_RTyyyy_task_showSettedEfuse = threading.Thread(target=g_main_win.RTyyyy_task_doShowSettedEfuse)
+    g_RTyyyy_task_showSettedEfuse.setDaemon(True)
+    g_RTyyyy_task_showSettedEfuse.start()
 
     app.MainLoop()
 

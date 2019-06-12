@@ -4,7 +4,7 @@ import wx
 import sys
 import os
 import uivar
-import RT10yy_uidef_efuse
+import RTyyyy_uidef_efuse
 sys.path.append(os.path.abspath(".."))
 from win import RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits
 
@@ -25,13 +25,13 @@ class secBootUiEfuseBootCfg0FlexspiNor10bits(RT10yy_efuseWin_BootCfg0_FlexspiNor
 
     def _recoverLastSettings ( self ):
         self.m_choice_bit0.SetSelection(self.efuseDict['0x450_bootCfg0'] & 0x00000001)
-        self.m_staticText_bit0.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit0.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit3_1.SetSelection((self.efuseDict['0x450_bootCfg0'] & 0x0000000e) >> 1)
-        self.m_staticText_bit3_1.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit3_1.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit7_4.SetSelection((self.efuseDict['0x450_bootCfg0'] & 0x000000f0) >> 4)
-        self.m_staticText_bit7_4.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit7_4.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit9_8.SetSelection((self.efuseDict['0x450_bootCfg0'] & 0x00000300) >> 8)
-        self.m_staticText_bit9_8.SetBackgroundColour(RT10yy_uidef_efuse.kEfuseFieldColor_Valid)
+        self.m_staticText_bit9_8.SetBackgroundColour(RTyyyy_uidef_efuse.kEfuseFieldColor_Valid)
         self.m_choice_bit10.Enable( False )
         self.m_choice_bit11.Enable( False )
         self.m_choice_bit12.Enable( False )

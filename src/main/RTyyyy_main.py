@@ -7,12 +7,12 @@ sys.setdefaultencoding('utf-8')
 import os
 import time
 sys.path.append(os.path.abspath(".."))
-from mem import RT10yy_memcore
-from ui import RT10yy_uidef
+from mem import RTyyyy_memcore
+from ui import RTyyyy_uidef
 from ui import uidef
 from ui import uivar
 from ui import uilang
-from fuse import RT10yy_fusedef
+from fuse import RTyyyy_fusedef
 from ui import ui_cfg_dcd
 from ui import ui_settings_cert
 from ui import ui_settings_fixed_otpmk_key
@@ -31,49 +31,49 @@ kRetryPingTimes = 5
 kBootloaderType_Rom         = 0
 kBootloaderType_Flashloader = 1
 
-class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
+class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
 
     def __init__(self, parent):
-        RT10yy_memcore.secBootRT10yyMem.__init__(self, parent)
-        self.RT10yy_isAllInOneActionTaskPending = False
+        RTyyyy_memcore.secBootRTyyyyMem.__init__(self, parent)
+        self.RTyyyy_isAllInOneActionTaskPending = False
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
-            self._RT10yy_initMain()
+            self._RTyyyy_initMain()
 
-    def _RT10yy_initMain( self ):
+    def _RTyyyy_initMain( self ):
         self.connectStage = uidef.kConnectStage_Rom
         self.isBootableAppAllowedToView = False
         self.lastTime = None
         self.isThereBoardConnection = False
 
-    def _RT10yy_startGaugeTimer( self ):
-        if not self.RT10yy_isAllInOneActionTaskPending:
+    def _RTyyyy_startGaugeTimer( self ):
+        if not self.RTyyyy_isAllInOneActionTaskPending:
             self.lastTime = time.time()
             self.initGauge()
 
-    def _RT10yy_stopGaugeTimer( self ):
-        if not self.RT10yy_isAllInOneActionTaskPending:
+    def _RTyyyy_stopGaugeTimer( self ):
+        if not self.RTyyyy_isAllInOneActionTaskPending:
             self.deinitGauge()
             self.updateCostTime()
 
-    def RT10yy_callbackSetMcuSeries( self ):
-        self.RT10yy_initUi()
-        self.RT10yy_initGen()
-        self.RT10yy_initRun()
-        self.RT10yy_initFuse()
-        self.RT10yy_initMem()
-        self._RT10yy_initMain()
-        self.RT10yy_setTargetSetupValue()
+    def RTyyyy_callbackSetMcuSeries( self ):
+        self.RTyyyy_initUi()
+        self.RTyyyy_initGen()
+        self.RTyyyy_initRun()
+        self.RTyyyy_initFuse()
+        self.RTyyyy_initMem()
+        self._RTyyyy_initMain()
+        self.RTyyyy_setTargetSetupValue()
 
-    def RT10yy_callbackSetMcuDevice( self ):
-        self.RT10yy_setTargetSetupValue()
+    def RTyyyy_callbackSetMcuDevice( self ):
+        self.RTyyyy_setTargetSetupValue()
         self.applyFuseOperToRunMode()
         needToPlaySound = False
-        self.RT10yy_setSecureBootSeqColor(needToPlaySound)
+        self.RTyyyy_setSecureBootSeqColor(needToPlaySound)
 
-    def RT10yy_callbackSetBootDevice( self ):
-        self.RT10yy_setTargetSetupValue()
+    def RTyyyy_callbackSetBootDevice( self ):
+        self.RTyyyy_setTargetSetupValue()
         needToPlaySound = False
-        self.RT10yy_setSecureBootSeqColor(needToPlaySound)
+        self.RTyyyy_setSecureBootSeqColor(needToPlaySound)
 
     def callbackDeviceConfigurationData( self, event ):
         if self.checkIfSubWinHasBeenOpened():
@@ -83,14 +83,14 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         dcdFrame.setNecessaryInfo(self.dcdBinFilename, self.dcdCfgFilename, self.dcdModelFolder)
         dcdFrame.Show(True)
 
-    def _RT10yy_retryToPingBootloader( self, bootType ):
+    def _RTyyyy_retryToPingBootloader( self, bootType ):
         pingStatus = False
         pingCnt = kRetryPingTimes
         while (not pingStatus) and pingCnt > 0:
             if bootType == kBootloaderType_Rom:
-                pingStatus = self.RT10yy_pingRom()
+                pingStatus = self.RTyyyy_pingRom()
             elif bootType == kBootloaderType_Flashloader:
-                pingStatus = self.RT10yy_pingFlashloader()
+                pingStatus = self.RTyyyy_pingFlashloader()
             else:
                 pass
             if pingStatus:
@@ -100,25 +100,25 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 time.sleep(2)
         return pingStatus
 
-    def _RT10yy_connectFailureHandler( self ):
+    def _RTyyyy_connectFailureHandler( self ):
         self.connectStage = uidef.kConnectStage_Rom
         self.updateConnectStatus('red')
-        usbIdList = self.RT10yy_getUsbid()
+        usbIdList = self.RTyyyy_getUsbid()
         self.setPortSetupValue(self.connectStage, usbIdList, False, False)
         self.isBootableAppAllowedToView = False
 
-    def _RT10yy_connectStateMachine( self, showError=True ):
-        connectSteps = RT10yy_uidef.kConnectStep_Normal
+    def _RTyyyy_connectStateMachine( self, showError=True ):
+        connectSteps = RTyyyy_uidef.kConnectStep_Normal
         self.getOneStepConnectMode()
         retryToDetectUsb = False
         if self.isOneStepConnectMode:
             if self.connectStage == uidef.kConnectStage_Reset or self.connectStage == uidef.kConnectStage_ExternalMemory:
-                connectSteps = RT10yy_uidef.kConnectStep_Fast - 2
+                connectSteps = RTyyyy_uidef.kConnectStep_Fast - 2
             elif self.connectStage == uidef.kConnectStage_Flashloader:
-                connectSteps = RT10yy_uidef.kConnectStep_Fast - 1
+                connectSteps = RTyyyy_uidef.kConnectStep_Fast - 1
                 retryToDetectUsb = True
             elif self.connectStage == uidef.kConnectStage_Rom:
-                connectSteps = RT10yy_uidef.kConnectStep_Fast
+                connectSteps = RTyyyy_uidef.kConnectStep_Fast
                 retryToDetectUsb = True
             else:
                 pass
@@ -127,17 +127,17 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 if self.connectStage == uidef.kConnectStage_Rom:
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
-                self._RT10yy_connectFailureHandler()
+                self._RTyyyy_connectFailureHandler()
                 return
             if self.connectStage == uidef.kConnectStage_Rom:
-                self.RT10yy_connectToDevice(self.connectStage)
-                if self._RT10yy_retryToPingBootloader(kBootloaderType_Rom):
-                    self.RT10yy_getMcuDeviceInfoViaRom()
+                self.RTyyyy_connectToDevice(self.connectStage)
+                if self._RTyyyy_retryToPingBootloader(kBootloaderType_Rom):
+                    self.RTyyyy_getMcuDeviceInfoViaRom()
                     self.getMcuDeviceHabStatus()
-                    if self.RT10yy_jumpToFlashloader():
+                    if self.RTyyyy_jumpToFlashloader():
                         self.connectStage = uidef.kConnectStage_Flashloader
                         self.updateConnectStatus('yellow')
-                        usbIdList = self.RT10yy_getUsbid()
+                        usbIdList = self.RTyyyy_getUsbid()
                         self.setPortSetupValue(self.connectStage, usbIdList, True, True)
                     else:
                         self.updateConnectStatus('red')
@@ -150,8 +150,8 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_doubleCheckBmod'][self.languageIndex])
                     return
             elif self.connectStage == uidef.kConnectStage_Flashloader:
-                self.RT10yy_connectToDevice(self.connectStage)
-                if self._RT10yy_retryToPingBootloader(kBootloaderType_Flashloader):
+                self.RTyyyy_connectToDevice(self.connectStage)
+                if self._RTyyyy_retryToPingBootloader(kBootloaderType_Flashloader):
                     self.getMcuDeviceInfoViaFlashloader()
                     self.getMcuDeviceBtFuseSel()
                     self.updateConnectStatus('green')
@@ -159,35 +159,35 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 else:
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][self.languageIndex])
-                    self._RT10yy_connectFailureHandler()
+                    self._RTyyyy_connectFailureHandler()
                     return
             elif self.connectStage == uidef.kConnectStage_ExternalMemory:
-                if self.RT10yy_configureBootDevice():
+                if self.RTyyyy_configureBootDevice():
                     self.getBootDeviceInfoViaFlashloader()
                     self.connectStage = uidef.kConnectStage_Reset
                     self.updateConnectStatus('blue')
                 else:
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToCfgBootDevice'][self.languageIndex])
-                    self._RT10yy_connectFailureHandler()
+                    self._RTyyyy_connectFailureHandler()
                     return
             elif self.connectStage == uidef.kConnectStage_Reset:
-                self.RT10yy_resetMcuDevice()
+                self.RTyyyy_resetMcuDevice()
                 self.isBootableAppAllowedToView = False
                 self.connectStage = uidef.kConnectStage_Rom
                 self.updateConnectStatus('black')
-                usbIdList = self.RT10yy_getUsbid()
+                usbIdList = self.RTyyyy_getUsbid()
                 self.setPortSetupValue(self.connectStage, usbIdList, True, True)
-                self.RT10yy_connectToDevice(self.connectStage)
+                self.RTyyyy_connectToDevice(self.connectStage)
             else:
                 pass
             connectSteps -= 1
 
-    def RT10yy_callbackConnectToDevice( self ):
-        self._RT10yy_startGaugeTimer()
+    def RTyyyy_callbackConnectToDevice( self ):
+        self._RTyyyy_startGaugeTimer()
         self.printLog("'Connect to xxx' button is clicked")
         if not self.isSbFileEnabledToGen:
-            self._RT10yy_connectStateMachine(True)
+            self._RTyyyy_connectStateMachine(True)
         else:
             if not self.isThereBoardConnection:
                 if self.connectStage == uidef.kConnectStage_Rom:
@@ -195,13 +195,13 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 else:
                     # It means there is board connection
                     self.isThereBoardConnection = True
-                self._RT10yy_connectStateMachine(False)
+                self._RTyyyy_connectStateMachine(False)
                 if not self.isThereBoardConnection:
                     if self.connectStage == uidef.kConnectStage_Rom:
                         # It means there is no board connection, but we need to set it as True for SB generation
                         self.isThereBoardConnection = True
-                        self.RT10yy_connectToDevice(uidef.kConnectStage_Flashloader)
-                        self.RT10yy_isDeviceEnabledToOperate = False
+                        self.RTyyyy_connectToDevice(uidef.kConnectStage_Flashloader)
+                        self.RTyyyy_isDeviceEnabledToOperate = False
                         self.configureBootDevice()
                         self.connectStage = uidef.kConnectStage_Reset
                         self.updateConnectStatus('blue')
@@ -209,66 +209,66 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                     self.isThereBoardConnection = False
             else:
                 self.isThereBoardConnection = False
-                self.RT10yy_isDeviceEnabledToOperate = True
+                self.RTyyyy_isDeviceEnabledToOperate = True
                 self.connectStage = uidef.kConnectStage_Rom
                 self.updateConnectStatus('black')
-        self._RT10yy_stopGaugeTimer()
+        self._RTyyyy_stopGaugeTimer()
 
-    def RT10yy_callbackSetSecureBootType( self ):
+    def RTyyyy_callbackSetSecureBootType( self ):
         self.setCostTime(0)
-        self.RT10yy_setSecureBootSeqColor()
+        self.RTyyyy_setSecureBootSeqColor()
 
-    def RT10yy_task_doAllInOneAction( self ):
+    def RTyyyy_task_doAllInOneAction( self ):
         while True:
-            if self.RT10yy_isAllInOneActionTaskPending:
-                self._RT10yy_doAllInOneAction()
-                self.RT10yy_isAllInOneActionTaskPending = False
-                self._RT10yy_stopGaugeTimer()
+            if self.RTyyyy_isAllInOneActionTaskPending:
+                self._RTyyyy_doAllInOneAction()
+                self.RTyyyy_isAllInOneActionTaskPending = False
+                self._RTyyyy_stopGaugeTimer()
             time.sleep(1)
 
-    def _RT10yy_doAllInOneAction( self ):
+    def _RTyyyy_doAllInOneAction( self ):
         allInOneSeqCnt = 1
         directReuseCert = False
         status = False
         while allInOneSeqCnt:
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_HabAuth or \
-               self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto or \
-               (self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForBee):
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
+               self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
+               (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForBee):
                 status = self._doGenCert(directReuseCert)
                 if not status:
                     break
                 status = self._doProgramSrk()
                 if not status:
                     break
-            status = self._RT10yy_doGenImage()
+            status = self._RTyyyy_doGenImage()
             if not status:
                 break
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 status = self._doBeeEncryption()
                 if not status:
                     break
-                if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+                if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                     status = self._doProgramBeeDek()
                     if not status:
                         break
-                elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
+                elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                     if self.isCertEnabledForBee:
                         # If HAB is not closed here, we need to close HAB and re-do All-In-One Action
-                        if self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed0 and \
-                           self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed1:
+                        if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
+                           self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                            if not self.isSbFileEnabledToGen:
                                 self.enableHab()
-                                self._RT10yy_connectStateMachine()
+                                self._RTyyyy_connectStateMachine()
                                 while self.connectStage != uidef.kConnectStage_Reset:
-                                    self._RT10yy_connectStateMachine()
+                                    self._RTyyyy_connectStateMachine()
                                 directReuseCert = True
                                 allInOneSeqCnt += 1
                 else:
                     pass
-            status = self._RT10yy_doFlashImage()
+            status = self._RTyyyy_doFlashImage()
             if not status:
                 break
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
                 status = self._doFlashHabDek()
                 if not status:
                     break
@@ -278,22 +278,22 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             if status and self.isAutomaticImageReadback:
                 self.showPageInMainBootSeqWin(uidef.kPageIndex_BootDeviceMemory)
-                self._RT10yy_doViewMem()
+                self._RTyyyy_doViewMem()
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_AllInOne, status)
 
-    def RT10yy_callbackAllInOneAction( self ):
-        self._RT10yy_startGaugeTimer()
-        self.RT10yy_isAllInOneActionTaskPending = True
+    def RTyyyy_callbackAllInOneAction( self ):
+        self._RTyyyy_startGaugeTimer()
+        self.RTyyyy_isAllInOneActionTaskPending = True
 
     def callbackAdvCertSettings( self, event ):
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
-        elif self.secureBootType != RT10yy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+        elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
                 if self.checkIfSubWinHasBeenOpened():
@@ -329,17 +329,17 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
     def _doGenCert( self, directReuseCert=False ):
         status = False
         reuseCert = None
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
-        elif self.secureBootType != RT10yy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+        elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
-                self._RT10yy_startGaugeTimer()
+                self._RTyyyy_startGaugeTimer()
                 self.printLog("'Generate Certificate' button is clicked")
                 self.updateAllCstPathToCorrectVersion()
                 reuseCert = self._wantToReuseAvailableCert(directReuseCert)
@@ -348,7 +348,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 elif not reuseCert:
                     self.cleanUpCertificate()
                     if self.createSerialAndKeypassfile():
-                        self.RT10yy_setSecureBootButtonColor()
+                        self.RTyyyy_setSecureBootButtonColor()
                         self.genCertificate()
                         self.genSuperRootKeys()
                         self.showSuperRootKeys()
@@ -356,7 +356,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                         status = True
                 else:
                     status = True
-                self._RT10yy_stopGaugeTimer()
+                self._RTyyyy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_noNeedToGenForUnsigned'][self.languageIndex])
         if reuseCert != None:
@@ -369,51 +369,51 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def _RT10yy_doGenImage( self ):
+    def _RTyyyy_doGenImage( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         else:
-            self._RT10yy_startGaugeTimer()
+            self._RTyyyy_startGaugeTimer()
             self.printLog("'Generate Bootable Image' button is clicked")
             if self.createMatchedAppBdfile():
                 # Need to update image picture for DCD
                 needToPlaySound = False
-                self.RT10yy_setSecureBootSeqColor(needToPlaySound)
-                if self.RT10yy_genBootableImage():
+                self.RTyyyy_setSecureBootSeqColor(needToPlaySound)
+                if self.RTyyyy_genBootableImage():
                     self.showHabDekIfApplicable()
                     status = True
-            self._RT10yy_stopGaugeTimer()
+            self._RTyyyy_stopGaugeTimer()
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_GenImage, status)
         return status
 
-    def RT10yy_callbackGenImage( self ):
+    def RTyyyy_callbackGenImage( self ):
         if not self.isToolRunAsEntryMode:
-            self._RT10yy_doGenImage()
+            self._RTyyyy_doGenImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def callbackSetCertForBee( self, event ):
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             self.setBeeCertColor()
 
     def callbackSetKeyStorageRegion( self, event ):
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             self.setKeyStorageRegionColor()
 
     def callbackAdvKeySettings( self, event ):
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             if self.checkIfSubWinHasBeenOpened():
                 return
-            if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
+            if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 otpmkKeySettingsFrame = ui_settings_fixed_otpmk_key.secBootUiSettingsFixedOtpmkKey(None)
                 otpmkKeySettingsFrame.SetTitle(uilang.kSubLanguageContentDict['otpmkKey_title'][self.languageIndex])
                 otpmkKeySettingsFrame.Show(True)
-            elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+            elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 userKeySettingsFrame = ui_settings_flexible_user_keys.secBootUiSettingsFlexibleUserKeys(None)
                 userKeySettingsFrame.SetTitle(uilang.kSubLanguageContentDict['userKey_title'][self.languageIndex])
                 userKeySettingsFrame.setNecessaryInfo(self.mcuDevice, self.tgt.flexspiNorMemBase)
@@ -425,9 +425,9 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def _doBeeEncryption( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            self._RT10yy_startGaugeTimer()
-            if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FixedOtpmkKey:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self._RTyyyy_startGaugeTimer()
+            if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 if self.connectStage == uidef.kConnectStage_Reset:
                     if not self.prepareForFixedOtpmkEncryption():
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_failToPrepareForSnvs'][self.languageIndex])
@@ -435,12 +435,12 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                         status = True
                 else:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
-            elif self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+            elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 self.encrypteImageUsingFlexibleUserKeys()
                 status = True
             else:
                 pass
-            self._RT10yy_stopGaugeTimer()
+            self._RTyyyy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForBee'][self.languageIndex])
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_PrepBee, status)
@@ -454,23 +454,23 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def _doProgramSrk( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
-        elif self.secureBootType != RT10yy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+        elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
                    self.connectStage == uidef.kConnectStage_Reset:
-                    self._RT10yy_startGaugeTimer()
+                    self._RTyyyy_startGaugeTimer()
                     self.printLog("'Load SRK data' button is clicked")
                     if self.burnSrkData():
                         status = True
-                    self._RT10yy_stopGaugeTimer()
+                    self._RTyyyy_stopGaugeTimer()
                 else:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
         else:
@@ -486,14 +486,14 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
 
     def _doProgramBeeDek( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
-            if self.keyStorageRegion == RT10yy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+            if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
                    self.connectStage == uidef.kConnectStage_Reset:
-                    self._RT10yy_startGaugeTimer()
+                    self._RTyyyy_startGaugeTimer()
                     if self.burnBeeDekData():
                         status = True
-                    self._RT10yy_stopGaugeTimer()
+                    self._RTyyyy_stopGaugeTimer()
                 else:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
             else:
@@ -509,68 +509,68 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def _RT10yy_doFlashImage( self ):
+    def _RTyyyy_doFlashImage( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         else:
             if self.connectStage == uidef.kConnectStage_Reset:
-                self._RT10yy_startGaugeTimer()
+                self._RTyyyy_startGaugeTimer()
                 self.printLog("'Load Bootable Image' button is clicked")
-                if not self.RT10yy_flashBootableImage():
+                if not self.RTyyyy_flashBootableImage():
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
                 else:
                     self.isBootableAppAllowedToView = True
                     if self.burnBootDeviceFuses():
-                        if (self.secureBootType == RT10yy_uidef.kSecureBootType_HabAuth) or \
-                           (self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
-                            if self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed0 and \
-                               self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed1:
+                        if (self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth) or \
+                           (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
+                            if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
+                               self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                                 self.enableHab()
-                        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
+                        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                             if self.burnBeeKeySel():
                                 status = True
                         else:
                             status = True
-                self._RT10yy_stopGaugeTimer()
+                self._RTyyyy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_FlashImage, status)
         return status
 
-    def RT10yy_callbackFlashImage( self ):
+    def RTyyyy_callbackFlashImage( self ):
         if not self.isToolRunAsEntryMode:
-            self._RT10yy_doFlashImage()
+            self._RTyyyy_doFlashImage()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def _doFlashHabDek( self ):
         status = False
-        if self.secureBootType == RT10yy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto and \
-             (self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RT10yy_uidef.kBootDevice_SemcNor) and \
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
+             (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
-        elif self.secureBootType == RT10yy_uidef.kSecureBootType_HabCrypto:
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
             if self.connectStage == uidef.kConnectStage_Reset:
-                self._RT10yy_startGaugeTimer()
+                self._RTyyyy_startGaugeTimer()
                 self.printLog("'Load KeyBlob Data' button is clicked")
-                if self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed0 and \
-                   self.mcuDeviceHabStatus != RT10yy_fusedef.kHabStatus_Closed1:
+                if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
+                   self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                     if not self.isSbFileEnabledToGen:
                         self.enableHab()
-                        self._RT10yy_connectStateMachine()
+                        self._RTyyyy_connectStateMachine()
                         while self.connectStage != uidef.kConnectStage_Reset:
-                            self._RT10yy_connectStateMachine()
+                            self._RTyyyy_connectStateMachine()
                 self.flashHabDekToGenerateKeyBlob()
                 self.isBootableAppAllowedToView = True
                 status = True
-                self._RT10yy_stopGaugeTimer()
+                self._RTyyyy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
         else:
@@ -596,7 +596,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         if self.checkIfSubWinHasBeenOpened():
             return
         efuseBootCfg0Frame = None
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             if self.tgt.flexspiNorEfuseBootCfg0Bits == 3:
                 efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_3bits.secBootUiEfuseBootCfg0FlexspiNor3bits(None)
             elif self.tgt.flexspiNorEfuseBootCfg0Bits == 10:
@@ -640,7 +640,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         if self.checkIfSubWinHasBeenOpened():
             return
         efuseMiscConf1Frame = None
-        if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             efuseMiscConf1Frame = RT10yy_ui_efuse_miscconf1_flexspinor.secBootUiEfuseMiscConf1FlexspiNor(None)
             efuseMiscConf1Frame.SetTitle("eFuse 0x6e0 Misc Conf1 - FlexSPI NOR")
         else:
@@ -649,20 +649,20 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
         efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf1Frame.Show(True)
 
-    def _RT10yy_doViewMem( self ):
+    def _RTyyyy_doViewMem( self ):
         if self.connectStage == uidef.kConnectStage_Reset:
             if self.isBootableAppAllowedToView:
-                self._RT10yy_startGaugeTimer()
-                self.RT10yy_readProgrammedMemoryAndShow()
-                self._RT10yy_stopGaugeTimer()
+                self._RTyyyy_startGaugeTimer()
+                self.RTyyyy_readProgrammedMemoryAndShow()
+                self._RTyyyy_stopGaugeTimer()
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_hasnotFlashImage'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
 
-    def RT10yy_callbackViewMem( self, event ):
-        self._RT10yy_doViewMem()
+    def RTyyyy_callbackViewMem( self, event ):
+        self._RTyyyy_doViewMem()
 
-    def RT10yy_switchToolRunMode( self ):
+    def RTyyyy_switchToolRunMode( self ):
         self.applyFuseOperToRunMode()
-        self.RT10yy_setSecureBootButtonColor()
+        self.RTyyyy_setSecureBootButtonColor()

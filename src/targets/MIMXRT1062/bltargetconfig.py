@@ -31,8 +31,8 @@
 import sys, os
 sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
-from ui import RT10yy_uidef
-from ui import RT10yy_uidef_efuse
+from ui import RTyyyy_uidef
+from ui import RTyyyy_uidef_efuse
 from ui import uidef
 
 cpu = 'MIMXRT1062'
@@ -50,12 +50,12 @@ flashloaderLoadAddr = 0x20000000
 flashloaderJumpAddr = 0x20000400
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
-availableSecureBootTypes = [RT10yy_uidef.kSecureBootType_Development,
-                            RT10yy_uidef.kSecureBootType_HabAuth,
-                            RT10yy_uidef.kSecureBootType_HabCrypto,
-                            RT10yy_uidef.kSecureBootType_BeeCrypto]
+availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
+                            RTyyyy_uidef.kSecureBootType_HabAuth,
+                            RTyyyy_uidef.kSecureBootType_HabCrypto,
+                            RTyyyy_uidef.kSecureBootType_BeeCrypto]
 hasRemappedFuse = True
-availableBootDevices = RT10yy_uidef.kBootDevice_Latest
+availableBootDevices = RTyyyy_uidef.kBootDevice_Latest
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
 flexspiNorMemBase = 0x60000000
 xspiNorCfgInfoOffset = 0x1000
@@ -158,7 +158,7 @@ efuse_0x6e0_bit23_16 = {'FlexSPI_NOR_Secondary_Image_Offset (256KB * fuse value)
 efuse_0x6e0_bit31_24 = {'BT_Pin_SEL':              ['N/A']}
 
 efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
-                     '0x400_lock_bit14':        RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x400_lock_bit14':        RTyyyy_uidef_efuse.efuse_temp_reserved1,
                      '0x400_lock_bit15':        efuse_0x400_bit15,
                      '0x400_lock_bit17':        efuse_0x400_bit17,
                      '0x400_lock_bit20':        efuse_0x400_bit20,
@@ -168,7 +168,7 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x450_bootcfg0_bit3_2':   efuse_0x450_bit3_2,
                      '0x450_bootcfg0_bit7_4':   efuse_0x450_bit7_4,
 
-                     '0x460_bootcfg1_bit6'    : RT10yy_uidef_efuse.efuse_temp_reserved1,
+                     '0x460_bootcfg1_bit6'    : RTyyyy_uidef_efuse.efuse_temp_reserved1,
                      '0x460_bootcfg1_bit13_12': efuse_0x460_bit13_12,
                      '0x460_bootcfg1_bit15_14': efuse_0x460_bit15_14,
                      '0x460_bootcfg1_bit24'   : efuse_0x460_bit24,
@@ -191,7 +191,7 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x470_bootcfg2_bit31':    efuse_0x470_bit31,
 
                      '0x6d0_miscconf0_bit11_8': efuse_0x6d0_bit11_8,
-                     '0x6d0_miscconf0_bit19_16':RT10yy_uidef_efuse.efuse_0x6d0_flexramPartion512KB,
+                     '0x6d0_miscconf0_bit19_16':RTyyyy_uidef_efuse.efuse_0x6d0_flexramPartion512KB,
                      '0x6d0_miscconf0_bit24':   efuse_0x6d0_bit24,
                      '0x6d0_miscconf0_bit26_25':efuse_0x6d0_bit26_25,
                      '0x6d0_miscconf0_bit27':   efuse_0x6d0_bit27,

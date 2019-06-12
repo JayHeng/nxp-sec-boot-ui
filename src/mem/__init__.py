@@ -2,9 +2,9 @@
 
 import RTxxx_memcore
 import RTxxx_memdef
-import RT10yy_memcore
-import RT10yy_memdef
+import RTyyyy_memcore
+import RTyyyy_memdef
 import memcore
 
-__all__ = ["RTxxx_memcore", "RTxxx_memdef", "RT10yy_memcore", "RT10yy_memdef", "memcore"]
+__all__ = ["RTxxx_memcore", "RTxxx_memdef", "RTyyyy_memcore", "RTyyyy_memdef", "memcore"]
 

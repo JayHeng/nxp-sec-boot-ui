@@ -3,7 +3,7 @@
 import wx
 import sys
 import os
-import RT10yy_uidef
+import RTyyyy_uidef
 import uidef
 import uivar
 import uilang
@@ -15,7 +15,7 @@ class secBootUiUsdhcMmc(bootDeviceWin_UsdhcMmc.bootDeviceWin_UsdhcMmc):
     def __init__(self, parent):
         bootDeviceWin_UsdhcMmc.bootDeviceWin_UsdhcMmc.__init__(self, parent)
         self._setLanguage()
-        usdhcMmcOpt0, usdhcMmcOpt1 = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcMmc)
+        usdhcMmcOpt0, usdhcMmcOpt1 = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_UsdhcMmc)
         self.usdhcMmcOpt0 = usdhcMmcOpt0
         self.usdhcMmcOpt1 = usdhcMmcOpt1
         self._recoverLastSettings()
@@ -319,7 +319,7 @@ class secBootUiUsdhcMmc(bootDeviceWin_UsdhcMmc.bootDeviceWin_UsdhcMmc):
         self._getPowerPolarity()
         self._getPowerUpTime()
         self._getPowerDownTime()
-        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_UsdhcMmc, self.usdhcMmcOpt0, self.usdhcMmcOpt1)
+        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_UsdhcMmc, self.usdhcMmcOpt0, self.usdhcMmcOpt1)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()

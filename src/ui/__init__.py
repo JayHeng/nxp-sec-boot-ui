@@ -2,8 +2,8 @@
 
 import RTxxx_uicore
 import RTxxx_uidef
-import RT10yy_uicore
-import RT10yy_uidef
+import RTyyyy_uicore
+import RTyyyy_uidef
 import uicore
 import uidef
 import uivar
@@ -19,7 +19,7 @@ import ui_cfg_dcd
 import ui_settings_cert
 import ui_settings_fixed_otpmk_key
 import ui_settings_flexible_user_keys
-import RT10yy_uidef_efuse
+import RTyyyy_uidef_efuse
 import RT10yy_ui_efuse_lock
 import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
 import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
@@ -31,8 +31,8 @@ import RT10yy_ui_efuse_miscconf1_flexspinor
 
 __all__ = ["RTxxx_uicore",
            "RTxxx_uidef",
-           "RT10yy_uicore",
-           "RT10yy_uidef",
+           "RTyyyy_uicore",
+           "RTyyyy_uidef",
            "uicore",
            "uidef",
            "uivar",

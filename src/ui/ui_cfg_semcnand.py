@@ -3,7 +3,7 @@
 import wx
 import sys
 import os
-import RT10yy_uidef
+import RTyyyy_uidef
 import uidef
 import uivar
 import uilang
@@ -16,7 +16,7 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
     def __init__(self, parent):
         bootDeviceWin_SemcNand.bootDeviceWin_SemcNand.__init__(self, parent)
         self._setLanguage()
-        semcNandOpt, semcNandFcbOpt, semcNandImageInfoList = uivar.getBootDeviceConfiguration(RT10yy_uidef.kBootDevice_SemcNand)
+        semcNandOpt, semcNandFcbOpt, semcNandImageInfoList = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNand)
         self.semcNandOpt = semcNandOpt
         self.semcNandFcbOpt = semcNandFcbOpt
         self.semcNandImageInfoList = semcNandImageInfoList[:]
@@ -329,7 +329,7 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
         self._getSearchStride()
         self._getImageCopies()
         self._getImageInfo()
-        uivar.setBootDeviceConfiguration(RT10yy_uidef.kBootDevice_SemcNand, self.semcNandOpt, self.semcNandFcbOpt, self.semcNandImageInfoList)
+        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNand, self.semcNandOpt, self.semcNandFcbOpt, self.semcNandImageInfoList)
         uivar.setRuntimeSettings(False)
         self.Show(False)
         runtimeSettings = uivar.getRuntimeSettings()

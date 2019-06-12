@@ -10,12 +10,12 @@ import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
-from main import RT10yy_main
+from main import RTyyyy_main
 
-class secBootRTxxxUi(RT10yy_main.secBootRT10yyMain):
+class secBootRTxxxUi(RTyyyy_main.secBootRTyyyyMain):
 
     def __init__(self, parent):
-        RT10yy_main.secBootRT10yyMain.__init__(self, parent)
+        RTyyyy_main.secBootRTyyyyMain.__init__(self, parent)
         if self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_initUi()
 

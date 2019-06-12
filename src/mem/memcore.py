@@ -181,7 +181,7 @@ class secBootMem(runcore.secBootRun):
     def readRamMemory( self ):
         status, memStart, memLength = self._getUserComMemParameters(False)
         if status:
-            if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy and self.isInTheRangeOfFlexram(memStart, memLength)) or \
+            if (self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy and self.isInTheRangeOfFlexram(memStart, memLength)) or \
                (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx and self.isInTheRangeOfSram(memStart, memLength)):
                 alignedMemStart = misc.align_down(memStart, 0x10)
                 alignedMemLength = misc.align_up(memLength, 0x10) + 0x10
@@ -217,7 +217,7 @@ class secBootMem(runcore.secBootRun):
         status, memStart, memBinFile = self._getUserComMemParameters(True)
         if status:
             memLength = os.path.getsize(memBinFile)
-            if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy and self.isInTheRangeOfFlexram(memStart, memLength)) or \
+            if (self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy and self.isInTheRangeOfFlexram(memStart, memLength)) or \
                (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx and self.isInTheRangeOfSram(memStart, memLength)):
                 shutil.copy(memBinFile, self.userFilename)
                 status, results, cmdStr = self.blhost.writeMemory(memStart, self.userFilename)
@@ -239,7 +239,7 @@ class secBootMem(runcore.secBootRun):
     def executeAppInRam( self ):
         status, memStart, memBinFile = self._getUserComMemParameters(False)
         if status:
-            if (self.mcuSeries == uidef.kMcuSeries_iMXRT10yy and self.isInTheRangeOfFlexram(memStart, 1)) or \
+            if (self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy and self.isInTheRangeOfFlexram(memStart, 1)) or \
                (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx and self.isInTheRangeOfSram(memStart, 1)):
                 vectorFilename = 'vectorDataFromRam.dat'
                 vectorFilepath = os.path.join(self.blhostVectorsDir, vectorFilename)
