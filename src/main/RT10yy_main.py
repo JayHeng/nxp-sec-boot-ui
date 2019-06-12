@@ -36,7 +36,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
     def __init__(self, parent):
         RT10yy_memcore.secBootRT10yyMem.__init__(self, parent)
         self.RT10yy_isAllInOneActionTaskPending = False
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self._RT10yy_initMain()
 
     def _RT10yy_initMain( self ):
@@ -90,7 +90,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
             if bootType == kBootloaderType_Rom:
                 pingStatus = self.RT10yy_pingRom()
             elif bootType == kBootloaderType_Flashloader:
-                pingStatus = self.pingFlashloader()
+                pingStatus = self.RT10yy_pingFlashloader()
             else:
                 pass
             if pingStatus:
@@ -134,7 +134,7 @@ class secBootRT10yyMain(RT10yy_memcore.secBootRT10yyMem):
                 if self._RT10yy_retryToPingBootloader(kBootloaderType_Rom):
                     self.RT10yy_getMcuDeviceInfoViaRom()
                     self.getMcuDeviceHabStatus()
-                    if self.jumpToFlashloader():
+                    if self.RT10yy_jumpToFlashloader():
                         self.connectStage = uidef.kConnectStage_Flashloader
                         self.updateConnectStatus('yellow')
                         usbIdList = self.RT10yy_getUsbid()

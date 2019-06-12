@@ -34,6 +34,8 @@ def RT10yy_createTarget(device, exeBinRoot):
         cpu = "MIMXRT1062"
     elif device == uidef.kMcuDevice_iMXRT1064:
         cpu = "MIMXRT1064"
+    elif device == uidef.kMcuDevice_iMXRT117x:
+        cpu = "MIMXRT1176"
     else:
         pass
     targetBaseDir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'targets', cpu)
@@ -69,7 +71,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def __init__(self, parent):
         RT10yy_gencore.secBootRT10yyGen.__init__(self, parent)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries == uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initRun()
 
     def RT10yy_initRun( self ):
@@ -219,7 +221,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             else:
                 pass
 
-    def jumpToFlashloader( self ):
+    def RT10yy_jumpToFlashloader( self ):
         flashloaderBinFile = None
         if self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed1:
             flashloaderSrecFile = os.path.join(self.cpuDir, 'flashloader.srec')
@@ -240,7 +242,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             return False
         return True
 
-    def pingFlashloader( self ):
+    def RT10yy_pingFlashloader( self ):
         status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
         self.printLog(cmdStr)
         return (status == boot.status.kStatus_Success)

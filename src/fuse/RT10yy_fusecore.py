@@ -23,7 +23,7 @@ class secBootRT10yyFuse(RT10yy_runcore.secBootRT10yyRun):
         self.runModeFuseFlagList = [None] * RT10yy_fusedef.kMaxEfuseWords
         self.toBeRefreshedFuseList = [False] * RT10yy_fusedef.kMaxEfuseWords
         self.isRunModeFuseFlagRemapped = False
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initFuse()
 
     def RT10yy_initFuse( self ):

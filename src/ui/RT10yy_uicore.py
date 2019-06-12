@@ -20,7 +20,7 @@ class secBootRT10yyUi(memcore.secBootMem):
 
     def __init__(self, parent):
         memcore.secBootMem.__init__(self, parent)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initUi()
 
     def RT10yy_initUi( self ):

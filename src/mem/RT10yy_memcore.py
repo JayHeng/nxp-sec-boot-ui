@@ -18,7 +18,7 @@ class secBootRT10yyMem(RT10yy_fusecore.secBootRT10yyFuse):
 
     def __init__(self, parent):
         RT10yy_fusecore.secBootRT10yyFuse.__init__(self, parent)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initMem()
 
     def RT10yy_initMem( self ):

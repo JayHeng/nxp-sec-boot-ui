@@ -14,6 +14,8 @@ kConnectStage_Reset          = 4
 kMcuSeries_iMXRT     = 'i.MXRT'
 kMcuSeries_iMXRT10yy = 'RT10yy'
 kMcuSeries_iMXRTxxx  = 'RTxxx'
+kMcuSeries_iMXRT11yy = 'RT11yy'
+kMcuSeries_iMXRTyyyy = [kMcuSeries_iMXRT10yy, kMcuSeries_iMXRT11yy]
 kMcuSeries_LPC       = 'LPC'
 kMcuSeries_Kinetis   = 'Kinetis'
 
@@ -35,9 +37,12 @@ kMcuDevice_iMXRT106x = 'i.MXRT106x'
 kMcuDevice_iMXRT1064 = 'i.MXRT1064 SIP'
 kMcuDevice_iMXRT10yy = [kMcuDevice_iMXRT1011, kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
 
+kMcuDevice_iMXRT117x = 'i.MXRT117x'
+kMcuDevice_iMXRT11yy = [kMcuDevice_iMXRT117x]
+
 kMcuDevice_v1_0_0 = [kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
 kMcuDevice_v1_1_0 = [kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
-kMcuDevice_v2_0_0 = [kMcuDevice_iMXRT500, kMcuDevice_iMXRT600, kMcuDevice_iMXRT1011, kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064]
+kMcuDevice_v2_0_0 = [kMcuDevice_iMXRT500, kMcuDevice_iMXRT600, kMcuDevice_iMXRT1011, kMcuDevice_iMXRT1015, kMcuDevice_iMXRT102x, kMcuDevice_iMXRT105x, kMcuDevice_iMXRT106x, kMcuDevice_iMXRT1064, kMcuDevice_iMXRT117x]
 kMcuDevice_Latest = kMcuDevice_v2_0_0
 
 kBootDevice_XspiNor        = 'XSPI NOR'

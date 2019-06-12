@@ -68,14 +68,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self.setTargetSetupValue()
         self._setUartUsbPort()
         if self.isMcuSeriesChanged:
-            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
                 self.RT10yy_callbackSetMcuSeries()
             elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
                 self.RTxxx_callbackSetMcuSeries()
             else:
                 pass
             self.isMcuSeriesChanged = False
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackSetMcuDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetMcuDevice()
@@ -83,7 +83,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             pass
 
     def callbackSetBootDevice( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackSetBootDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetBootDevice()
@@ -137,7 +137,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def _setUartUsbPort( self ):
         usbIdList = []
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             usbIdList = self.RT10yy_getUsbid()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             usbIdList = self.RTxxx_getUsbid()
@@ -161,7 +161,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_cannotSetOneStep'][self.languageIndex])
 
     def callbackConnectToDevice( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackConnectToDevice()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackConnectToDevice()
@@ -169,7 +169,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             pass
 
     def callbackSetSecureBootType( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackSetSecureBootType()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackSetSecureBootType()
@@ -177,7 +177,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             pass
 
     def callbackAllInOneAction( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackAllInOneAction()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackAllInOneAction()
@@ -187,7 +187,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def callbackChangedAppFile( self, event ):
         self.getUserAppFilePath()
         self.setCostTime(0)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_setSecureBootButtonColor()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_setSecureBootButtonColor()
@@ -198,7 +198,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self.getUserAppFileFormat()
 
     def callbackGenImage( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackGenImage()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackGenImage()
@@ -206,7 +206,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             pass
 
     def callbackFlashImage( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackFlashImage()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackFlashImage()
@@ -265,7 +265,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 
     def callbackViewMem( self, event ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_callbackViewMem()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_callbackViewMem()
@@ -366,7 +366,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         self._deinitToolToExit()
 
     def _switchToolRunMode( self ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_switchToolRunMode()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_switchToolRunMode()

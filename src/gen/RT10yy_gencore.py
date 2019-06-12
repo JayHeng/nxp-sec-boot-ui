@@ -22,7 +22,7 @@ class secBootRT10yyGen(RT10yy_uicore.secBootRT10yyUi):
 
     def __init__(self, parent):
         RT10yy_uicore.secBootRT10yyUi.__init__(self, parent)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initGen()
 
     def RT10yy_initGen( self ):

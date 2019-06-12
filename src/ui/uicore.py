@@ -190,7 +190,9 @@ class secBootUi(secBootWin.secBootWin):
     def _detectMcuSeries( self ):
         mcuDevice = self.m_choice_mcuDevice.GetString(self.m_choice_mcuDevice.GetSelection())
         mcuSeries = uidef.kMcuSeries_iMXRT10yy
-        if mcuDevice in uidef.kMcuDevice_iMXRTxxx:
+        if mcuDevice in uidef.kMcuDevice_iMXRT11yy:
+            mcuSeries = uidef.kMcuSeries_iMXRT11yy
+        elif mcuDevice in uidef.kMcuDevice_iMXRTxxx:
             mcuSeries = uidef.kMcuSeries_iMXRTxxx
         elif mcuDevice in uidef.kMcuDevice_iMXRT10yy:
             mcuSeries = uidef.kMcuSeries_iMXRT10yy
@@ -220,7 +222,7 @@ class secBootUi(secBootWin.secBootWin):
             self.m_radioBtn_uart.SetValue(True)
             self.m_radioBtn_usbhid.SetValue(False)
         usbIdList = []
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             usbIdList = self.RT10yy_getUsbid()
         elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             usbIdList = self.RTxxx_getUsbid()
