@@ -396,6 +396,27 @@ class Bootloader(object):
         return self._executeCommand('fill-memory', address, length, pattern, unit)
 
     ##
+    # @brief load-image command
+    #
+    def loadImage(self, filename):
+        createdTempFile = False
+        fullFileName = filename
+
+        if not os.path.isfile(fullFileName):
+            fullFileName = os.path.join(self.vectorsDir, 'tmp_loadImageData')
+            tempFile =  open(fullFileName)
+            tempFile.write(str(filename))
+
+            createdTempFile = True
+        self.fileLength = os.path.getsize(fullFileName)
+        status, results, cmdStr = self._executeCommand('load-image', fullFileName)
+
+        if createdTempFile:
+            os.remove(fullFileName)
+
+        return status, results, cmdStr
+
+    ##
     # @brief configure-memory command
     def configureMemory(self, memoryid, address):
         return self._executeCommand('configure-memory', memoryid, address)

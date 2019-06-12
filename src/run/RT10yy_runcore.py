@@ -71,7 +71,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def __init__(self, parent):
         RT10yy_gencore.secBootRT10yyGen.__init__(self, parent)
-        if self.mcuSeries == uidef.kMcuSeries_iMXRTyyyy:
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RT10yy_initRun()
 
     def RT10yy_initRun( self ):
@@ -80,7 +80,7 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         self.tgt = None
         self.cpuDir = None
         self.sdphostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'sdphost', 'win', 'vectors')
-        self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost', 'win', 'vectors')
+        self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost2_3', 'win', 'vectors')
 
         self.RT10yy_isDeviceEnabledToOperate = True
         self.bootDeviceMemId = None
@@ -113,25 +113,42 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
         if connectStage == uidef.kConnectStage_Rom:
             # Create the target object.
             self.RT10yy_createMcuTarget()
+            xhost = None
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                xhost = 'sdp_'
+            elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                xhost = ''
+            else:
+                pass
             if self.isUartPortSelected:
-                sdpPeripheral = 'sdp_uart'
+                xPeripheral = xhost + 'uart'
                 uartComPort = self.uartComPort
                 uartBaudrate = int(self.uartBaudrate)
                 usbVid = ''
                 usbPid = ''
             elif self.isUsbhidPortSelected:
-                sdpPeripheral = 'sdp_usb'
+                xPeripheral = xhost + 'usb'
                 uartComPort = ''
                 uartBaudrate = ''
                 usbVid = self.tgt.romUsbVid
                 usbPid = self.tgt.romUsbPid
             else:
                 pass
-            self.sdphost = bltest.createBootloader(self.tgt,
-                                                   self.sdphostVectorsDir,
-                                                   sdpPeripheral,
-                                                   uartBaudrate, uartComPort,
-                                                   usbVid, usbPid)
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                self.sdphost = bltest.createBootloader(self.tgt,
+                                                       self.sdphostVectorsDir,
+                                                       xPeripheral,
+                                                       uartBaudrate, uartComPort,
+                                                       usbVid, usbPid)
+            elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                self.blhost = bltest.createBootloader(self.tgt,
+                                                      self.blhostVectorsDir,
+                                                      xPeripheral,
+                                                      uartBaudrate, uartComPort,
+                                                      usbVid, usbPid,
+                                                      True)
+            else:
+                pass
         elif connectStage == uidef.kConnectStage_Flashloader:
             if self.isUartPortSelected:
                 blPeripheral = 'uart'
@@ -159,9 +176,16 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             pass
 
     def RT10yy_pingRom( self ):
-        status, results, cmdStr = self.sdphost.errorStatus()
-        self.printLog(cmdStr)
-        return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            status, results, cmdStr = self.sdphost.errorStatus()
+            self.printLog(cmdStr)
+            return (status == boot.status.kSDP_Status_HabEnabled or status == boot.status.kSDP_Status_HabDisabled)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_CurrentVersion)
+            self.printLog(cmdStr)
+            return (status == boot.status.kStatus_Success)
+        else:
+            pass
 
     def _getDeviceRegisterBySdphost( self, regAddr, regName, needToShow=True):
         if self.tgt.hasSdpReadRegisterCmd:
@@ -193,33 +217,40 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def RT10yy_getMcuDeviceInfoViaRom( self ):
         self.printDeviceStatus("--------MCU device Register----------")
-        self._readMcuDeviceRegisterUuid()
-        self._readMcuDeviceRegisterSrcSmbr()
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            self._readMcuDeviceRegisterUuid()
+            self._readMcuDeviceRegisterSrcSmbr()
 
     def getMcuDeviceHabStatus( self ):
-        if self.tgt.hasSdpReadRegisterCmd:
-            secConfig = self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR2, '', False)
-            if secConfig != None:
-                self.mcuDeviceHabStatus = ((secConfig & RT10yy_rundef.kRegisterMask_SecConfig) >> RT10yy_rundef.kRegisterShift_SecConfig)
-                if self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_FAB:
-                    self.printDeviceStatus('HAB status = FAB')
-                elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Open:
-                    self.printDeviceStatus('HAB status = Open')
-                elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed1:
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            if self.tgt.hasSdpReadRegisterCmd:
+                secConfig = self._getDeviceRegisterBySdphost( RT10yy_rundef.kRegisterAddr_SRC_SBMR2, '', False)
+                if secConfig != None:
+                    self.mcuDeviceHabStatus = ((secConfig & RT10yy_rundef.kRegisterMask_SecConfig) >> RT10yy_rundef.kRegisterShift_SecConfig)
+                    if self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_FAB:
+                        self.printDeviceStatus('HAB status = FAB')
+                    elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Open:
+                        self.printDeviceStatus('HAB status = Open')
+                    elif self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RT10yy_fusedef.kHabStatus_Closed1:
+                        self.printDeviceStatus('HAB status = Closed')
+                    else:
+                        pass
+            else:
+                status, results, cmdStr = self.sdphost.errorStatus()
+                self.printLog(cmdStr)
+                if status == boot.status.kSDP_Status_HabEnabled:
+                    self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Closed0
                     self.printDeviceStatus('HAB status = Closed')
+                elif status == boot.status.kSDP_Status_HabDisabled:
+                    self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Open
+                    self.printDeviceStatus('HAB status = Open')
                 else:
                     pass
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Open
+            # To-Do
         else:
-            status, results, cmdStr = self.sdphost.errorStatus()
-            self.printLog(cmdStr)
-            if status == boot.status.kSDP_Status_HabEnabled:
-                self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Closed0
-                self.printDeviceStatus('HAB status = Closed')
-            elif status == boot.status.kSDP_Status_HabDisabled:
-                self.mcuDeviceHabStatus = RT10yy_fusedef.kHabStatus_Open
-                self.printDeviceStatus('HAB status = Open')
-            else:
-                pass
+            pass
 
     def RT10yy_jumpToFlashloader( self ):
         flashloaderBinFile = None
@@ -232,14 +263,22 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
             flashloaderBinFile = os.path.join(self.cpuDir, 'ivt_flashloader.bin')
         else:
             pass
-        status, results, cmdStr = self.sdphost.writeFile(self.tgt.flashloaderLoadAddr, flashloaderBinFile)
-        self.printLog(cmdStr)
-        if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
-            return False
-        status, results, cmdStr = self.sdphost.jumpAddress(self.tgt.flashloaderJumpAddr)
-        self.printLog(cmdStr)
-        if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
-            return False
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            status, results, cmdStr = self.sdphost.writeFile(self.tgt.flashloaderLoadAddr, flashloaderBinFile)
+            self.printLog(cmdStr)
+            if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
+                return False
+            status, results, cmdStr = self.sdphost.jumpAddress(self.tgt.flashloaderJumpAddr)
+            self.printLog(cmdStr)
+            if status != boot.status.kSDP_Status_HabEnabled and status != boot.status.kSDP_Status_HabDisabled:
+                return False
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            status, results, cmdStr = self.blhost.loadImage(flashloaderBinFile)
+            self.printLog(cmdStr)
+            if status != boot.status.kStatus_Success:
+                return False
+        else:
+            pass
         return True
 
     def RT10yy_pingFlashloader( self ):
@@ -311,26 +350,28 @@ class secBootRT10yyRun(RT10yy_gencore.secBootRT10yyGen):
 
     def getMcuDeviceInfoViaFlashloader( self ):
         self.printDeviceStatus("--------MCU device eFusemap--------")
-        #self._readMcuDeviceFuseTester()
-        self._readMcuDeviceFuseBootCfg()
-        #self._readMcuDeviceFuseOtpmkDek()
-        #self._readMcuDeviceFuseSrk()
-        #self._readMcuDeviceFuseSwGp2()
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            #self._readMcuDeviceFuseTester()
+            self._readMcuDeviceFuseBootCfg()
+            #self._readMcuDeviceFuseOtpmkDek()
+            #self._readMcuDeviceFuseSrk()
+            #self._readMcuDeviceFuseSwGp2()
 
     def getMcuDeviceBtFuseSel( self ):
-        btFuseSel = self.readMcuDeviceFuseByBlhost(RT10yy_fusedef.kEfuseLocation_BtFuseSel, '', False)
-        if btFuseSel != None:
-            self.mcuDeviceBtFuseSel = ((btFuseSel & RT10yy_fusedef.kEfuseMask_BtFuseSel) >> RT10yy_fusedef.kEfuseShift_BtFuseSel)
-            if self.mcuDeviceBtFuseSel == 0:
-                self.printDeviceStatus('BT_FUSE_SEL = 1\'b0')
-                self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is no application in boot device, MCU will enter serial downloader mode directly')
-                self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to both BOOT_CFGx pins and Fuse BOOT_CFGx')
-            elif self.mcuDeviceBtFuseSel == 1:
-                self.printDeviceStatus('BT_FUSE_SEL = 1\'b1')
-                self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is application in boot device, MCU will boot application according to Fuse BOOT_CFGx')
-                self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to Fuse BOOT_CFGx only')
-            else:
-                pass
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            btFuseSel = self.readMcuDeviceFuseByBlhost(RT10yy_fusedef.kEfuseLocation_BtFuseSel, '', False)
+            if btFuseSel != None:
+                self.mcuDeviceBtFuseSel = ((btFuseSel & RT10yy_fusedef.kEfuseMask_BtFuseSel) >> RT10yy_fusedef.kEfuseShift_BtFuseSel)
+                if self.mcuDeviceBtFuseSel == 0:
+                    self.printDeviceStatus('BT_FUSE_SEL = 1\'b0')
+                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is no application in boot device, MCU will enter serial downloader mode directly')
+                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to both BOOT_CFGx pins and Fuse BOOT_CFGx')
+                elif self.mcuDeviceBtFuseSel == 1:
+                    self.printDeviceStatus('BT_FUSE_SEL = 1\'b1')
+                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is application in boot device, MCU will boot application according to Fuse BOOT_CFGx')
+                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to Fuse BOOT_CFGx only')
+                else:
+                    pass
 
     def _RT10yy_prepareForBootDeviceOperation ( self ):
         if self.bootDevice == RT10yy_uidef.kBootDevice_FlexspiNor:
