@@ -10,7 +10,7 @@ import uidef
 import uivar
 import uilang
 sys.path.append(os.path.abspath(".."))
-from main import RTyyyy_main
+from _main import RTyyyy_main
 
 class secBootRTxxxUi(RTyyyy_main.secBootRTyyyyMain):
 

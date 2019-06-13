@@ -9,8 +9,8 @@ import time
 import threading
 import inspect
 import ctypes
-from main import RTxxx_main
-from main import RTyyyy_main
+from _main import RTxxx_main
+from _main import RTyyyy_main
 from ui import RTyyyy_uidef
 from ui import RTxxx_uidef
 from ui import uidef
