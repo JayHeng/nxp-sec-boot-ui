@@ -678,7 +678,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])
 
-    def RTyyyy_callbackViewMem( self, event ):
+    def RTyyyy_callbackViewMem( self ):
         self._RTyyyy_doViewMem()
 
     def RTyyyy_switchToolRunMode( self ):

@@ -37,9 +37,9 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
         self.needToShowNfcbIntr = None
         self.needToShowDbbtIntr = None
         self.needToShowMbrdptIntr = None
-        self._initShowIntr()
+        self._RTyyyy_initShowIntr()
 
-    def _initShowIntr( self ):
+    def _RTyyyy_initShowIntr( self ):
         self.needToShowCfgIntr = True
         self.needToShowEkib0Intr = True
         self.needToShowEprdb0Intr = True
@@ -286,5 +286,5 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                             if addr >= self.bootDeviceMemBase + RTyyyy_memdef.kMemBlockSize_MBRDPT:
                                 self.printMem(contentToShow)
             fileObj.close()
-        self._initShowIntr()
+        self._RTyyyy_initShowIntr()
         self.tryToSaveImageDataFile(memFilepath)

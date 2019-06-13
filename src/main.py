@@ -406,11 +406,20 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def callbackSetImageReadbackAsManual( self, event ):
         self.setImageReadback()
 
-    def callbackSetLanguageAsEnglish( self, event ):
+    def _doSetLanguage( self ):
         self.setLanguage()
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
+            self.RTyyyy_setLanguage()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_setLanguage()
+        else:
+            pass
+
+    def callbackSetLanguageAsEnglish( self, event ):
+        self._doSetLanguage()
 
     def callbackSetLanguageAsChinese( self, event ):
-        self.setLanguage()
+        self._doSetLanguage()
 
     def callbackShowHomePage( self, event ):
         msgText = ((uilang.kMsgLanguageContentDict['homePage_info'][self.languageIndex]))

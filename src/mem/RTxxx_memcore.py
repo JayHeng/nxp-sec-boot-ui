@@ -25,9 +25,9 @@ class secBootRTxxxMem(RTxxx_runcore.secBootRTxxxRun):
 
         self.needToShowCfgIntr = None
         self.needToShowImageIntr = None
-        self._initShowIntr()
+        self._RTxxx_initShowIntr()
 
-    def _initShowIntr( self ):
+    def _RTxxx_initShowIntr( self ):
         self.needToShowCfgIntr = True
         self.needToShowImageIntr = True
 
@@ -83,5 +83,5 @@ class secBootRTxxxMem(RTxxx_runcore.secBootRTxxxRun):
                 else:
                     pass
             fileObj.close()
-        self._initShowIntr()
+        self._RTxxx_initShowIntr()
         self.tryToSaveImageDataFile(memFilepath)

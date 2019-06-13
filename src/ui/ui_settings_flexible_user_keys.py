@@ -86,22 +86,22 @@ class secBootUiSettingsFlexibleUserKeys(advSettingsWin_FlexibleUserKeys.advSetti
         if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
             keySource = None
             engineSel = None
-            if mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT1011:
+            if mcuDevice == uidef.kMcuDevice_iMXRT1011:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT1011
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT1011
-            elif mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT1015:
+            elif mcuDevice == uidef.kMcuDevice_iMXRT1015:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT1015
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT1015
-            elif mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT102x:
+            elif mcuDevice == uidef.kMcuDevice_iMXRT102x:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT102x
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT102x
-            elif mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT105x:
+            elif mcuDevice == uidef.kMcuDevice_iMXRT105x:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT105x
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT105x
-            elif mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT106x:
+            elif mcuDevice == uidef.kMcuDevice_iMXRT106x:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT106x
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT106x
-            elif mcuDevice == RTyyyy_uidef.kMcuDevice_iMXRT1064:
+            elif mcuDevice == uidef.kMcuDevice_iMXRT1064:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT1064
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT1064
             else:

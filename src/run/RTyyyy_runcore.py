@@ -652,7 +652,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         #self._showOtpmkDek()
         if not self._eraseFlexspiNorForImageLoading():
             return False
-        otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(RTyyyy_uidef.kAdvancedSettings_OtpmkKey)
+        otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
         # Prepare PRDB options
         #---------------------------------------------------------------------------
         # 0xe0120000 is an option for PRDB contruction and image encryption
@@ -815,7 +815,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         needToBurnGp4 = False
         swgp2DekFilename = None
         gp4DekFilename = None
-        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(RTyyyy_uidef.kAdvancedSettings_UserKeys)
+        userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
         if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
             if userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
                 needToBurnSwGp2 = True
@@ -1074,7 +1074,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         setBeeKey0Sel = None
         setBeeKey1Sel = None
         if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-            otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(RTyyyy_uidef.kAdvancedSettings_OtpmkKey)
+            otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
             encryptedRegionCnt = (otpmkKeyOpt & 0x000F0000) >> 16
             # One PRDB means one BEE_KEY, no matter how many FAC regions it has
             if encryptedRegionCnt >= 0:
@@ -1082,7 +1082,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             #if encryptedRegionCnt > 1:
             #    setBeeKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
         elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-            userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(RTyyyy_uidef.kAdvancedSettings_UserKeys)
+            userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
             if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
                 if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
                     setBeeKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
