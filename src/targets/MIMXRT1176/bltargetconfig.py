@@ -51,10 +51,11 @@ flashloaderJumpAddr = None
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
-                            RTyyyy_uidef.kSecureBootType_HabAuth,
-                            RTyyyy_uidef.kSecureBootType_HabCrypto,
-                            RTyyyy_uidef.kSecureBootType_OtfadCrypto,
-                            RTyyyy_uidef.kSecureBootType_IeeCrypto]
+                            #RTyyyy_uidef.kSecureBootType_HabAuth,
+                            #RTyyyy_uidef.kSecureBootType_HabCrypto,
+                            #RTyyyy_uidef.kSecureBootType_OtfadCrypto,
+                            #RTyyyy_uidef.kSecureBootType_IeeCrypto
+                            ]
 hasRemappedFuse = True
 availableBootDevices = RTyyyy_uidef.kBootDevice_Latest
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A

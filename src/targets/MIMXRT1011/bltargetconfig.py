@@ -51,9 +51,10 @@ flashloaderJumpAddr = 0x20205c00
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
-                            RTyyyy_uidef.kSecureBootType_HabAuth,
-                            RTyyyy_uidef.kSecureBootType_HabCrypto,
-                            RTyyyy_uidef.kSecureBootType_OtfadCrypto]
+                            #RTyyyy_uidef.kSecureBootType_HabAuth,
+                            #RTyyyy_uidef.kSecureBootType_HabCrypto,
+                            #RTyyyy_uidef.kSecureBootType_OtfadCrypto
+                            ]
 hasRemappedFuse = False
 availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
