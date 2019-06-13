@@ -818,7 +818,7 @@ class secBootWin ( wx.Frame ):
 
 		bSizer_fuseGroupCtrl0 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_textCtrl_fuse400 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse400 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		bSizer_fuseGroupCtrl0.Add( self.m_textCtrl_fuse400, 0, wx.ALL, 5 )
 
 		self.m_textCtrl_fuse410 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
@@ -833,13 +833,13 @@ class secBootWin ( wx.Frame ):
 		self.m_textCtrl_fuse440 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
 		bSizer_fuseGroupCtrl0.Add( self.m_textCtrl_fuse440, 0, wx.ALL, 5 )
 
-		self.m_textCtrl_fuse450 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg0", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse450 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg0", wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		bSizer_fuseGroupCtrl0.Add( self.m_textCtrl_fuse450, 0, wx.ALL, 5 )
 
-		self.m_textCtrl_fuse460 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg1", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse460 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg1", wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		bSizer_fuseGroupCtrl0.Add( self.m_textCtrl_fuse460, 0, wx.ALL, 5 )
 
-		self.m_textCtrl_fuse470 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg2", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse470 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Boot Cfg2", wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		bSizer_fuseGroupCtrl0.Add( self.m_textCtrl_fuse470, 0, wx.ALL, 5 )
 
 		self.m_textCtrl_fuse480 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
@@ -1285,10 +1285,10 @@ class secBootWin ( wx.Frame ):
 		self.m_textCtrl_fuse6c0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
 		bSizer_fuseGroupCtrl3.Add( self.m_textCtrl_fuse6c0, 0, wx.ALL, 5 )
 
-		self.m_textCtrl_fuse6d0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Misc Conf0", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse6d0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Misc Conf0", wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		bSizer_fuseGroupCtrl3.Add( self.m_textCtrl_fuse6d0, 0, wx.ALL, 5 )
 
-		self.m_textCtrl_fuse6e0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Misc Conf1", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		self.m_textCtrl_fuse6e0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, u"Misc Conf1", wx.DefaultPosition, wx.Size( 75,20 ), wx.TE_PROCESS_ENTER )
 		self.m_textCtrl_fuse6e0.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
 		bSizer_fuseGroupCtrl3.Add( self.m_textCtrl_fuse6e0, 0, wx.ALL, 5 )
@@ -1822,8 +1822,14 @@ class secBootWin ( wx.Frame ):
 		self.m_button_fuse450.Bind( wx.EVT_BUTTON, self.callbackSetEfuseBootCfg0 )
 		self.m_button_fuse460.Bind( wx.EVT_BUTTON, self.callbackSetEfuseBootCfg1 )
 		self.m_button_fuse470.Bind( wx.EVT_BUTTON, self.callbackSetEfuseBootCfg2 )
+		self.m_textCtrl_fuse400.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseLock )
+		self.m_textCtrl_fuse450.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseBootCfg0 )
+		self.m_textCtrl_fuse460.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseBootCfg1 )
+		self.m_textCtrl_fuse470.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseBootCfg2 )
 		self.m_button_fuse6d0.Bind( wx.EVT_BUTTON, self.callbackSetEfuseMiscConf0 )
 		self.m_button_fuse6e0.Bind( wx.EVT_BUTTON, self.callbackSetEfuseMiscConf1 )
+		self.m_textCtrl_fuse6d0.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseMiscConf0 )
+		self.m_textCtrl_fuse6e0.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseMiscConf1 )
 		self.m_button_scan.Bind( wx.EVT_BUTTON, self.callbackScanFuse )
 		self.m_button_burn.Bind( wx.EVT_BUTTON, self.callbackBurnFuse )
 		self.m_button_readMem.Bind( wx.EVT_BUTTON, self.callbackReadMem )
@@ -1981,10 +1987,28 @@ class secBootWin ( wx.Frame ):
 	def callbackSetEfuseBootCfg2( self, event ):
 		event.Skip()
 
+	def callbackEnterEfuseLock( self, event ):
+		event.Skip()
+
+	def callbackEnterEfuseBootCfg0( self, event ):
+		event.Skip()
+
+	def callbackEnterEfuseBootCfg1( self, event ):
+		event.Skip()
+
+	def callbackEnterEfuseBootCfg2( self, event ):
+		event.Skip()
+
 	def callbackSetEfuseMiscConf0( self, event ):
 		event.Skip()
 
 	def callbackSetEfuseMiscConf1( self, event ):
+		event.Skip()
+
+	def callbackEnterEfuseMiscConf0( self, event ):
+		event.Skip()
+
+	def callbackEnterEfuseMiscConf1( self, event ):
 		event.Skip()
 
 	def callbackScanFuse( self, event ):

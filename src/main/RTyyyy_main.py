@@ -592,6 +592,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         efuseLockFrame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseLockFrame.Show(True)
 
+    def callbackEnterEfuseLock( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_LOCK)
+
     def callbackSetEfuseBootCfg0( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
@@ -612,6 +615,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         efuseBootCfg0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseBootCfg0Frame.Show(True)
 
+    def callbackEnterEfuseBootCfg0( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0)
+
     def callbackSetEfuseBootCfg1( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
@@ -619,6 +625,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         efuseBootCfg1Frame.SetTitle("eFuse 0x460 Boot Cfg1")
         efuseBootCfg1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseBootCfg1Frame.Show(True)
+
+    def callbackEnterEfuseBootCfg1( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1)
 
     def callbackSetEfuseBootCfg2( self, event ):
         if self.checkIfSubWinHasBeenOpened():
@@ -628,6 +637,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         efuseBootCfg2Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseBootCfg2Frame.Show(True)
 
+    def callbackEnterEfuseBootCfg2( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2)
+
     def callbackSetEfuseMiscConf0( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
@@ -635,6 +647,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         efuseMiscConf0Frame.SetTitle("eFuse 0x6d0 Misc Conf0")
         efuseMiscConf0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf0Frame.Show(True)
+
+    def callbackEnterEfuseMiscConf0( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF0)
 
     def callbackSetEfuseMiscConf1( self, event ):
         if self.checkIfSubWinHasBeenOpened():
@@ -648,6 +663,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             return
         efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
         efuseMiscConf1Frame.Show(True)
+
+    def callbackEnterEfuseMiscConf1( self, event ):
+        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF1)
 
     def _RTyyyy_doViewMem( self ):
         if self.connectStage == uidef.kConnectStage_Reset:

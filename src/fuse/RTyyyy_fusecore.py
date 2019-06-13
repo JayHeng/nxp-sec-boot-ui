@@ -139,22 +139,22 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
         while True:
             if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
                 efuseDict = uivar.getEfuseSettings()
-                if self.toBeBurnnedFuseList[0] != None and efuseDict['0x400_lock'] != self.toBeBurnnedFuseList[0]:
+                if efuseDict['0x400_lock'] != self.toBeBurnnedFuseList[0]:
                     self.toBeBurnnedFuseList[0] = efuseDict['0x400_lock']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_LOCK, efuseDict['0x400_lock'])
-                if self.toBeBurnnedFuseList[5] != None and efuseDict['0x450_bootCfg0'] != self.toBeBurnnedFuseList[5]:
+                if efuseDict['0x450_bootCfg0'] != self.toBeBurnnedFuseList[5]:
                     self.toBeBurnnedFuseList[5] = efuseDict['0x450_bootCfg0']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0, efuseDict['0x450_bootCfg0'])
-                if self.toBeBurnnedFuseList[6] != None and efuseDict['0x460_bootCfg1'] != self.toBeBurnnedFuseList[6]:
+                if efuseDict['0x460_bootCfg1'] != self.toBeBurnnedFuseList[6]:
                     self.toBeBurnnedFuseList[6] = efuseDict['0x460_bootCfg1']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1, efuseDict['0x460_bootCfg1'])
-                if self.toBeBurnnedFuseList[7] != None and efuseDict['0x470_bootCfg2'] != self.toBeBurnnedFuseList[7]:
+                if efuseDict['0x470_bootCfg2'] != self.toBeBurnnedFuseList[7]:
                     self.toBeBurnnedFuseList[7] = efuseDict['0x470_bootCfg2']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2, efuseDict['0x470_bootCfg2'])
-                if self.toBeBurnnedFuseList[45] != None and efuseDict['0x6d0_miscConf0'] != self.toBeBurnnedFuseList[45]:
+                if efuseDict['0x6d0_miscConf0'] != self.toBeBurnnedFuseList[45]:
                     self.toBeBurnnedFuseList[45] = efuseDict['0x6d0_miscConf0']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF0, efuseDict['0x6d0_miscConf0'])
-                if self.toBeBurnnedFuseList[46] != None and efuseDict['0x6e0_miscConf1'] != self.toBeBurnnedFuseList[46]:
+                if efuseDict['0x6e0_miscConf1'] != self.toBeBurnnedFuseList[46]:
                     self.toBeBurnnedFuseList[46] = efuseDict['0x6e0_miscConf1']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF1, efuseDict['0x6e0_miscConf1'])
             time.sleep(0.5)
