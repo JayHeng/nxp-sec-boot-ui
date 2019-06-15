@@ -302,6 +302,8 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
             self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LT256E
         elif txt == uidef.kFlexspiNorDevice_GigaDevice_GD25LX256E:
             self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LX256E
+        elif txt == uidef.kFlexspiNorDevice_Winbond_W25Q128JV:
+            self.flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Winbond_W25Q128JV
         else:
             pass
         if txt != 'No':

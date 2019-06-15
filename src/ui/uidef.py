@@ -59,6 +59,7 @@ kFlexspiNorDevice_Cypress_S26KS512S     = 'Cypress_S26KS512S'
 kFlexspiNorDevice_GigaDevice_GD25LB256E = 'GigaDevice_GD25LB256E'
 kFlexspiNorDevice_GigaDevice_GD25LT256E = 'GigaDevice_GD25LT256E'
 kFlexspiNorDevice_GigaDevice_GD25LX256E = 'GigaDevice_GD25LX256E'
+kFlexspiNorDevice_Winbond_W25Q128JV     = 'Winbond_W25Q128JV'
 
 kFlexspiNorOpt0_ISSI_IS25LP064A       = 0xc0000007
 kFlexspiNorOpt0_ISSI_IS26KS512S       = 0xc0233007
@@ -71,6 +72,7 @@ kFlexspiNorOpt0_Cypress_S26KS512S     = 0xc0233007
 kFlexspiNorOpt0_GigaDevice_GD25LB256E = 0xc0000007
 kFlexspiNorOpt0_GigaDevice_GD25LT256E = 0xc0000008
 kFlexspiNorOpt0_GigaDevice_GD25LX256E = 0xc0600008
+kFlexspiNorOpt0_Winbond_W25Q128JV     = 0xc0000207
 
 kAdvancedSettings_Tool      = 0
 kAdvancedSettings_Cert      = 1
