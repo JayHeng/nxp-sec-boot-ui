@@ -29,7 +29,7 @@ class bootDeviceWin_FlexspiNor ( wx.Frame ):
 
 		wSizer_win.Add( self.m_staticText_deviceModel, 0, wx.ALL, 5 )
 
-		m_choice_deviceModeChoices = [ u"No", u"ISSI_IS25LP064A_IS25WP064A", u"ISSI_IS26KS512S", u"MXIC_MX25UM51245G_MX66UM51245G_MX25LM51245G", u"MXIC_MX25UM51345G", u"Micron_MT35X", u"Adesto_AT25SF128A", u"Adesto_ATXP032", u"Cypress_S26KS512S", u"GigaDevice_GD25LB256E", u"GigaDevice_GD25LT256E", u"GigaDevice_GD25LX256E", u"Winbond_W25Q128JV" ]
+		m_choice_deviceModeChoices = [ u"No", u"ISSI_IS25LPxxxA_IS25WPxxxA", u"ISSI_IS26KSxxxS", u"MXIC_MX25UMxxx45G_MX66UMxxx45G_MX25LMxxx45G", u"MXIC_MX25UM51345G", u"Micron_MT35X", u"Adesto_AT25SFxxxA", u"Adesto_ATXPxxx", u"Cypress_S26KSxxxS", u"GigaDevice_GD25LBxxxE", u"GigaDevice_GD25LTxxxE", u"GigaDevice_GD25LXxxxE", u"Winbond_W25QxxxJV" ]
 		self.m_choice_deviceMode = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 340,-1 ), m_choice_deviceModeChoices, 0 )
 		self.m_choice_deviceMode.SetSelection( 0 )
 		wSizer_win.Add( self.m_choice_deviceMode, 0, wx.ALL, 5 )
