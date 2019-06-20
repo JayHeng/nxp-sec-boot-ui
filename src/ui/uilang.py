@@ -419,6 +419,7 @@ kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "     6. [RTxxx] Support for loading bootable image into FlexSPI/QuadSPI NOR boot device \n" + \
                       "     7. [RTxxx] Support development boot case (Unsigned, CRC) \n" + \
                       "     8. Add Execute action support for memory programmer \n" + \
+                      "     9. [RTyyyy] Can show FlexRAM info in device status  \n" + \
                       "  Improvement: \n" + \
                       "     1. [RTyyyy] Improve stability of USB connection of i.MXRT105x board \n" + \
                       "     2. Can write/read RAM via memory programmer \n" + \
@@ -435,6 +436,7 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     6. [RTxxx] 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI NOR接口Flash \n" + \
                      u"     7. [RTxxx] 支持用于开发阶段的非安全加密启动（未签名，CRC校验） \n" + \
                      u"     8. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
+                     u"     9. [RTyyyy] 支持在device status里显示当前FlexRAM配置情况 \n" + \
                      u"  改进: \n" + \
                      u"     1. [RTyyyy] 提高i.MXRT105x目标板USB连接稳定性 \n" + \
                      u"     2. 通用Flash编程器里也支持读写RAM \n" + \

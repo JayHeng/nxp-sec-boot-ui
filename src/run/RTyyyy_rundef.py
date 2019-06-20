@@ -29,20 +29,22 @@ kRamFreeSpaceStep_LoadKeyBlobData    = 0x100
 
 kRamFreeSpaceStart_Rom         = 0x20208000
 
-kRegisterAddr_UUID1  = 0x401F4410
-kRegisterAddr_UUID2  = 0x401F4420
+kRegisterAddr_OCOTP_UUID1     = 0x401F4410
+kRegisterAddr_OCOTP_UUID2     = 0x401F4420
+kRegisterAddr_OCOTP_MiscConf0 = 0x401F46D0
 
 kRegisterAddr_SRC_SBMR1  = 0x400F8004
 kRegisterAddr_SRC_SBMR2  = 0x400F801C
 
-kRegisterMask_Bmod = 0x03000000
-kRegisterShift_Bmod = 24
+kRegisterMask_SRC_SBMR2_Bmod       = 0x03000000
+kRegisterShift_SRC_SBMR2_Bmod      = 24
+kRegisterMask_SRC_SBMR2_SecConfig  = 0x00000003
+kRegisterShift_SRC_SBMR2_SecConfig = 0
 
-kRegisterMask_BtFuseSel = 0x00000010
-kRegisterShift_BtFuseSel = 4
+kRegisterAddr_IOMUXC_GPR_GPR16  = 0x400AC040
+kRegisterAddr_IOMUXC_GPR_GPR17  = 0x400AC044
 
-kRegisterMask_SecConfig = 0x00000003
-kRegisterShift_SecConfig = 0
+kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel = 0x00000004
 
 #----------------SEMC NAND----------------------
 kSemcNandFcbTag_Fingerprint = 0x4E464342  # 'NFCB'

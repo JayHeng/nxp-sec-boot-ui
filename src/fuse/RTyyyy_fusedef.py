@@ -76,15 +76,17 @@ kEfuseShift_BeeKey0Sel = 12
 kEfuseShift_BeeKey1Sel = 14
 kEfuseLocation_BeeKeySel = kEfuseIndex_BOOT_CFG1
 
-kEfuseMask_EepromEnable   = 0x01000000
-kEfuseShift_EepromEnable  = 24
-kEfuseMask_LpspiIndex     = 0x06000000
-kEfuseShift_LpspiIndex    = 25
-kEfuseMask_SpiAddressing  = 0x08000000
-kEfuseShift_SpiAddressing = 27
-kEfuseMask_LpspiSpeed     = 0x30000000
-kEfuseShift_LpspiSpeed    = 28
-kEfuseLocation_LpspiCfg   = kEfuseIndex_MISC_CONF0
+kEfuseMask_DefaultFlexramPart  = 0x000F0000
+kEfuseShift_DefaultFlexramPart = 16
+kEfuseMask_EepromEnable        = 0x01000000
+kEfuseShift_EepromEnable       = 24
+kEfuseMask_LpspiIndex          = 0x06000000
+kEfuseShift_LpspiIndex         = 25
+kEfuseMask_SpiAddressing       = 0x08000000
+kEfuseShift_SpiAddressing      = 27
+kEfuseMask_LpspiSpeed          = 0x30000000
+kEfuseShift_LpspiSpeed         = 28
+kEfuseLocation_LpspiCfg        = kEfuseIndex_MISC_CONF0
 
 kEfuseMask_RawNandPortSize   = 0x00000008
 kEfuseShift_RawNandPortSize  = 3
