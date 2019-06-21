@@ -46,6 +46,9 @@ kRegisterAddr_IOMUXC_GPR_GPR17  = 0x400AC044
 
 kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel = 0x00000004
 
+kRegisterMask_IOMUXC_GPR_GPR17_FlexramBankCfg    = 0xFFFFFFFF
+kRegisterShift_IOMUXC_GPR_GPR17_FlexramBankCfg   = 0x0
+
 #----------------SEMC NAND----------------------
 kSemcNandFcbTag_Fingerprint = 0x4E464342  # 'NFCB'
 kSemcNandFcbTag_Semc        = 0x434D4553  # 'SEMC'

@@ -134,7 +134,6 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 if self._RTyyyy_retryToPingBootloader(kBootloaderType_Rom):
                     self.RTyyyy_getMcuDeviceInfoViaRom()
                     self.getMcuDeviceHabStatus()
-                    self.getFlexramInfoViaRom()
                     if self.RTyyyy_jumpToFlashloader():
                         self.connectStage = uidef.kConnectStage_Flashloader
                         self.updateConnectStatus('yellow')
@@ -155,6 +154,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 if self._RTyyyy_retryToPingBootloader(kBootloaderType_Flashloader):
                     self.getMcuDeviceInfoViaFlashloader()
                     self.getMcuDeviceBtFuseSel()
+                    self.getFlexramInfoViaFlashloader()
                     self.updateConnectStatus('green')
                     self.connectStage = uidef.kConnectStage_ExternalMemory
                 else:

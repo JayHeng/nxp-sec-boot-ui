@@ -36,3 +36,8 @@ kMemberOffsetInBootData_Plugin = 0x08
 
 kMemberOffsetInDcd_Tag = 0x00
 
+kFlexramBankSize = 0x8000
+kFlexramBankId_Ocram = 0x1
+kFlexramBankId_Dtcm  = 0x2
+kFlexramBankId_Itcm  = 0x3
+

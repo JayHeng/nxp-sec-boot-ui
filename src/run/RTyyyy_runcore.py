@@ -210,22 +210,36 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             return None
 
     def _readMcuDeviceRegisterUuid( self ):
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID1, 'OCOTP->B0W1 UUID[31:00]')
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID2, 'OCOTP->B0W2 UUID[63:32]')
+        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID1, 'OCOTP->UUID[31:00]')
+        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID2, 'OCOTP->UUID[63:32]')
 
     def _readMcuDeviceRegisterSrcSmbr( self ):
         self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR1, 'SRC->SBMR1')
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR2, 'SRC->SBMR2')
+        sbmr2 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR2, 'SRC->SBMR2')
+        if sbmr2 != None:
+            bmod = ((sbmr2 & RTyyyy_rundef.kRegisterMask_SRC_SBMR2_Bmod) >> RTyyyy_rundef.kRegisterShift_SRC_SBMR2_Bmod)
+            if bmod == 0:
+                self.printDeviceStatus('BMOD[1:0] = 2\'b00 (Boot From Fuses)')
+            elif bmod == 1:
+                self.printDeviceStatus('BMOD[1:0] = 2\'b01 (Serial Downloader)')
+            elif bmod == 2:
+                self.printDeviceStatus('BMOD[1:0] = 2\'b10 (Internal Boot)')
+            else:
+                self.printDeviceStatus('BMOD[1:0] = 2\'b11 (Reserved)')
 
     def RTyyyy_getMcuDeviceInfoViaRom( self ):
         self.printDeviceStatus("--------MCU device Register----------")
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            # RT10yy supports SDP protocol, but some device(RT1011) doesn't support Read Register command
             self._readMcuDeviceRegisterUuid()
             self._readMcuDeviceRegisterSrcSmbr()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            # RT11yy doesn't support SDP protocol
+            pass
 
     def getFlexramInfoViaRom( self ):
+        self.printDeviceStatus("----------FlexRAM memory-----------")
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-            self.printDeviceStatus("----------FlexRAM memory-----------")
             #gpr16 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR16, 'IOMUXC_GPR->GPR16')
             #if gpr16 == None:
             #    return
@@ -239,8 +253,10 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             else:
                 #gpr17 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR17, 'IOMUXC_GPR->GPR17')
                 #if gpr17 != None:
-                #    self.printDeviceStatus('FlexRAM configuration is from Register')
+                #    self.printDeviceStatus('FlexRAM configuration is from IOMUXC_GPR Register')
                 pass
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
 
     def getMcuDeviceHabStatus( self ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
@@ -268,8 +284,17 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 else:
                     pass
         elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
-            self.mcuDeviceHabStatus = RTyyyy_fusedef.kHabStatus_Open
-            # To-Do
+            status, results, cmdStr = self.blhost.getProperty(boot.properties.kPropertyTag_FlashSecurityState)
+            self.printLog(cmdStr)
+            if status == boot.status.kStatus_Success:
+                if results[0] == 0:
+                    self.mcuDeviceHabStatus = RTyyyy_fusedef.kHabStatus_Open
+                    self.printDeviceStatus('HAB status = Open')
+                else:
+                    self.mcuDeviceHabStatus = RTyyyy_fusedef.kHabStatus_Closed0
+                    self.printDeviceStatus('HAB status = Closed')
+            else:
+                pass
         else:
             pass
 
@@ -377,6 +402,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             #self._readMcuDeviceFuseOtpmkDek()
             #self._readMcuDeviceFuseSrk()
             #self._readMcuDeviceFuseSwGp2()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
 
     def getMcuDeviceBtFuseSel( self ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
@@ -393,6 +420,66 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to Fuse BOOT_CFGx only')
                 else:
                     pass
+
+    def _getDeviceRegisterByBlhost( self, regAddr, regName, needToShow=True):
+        filename = 'readReg.dat'
+        filepath = os.path.join(self.blhostVectorsDir, filename)
+        status, results, cmdStr = self.blhost.readMemory(regAddr, 4, filename)
+        self.printLog(cmdStr)
+        if status == boot.status.kStatus_Success:
+            regVal = self.getVal32FromBinFile(filepath)
+            if needToShow:
+                self.printDeviceStatus(regName + " = " + self.convertLongIntHexText(str(hex(regVal))))
+            return regVal
+        else:
+            if needToShow:
+                self.printDeviceStatus(regName + " = --------")
+            return None
+        try:
+            os.remove(filepath)
+        except:
+            pass
+
+    def _showFlexramAccordingToBankCfg( self, flexramBankCfg ):
+        if flexramBankCfg != 0:
+            banks = self.tgt.memoryRange['itcm'].length / RTyyyy_memdef.kFlexramBankSize
+            itcmBanks = 0
+            dtcmBanks = 0
+            ocramBanks = 0
+            for bank in range(banks):
+                bankId = (flexramBankCfg >> (bank *2)) & 0x3
+                if bankId == RTyyyy_memdef.kFlexramBankId_Ocram:
+                    ocramBanks += 1
+                elif bankId == RTyyyy_memdef.kFlexramBankId_Dtcm:
+                    dtcmBanks += 1
+                elif bankId == RTyyyy_memdef.kFlexramBankId_Itcm:
+                    itcmBanks += 1
+                else:
+                    pass
+            itcmSizeInKB = itcmBanks * RTyyyy_memdef.kFlexramBankSize / 0x400
+            dtcmSizeInKB = dtcmBanks * RTyyyy_memdef.kFlexramBankSize / 0x400
+            ocramSizeInKB = ocramBanks * RTyyyy_memdef.kFlexramBankSize / 0x400
+            self.printDeviceStatus(str(itcmSizeInKB) + "KB ITCM, " + str(dtcmSizeInKB) + "KB DTCM, " + str(ocramSizeInKB) + "KB OCRAM")
+        else:
+            self.printDeviceStatus("0KB ITCM, 0KB DTCM, 0KB OCRAM")
+
+    def getFlexramInfoViaFlashloader( self ):
+        self.printDeviceStatus("----------FlexRAM memory-----------")
+        gpr16 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR16, 'IOMUXC_GPR->GPR16')
+        if gpr16 == None:
+            return
+        if not (gpr16 & RTyyyy_rundef.kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel):
+            self.printDeviceStatus('FlexRAM configuration is from eFuse')
+            miscConf0 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_OCOTP_MiscConf0, 'OCOTP->MISC_CONF0[31:00]')
+            if miscConf0 != None:
+                defaultFlexramPart = (miscConf0 & RTyyyy_fusedef.kEfuseMask_DefaultFlexramPart) >> RTyyyy_fusedef.kEfuseShift_DefaultFlexramPart
+                self.printDeviceStatus("FlexRAM Partion =" + self.tgt.efuseDescDiffDict['0x6d0_miscconf0_bit19_16']['Default_FlexRAM_Partion'][defaultFlexramPart])
+        else:
+            self.printDeviceStatus('FlexRAM configuration is from IOMUXC_GPR Register')
+            gpr17 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR17, 'IOMUXC_GPR->GPR17')
+            if gpr17 != None:
+                flexramBankCfg = (gpr17 & RTyyyy_rundef.kRegisterMask_IOMUXC_GPR_GPR17_FlexramBankCfg) >> RTyyyy_rundef.kRegisterShift_IOMUXC_GPR_GPR17_FlexramBankCfg
+                self._showFlexramAccordingToBankCfg(flexramBankCfg)
 
     def _RTyyyy_prepareForBootDeviceOperation ( self ):
         if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
