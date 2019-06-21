@@ -4,6 +4,12 @@
 
 [English](./README.md) | 中文
 
+```text
+对于MCUBootUtility，RT-Flash工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
+```
+
+<img src="http://henjay724.com/image/cnblogs/MCUBootUtility_qq.png" style="zoom:100%" />
+
 ### 1 软件概览
 #### 1.1 介绍
 　　NXP-MCUBootUtility是一个专为NXP MCU安全加密启动而设计的工具，其特性与NXP MCU里BootROM功能相对应，目前主要支持i.MXRT系列MCU芯片，与NXP官方的标准安全加密配套工具集（OpenSSL, CST, sdphost, blhost, elftosb, BD, MfgTool2）相比，NXP-MCUBootUtility是一个真正的一站式工具，一个工具包含NXP官方所有加密配套工具的功能，并且是全图形用户界面操作。借助于NXP-MCUBootUtility，你可以轻松上手NXP MCU安全加密启动。  
