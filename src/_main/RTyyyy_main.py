@@ -140,6 +140,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                         usbIdList = self.RTyyyy_getUsbid()
                         self.setPortSetupValue(self.connectStage, usbIdList, True, True)
                     else:
+                        self.RTyyyy_switchFlashloader()
                         self.updateConnectStatus('red')
                         if showError:
                             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToJumpToFl'][self.languageIndex])
@@ -158,6 +159,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                     self.updateConnectStatus('green')
                     self.connectStage = uidef.kConnectStage_ExternalMemory
                 else:
+                    self.RTyyyy_switchFlashloader()
                     if showError:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_failToPingFl'][self.languageIndex])
                     self._RTyyyy_connectFailureHandler()
