@@ -21,7 +21,7 @@ kSecFacRegionAlignedUnit = 0x400
 
 kIvtOffset_NAND_SD_EEPROM  = 0x400
 kIvtOffset_NOR             = 0x1000
-kIvtOffset_RAM_FLASHLOADER = 0x400
+kIvtOffset_RAM_FLASHLOADER = 0x0
 
 #define SPI_NOR_EEPROM_4K_SIZE                  (4096U)
 #define FLEXSPI_NOR_INIT_IMG_SIZE               (12u * 1024u)
@@ -32,7 +32,7 @@ kIvtOffset_RAM_FLASHLOADER = 0x400
 
 kInitialLoadSize_NAND_SD_EEPROM  = 0x1000
 kInitialLoadSize_NOR             = 0x2000
-kInitialLoadSize_RAM_FLASHLOADER = 0x2000
+kInitialLoadSize_RAM_FLASHLOADER = 0x200
 
 kUserDcdFileType_Bin = 0x0
 kUserDcdFileType_Cfg = 0x1
