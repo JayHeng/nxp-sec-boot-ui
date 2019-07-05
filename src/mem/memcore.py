@@ -94,8 +94,8 @@ class secBootMem(runcore.secBootRun):
         if status:
             memStart = self._convertComMemStart(memStart)
             alignedMemStart = misc.align_down(memStart, self.comMemReadUnit)
-            alignedMemLength = misc.align_up(memLength, self.comMemReadUnit) + self.comMemReadUnit
-            if memLength + memStart > alignedMemStart + self.comMemReadUnit:
+            alignedMemLength = misc.align_up(memLength, self.comMemReadUnit)
+            if memLength + memStart > alignedMemStart + alignedMemLength:
                 alignedMemLength += self.comMemReadUnit
             memFilename = 'commonDataFromBootDevice.dat'
             memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
@@ -127,7 +127,7 @@ class secBootMem(runcore.secBootRun):
             memStart = self._convertComMemStart(memStart)
             alignedMemStart = misc.align_down(memStart, self.comMemEraseUnit)
             alignedMemLength = misc.align_up(memLength, self.comMemEraseUnit)
-            if memLength + memStart > alignedMemStart + self.comMemEraseUnit:
+            if memLength + memStart > alignedMemStart + alignedMemLength:
                 alignedMemLength += self.comMemEraseUnit
             status, results, cmdStr = self.blhost.flashEraseRegion(alignedMemStart, alignedMemLength, self.bootDeviceMemId)
             self.printLog(cmdStr)
@@ -184,8 +184,8 @@ class secBootMem(runcore.secBootRun):
             if (self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy and self.isInTheRangeOfFlexram(memStart, memLength)) or \
                (self.mcuSeries == uidef.kMcuSeries_iMXRTxxx and self.isInTheRangeOfSram(memStart, memLength)):
                 alignedMemStart = misc.align_down(memStart, 0x10)
-                alignedMemLength = misc.align_up(memLength, 0x10) + 0x10
-                if memLength + memStart > alignedMemStart + 0x10:
+                alignedMemLength = misc.align_up(memLength, 0x10)
+                if memLength + memStart > alignedMemStart + alignedMemLength:
                     alignedMemLength += 0x10
                 memFilename = 'commonDataFromRam.dat'
                 memFilepath = os.path.join(self.blhostVectorsDir, memFilename)
