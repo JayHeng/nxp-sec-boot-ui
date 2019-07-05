@@ -82,8 +82,6 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         self.sdphostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'sdphost', 'win', 'vectors')
         self.blhostVectorsDir = os.path.join(self.exeTopRoot, 'tools', 'blhost2_3', 'win', 'vectors')
 
-        self.flashloaderBuild = None
-
         self.RTyyyy_isDeviceEnabledToOperate = True
         self.bootDeviceMemId = None
         self.bootDeviceMemBase = None
@@ -305,36 +303,23 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         flBinFile = None
         flLoadAddr = None
         flJumpAddr = None
-        if self.flashloaderBuild == None:
+        if self.flashloaderResident == None:
             flSrecFile = os.path.join(self.cpuDir, 'flashloader.srec')
             flBinFile = os.path.join(self.cpuDir, 'ivt_flashloader.bin')
             flLoadAddr = self.tgt.flashloaderLoadAddr
             flJumpAddr = self.tgt.flashloaderJumpAddr
-        elif self.flashloaderBuild == 'itcm' or \
-             self.flashloaderBuild == 'dtcm' or \
-             self.flashloaderBuild == 'ocram':
-            flSrecFile = os.path.join(self.cpuDir, 'flexram_loader', self.flashloaderBuild, 'flashloader.srec')
-            flBinFile = os.path.join(self.cpuDir, 'flexram_loader', self.flashloaderBuild, 'ivt_flashloader.bin')
-            flLoadAddr = self.tgt.memoryRange[self.flashloaderBuild].start
-            if self.flashloaderBuild == 'ocram':
-                flLoadAddr += 0x8000
+        elif self.flashloaderResident == 'itcm' or \
+             self.flashloaderResident == 'dtcm' or \
+             self.flashloaderResident == 'ocram':
+            flSrecFile = os.path.join(self.cpuDir, 'flexram_loader', self.flashloaderResident, 'flashloader.srec')
+            flBinFile = os.path.join(self.cpuDir, 'flexram_loader', self.flashloaderResident, 'ivt_flashloader.bin')
+            flLoadAddr = self.tgt.memoryRange[self.flashloaderResident].start
+            if self.flashloaderResident == 'ocram':
+                flLoadAddr = self.tgt.reservedRegionDict['ram'][1] + 1
             flJumpAddr = flLoadAddr + RTyyyy_gendef.kIvtOffset_RAM_FLASHLOADER
         else:
             pass
         return flSrecFile, flBinFile, flLoadAddr, flJumpAddr
-
-    def RTyyyy_switchFlashloader( self ):
-        if self.mcuDevice == uidef.kMcuDevice_iMXRT105x:
-            if self.flashloaderBuild == None:
-                self.flashloaderBuild = 'itcm'
-            elif self.flashloaderBuild == 'itcm':
-                self.flashloaderBuild = 'dtcm'
-            elif self.flashloaderBuild == 'dtcm':
-                self.flashloaderBuild = 'ocram'
-            elif self.flashloaderBuild == 'ocram':
-                self.flashloaderBuild = None
-            else:
-                pass
 
     def RTyyyy_jumpToFlashloader( self ):
         flashloaderBinFile, flashloaderBinFile, flashloaderLoadAddr, flashloaderJumpAddr = self._selectFlashloader()

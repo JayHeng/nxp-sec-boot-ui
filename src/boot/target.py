@@ -46,6 +46,7 @@ class Target(object):
 
         self.baseDir = misc.get_dict_default(kwargs, 'baseDir', '.')
         self.memoryRange = misc.get_dict_default(kwargs, 'memoryRange', {})
+        self.reservedRegionDict = misc.get_dict_default(kwargs, 'reservedRegionDict', {})
         self.availableCommands = misc.get_dict_default(kwargs, 'availableCommands', 0)
         self.availablePeripherals = misc.get_dict_default(kwargs, 'availablePeripherals', 0)
         self.romUsbVid = misc.get_dict_default(kwargs, 'romUsbVid', None)

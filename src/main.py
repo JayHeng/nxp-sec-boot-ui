@@ -406,6 +406,18 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def callbackSetImageReadbackAsManual( self, event ):
         self.setImageReadback()
 
+    def callbackSetFlashloaderResidentToDefault( self, event ):
+        self.setFlashloaderResident()
+
+    def callbackSetFlashloaderResidentToItcm( self, event ):
+        self.setFlashloaderResident()
+
+    def callbackSetFlashloaderResidentToDtcm( self, event ):
+        self.setFlashloaderResident()
+
+    def callbackSetFlashloaderResidentToOcram( self, event ):
+        self.setFlashloaderResident()
+
     def _doSetLanguage( self ):
         self.setLanguage()
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:

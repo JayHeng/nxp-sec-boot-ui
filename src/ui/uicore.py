@@ -71,6 +71,10 @@ class secBootUi(secBootWin.secBootWin):
         self._initImageReadback()
         self.setImageReadback()
 
+        self.flashloaderResident = None
+        self._initFlashloaderResident()
+        self.setFlashloaderResident()
+
         self.updateConnectStatus()
 
         self.mcuSeries = None
@@ -158,6 +162,43 @@ class secBootUi(secBootWin.secBootWin):
     def setImageReadback( self ):
         self.isAutomaticImageReadback = self.m_menuItem_imageReadbackAutomatic.IsChecked()
         self.toolCommDict['isAutomaticImageReadback'] = self.isAutomaticImageReadback
+
+    def _initFlashloaderResident( self ):
+        if self.toolCommDict['flashloaderResident'] == None:
+            self.m_menuItem_flashloaderResidentDefault.Check(True)
+            self.m_menuItem_flashloaderResidentItcm.Check(False)
+            self.m_menuItem_flashloaderResidentDtcm.Check(False)
+            self.m_menuItem_flashloaderResidentOcram.Check(False)
+        elif self.toolCommDict['flashloaderResident'] == 'itcm':
+            self.m_menuItem_flashloaderResidentDefault.Check(False)
+            self.m_menuItem_flashloaderResidentItcm.Check(True)
+            self.m_menuItem_flashloaderResidentDtcm.Check(False)
+            self.m_menuItem_flashloaderResidentOcram.Check(False)
+        elif self.toolCommDict['flashloaderResident'] == 'dtcm':
+            self.m_menuItem_flashloaderResidentDefault.Check(False)
+            self.m_menuItem_flashloaderResidentItcm.Check(False)
+            self.m_menuItem_flashloaderResidentDtcm.Check(True)
+            self.m_menuItem_flashloaderResidentOcram.Check(False)
+        elif self.toolCommDict['flashloaderResident'] == 'ocram':
+            self.m_menuItem_flashloaderResidentDefault.Check(False)
+            self.m_menuItem_flashloaderResidentItcm.Check(False)
+            self.m_menuItem_flashloaderResidentDtcm.Check(False)
+            self.m_menuItem_flashloaderResidentOcram.Check(True)
+        else:
+            pass
+
+    def setFlashloaderResident( self ):
+        if self.m_menuItem_flashloaderResidentDefault.IsChecked():
+            self.flashloaderResident = None
+        elif self.m_menuItem_flashloaderResidentItcm.IsChecked():
+            self.flashloaderResident = 'itcm'
+        elif self.m_menuItem_flashloaderResidentDtcm.IsChecked():
+            self.flashloaderResident = 'dtcm'
+        elif self.m_menuItem_flashloaderResidentOcram.IsChecked():
+            self.flashloaderResident = 'ocram'
+        else:
+            pass
+        self.toolCommDict['flashloaderResident'] = self.flashloaderResident
 
     def checkIfSubWinHasBeenOpened( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -685,6 +726,11 @@ class secBootUi(secBootWin.secBootWin):
         self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_imageReadback'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_imageReadback'][langIndex])
         self.m_menuItem_imageReadbackAutomatic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_imageReadbackAutomatic'][langIndex])
         self.m_menuItem_imageReadbackManual.SetItemLabel(uilang.kMainLanguageContentDict['mItem_imageReadbackManual'][langIndex])
+        self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_flashloaderResident'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_flashloaderResident'][langIndex])
+        self.m_menuItem_flashloaderResidentDefault.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentDefault'][langIndex])
+        self.m_menuItem_flashloaderResidentItcm.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentItcm'][langIndex])
+        self.m_menuItem_flashloaderResidentDtcm.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentDtcm'][langIndex])
+        self.m_menuItem_flashloaderResidentOcram.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentOcram'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Window, uilang.kMainLanguageContentDict['menu_window'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Help, uilang.kMainLanguageContentDict['menu_help'][langIndex])
         self.m_menuItem_homePage.SetItemLabel(uilang.kMainLanguageContentDict['mItem_homePage'][langIndex])

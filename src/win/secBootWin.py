@@ -90,6 +90,21 @@ class secBootWin ( wx.Frame ):
 
 		self.m_menu_tools.AppendSubMenu( self.m_menu_imageReadback, u"Image Readback" )
 
+		self.m_menu_flashloaderResident = wx.Menu()
+		self.m_menuItem_flashloaderResidentDefault = wx.MenuItem( self.m_menu_flashloaderResident, wx.ID_ANY, u"Default", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_flashloaderResident.Append( self.m_menuItem_flashloaderResidentDefault )
+
+		self.m_menuItem_flashloaderResidentItcm = wx.MenuItem( self.m_menu_flashloaderResident, wx.ID_ANY, u"ITCM", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_flashloaderResident.Append( self.m_menuItem_flashloaderResidentItcm )
+
+		self.m_menuItem_flashloaderResidentDtcm = wx.MenuItem( self.m_menu_flashloaderResident, wx.ID_ANY, u"DTCM", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_flashloaderResident.Append( self.m_menuItem_flashloaderResidentDtcm )
+
+		self.m_menuItem_flashloaderResidentOcram = wx.MenuItem( self.m_menu_flashloaderResident, wx.ID_ANY, u"OCRAM", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_flashloaderResident.Append( self.m_menuItem_flashloaderResidentOcram )
+
+		self.m_menu_tools.AppendSubMenu( self.m_menu_flashloaderResident, u"Flashloader Resident" )
+
 		self.m_menubar.Append( self.m_menu_tools, u"Tools" )
 
 		self.m_menu_window = wx.Menu()
@@ -1789,6 +1804,10 @@ class secBootWin ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.callbackSetGenSbFileAsNo, id = self.m_menuItem_genSbFileNo.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetImageReadbackAsAutomatic, id = self.m_menuItem_imageReadbackAutomatic.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetImageReadbackAsManual, id = self.m_menuItem_imageReadbackManual.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetFlashloaderResidentToDefault, id = self.m_menuItem_flashloaderResidentDefault.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetFlashloaderResidentToItcm, id = self.m_menuItem_flashloaderResidentItcm.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetFlashloaderResidentToDtcm, id = self.m_menuItem_flashloaderResidentDtcm.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetFlashloaderResidentToOcram, id = self.m_menuItem_flashloaderResidentOcram.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowHomePage, id = self.m_menuItem_homePage.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowAboutAuthor, id = self.m_menuItem_aboutAuthor.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackShowContributors, id = self.m_menuItem_contributors.GetId() )
@@ -1886,6 +1905,18 @@ class secBootWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackSetImageReadbackAsManual( self, event ):
+		event.Skip()
+
+	def callbackSetFlashloaderResidentToDefault( self, event ):
+		event.Skip()
+
+	def callbackSetFlashloaderResidentToItcm( self, event ):
+		event.Skip()
+
+	def callbackSetFlashloaderResidentToDtcm( self, event ):
+		event.Skip()
+
+	def callbackSetFlashloaderResidentToOcram( self, event ):
 		event.Skip()
 
 	def callbackShowHomePage( self, event ):
