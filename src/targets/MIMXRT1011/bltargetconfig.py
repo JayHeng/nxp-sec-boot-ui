@@ -131,7 +131,7 @@ memoryRange = {
 }
 
 reservedRegionDict = {   # new
-    # OCRAM, 128KB
-    'ram' : [0x20203800, 0x20207EF8]
+    # OCRAM, 22KB
+    'ram' : [0x20200000, 0x202057FF]
 }
 
