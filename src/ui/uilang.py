@@ -428,6 +428,7 @@ kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "  Improvement: \n" + \
                       "     1. [RTyyyy] Improve stability of USB connection of i.MXRT105x board \n" + \
                       "     2. Can write/read RAM via memory programmer \n" + \
+                      "     3. [RTyyyy] Provide Flashloader resident option to adapt to different FlexRAM configurations \n" + \
                       "  Bugfix: \n" + \
                       "     1. [RTyyyy] Sometimes tool will report error \"xx.bat file cannot be found\" \n" + \
                       "     2. [RTyyyy] Editing mixed eFuse fields is not working as expected \n" + \
@@ -447,6 +448,7 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  改进: \n" + \
                      u"     1. [RTyyyy] 提高i.MXRT105x目标板USB连接稳定性 \n" + \
                      u"     2. 通用Flash编程器里也支持读写RAM \n" + \
+                     u"     3. [RTyyyy] 提供Flashloader执行空间选项以适应不同的FlexRAM配置 \n" + \
                      u"  修复: \n" + \
                      u"     1. [RTyyyy] 有时候生成证书时会提示bat文件无法找到，导致证书无法生成 \n" + \
                      u"     2. [RTyyyy] 可视化方式去编辑混合eFuse区域并没有生效 \n" + \

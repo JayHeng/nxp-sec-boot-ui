@@ -322,7 +322,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         return flSrecFile, flBinFile, flLoadAddr, flJumpAddr
 
     def RTyyyy_jumpToFlashloader( self ):
-        flashloaderBinFile, flashloaderBinFile, flashloaderLoadAddr, flashloaderJumpAddr = self._selectFlashloader()
+        flashloaderSrecFile, flashloaderBinFile, flashloaderLoadAddr, flashloaderJumpAddr = self._selectFlashloader()
         if self.mcuDeviceHabStatus == RTyyyy_fusedef.kHabStatus_Closed0 or self.mcuDeviceHabStatus == RTyyyy_fusedef.kHabStatus_Closed1:
             flashloaderBinFile = self.genSignedFlashloader(flashloaderSrecFile)
             if flashloaderBinFile == None:
