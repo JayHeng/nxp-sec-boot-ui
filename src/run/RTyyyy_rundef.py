@@ -18,12 +18,12 @@ kBootDeviceMemXipSize_FlexspiNor   = 0x10000000 #256MB
 
 kBootDeviceMemMaxSize_SemcSdram    = 0x60000000 #1.5GB
 
-kRamFreeSpaceStart_LoadCommOpt        = 0x00002000
-kRamFreeSpaceStart_LoadDekData        = 0x00002100
-kRamFreeSpaceStart_LoadKeyBlobContext = 0x00002200
-kRamFreeSpaceStart_LoadKeyBlobData    = 0x00002300
-kRamFreeSpaceStart_LoadCfgBlock       = 0x00003000
-kRamFreeSpaceStart_LoadPrdbOpt        = 0x00004000
+kRamFreeSpaceStart_LoadCommOpt        = 0x20202000
+kRamFreeSpaceStart_LoadDekData        = 0x20202100
+kRamFreeSpaceStart_LoadKeyBlobContext = 0x20202200
+kRamFreeSpaceStart_LoadKeyBlobData    = 0x20202300
+kRamFreeSpaceStart_LoadCfgBlock       = 0x20203000
+kRamFreeSpaceStart_LoadPrdbOpt        = 0x20204000
 
 kRamFreeSpaceStep_LoadKeyBlobData    = 0x100
 
