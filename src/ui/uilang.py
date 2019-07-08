@@ -423,17 +423,17 @@ kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "     5. [RTxxx] Original image can be a bootable image (with FDCB) \n" + \
                       "     6. [RTxxx] Support for loading bootable image into FlexSPI/QuadSPI NOR boot device \n" + \
                       "     7. [RTxxx] Support development boot case (Unsigned, CRC) \n" + \
-                      "     8. Add Execute action support for memory programmer \n" + \
+                      "     8. Add Execute action support for Flash Programmer \n" + \
                       "     9. [RTyyyy] Can show FlexRAM info in device status  \n" + \
                       "  Improvement: \n" + \
                       "     1. [RTyyyy] Improve stability of USB connection of i.MXRT105x board \n" + \
-                      "     2. Can write/read RAM via memory programmer \n" + \
+                      "     2. Can write/read RAM via Flash Programmer \n" + \
                       "     3. [RTyyyy] Provide Flashloader resident option to adapt to different FlexRAM configurations \n" + \
                       "  Bugfix: \n" + \
                       "     1. [RTyyyy] Sometimes tool will report error \"xx.bat file cannot be found\" \n" + \
                       "     2. [RTyyyy] Editing mixed eFuse fields is not working as expected \n" + \
                       "     3. [RTyyyy] Cannot support 32MB or larger LPSPI NOR/EEPROM device \n" + \
-                      "     4. Cannot erase/read the last two pages of boot device in Flash Programmer mode \n\n"
+                      "     4. Cannot erase/read the last two pages of boot device via Flash Programmer \n\n"
 kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT5xx A0, i.MXRT6xx A0 \n" + \

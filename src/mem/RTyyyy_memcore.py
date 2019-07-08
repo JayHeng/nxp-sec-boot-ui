@@ -197,7 +197,9 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                 contentToShow, memContent = self.getOneLineContentToShow(addr, memLeft, fileObj)
                 memLeft -= len(memContent)
                 addr += len(memContent)
-                if addr <= imageMemBase + RTyyyy_memdef.kMemBlockSize_FDCB:
+                if addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset:
+                    self.printMem(contentToShow)
+                elif addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset + RTyyyy_memdef.kMemBlockSize_FDCB:
                     if not self.isSdmmcCard:
                         if self.needToShowCfgIntr:
                             self.printMem('------------------------------------FDCB----------------------------------------------', RTyyyy_uidef.kMemBlockColor_FDCB)
