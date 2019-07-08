@@ -51,7 +51,7 @@ flashloaderJumpAddr = 0x20205800
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
-                            #RTyyyy_uidef.kSecureBootType_HabAuth,
+                            RTyyyy_uidef.kSecureBootType_HabAuth,
                             #RTyyyy_uidef.kSecureBootType_HabCrypto,
                             #RTyyyy_uidef.kSecureBootType_OtfadCrypto
                             ]
