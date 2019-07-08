@@ -316,7 +316,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             if self.flashloaderResident == 'ocram':
                 flLoadAddr = self.tgt.reservedRegionDict['ram'][1] + 1
             else:
-                flLoadAddr = self.tgt.memoryRange[self.flashloaderResident].start + 0x1e00
+                flLoadAddr = self.tgt.memoryRange[self.flashloaderResident].start + 0x200
             flJumpAddr = flLoadAddr + RTyyyy_gendef.kIvtOffset_RAM_FLASHLOADER
         else:
             pass
