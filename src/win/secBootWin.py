@@ -458,24 +458,24 @@ class secBootWin ( wx.Frame ):
 		sbSizer_habCryptoAlgo.Fit( self.m_panel_genImage2_habCryptoAlgo )
 		bSizer_genImage.Add( self.m_panel_genImage2_habCryptoAlgo, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_genImage3_enableCertForBee = wx.Panel( self.m_panel_genImage, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TAB_TRAVERSAL )
-		sbSizer_enableCertForBee = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_genImage3_enableCertForBee, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_panel_genImage3_enableCertForHwCrypto = wx.Panel( self.m_panel_genImage, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TAB_TRAVERSAL )
+		sbSizer_enableCertForHwCrypto = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_genImage3_enableCertForHwCrypto, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
 
-		self.m_staticText_enableCertForBee = wx.StaticText( sbSizer_enableCertForBee.GetStaticBox(), wx.ID_ANY, u"Enable Certificate for BEE Encryption:", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText_enableCertForBee.Wrap( -1 )
+		self.m_staticText_enableCertForHwCrypto = wx.StaticText( sbSizer_enableCertForHwCrypto.GetStaticBox(), wx.ID_ANY, u"Enable Certificate for HW (BEE/OTFAD) Encryption:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_enableCertForHwCrypto.Wrap( -1 )
 
-		sbSizer_enableCertForBee.Add( self.m_staticText_enableCertForBee, 0, wx.ALL, 5 )
+		sbSizer_enableCertForHwCrypto.Add( self.m_staticText_enableCertForHwCrypto, 0, wx.ALL, 5 )
 
-		m_choice_enableCertForBeeChoices = [ u"No", u"Yes" ]
-		self.m_choice_enableCertForBee = wx.Choice( sbSizer_enableCertForBee.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_enableCertForBeeChoices, 0 )
-		self.m_choice_enableCertForBee.SetSelection( 0 )
-		sbSizer_enableCertForBee.Add( self.m_choice_enableCertForBee, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		m_choice_enableCertForHwCryptoChoices = [ u"No", u"Yes" ]
+		self.m_choice_enableCertForHwCrypto = wx.Choice( sbSizer_enableCertForHwCrypto.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_enableCertForHwCryptoChoices, 0 )
+		self.m_choice_enableCertForHwCrypto.SetSelection( 0 )
+		sbSizer_enableCertForHwCrypto.Add( self.m_choice_enableCertForHwCrypto, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_genImage3_enableCertForBee.SetSizer( sbSizer_enableCertForBee )
-		self.m_panel_genImage3_enableCertForBee.Layout()
-		sbSizer_enableCertForBee.Fit( self.m_panel_genImage3_enableCertForBee )
-		bSizer_genImage.Add( self.m_panel_genImage3_enableCertForBee, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_genImage3_enableCertForHwCrypto.SetSizer( sbSizer_enableCertForHwCrypto )
+		self.m_panel_genImage3_enableCertForHwCrypto.Layout()
+		sbSizer_enableCertForHwCrypto.Fit( self.m_panel_genImage3_enableCertForHwCrypto )
+		bSizer_genImage.Add( self.m_panel_genImage3_enableCertForHwCrypto, 1, wx.EXPAND |wx.ALL, 5 )
 
 		self.m_button_genImage = wx.Button( self.m_panel_genImage, wx.ID_ANY, u"Generate Unsigned Bootable Image", wx.DefaultPosition, wx.Size( 225,-1 ), 0 )
 		bSizer_genImage.Add( self.m_button_genImage, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
@@ -486,13 +486,13 @@ class secBootWin ( wx.Frame ):
 		bSizer_genImage.Fit( self.m_panel_genImage )
 		wSizer_genSeq.Add( self.m_panel_genImage, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_prepBee = wx.Panel( self.m_panel_genSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		self.m_panel_prepBee.SetBackgroundColour( wx.Colour( 64, 64, 64 ) )
+		self.m_panel_prepHwCrypto = wx.Panel( self.m_panel_genSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.m_panel_prepHwCrypto.SetBackgroundColour( wx.Colour( 64, 64, 64 ) )
 
-		bSizer_prepBee = wx.BoxSizer( wx.VERTICAL )
+		bSizer_prepHwCrypto = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_panel_prepBee1_beeKeyRegion = wx.Panel( self.m_panel_prepBee, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		sbSizer_keyStorageRegion = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_prepBee1_beeKeyRegion, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_panel_prepHwCrypto1_hwCryptoKeyRegion = wx.Panel( self.m_panel_prepHwCrypto, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		sbSizer_keyStorageRegion = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_prepHwCrypto1_hwCryptoKeyRegion, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
 
 		self.m_staticText_keyStorageRegion = wx.StaticText( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, u"Key Storage Region:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText_keyStorageRegion.Wrap( -1 )
@@ -504,62 +504,62 @@ class secBootWin ( wx.Frame ):
 		self.m_choice_keyStorageRegion.SetSelection( 1 )
 		sbSizer_keyStorageRegion.Add( self.m_choice_keyStorageRegion, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-		self.m_staticText_availBeeEngines = wx.StaticText( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, u"Max Available BEE Engines:", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText_availBeeEngines.Wrap( -1 )
+		self.m_staticText_availHwCryptoEngines = wx.StaticText( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, u"Max Available HW Crypto Engines:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_availHwCryptoEngines.Wrap( -1 )
 
-		sbSizer_keyStorageRegion.Add( self.m_staticText_availBeeEngines, 0, wx.ALL, 5 )
+		sbSizer_keyStorageRegion.Add( self.m_staticText_availHwCryptoEngines, 0, wx.ALL, 5 )
 
-		m_choice_availBeeEnginesChoices = [ u"1", u"2" ]
-		self.m_choice_availBeeEngines = wx.Choice( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_availBeeEnginesChoices, 0 )
-		self.m_choice_availBeeEngines.SetSelection( 0 )
-		sbSizer_keyStorageRegion.Add( self.m_choice_availBeeEngines, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		m_choice_availHwCryptoEnginesChoices = [ u"1", u"2" ]
+		self.m_choice_availHwCryptoEngines = wx.Choice( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_availHwCryptoEnginesChoices, 0 )
+		self.m_choice_availHwCryptoEngines.SetSelection( 0 )
+		sbSizer_keyStorageRegion.Add( self.m_choice_availHwCryptoEngines, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 		self.m_button_advKeySettings = wx.Button( sbSizer_keyStorageRegion.GetStaticBox(), wx.ID_ANY, u"Advanced Key Settings", wx.DefaultPosition, wx.Size( 150,-1 ), 0 )
 		sbSizer_keyStorageRegion.Add( self.m_button_advKeySettings, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_prepBee1_beeKeyRegion.SetSizer( sbSizer_keyStorageRegion )
-		self.m_panel_prepBee1_beeKeyRegion.Layout()
-		sbSizer_keyStorageRegion.Fit( self.m_panel_prepBee1_beeKeyRegion )
-		bSizer_prepBee.Add( self.m_panel_prepBee1_beeKeyRegion, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.SetSizer( sbSizer_keyStorageRegion )
+		self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.Layout()
+		sbSizer_keyStorageRegion.Fit( self.m_panel_prepHwCrypto1_hwCryptoKeyRegion )
+		bSizer_prepHwCrypto.Add( self.m_panel_prepHwCrypto1_hwCryptoKeyRegion, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_prepBee2_beeCryptoAlgo = wx.Panel( self.m_panel_prepBee, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		sbSizer_beeCryptoAlgo = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_prepBee2_beeCryptoAlgo, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_panel_prepHwCrypto2_hwCryptoAlgo = wx.Panel( self.m_panel_prepHwCrypto, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		sbSizer_hwCryptoAlgo = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_prepHwCrypto2_hwCryptoAlgo, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
 
-		self.m_staticText_beeCryptoAlgo = wx.StaticText( sbSizer_beeCryptoAlgo.GetStaticBox(), wx.ID_ANY, u"BEE Encryption Algorithm:", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText_beeCryptoAlgo.Wrap( -1 )
+		self.m_staticText_hwCryptoAlgo = wx.StaticText( sbSizer_hwCryptoAlgo.GetStaticBox(), wx.ID_ANY, u"HW Encryption Algorithm:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_hwCryptoAlgo.Wrap( -1 )
 
-		sbSizer_beeCryptoAlgo.Add( self.m_staticText_beeCryptoAlgo, 0, wx.ALL, 5 )
+		sbSizer_hwCryptoAlgo.Add( self.m_staticText_hwCryptoAlgo, 0, wx.ALL, 5 )
 
-		m_choice_beeCryptoAlgoChoices = [ u"AES-128" ]
-		self.m_choice_beeCryptoAlgo = wx.Choice( sbSizer_beeCryptoAlgo.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_beeCryptoAlgoChoices, 0 )
-		self.m_choice_beeCryptoAlgo.SetSelection( 0 )
-		sbSizer_beeCryptoAlgo.Add( self.m_choice_beeCryptoAlgo, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		m_choice_hwCryptoAlgoChoices = [ u"AES-128" ]
+		self.m_choice_hwCryptoAlgo = wx.Choice( sbSizer_hwCryptoAlgo.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_hwCryptoAlgoChoices, 0 )
+		self.m_choice_hwCryptoAlgo.SetSelection( 0 )
+		sbSizer_hwCryptoAlgo.Add( self.m_choice_hwCryptoAlgo, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-		self.m_staticText_maxFacCnt = wx.StaticText( sbSizer_beeCryptoAlgo.GetStaticBox(), wx.ID_ANY, u"Max Protection Regions:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_maxFacCnt = wx.StaticText( sbSizer_hwCryptoAlgo.GetStaticBox(), wx.ID_ANY, u"Max Protection Regions:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText_maxFacCnt.Wrap( -1 )
 
-		sbSizer_beeCryptoAlgo.Add( self.m_staticText_maxFacCnt, 0, wx.ALL, 5 )
+		sbSizer_hwCryptoAlgo.Add( self.m_staticText_maxFacCnt, 0, wx.ALL, 5 )
 
 		m_choice_maxFacCntChoices = [ u"3" ]
-		self.m_choice_maxFacCnt = wx.Choice( sbSizer_beeCryptoAlgo.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_maxFacCntChoices, 0 )
+		self.m_choice_maxFacCnt = wx.Choice( sbSizer_hwCryptoAlgo.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.Size( 90,-1 ), m_choice_maxFacCntChoices, 0 )
 		self.m_choice_maxFacCnt.SetSelection( 0 )
-		sbSizer_beeCryptoAlgo.Add( self.m_choice_maxFacCnt, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		sbSizer_hwCryptoAlgo.Add( self.m_choice_maxFacCnt, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_prepBee2_beeCryptoAlgo.SetSizer( sbSizer_beeCryptoAlgo )
-		self.m_panel_prepBee2_beeCryptoAlgo.Layout()
-		sbSizer_beeCryptoAlgo.Fit( self.m_panel_prepBee2_beeCryptoAlgo )
-		bSizer_prepBee.Add( self.m_panel_prepBee2_beeCryptoAlgo, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_prepHwCrypto2_hwCryptoAlgo.SetSizer( sbSizer_hwCryptoAlgo )
+		self.m_panel_prepHwCrypto2_hwCryptoAlgo.Layout()
+		sbSizer_hwCryptoAlgo.Fit( self.m_panel_prepHwCrypto2_hwCryptoAlgo )
+		bSizer_prepHwCrypto.Add( self.m_panel_prepHwCrypto2_hwCryptoAlgo, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_button_prepBee = wx.Button( self.m_panel_prepBee, wx.ID_ANY, u"Prepare For Encryption", wx.DefaultPosition, wx.Size( 195,-1 ), 0 )
-		bSizer_prepBee.Add( self.m_button_prepBee, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		self.m_button_prepHwCrypto = wx.Button( self.m_panel_prepHwCrypto, wx.ID_ANY, u"Prepare For Encryption", wx.DefaultPosition, wx.Size( 195,-1 ), 0 )
+		bSizer_prepHwCrypto.Add( self.m_button_prepHwCrypto, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_prepBee.SetSizer( bSizer_prepBee )
-		self.m_panel_prepBee.Layout()
-		bSizer_prepBee.Fit( self.m_panel_prepBee )
-		wSizer_genSeq.Add( self.m_panel_prepBee, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_prepHwCrypto.SetSizer( bSizer_prepHwCrypto )
+		self.m_panel_prepHwCrypto.Layout()
+		bSizer_prepHwCrypto.Fit( self.m_panel_prepHwCrypto )
+		wSizer_genSeq.Add( self.m_panel_prepHwCrypto, 1, wx.EXPAND |wx.ALL, 5 )
 
 
 		self.m_panel_genSeq.SetSizer( wSizer_genSeq )
@@ -604,27 +604,27 @@ class secBootWin ( wx.Frame ):
 		bSizer_progSrk.Fit( self.m_panel_progSrk )
 		wSizer_loadSeq.Add( self.m_panel_progSrk, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_operBee = wx.Panel( self.m_panel_loadSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		self.m_panel_operBee.SetBackgroundColour( wx.Colour( 64, 64, 64 ) )
+		self.m_panel_operHwCrypto = wx.Panel( self.m_panel_loadSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.m_panel_operHwCrypto.SetBackgroundColour( wx.Colour( 64, 64, 64 ) )
 
-		bSizer_operBee = wx.BoxSizer( wx.VERTICAL )
+		bSizer_operHwCrypto = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_panel_operBee1_beeKeyInfo = wx.Panel( self.m_panel_operBee, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		sbSizer_beeKeyInfo = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operBee1_beeKeyInfo, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
+		self.m_panel_operHwCrypto1_hwCryptoKeyInfo = wx.Panel( self.m_panel_operHwCrypto, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		sbSizer_hwCryptoKeyInfo = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operHwCrypto1_hwCryptoKeyInfo, wx.ID_ANY, wx.EmptyString ), wx.VERTICAL )
 
-		self.m_staticText_beeKeyInfo = wx.StaticText( sbSizer_beeKeyInfo.GetStaticBox(), wx.ID_ANY, u"Burn below user DEK data (128bits * n) into below Region for BEE:", wx.DefaultPosition, wx.Size( 130,45 ), 0 )
-		self.m_staticText_beeKeyInfo.Wrap( -1 )
+		self.m_staticText_hwCryptoKeyInfo = wx.StaticText( sbSizer_hwCryptoKeyInfo.GetStaticBox(), wx.ID_ANY, u"Burn user DEK data (128bits * n) into below Region for HW Crypto:", wx.DefaultPosition, wx.Size( 130,45 ), 0 )
+		self.m_staticText_hwCryptoKeyInfo.Wrap( -1 )
 
-		sbSizer_beeKeyInfo.Add( self.m_staticText_beeKeyInfo, 0, wx.ALL, 5 )
+		sbSizer_hwCryptoKeyInfo.Add( self.m_staticText_hwCryptoKeyInfo, 0, wx.ALL, 5 )
 
 
-		self.m_panel_operBee1_beeKeyInfo.SetSizer( sbSizer_beeKeyInfo )
-		self.m_panel_operBee1_beeKeyInfo.Layout()
-		sbSizer_beeKeyInfo.Fit( self.m_panel_operBee1_beeKeyInfo )
-		bSizer_operBee.Add( self.m_panel_operBee1_beeKeyInfo, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_operHwCrypto1_hwCryptoKeyInfo.SetSizer( sbSizer_hwCryptoKeyInfo )
+		self.m_panel_operHwCrypto1_hwCryptoKeyInfo.Layout()
+		sbSizer_hwCryptoKeyInfo.Fit( self.m_panel_operHwCrypto1_hwCryptoKeyInfo )
+		bSizer_operHwCrypto.Add( self.m_panel_operHwCrypto1_hwCryptoKeyInfo, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_operBee2_showGp4Dek = wx.Panel( self.m_panel_operBee, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		sbSizer_showGp4Dek = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operBee2_showGp4Dek, wx.ID_ANY, u"Fuse GP4 Region:" ), wx.VERTICAL )
+		self.m_panel_operHwCrypto2_showGp4Dek = wx.Panel( self.m_panel_operHwCrypto, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		sbSizer_showGp4Dek = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operHwCrypto2_showGp4Dek, wx.ID_ANY, u"Fuse GP4 Region:" ), wx.VERTICAL )
 
 		self.m_textCtrl_gp4Dek128bit = wx.TextCtrl( sbSizer_showGp4Dek.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 110,100 ), wx.TE_MULTILINE|wx.TE_NO_VSCROLL|wx.TE_RICH2 )
 		self.m_textCtrl_gp4Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
@@ -632,13 +632,13 @@ class secBootWin ( wx.Frame ):
 		sbSizer_showGp4Dek.Add( self.m_textCtrl_gp4Dek128bit, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_operBee2_showGp4Dek.SetSizer( sbSizer_showGp4Dek )
-		self.m_panel_operBee2_showGp4Dek.Layout()
-		sbSizer_showGp4Dek.Fit( self.m_panel_operBee2_showGp4Dek )
-		bSizer_operBee.Add( self.m_panel_operBee2_showGp4Dek, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_operHwCrypto2_showGp4Dek.SetSizer( sbSizer_showGp4Dek )
+		self.m_panel_operHwCrypto2_showGp4Dek.Layout()
+		sbSizer_showGp4Dek.Fit( self.m_panel_operHwCrypto2_showGp4Dek )
+		bSizer_operHwCrypto.Add( self.m_panel_operHwCrypto2_showGp4Dek, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_panel_operBee3_showSwgp2Dek = wx.Panel( self.m_panel_operBee, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		sbSizer_showSwgp2Dek = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operBee3_showSwgp2Dek, wx.ID_ANY, u"Fuse SW_GP2 Region:" ), wx.VERTICAL )
+		self.m_panel_operHwCrypto3_showSwgp2Dek = wx.Panel( self.m_panel_operHwCrypto, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		sbSizer_showSwgp2Dek = wx.StaticBoxSizer( wx.StaticBox( self.m_panel_operHwCrypto3_showSwgp2Dek, wx.ID_ANY, u"Fuse SW_GP2 Region:" ), wx.VERTICAL )
 
 		self.m_textCtrl_swgp2Dek128bit = wx.TextCtrl( sbSizer_showSwgp2Dek.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 110,100 ), wx.TE_MULTILINE|wx.TE_NO_VSCROLL|wx.TE_RICH2 )
 		self.m_textCtrl_swgp2Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
@@ -646,19 +646,19 @@ class secBootWin ( wx.Frame ):
 		sbSizer_showSwgp2Dek.Add( self.m_textCtrl_swgp2Dek128bit, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_operBee3_showSwgp2Dek.SetSizer( sbSizer_showSwgp2Dek )
-		self.m_panel_operBee3_showSwgp2Dek.Layout()
-		sbSizer_showSwgp2Dek.Fit( self.m_panel_operBee3_showSwgp2Dek )
-		bSizer_operBee.Add( self.m_panel_operBee3_showSwgp2Dek, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_operHwCrypto3_showSwgp2Dek.SetSizer( sbSizer_showSwgp2Dek )
+		self.m_panel_operHwCrypto3_showSwgp2Dek.Layout()
+		sbSizer_showSwgp2Dek.Fit( self.m_panel_operHwCrypto3_showSwgp2Dek )
+		bSizer_operHwCrypto.Add( self.m_panel_operHwCrypto3_showSwgp2Dek, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_button_operBee = wx.Button( self.m_panel_operBee, wx.ID_ANY, u"Burn DEK data", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer_operBee.Add( self.m_button_operBee, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+		self.m_button_operHwCrypto = wx.Button( self.m_panel_operHwCrypto, wx.ID_ANY, u"Burn DEK data", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer_operHwCrypto.Add( self.m_button_operHwCrypto, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
-		self.m_panel_operBee.SetSizer( bSizer_operBee )
-		self.m_panel_operBee.Layout()
-		bSizer_operBee.Fit( self.m_panel_operBee )
-		wSizer_loadSeq.Add( self.m_panel_operBee, 1, wx.EXPAND |wx.ALL, 5 )
+		self.m_panel_operHwCrypto.SetSizer( bSizer_operHwCrypto )
+		self.m_panel_operHwCrypto.Layout()
+		bSizer_operHwCrypto.Fit( self.m_panel_operHwCrypto )
+		wSizer_loadSeq.Add( self.m_panel_operHwCrypto, 1, wx.EXPAND |wx.ALL, 5 )
 
 		self.m_panel_flashImage = wx.Panel( self.m_panel_loadSeq, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		self.m_panel_flashImage.SetBackgroundColour( wx.Colour( 64, 64, 64 ) )
@@ -1828,13 +1828,13 @@ class secBootWin ( wx.Frame ):
 		self.m_button_genCert.Bind( wx.EVT_BUTTON, self.callbackGenCert )
 		self.m_filePicker_appPath.Bind( wx.EVT_FILEPICKER_CHANGED, self.callbackChangedAppFile )
 		self.m_choice_appFormat.Bind( wx.EVT_CHOICE, self.callbackSetAppFormat )
-		self.m_choice_enableCertForBee.Bind( wx.EVT_CHOICE, self.callbackSetCertForBee )
+		self.m_choice_enableCertForHwCrypto.Bind( wx.EVT_CHOICE, self.callbackSetCertForHwCrypto )
 		self.m_button_genImage.Bind( wx.EVT_BUTTON, self.callbackGenImage )
 		self.m_choice_keyStorageRegion.Bind( wx.EVT_CHOICE, self.callbackSetKeyStorageRegion )
 		self.m_button_advKeySettings.Bind( wx.EVT_BUTTON, self.callbackAdvKeySettings )
-		self.m_button_prepBee.Bind( wx.EVT_BUTTON, self.callbackDoBeeEncryption )
+		self.m_button_prepHwCrypto.Bind( wx.EVT_BUTTON, self.callbackDoHwEncryption )
 		self.m_button_progSrk.Bind( wx.EVT_BUTTON, self.callbackProgramSrk )
-		self.m_button_operBee.Bind( wx.EVT_BUTTON, self.callbackProgramBeeDek )
+		self.m_button_operHwCrypto.Bind( wx.EVT_BUTTON, self.callbackProgramHwCryptoDek )
 		self.m_button_flashImage.Bind( wx.EVT_BUTTON, self.callbackFlashImage )
 		self.m_button_progDek.Bind( wx.EVT_BUTTON, self.callbackFlashHabDek )
 		self.m_button_fuse400.Bind( wx.EVT_BUTTON, self.callbackSetEfuseLock )
@@ -1979,7 +1979,7 @@ class secBootWin ( wx.Frame ):
 	def callbackSetAppFormat( self, event ):
 		event.Skip()
 
-	def callbackSetCertForBee( self, event ):
+	def callbackSetCertForHwCrypto( self, event ):
 		event.Skip()
 
 	def callbackGenImage( self, event ):
@@ -1991,13 +1991,13 @@ class secBootWin ( wx.Frame ):
 	def callbackAdvKeySettings( self, event ):
 		event.Skip()
 
-	def callbackDoBeeEncryption( self, event ):
+	def callbackDoHwEncryption( self, event ):
 		event.Skip()
 
 	def callbackProgramSrk( self, event ):
 		event.Skip()
 
-	def callbackProgramBeeDek( self, event ):
+	def callbackProgramHwCryptoDek( self, event ):
 		event.Skip()
 
 	def callbackFlashImage( self, event ):

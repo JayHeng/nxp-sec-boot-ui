@@ -464,14 +464,14 @@ class secBootUi(secBootWin.secBootWin):
                         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
                 elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
                     self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
-            elif stepName == uidef.kSecureBootSeqStep_PrepBee:
-                self.m_button_prepBee.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_PrepHwCrypto:
+                self.m_button_prepHwCrypto.SetBackgroundColour( invalidColor )
                 if excuteResult:
                     self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
             elif stepName == uidef.kSecureBootSeqStep_ProgSrk:
                 self.m_button_progSrk.SetBackgroundColour( invalidColor )
-            elif stepName == uidef.kSecureBootSeqStep_OperBee:
-                self.m_button_operBee.SetBackgroundColour( invalidColor )
+            elif stepName == uidef.kSecureBootSeqStep_OperHwCrypto:
+                self.m_button_operHwCrypto.SetBackgroundColour( invalidColor )
             elif stepName == uidef.kSecureBootSeqStep_FlashImage:
                 self.m_button_flashImage.SetBackgroundColour( invalidColor )
             elif stepName == uidef.kSecureBootSeqStep_ProgDek:
@@ -488,8 +488,8 @@ class secBootUi(secBootWin.secBootWin):
         self.m_panel_genImage1_browseApp.Enable( False )
         self.m_panel_genImage2_habCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
         self.m_panel_genImage2_habCryptoAlgo.Enable( False )
-        self.m_panel_genImage3_enableCertForBee.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_genImage3_enableCertForBee.Enable( False )
+        self.m_panel_genImage3_enableCertForHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_genImage3_enableCertForHwCrypto.Enable( False )
         self.m_button_genImage.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
         self.m_button_genImage.Enable( False )
         self.resetKeyStorageRegionColor()
@@ -506,24 +506,24 @@ class secBootUi(secBootWin.secBootWin):
         self.Refresh()
 
     def resetKeyStorageRegionColor( self ):
-        self.m_panel_prepBee1_beeKeyRegion.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_prepBee1_beeKeyRegion.Enable( False )
-        self.m_panel_prepBee2_beeCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_prepBee2_beeCryptoAlgo.Enable( False )
-        self.m_button_prepBee.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_button_prepBee.Enable( False )
-        self.m_panel_operBee1_beeKeyInfo.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee1_beeKeyInfo.Enable( False )
-        self.m_panel_operBee2_showGp4Dek.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee2_showGp4Dek.Enable( False )
+        self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.Enable( False )
+        self.m_panel_prepHwCrypto2_hwCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_prepHwCrypto2_hwCryptoAlgo.Enable( False )
+        self.m_button_prepHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_button_prepHwCrypto.Enable( False )
+        self.m_panel_operHwCrypto1_hwCryptoKeyInfo.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_operHwCrypto1_hwCryptoKeyInfo.Enable( False )
+        self.m_panel_operHwCrypto2_showGp4Dek.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_operHwCrypto2_showGp4Dek.Enable( False )
         self.m_textCtrl_gp4Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
         self.m_textCtrl_gp4Dek128bit.Enable( False )
-        self.m_panel_operBee3_showSwgp2Dek.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_panel_operBee3_showSwgp2Dek.Enable( False )
+        self.m_panel_operHwCrypto3_showSwgp2Dek.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_panel_operHwCrypto3_showSwgp2Dek.Enable( False )
         self.m_textCtrl_swgp2Dek128bit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
         self.m_textCtrl_swgp2Dek128bit.Enable( False )
-        self.m_button_operBee.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
-        self.m_button_operBee.Enable( False )
+        self.m_button_operHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Invalid )
+        self.m_button_operHwCrypto.Enable( False )
         self.Refresh()
 
     def resetCertificateColor( self ):

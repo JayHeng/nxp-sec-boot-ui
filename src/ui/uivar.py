@@ -38,7 +38,7 @@ g_toolCommDict = {'isToolRunAsEntryMode':None,
                   'appFormat':None,
                   'appBinBaseAddr':None,
                   'keyStoreRegion':None,
-                  'certOptForBee':None
+                  'certOptForHwCrypto':None
                  }
 
 g_flexspiNorOpt0 = None
@@ -204,7 +204,7 @@ def initVar(cfgFilename):
                           'appFormat':0,
                           'appBinBaseAddr':'Eg: 0x00003000',
                           'keyStoreRegion':1,
-                          'certOptForBee':0
+                          'certOptForHwCrypto':0
                          }
 
         g_flexspiNorOpt0 = 0xc0000007

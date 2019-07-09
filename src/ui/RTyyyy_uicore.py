@@ -33,7 +33,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
 
         self.secureBootType = None
         self.keyStorageRegion = None
-        self.isCertEnabledForBee = None
+        self.isCertEnabledForHwCrypto = None
         self._RTyyyy_initSecureBootSeqValue()
         self._RTyyyy_initSecureBootSeqColor()
 
@@ -148,7 +148,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.m_textCtrl_appBaseAddr.Clear()
         self.m_textCtrl_appBaseAddr.write(self.toolCommDict['appBinBaseAddr'])
         self.m_choice_keyStorageRegion.SetSelection(self.toolCommDict['keyStoreRegion'])
-        self.m_choice_enableCertForBee.SetSelection(self.toolCommDict['certOptForBee'])
+        self.m_choice_enableCertForHwCrypto.SetSelection(self.toolCommDict['certOptForHwCrypto'])
 
     def _RTyyyy_initSecureBootSeqColor ( self ):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
@@ -196,19 +196,19 @@ class secBootRTyyyyUi(memcore.secBootMem):
                 self.m_button_progDek.SetBackgroundColour( activeColor )
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-                if self.isCertEnabledForBee:
+                if self.isCertEnabledForHwCrypto:
                     self.m_button_genCert.Enable( setEnable )
                     self.m_button_genCert.SetBackgroundColour( optionalColor )
                     self.m_button_progSrk.Enable( setEnable )
                     self.m_button_progSrk.SetBackgroundColour( optionalColor )
                 if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-                    self.m_button_prepBee.Enable( setEnable )
-                    self.m_button_prepBee.SetBackgroundColour( activeColor )
+                    self.m_button_prepHwCrypto.Enable( setEnable )
+                    self.m_button_prepHwCrypto.SetBackgroundColour( activeColor )
                 elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                    self.m_button_prepBee.Enable( setEnable )
-                    self.m_button_prepBee.SetBackgroundColour( activeColor )
-                    self.m_button_operBee.Enable( setEnable )
-                    self.m_button_operBee.SetBackgroundColour( activeColor )
+                    self.m_button_prepHwCrypto.Enable( setEnable )
+                    self.m_button_prepHwCrypto.SetBackgroundColour( activeColor )
+                    self.m_button_operHwCrypto.Enable( setEnable )
+                    self.m_button_operHwCrypto.SetBackgroundColour( activeColor )
                 else:
                     pass
                 self.m_button_genImage.Enable( setEnable )
@@ -247,7 +247,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.resetSecureBootSeqColor()
         self.m_button_genCert.SetLabel(uilang.kMainLanguageContentDict['button_genCert'][self.languageIndex])
         self.m_button_progSrk.SetLabel(uilang.kMainLanguageContentDict['button_progSrk'][self.languageIndex])
-        self.m_button_operBee.SetLabel(uilang.kMainLanguageContentDict['button_operBee'][self.languageIndex])
+        self.m_button_operHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_operHwCrypto'][self.languageIndex])
         self.m_button_progDek.SetLabel(uilang.kMainLanguageContentDict['button_progDek'][self.languageIndex])
         if self.secureBootType == RTyyyy_uidef.kSecureBootType_Development:
             self.m_panel_genImage1_browseApp.Enable( True )
@@ -307,10 +307,10 @@ class secBootRTyyyyUi(memcore.secBootMem):
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 self.m_panel_genImage1_browseApp.Enable( True )
                 self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )
-                self.m_panel_genImage3_enableCertForBee.Enable( True )
-                self.m_panel_genImage3_enableCertForBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
+                self.m_panel_genImage3_enableCertForHwCrypto.Enable( True )
+                self.m_panel_genImage3_enableCertForHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Active )
                 self.setKeyStorageRegionColor()
-                self.setBeeCertColor()
+                self.setHwCryptoCertColor()
                 self.m_panel_flashImage1_showImage.Enable( True )
                 self.m_panel_flashImage1_showImage.SetBackgroundColour( uidef.kBootSeqColor_Active )
             else:
@@ -332,17 +332,17 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.toolCommDict['certKeyPass'] = keypassContent
         return serialContent, keypassContent
 
-    def setBeeCertColor( self ):
-        txt = self.m_choice_enableCertForBee.GetString(self.m_choice_enableCertForBee.GetSelection())
-        self.toolCommDict['certOptForBee'] = self.m_choice_enableCertForBee.GetSelection()
+    def setHwCryptoCertColor( self ):
+        txt = self.m_choice_enableCertForHwCrypto.GetString(self.m_choice_enableCertForHwCrypto.GetSelection())
+        self.toolCommDict['certOptForHwCrypto'] = self.m_choice_enableCertForHwCrypto.GetSelection()
         strMemType, strHasDcd = self._RTyyyy_getImgName()
         imgPath = ""
         if txt == 'No':
-            self.isCertEnabledForBee = False
+            self.isCertEnabledForHwCrypto = False
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
             imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "unsigned_bee_encrypted.png"
         elif txt == 'Yes':
-            self.isCertEnabledForBee = True
+            self.isCertEnabledForHwCrypto = True
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_s'][self.languageIndex])
             imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "signed_bee_encrypted.png"
         else:
@@ -350,7 +350,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.showImageLayout(imgPath.encode('utf-8'))
         self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
         self.resetCertificateColor()
-        if self.isCertEnabledForBee:
+        if self.isCertEnabledForHwCrypto:
             activeColor = None
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 activeColor = uidef.kBootSeqColor_Active
@@ -376,41 +376,41 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.keyStorageRegion = self.m_choice_keyStorageRegion.GetString(self.m_choice_keyStorageRegion.GetSelection())
         self.toolCommDict['keyStoreRegion'] = self.m_choice_keyStorageRegion.GetSelection()
         self.resetKeyStorageRegionColor()
-        self.m_panel_prepBee1_beeKeyRegion.Enable( True )
-        self.m_panel_prepBee1_beeKeyRegion.SetBackgroundColour( uidef.kBootSeqColor_Active )
-        self.m_panel_prepBee2_beeCryptoAlgo.Enable( True )
-        self.m_panel_prepBee2_beeCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Active )
+        self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.Enable( True )
+        self.m_panel_prepHwCrypto1_hwCryptoKeyRegion.SetBackgroundColour( uidef.kBootSeqColor_Active )
+        self.m_panel_prepHwCrypto2_hwCryptoAlgo.Enable( True )
+        self.m_panel_prepHwCrypto2_hwCryptoAlgo.SetBackgroundColour( uidef.kBootSeqColor_Active )
         if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-            self.m_choice_enableCertForBee.Clear()
-            self.m_choice_enableCertForBee.SetItems(['Yes'])
-            self.m_choice_enableCertForBee.SetSelection(0)
-            self.setBeeCertColor()
-            self.m_choice_availBeeEngines.Clear()
-            self.m_choice_availBeeEngines.SetItems(['1'])
-            self.m_choice_availBeeEngines.SetSelection(0)
-            self.m_button_prepBee.Enable( True )
-            self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_p'][self.languageIndex])
-            self.m_button_prepBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_choice_enableCertForHwCrypto.Clear()
+            self.m_choice_enableCertForHwCrypto.SetItems(['Yes'])
+            self.m_choice_enableCertForHwCrypto.SetSelection(0)
+            self.setHwCryptoCertColor()
+            self.m_choice_availHwCryptoEngines.Clear()
+            self.m_choice_availHwCryptoEngines.SetItems(['1'])
+            self.m_choice_availHwCryptoEngines.SetSelection(0)
+            self.m_button_prepHwCrypto.Enable( True )
+            self.m_button_prepHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_prepHwCrypto_p'][self.languageIndex])
+            self.m_button_prepHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Active )
         elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-            enableCertForBeeTxt = self.m_choice_enableCertForBee.GetString(self.m_choice_enableCertForBee.GetSelection())
-            self.m_choice_enableCertForBee.Clear()
-            self.m_choice_enableCertForBee.SetItems(['No', 'Yes'])
-            self.m_choice_enableCertForBee.SetSelection(self.m_choice_enableCertForBee.FindString(enableCertForBeeTxt))
-            self.setBeeCertColor()
-            self.m_choice_availBeeEngines.Clear()
-            self.m_choice_availBeeEngines.SetItems(['2'])
-            self.m_choice_availBeeEngines.SetSelection(0)
-            self.m_button_prepBee.Enable( True )
-            self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_e'][self.languageIndex])
-            self.m_button_prepBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            self.m_panel_operBee1_beeKeyInfo.Enable( True )
-            self.m_panel_operBee1_beeKeyInfo.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            self.m_panel_operBee2_showGp4Dek.Enable( True )
-            self.m_panel_operBee2_showGp4Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            self.m_panel_operBee3_showSwgp2Dek.Enable( True )
-            self.m_panel_operBee3_showSwgp2Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
-            self.m_button_operBee.Enable( True )
-            self.m_button_operBee.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            enableCertForHwCryptoTxt = self.m_choice_enableCertForHwCrypto.GetString(self.m_choice_enableCertForHwCrypto.GetSelection())
+            self.m_choice_enableCertForHwCrypto.Clear()
+            self.m_choice_enableCertForHwCrypto.SetItems(['No', 'Yes'])
+            self.m_choice_enableCertForHwCrypto.SetSelection(self.m_choice_enableCertForHwCrypto.FindString(enableCertForHwCryptoTxt))
+            self.setHwCryptoCertColor()
+            self.m_choice_availHwCryptoEngines.Clear()
+            self.m_choice_availHwCryptoEngines.SetItems(['2'])
+            self.m_choice_availHwCryptoEngines.SetSelection(0)
+            self.m_button_prepHwCrypto.Enable( True )
+            self.m_button_prepHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_prepHwCrypto_e'][self.languageIndex])
+            self.m_button_prepHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_panel_operHwCrypto1_hwCryptoKeyInfo.Enable( True )
+            self.m_panel_operHwCrypto1_hwCryptoKeyInfo.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_panel_operHwCrypto2_showGp4Dek.Enable( True )
+            self.m_panel_operHwCrypto2_showGp4Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_panel_operHwCrypto3_showSwgp2Dek.Enable( True )
+            self.m_panel_operHwCrypto3_showSwgp2Dek.SetBackgroundColour( uidef.kBootSeqColor_Active )
+            self.m_button_operHwCrypto.Enable( True )
+            self.m_button_operHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Active )
         else:
             pass
         self.Refresh()
@@ -861,25 +861,25 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.m_staticText_appPath.SetLabel(uilang.kMainLanguageContentDict['sText_appPath'][langIndex])
         self.m_staticText_appBaseAddr.SetLabel(uilang.kMainLanguageContentDict['sText_appBaseAddr'][langIndex])
         self.m_staticText_habCryptoAlgo.SetLabel(uilang.kMainLanguageContentDict['sText_habCryptoAlgo'][langIndex])
-        self.m_staticText_enableCertForBee.SetLabel(uilang.kMainLanguageContentDict['sText_enableCertForBee'][langIndex])
+        self.m_staticText_enableCertForHwCrypto.SetLabel(uilang.kMainLanguageContentDict['sText_enableCertForHwCrypto'][langIndex])
         self.m_staticText_keyStorageRegion.SetLabel(uilang.kMainLanguageContentDict['sText_keyStorageRegion'][langIndex])
-        self.m_staticText_availBeeEngines.SetLabel(uilang.kMainLanguageContentDict['sText_availBeeEngines'][langIndex])
+        self.m_staticText_availHwCryptoEngines.SetLabel(uilang.kMainLanguageContentDict['sText_availHwCryptoEngines'][langIndex])
         self.m_button_advKeySettings.SetLabel(uilang.kMainLanguageContentDict['button_advKeySettings'][langIndex])
-        self.m_staticText_beeCryptoAlgo.SetLabel(uilang.kMainLanguageContentDict['sText_beeCryptoAlgo'][langIndex])
+        self.m_staticText_hwCryptoAlgo.SetLabel(uilang.kMainLanguageContentDict['sText_hwCryptoAlgo'][langIndex])
         self.m_staticText_maxFacCnt.SetLabel(uilang.kMainLanguageContentDict['sText_maxFacCnt'][langIndex])
 
         self.m_notebook_imageSeq.SetPageText(uilang.kPanelIndex_LoadSeq, uilang.kMainLanguageContentDict['panel_loadSeq'][langIndex])
         self.m_staticText_srk256bit.SetLabel(uilang.kMainLanguageContentDict['sText_srk256bit'][langIndex])
-        self.m_staticText_beeKeyInfo.SetLabel(uilang.kMainLanguageContentDict['sText_beeKeyInfo'][langIndex])
+        self.m_staticText_hwCryptoKeyInfo.SetLabel(uilang.kMainLanguageContentDict['sText_hwCryptoKeyInfo'][langIndex])
         self.m_staticText_showImage.SetLabel(uilang.kMainLanguageContentDict['sText_showImage'][langIndex])
         self.m_staticText_habDek128bit.SetLabel(uilang.kMainLanguageContentDict['sText_habDek128bit'][langIndex])
 
         if self.hasDynamicLableBeenInit:
             self.RTyyyy_setSecureBootSeqColor(False)
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-                self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_p'][self.languageIndex])
+                self.m_button_prepHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_prepHwCrypto_p'][self.languageIndex])
             elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                self.m_button_prepBee.SetLabel(uilang.kMainLanguageContentDict['button_prepBee_e'][self.languageIndex])
+                self.m_button_prepHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_prepHwCrypto_e'][self.languageIndex])
             else:
                 pass
 

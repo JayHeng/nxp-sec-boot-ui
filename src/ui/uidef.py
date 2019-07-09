@@ -97,14 +97,14 @@ kSoundEffectFilename_Restart  = 'pluslife_restart.wav'
 kMemBlockColor_Background = wx.WHITE
 kMemBlockColor_Padding    = wx.BLACK
 
-kSecureBootSeqStep_AllInOne   = 0
-kSecureBootSeqStep_GenCert    = 1
-kSecureBootSeqStep_GenImage   = 2
-kSecureBootSeqStep_PrepBee    = 3
-kSecureBootSeqStep_ProgSrk    = 4
-kSecureBootSeqStep_OperBee    = 5
-kSecureBootSeqStep_FlashImage = 6
-kSecureBootSeqStep_ProgDek    = 7
+kSecureBootSeqStep_AllInOne     = 0
+kSecureBootSeqStep_GenCert      = 1
+kSecureBootSeqStep_GenImage     = 2
+kSecureBootSeqStep_PrepHwCrypto = 3
+kSecureBootSeqStep_ProgSrk      = 4
+kSecureBootSeqStep_OperHwCrypto = 5
+kSecureBootSeqStep_FlashImage   = 6
+kSecureBootSeqStep_ProgDek      = 7
 
 kPageIndex_ImageGenerationSequence = 0
 kPageIndex_ImageLoadingSequence    = 1

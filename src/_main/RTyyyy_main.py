@@ -234,7 +234,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         while allInOneSeqCnt:
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
                self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-               (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForBee):
+               (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForHwCrypto):
                 status = self._doGenCert(directReuseCert)
                 if not status:
                     break
@@ -253,7 +253,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                     if not status:
                         break
                 elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-                    if self.isCertEnabledForBee:
+                    if self.isCertEnabledForHwCrypto:
                         # If HAB is not closed here, we need to close HAB and re-do All-In-One Action
                         if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
                            self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
@@ -294,7 +294,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
                 if self.checkIfSubWinHasBeenOpened():
@@ -337,7 +337,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
                 self._RTyyyy_startGaugeTimer()
@@ -398,7 +398,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def callbackSetCertForBee( self, event ):
+    def callbackSetCertForHwCrypto( self, event ):
         if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             self.setBeeCertColor()
 
@@ -444,10 +444,10 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             self._RTyyyy_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForBee'][self.languageIndex])
-        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_PrepBee, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_PrepHwCrypto, status)
         return status
 
-    def callbackDoBeeEncryption( self, event ):
+    def callbackDoHwEncryption( self, event ):
         if not self.isToolRunAsEntryMode:
             self._doBeeEncryption()
         else:
@@ -462,7 +462,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForBee):
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
             else:
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
@@ -501,10 +501,10 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekNotForSnvs'][self.languageIndex])
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekOnlyForBee'][self.languageIndex])
-        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_OperBee, status)
+        self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_OperHwCrypto, status)
         return status
 
-    def callbackProgramBeeDek( self, event ):
+    def callbackProgramHwCryptoDek( self, event ):
         if not self.isToolRunAsEntryMode:
             self._doProgramBeeDek()
         else:
@@ -528,7 +528,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                     self.isBootableAppAllowedToView = True
                     if self.burnBootDeviceFuses():
                         if (self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth) or \
-                           (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
+                           (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
                             if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
                                self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                                 self.enableHab()

@@ -265,7 +265,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                 else:
                     hasShowed = False
                     if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-                       (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForBee):
+                       (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
                         csfStart = imageMemBase + (self.destAppCsfAddress - self.destAppVectorAddress) + self.destAppInitialLoadSize
                         if addr > csfStart and addr <= csfStart + RTyyyy_memdef.kMemBlockSize_CSF:
                             if self.needToShowCsfIntr:
