@@ -552,7 +552,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             flags = RTyyyy_gendef.kBootImageTypeFlag_Signed
         elif secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
             flags = RTyyyy_gendef.kBootImageTypeFlag_Encrypted
-        elif secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+        elif secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
             if self.isCertEnabledForHwCrypto:
                 flags = RTyyyy_gendef.kBootImageTypeFlag_Signed
             else:
@@ -590,12 +590,12 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         bdContent += "}\n"
         ############################################################################
         if secureBootType == RTyyyy_uidef.kSecureBootType_Development or \
-           (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto)):
+           ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and (not self.isCertEnabledForHwCrypto)):
             bdContent += "\nsection (0) {\n"
             bdContent += "}\n"
         elif secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
              secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-             (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+             ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
             ########################################################################
             bdContent += "\nconstants {\n"
             bdContent += "    SEC_CSF_HEADER              = 20;\n"
@@ -616,7 +616,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             ########################################################################
             bdContent += "\nsection (SEC_CSF_HEADER;\n"
             if secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
-               (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+               ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
                 headerVersion = RTyyyy_gendef.kBootImageCsfHeaderVersion_Signed
             elif secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
                 headerVersion = RTyyyy_gendef.kBootImageCsfHeaderVersion_Encrypted
@@ -664,7 +664,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             bdContent += "}\n"
             ########################################################################
             if secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
-               (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+               ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
                 bdContent += "\nsection (SEC_SET_ENGINE;\n"
                 bdContent += "    SetEngine_HashAlgorithm = \"sha256\",\n"
                 bdContent += "    SetEngine_Engine = \"DCP\",\n"
@@ -717,7 +717,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
     def isCertificateGenerated( self, secureBootType ):
         if secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
            secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-           (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+           ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
             self._tryToReuseExistingCert()
             if (os.path.isfile(self.srkTableFilename) and \
                 os.path.isfile(self.srkFuseFilename) and \
@@ -729,7 +729,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             else:
                 return False
         elif secureBootType == RTyyyy_uidef.kSecureBootType_Development or \
-             (secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto)):
+             ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and (not self.isCertEnabledForHwCrypto)):
             return True
         else:
             pass
@@ -751,8 +751,8 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             else:
                 return True
         else:
-            #if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
-            #    self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_nonXipNotForBeeCrypto'][self.languageIndex])
+            #if self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
+            #    self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_nonXipNotForHwCrypto'][self.languageIndex])
             #    return False
             #else:
             if (self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth) and \
@@ -815,7 +815,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             destAppName += '_signed'
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
             destAppName += '_signed_hab_encrypted'
-        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+        elif self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
             if self.isCertEnabledForHwCrypto:
                 destAppName += '_signed'
             else:
@@ -1094,6 +1094,11 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                     destSbAppName += '_signed_bee_encrypted'
                 else:
                     destSbAppName += '_unsigned_bee_encrypted'
+            elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                if self.isCertEnabledForHwCrypto:
+                    destSbAppName += '_signed_otfad_encrypted'
+                else:
+                    destSbAppName += '_unsigned_otfad_encrypted'
             else:
                 pass
             destSbAppName += '_' + self.sbEnableBootDeviceMagic
@@ -1155,7 +1160,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             pass
         if sbType == RTyyyy_gendef.kSbFileType_All or sbType == RTyyyy_gendef.kSbFileType_Flash:
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-                if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+                if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                     destAppFilename = self.destEncAppNoCfgBlockFilename
                 else:
                     destAppFilename = self.destAppNoPaddingFilename

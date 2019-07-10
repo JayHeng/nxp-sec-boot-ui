@@ -234,7 +234,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         while allInOneSeqCnt:
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
                self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-               (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForHwCrypto):
+               ((self.secureBootType in kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForHwCrypto):
                 status = self._doGenCert(directReuseCert)
                 if not status:
                     break
@@ -244,12 +244,12 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             status = self._RTyyyy_doGenImage()
             if not status:
                 break
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-                status = self._doBeeEncryption()
+            if (self.secureBootType in kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+                status = self._doHwEncryption()
                 if not status:
                     break
                 if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                    status = self._doProgramBeeDek()
+                    status = self._doProgramHwCryptoDek()
                     if not status:
                         break
                 elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
@@ -287,15 +287,15 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         self.RTyyyy_isAllInOneActionTaskPending = True
 
     def callbackAdvCertSettings( self, event ):
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
+            if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and (not self.isCertEnabledForHwCrypto):
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForHwCrypto'][self.languageIndex])
             else:
                 if self.checkIfSubWinHasBeenOpened():
                     return
@@ -330,15 +330,15 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
     def _doGenCert( self, directReuseCert=False ):
         status = False
         reuseCert = None
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
+            if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and (not self.isCertEnabledForHwCrypto):
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForHwCrypto'][self.languageIndex])
             else:
                 self._RTyyyy_startGaugeTimer()
                 self.printLog("'Generate Certificate' button is clicked")
@@ -372,8 +372,8 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
 
     def _RTyyyy_doGenImage( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
@@ -399,15 +399,15 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def callbackSetCertForHwCrypto( self, event ):
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
-            self.setBeeCertColor()
+        if self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
+            self.setHwCryptoCertColor()
 
     def callbackSetKeyStorageRegion( self, event ):
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+        if self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
             self.setKeyStorageRegionColor()
 
     def callbackAdvKeySettings( self, event ):
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             if self.checkIfSubWinHasBeenOpened():
                 return
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
@@ -422,16 +422,16 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             else:
                 pass
         else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['keyGenError_onlyForBee'][self.languageIndex])
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['keyGenError_onlyForHwCrypto'][self.languageIndex])
 
-    def _doBeeEncryption( self ):
+    def _doHwEncryption( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             self._RTyyyy_startGaugeTimer()
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 if self.connectStage == uidef.kConnectStage_Reset:
                     if not self.prepareForFixedOtpmkEncryption():
-                        self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_failToPrepareForSnvs'][self.languageIndex])
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_failToPrepareForSnvs'][self.languageIndex])
                     else:
                         status = True
                 else:
@@ -443,27 +443,27 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 pass
             self._RTyyyy_stopGaugeTimer()
         else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForBee'][self.languageIndex])
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForHwCrypto'][self.languageIndex])
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_PrepHwCrypto, status)
         return status
 
     def callbackDoHwEncryption( self, event ):
         if not self.isToolRunAsEntryMode:
-            self._doBeeEncryption()
+            self._doHwEncryption()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def _doProgramSrk( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operHabError_notAppliableDevice'][self.languageIndex])
         elif self.secureBootType != RTyyyy_uidef.kSecureBootType_Development:
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and (not self.isCertEnabledForHwCrypto):
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForBee'][self.languageIndex])
+            if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and (not self.isCertEnabledForHwCrypto):
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['certGenError_notEnabledForHwCrypto'][self.languageIndex])
             else:
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
                    self.connectStage == uidef.kConnectStage_Reset:
@@ -485,9 +485,9 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
-    def _doProgramBeeDek( self ):
+    def _doProgramHwCryptoDek( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
                    self.connectStage == uidef.kConnectStage_Reset:
@@ -500,20 +500,20 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekNotForSnvs'][self.languageIndex])
         else:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekOnlyForBee'][self.languageIndex])
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operKeyError_dekOnlyForHwCrypto'][self.languageIndex])
         self.invalidateStepButtonColor(uidef.kSecureBootSeqStep_OperHwCrypto, status)
         return status
 
     def callbackProgramHwCryptoDek( self, event ):
         if not self.isToolRunAsEntryMode:
-            self._doProgramBeeDek()
+            self._doProgramHwCryptoDek()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['separActnError_notAvailUnderEntry'][self.languageIndex])
 
     def _RTyyyy_doFlashImage( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):
@@ -528,7 +528,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                     self.isBootableAppAllowedToView = True
                     if self.burnBootDeviceFuses():
                         if (self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth) or \
-                           (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+                           (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto and self.isCertEnabledForHwCrypto):
                             if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
                                self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                                 self.enableHab()
@@ -551,8 +551,8 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
 
     def _doFlashHabDek( self ):
         status = False
-        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
-            self.popupMsgBox(uilang.kMsgLanguageContentDict['operBeeError_onlyForFlexspiNor'][self.languageIndex])
+        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice != RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['operHwCryptoError_onlyForFlexspiNor'][self.languageIndex])
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and \
              (self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor) and \
              (not self.tgt.isNonXipImageAppliableForXipableDeviceUnderClosedHab):

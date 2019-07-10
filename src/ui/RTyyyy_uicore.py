@@ -194,7 +194,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
                 self.m_button_flashImage.SetBackgroundColour( activeColor )
                 self.m_button_progDek.Enable( setEnable )
                 self.m_button_progDek.SetBackgroundColour( activeColor )
-        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+        elif self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 if self.isCertEnabledForHwCrypto:
                     self.m_button_genCert.Enable( setEnable )
@@ -244,6 +244,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.refreshSecureBootTypeList()
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
+        self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.resetSecureBootSeqColor()
         self.m_button_genCert.SetLabel(uilang.kMainLanguageContentDict['button_genCert'][self.languageIndex])
         self.m_button_progSrk.SetLabel(uilang.kMainLanguageContentDict['button_progSrk'][self.languageIndex])
@@ -303,7 +304,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
                 self.m_button_flashImage.SetLabel(uilang.kMainLanguageContentDict['button_flashImage_e'][self.languageIndex])
                 self.m_panel_progDek1_showHabDek.Enable( True )
                 self.m_panel_progDek1_showHabDek.SetBackgroundColour( uidef.kBootSeqColor_Active )
-        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+        elif self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto:
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 self.m_panel_genImage1_browseApp.Enable( True )
                 self.m_panel_genImage1_browseApp.SetBackgroundColour( uidef.kBootSeqColor_Active )

@@ -24,6 +24,7 @@ kSecureBootType_HabCrypto   = 'HAB Encrypted Image Boot'
 kSecureBootType_BeeCrypto   = 'BEE Encrypted Image Boot'
 kSecureBootType_OtfadCrypto = 'OTFAD Encrypted Image Boot'
 kSecureBootType_IeeCrypto   = 'IEE Encrypted Image Boot'
+kSecureBootType_HwCrypto    = [kSecureBootType_BeeCrypto, kSecureBootType_OtfadCrypto]
 
 kSecureBootType_v1_0_0 = [kSecureBootType_Development, kSecureBootType_HabAuth, kSecureBootType_HabCrypto, kSecureBootType_BeeCrypto]
 kSecureBootType_v2_0_0 = [kSecureBootType_Development, kSecureBootType_HabAuth, kSecureBootType_HabCrypto, kSecureBootType_BeeCrypto, kSecureBootType_OtfadCrypto]
