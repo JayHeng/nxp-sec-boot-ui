@@ -54,8 +54,9 @@ class secBootRTxxxUi(RTyyyy_main.secBootRTyyyyMain):
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
 
     def _RTxxx_initSecureBootSeqValue( self ):
-        self.m_choice_secureBootType.Clear()
-        self.m_choice_secureBootType.SetItems(RTxxx_uidef.kSecureBootType_Latest)
+        if not self.initSecureBootTypeList():
+            self.m_choice_secureBootType.Clear()
+            self.m_choice_secureBootType.SetItems(RTxxx_uidef.kSecureBootType_Latest)
         totalSel = self.m_choice_secureBootType.GetCount()
         if self.toolCommDict['secBootType'] < totalSel:
             self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])
@@ -102,6 +103,7 @@ class secBootRTxxxUi(RTyyyy_main.secBootRTyyyyMain):
         self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.refreshSecureBootTypeList()
         self.toolCommDict['secBootType'] = self.m_choice_secureBootType.GetSelection()
+        self.secureBootType = self.m_choice_secureBootType.GetString(self.m_choice_secureBootType.GetSelection())
         self.resetSecureBootSeqColor()
         if self.secureBootType == RTxxx_uidef.kSecureBootType_PlainUnsigned:
             self.m_panel_genImage1_browseApp.Enable( True )

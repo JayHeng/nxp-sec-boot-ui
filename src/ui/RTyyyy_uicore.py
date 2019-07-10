@@ -130,8 +130,9 @@ class secBootRTyyyyUi(memcore.secBootMem):
             pass
 
     def _RTyyyy_initSecureBootSeqValue( self ):
-        self.m_choice_secureBootType.Clear()
-        self.m_choice_secureBootType.SetItems(RTyyyy_uidef.kSecureBootType_Latest)
+        if not self.initSecureBootTypeList():
+            self.m_choice_secureBootType.Clear()
+            self.m_choice_secureBootType.SetItems(RTyyyy_uidef.kSecureBootType_Latest)
         totalSel = self.m_choice_secureBootType.GetCount()
         if self.toolCommDict['secBootType'] < totalSel:
             self.m_choice_secureBootType.SetSelection(self.toolCommDict['secBootType'])

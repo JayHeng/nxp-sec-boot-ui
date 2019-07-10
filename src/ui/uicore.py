@@ -430,10 +430,16 @@ class secBootUi(secBootWin.secBootWin):
         if pageIndex != self.m_notebook_imageSeq.GetSelection():
             self.m_notebook_imageSeq.SetSelection(pageIndex)
 
-    def refreshSecureBootTypeList( self ):
+    def initSecureBootTypeList( self ):
         if self.tgt.availableSecureBootTypes != None:
             self.m_choice_secureBootType.Clear()
             self.m_choice_secureBootType.SetItems(self.tgt.availableSecureBootTypes)
+            return True
+        else:
+            return False
+
+    def refreshSecureBootTypeList( self ):
+        if self.initSecureBootTypeList():
             retSel = self.m_choice_secureBootType.FindString(self.secureBootType)
             if retSel != wx.NOT_FOUND:
                 self.m_choice_secureBootType.SetSelection(retSel)
