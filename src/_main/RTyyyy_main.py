@@ -234,7 +234,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
         while allInOneSeqCnt:
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
                self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-               ((self.secureBootType in kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForHwCrypto):
+               ((self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor and self.isCertEnabledForHwCrypto):
                 status = self._doGenCert(directReuseCert)
                 if not status:
                     break
@@ -244,7 +244,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             status = self._RTyyyy_doGenImage()
             if not status:
                 break
-            if (self.secureBootType in kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+            if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 status = self._doHwEncryption()
                 if not status:
                     break

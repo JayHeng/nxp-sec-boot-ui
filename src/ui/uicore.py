@@ -466,7 +466,7 @@ class secBootUi(secBootWin.secBootWin):
             elif stepName == uidef.kSecureBootSeqStep_GenImage:
                 self.m_button_genImage.SetBackgroundColour( invalidColor )
                 if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-                    if excuteResult and (not(self.secureBootType in RTyyyy_uidef.kSecureBootTypes_HwCrypto)):
+                    if excuteResult and (not(self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto)):
                         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
                 elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
                     self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageLoadingSequence)
