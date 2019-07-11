@@ -1380,7 +1380,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 else:
                     pass
                 alignedErasedSize = misc.align_up(imageLen, self.comMemEraseUnit)
-                needToBeErasedSize = misc.align_up(self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_KeyBlob, self.comMemEraseUnit)
+                needToBeErasedSize = misc.align_up(self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_HabKeyBlob, self.comMemEraseUnit)
                 if alignedErasedSize < needToBeErasedSize:
                     memEraseLen = needToBeErasedSize - alignedErasedSize
                     alignedMemEraseAddr = imageLoadAddr + alignedErasedSize

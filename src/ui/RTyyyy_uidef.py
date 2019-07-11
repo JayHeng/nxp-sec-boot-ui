@@ -70,16 +70,17 @@ kSupportedKeySource_iMXRT1064 = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
 
 kMaxFacRegionCount = 3
 
-kMemBlockColor_NFCB       = wx.Colour( 0xf9, 0xb5, 0x00 ) #
-kMemBlockColor_DBBT       = wx.Colour( 0xcc, 0x7f, 0x32 ) #wx.GOLD
-kMemBlockColor_MBRDPT     = wx.Colour( 0xc1, 0x9f, 0x32 ) #
-kMemBlockColor_FDCB       = wx.Colour( 0x9f, 0x9f, 0x5f ) #wx.KHAKI
-kMemBlockColor_EKIB       = wx.Colour( 0xb0, 0x00, 0xff ) #wx.PURPLE
-kMemBlockColor_EPRDB      = wx.Colour( 0xa5, 0x2a, 0x2a ) #wx.BROWN
-kMemBlockColor_IVT        = wx.RED
-kMemBlockColor_BootData   = wx.GREEN
-kMemBlockColor_DCD        = wx.Colour( 0xc9, 0xd2, 0x00 ) #wx.DARK_YELLOW
-kMemBlockColor_Image      = wx.BLUE
-kMemBlockColor_CSF        = wx.Colour( 0xff, 0xc0, 0xcb ) #wx.PINK
-kMemBlockColor_KeyBlob    = wx.Colour( 0xff, 0x7f, 0x00 ) #wx.CORAL
+kMemBlockColor_HwCryptoKeyBlob = wx.Colour( 0xff, 0x7f, 0x00 ) #wx.CORAL
+kMemBlockColor_NFCB            = wx.Colour( 0xf9, 0xb5, 0x00 ) #
+kMemBlockColor_DBBT            = wx.Colour( 0xcc, 0x7f, 0x32 ) #wx.GOLD
+kMemBlockColor_MBRDPT          = wx.Colour( 0xc1, 0x9f, 0x32 ) #
+kMemBlockColor_FDCB            = wx.Colour( 0x9f, 0x9f, 0x5f ) #wx.KHAKI
+kMemBlockColor_EKIB            = wx.Colour( 0xb0, 0x00, 0xff ) #wx.PURPLE
+kMemBlockColor_EPRDB           = wx.Colour( 0xa5, 0x2a, 0x2a ) #wx.BROWN
+kMemBlockColor_IVT             = wx.RED
+kMemBlockColor_BootData        = wx.GREEN
+kMemBlockColor_DCD             = wx.Colour( 0xc9, 0xd2, 0x00 ) #wx.DARK_YELLOW
+kMemBlockColor_Image           = wx.BLUE
+kMemBlockColor_CSF             = wx.Colour( 0xff, 0xc0, 0xcb ) #wx.PINK
+kMemBlockColor_HabKeyBlob      = wx.Colour( 0xff, 0x7f, 0x00 ) #wx.CORAL
 

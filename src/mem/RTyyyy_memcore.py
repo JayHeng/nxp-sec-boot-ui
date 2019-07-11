@@ -23,6 +23,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
 
     def RTyyyy_initMem( self ):
 
+        self.needToShowHwCryptoKeyBlobIntr = None
         self.needToShowCfgIntr = None
         self.needToShowEkib0Intr = None
         self.needToShowEprdb0Intr = None
@@ -33,13 +34,14 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
         self.needToShowDcdIntr = None
         self.needToShowImageIntr = None
         self.needToShowCsfIntr = None
-        self.needToShowKeyBlobIntr = None
+        self.needToShowHabKeyBlobIntr = None
         self.needToShowNfcbIntr = None
         self.needToShowDbbtIntr = None
         self.needToShowMbrdptIntr = None
         self._RTyyyy_initShowIntr()
 
     def _RTyyyy_initShowIntr( self ):
+        self.needToShowHwCryptoKeyBlobIntr = True
         self.needToShowCfgIntr = True
         self.needToShowEkib0Intr = True
         self.needToShowEprdb0Intr = True
@@ -50,7 +52,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
         self.needToShowDcdIntr = True
         self.needToShowImageIntr = True
         self.needToShowCsfIntr = True
-        self.needToShowKeyBlobIntr = True
+        self.needToShowHabKeyBlobIntr = True
         self.needToShowNfcbIntr = True
         self.needToShowDbbtIntr = True
         self.needToShowMbrdptIntr = True
@@ -177,8 +179,8 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
             imageMemBase = self.bootDeviceMemBase
         else:
             pass
-        if self.habDekDataOffset != None and (self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_KeyBlob > imageFileLen):
-            readoutMemLen += self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_KeyBlob
+        if self.habDekDataOffset != None and (self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_HabKeyBlob > imageFileLen):
+            readoutMemLen += self.habDekDataOffset + RTyyyy_memdef.kMemBlockSize_HabKeyBlob
         else:
             readoutMemLen += imageFileLen
 
@@ -198,7 +200,17 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                 memLeft -= len(memContent)
                 addr += len(memContent)
                 if addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset:
-                    self.printMem(contentToShow)
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                        keyBlobStart = imageMemBase + RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob
+                        if addr > keyBlobStart and addr <= keyBlobStart + RTyyyy_memdef.kMemBlockSize_HwCryptoKeyBlob:
+                            if self.needToShowHwCryptoKeyBlobIntr:
+                                self.printMem('-----------------------------OTFAD DEK KeyBlob----------------------------------------', RTyyyy_uidef.kMemBlockColor_HwCryptoKeyBlob)
+                                self.needToShowHwCryptoKeyBlobIntr = False
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_HwCryptoKeyBlob)
+                        else:
+                            self.printMem(contentToShow)
+                    else:
+                        self.printMem(contentToShow)
                 elif addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset + RTyyyy_memdef.kMemBlockSize_FDCB:
                     if not self.isSdmmcCard:
                         if self.needToShowCfgIntr:
@@ -265,7 +277,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                 else:
                     hasShowed = False
                     if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
-                       (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.isCertEnabledForHwCrypto):
+                       ((self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
                         csfStart = imageMemBase + (self.destAppCsfAddress - self.destAppVectorAddress) + self.destAppInitialLoadSize
                         if addr > csfStart and addr <= csfStart + RTyyyy_memdef.kMemBlockSize_CSF:
                             if self.needToShowCsfIntr:
@@ -275,11 +287,11 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                             hasShowed = True
                     if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto and self.habDekDataOffset != None:
                         keyBlobStart = imageMemBase + (self.destAppVectorOffset - self.destAppInitialLoadSize) + self.habDekDataOffset
-                        if addr > keyBlobStart and addr <= keyBlobStart + RTyyyy_memdef.kMemBlockSize_KeyBlob:
-                            if self.needToShowKeyBlobIntr:
-                                self.printMem('--------------------------------DEK KeyBlob-------------------------------------------', RTyyyy_uidef.kMemBlockColor_KeyBlob)
-                                self.needToShowKeyBlobIntr = False
-                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_KeyBlob)
+                        if addr > keyBlobStart and addr <= keyBlobStart + RTyyyy_memdef.kMemBlockSize_HabKeyBlob:
+                            if self.needToShowHabKeyBlobIntr:
+                                self.printMem('------------------------------HAB DEK KeyBlob-----------------------------------------', RTyyyy_uidef.kMemBlockColor_HabKeyBlob)
+                                self.needToShowHabKeyBlobIntr = False
+                            self.printMem(contentToShow, RTyyyy_uidef.kMemBlockColor_HabKeyBlob)
                             hasShowed = True
                     if not hasShowed:
                         if not self.isSdmmcCard:

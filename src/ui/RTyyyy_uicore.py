@@ -339,14 +339,21 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.toolCommDict['certOptForHwCrypto'] = self.m_choice_enableCertForHwCrypto.GetSelection()
         strMemType, strHasDcd = self._RTyyyy_getImgName()
         imgPath = ""
+        strHwCryptoType = ""
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            strHwCryptoType = 'bee'
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            strHwCryptoType = 'otfad'
+        else:
+            pass
         if txt == 'No':
             self.isCertEnabledForHwCrypto = False
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_u'][self.languageIndex])
-            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "unsigned_bee_encrypted.png"
+            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "unsigned_" + strHwCryptoType + "_encrypted.png"
         elif txt == 'Yes':
             self.isCertEnabledForHwCrypto = True
             self.m_button_genImage.SetLabel(uilang.kMainLanguageContentDict['button_genImage_s'][self.languageIndex])
-            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "signed_bee_encrypted.png"
+            imgPath = "../img/RT10yy/nor_image_" + strHasDcd + "signed_" + strHwCryptoType + "_encrypted.png"
         else:
             pass
         self.showImageLayout(imgPath.encode('utf-8'))
