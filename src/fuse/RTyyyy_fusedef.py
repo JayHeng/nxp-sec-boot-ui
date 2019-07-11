@@ -34,6 +34,9 @@ kEfuseIndex_SRK5 = 0x1D
 kEfuseIndex_SRK6 = 0x1E
 kEfuseIndex_SRK7 = 0x1F
 
+kEfuseIndex_OTFAD_KEY = 0x22
+kEfuseIndex_OTFAD_CFG = 0x23
+
 kEfuseIndex_SW_GP2_0 = 0x29
 kEfuseIndex_SW_GP2_1 = 0x2A
 kEfuseIndex_SW_GP2_2 = 0x2B
@@ -70,11 +73,15 @@ kEfuseMask_BtFuseSel = 0x00000010
 kEfuseShift_BtFuseSel = 4
 kEfuseLocation_BtFuseSel = kEfuseIndex_BOOT_CFG1
 
-kEfuseMask_BeeKey0Sel = 0x00003000
-kEfuseMask_BeeKey1Sel = 0x0000C000
-kEfuseShift_BeeKey0Sel = 12
-kEfuseShift_BeeKey1Sel = 14
-kEfuseLocation_BeeKeySel = kEfuseIndex_BOOT_CFG1
+kEfuseMask_HwCryptoKey0Sel = 0x00003000
+kEfuseMask_HwCryptoKey1Sel = 0x0000C000
+kEfuseShift_HwCryptoKey0Sel = 12
+kEfuseShift_HwCryptoKey1Sel = 14
+kEfuseLocation_HwCryptoKeySel = kEfuseIndex_BOOT_CFG1
+
+kEfuseMask_OtfadEnable  = 0x00000100
+kEfuseShift_OtfadEnable = 8
+kEfuseLocation_OtfadEnable = kEfuseIndex_OTFAD_CFG
 
 kEfuseMask_DefaultFlexramPart  = 0x000F0000
 kEfuseShift_DefaultFlexramPart = 16
@@ -103,10 +110,15 @@ kHabStatus_Open    = 0x1
 kHabStatus_Closed0 = 0x2
 kHabStatus_Closed1 = 0x3
 
-kBeeKeySel_FromReg   = 0x0
-kBeeKeySel_FromGp4   = 0x1
-kBeeKeySel_FromOtpmk = 0x2
-kBeeKeySel_FromSwGp2 = 0x3
+kBeeKeySel_FromReg       = 0x0
+kBeeKeySel_FromGp4       = 0x1
+kBeeKeySel_FromOtpmkHigh = 0x2
+kBeeKeySel_FromSwGp2     = 0x3
+
+kOtfadKeySel_FromOtpmkLow  = 0x0
+kOtfadKeySel_FromOtpmkHigh = 0x1
+kOtfadKeySel_Reserved      = 0x2
+kOtfadKeySel_FromSwGp2     = 0x3
 
 kSpiAddressing_3Bytes = 0x0
 kSpiAddressing_2Bytes = 0x1

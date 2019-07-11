@@ -10,7 +10,8 @@ kBootImageCsfHeaderVersion_Encrypted = '4.3'
 kSecKeyLengthInBits_SRK = 256
 kSecKeyLengthInBits_DEK = 128
 
-kSecFacRegionAlignedUnit = 0x400
+kSecFacRegionAlignedUnit_Bee   = 0x400
+kSecFacRegionAlignedUnit_Otfad = 0x1000
 
 #define NOR_EEPROM_IROM_DATA_HEADER_OFFSET      (0x400)
 #define FLEXSPI_NOR_IROM_DATA_HEADER_OFFSET     (0x1000)

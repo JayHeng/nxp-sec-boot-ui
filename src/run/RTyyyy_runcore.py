@@ -91,8 +91,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
 
         self.mcuDeviceHabStatus = None
         self.mcuDeviceBtFuseSel = None
-        self.mcuDeviceBeeKey0Sel = None
-        self.mcuDeviceBeeKey1Sel = None
+        self.mcuDeviceHwCryptoKey0Sel = None
+        self.mcuDeviceHwCryptoKey1Sel = None
 
         self.comMemWriteUnit = 0x1
         self.comMemEraseUnit = 0x1
@@ -783,22 +783,47 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         #self._showOtpmkDek()
         if not self._eraseFlexspiNorForImageLoading():
             return False
-        otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
+        otpmkKeyCommDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
+        otpmkKeyOpt = otpmkKeyCommDict['opt']
+        otpmkEncryptedRegionStartList = otpmkKeyCommDict['regionStartList'][:]
+        otpmkEncryptedRegionLengthOrEndList = otpmkKeyCommDict['regionLengthList'][:]
         # Prepare PRDB options
-        #---------------------------------------------------------------------------
-        # 0xe0120000 is an option for PRDB contruction and image encryption
-        # bit[31:28] tag, fixed to 0x0E
-        # bit[27:24] Key source, fixed to 0 for A0 silicon
-        # bit[23:20] AES mode: 1 - CTR mode
-        # bit[19:16] Encrypted region count
-        # bit[15:00] reserved in A0
-        #---------------------------------------------------------------------------
-        encryptedRegionCnt = (otpmkKeyOpt & 0x000F0000) >> 16
-        if encryptedRegionCnt == 0:
-            otpmkKeyOpt = (otpmkKeyOpt & 0xFFF0FFFF) | (0x1 << 16)
-            encryptedRegionCnt = 1
-            otpmkEncryptedRegionStartListList[0] = self.tgt.flexspiNorMemBase + RTyyyy_gendef.kIvtOffset_NOR
-            otpmkEncryptedRegionLengthList[0] = misc.align_up(os.path.getsize(self.destAppFilename), RTyyyy_gendef.kSecFacRegionAlignedUnit) - RTyyyy_gendef.kIvtOffset_NOR
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            #---------------------------------------------------------------------------
+            # 0xe0120000 is an option for PRDB contruction and image encryption
+            # bit[31:28] tag, fixed to 0x0E
+            # bit[27:24] Key source, fixed to 0 for A0 silicon
+            # bit[23:20] AES mode: 1 - CTR mode
+            # bit[19:16] Encrypted region count (maximum of 3)
+            # bit[15:00] reserved in A0
+            #---------------------------------------------------------------------------
+            encryptedRegionCnt = (otpmkKeyOpt & 0x000F0000) >> 16
+            if encryptedRegionCnt == 0:
+                otpmkKeyOpt = (otpmkKeyOpt & 0xFFF0FFFF) | (0x1 << 16)
+                encryptedRegionCnt = 1
+                otpmkEncryptedRegionStartList[0] = self.tgt.flexspiNorMemBase + RTyyyy_gendef.kIvtOffset_NOR
+                # For BEE, it should be length
+                otpmkEncryptedRegionLengthOrEndList[0] = misc.align_up(os.path.getsize(self.destAppFilename), RTyyyy_gendef.kSecFacRegionAlignedUnit_Bee) - RTyyyy_gendef.kIvtOffset_NOR
+            else:
+                pass
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            #---------------------------------------------------------------------------
+            # 0xe0001100 is an option for PRDB contruction and image encryption
+            # bit[31:28] tag, fixed to 0x0E
+            # bit[27:16] Reserved
+            # bit[15:12] Key source. 1 for SNVS[255:128], 0 for SNVS[127:0]
+            # bit[11:08] Encrypted region count (maximum of 4)
+            # bit[07:00] Redundant image offset in 256K. 0 for no redundant image
+            encryptedRegionCnt = (otpmkKeyOpt & 0x00000F00) >> 8
+            if encryptedRegionCnt == 0:
+                otpmkKeyOpt = (otpmkKeyOpt & 0xFFFFF0FF) | (0x1 << 8)
+                encryptedRegionCnt = 1
+                otpmkEncryptedRegionStartList[0] = self.tgt.flexspiNorMemBase + RTyyyy_gendef.kIvtOffset_NOR
+                # For OTFAD, it should be end
+                otpmkEncryptedRegionLengthOrEndList[0] = self.tgt.flexspiNorMemBase + misc.align_up(os.path.getsize(self.destAppFilename), RTyyyy_gendef.kSecFacRegionAlignedUnit_Otfad) - 1
+            else:
+                for i in range(encryptedRegionCnt):
+                    otpmkEncryptedRegionLengthOrEndList[i] = otpmkEncryptedRegionStartList[i] + otpmkEncryptedRegionLengthOrEndList[i] - 1
         else:
             pass
         if self.isSbFileEnabledToGen:
@@ -810,14 +835,14 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 return False
         for i in range(encryptedRegionCnt):
             if self.isSbFileEnabledToGen:
-                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(otpmkEncryptedRegionStartListList[i]))) + " > " + self.convertLongIntHexText(str(hex(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 4))) + ";\n")
-                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(otpmkEncryptedRegionLengthList[i]))) + " > " + self.convertLongIntHexText(str(hex(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 8))) + ";\n")
+                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(otpmkEncryptedRegionStartList[i]))) + " > " + self.convertLongIntHexText(str(hex(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 4))) + ";\n")
+                self._addFlashActionIntoSbAppBdContent("    load " + self.convertLongIntHexText(str(hex(otpmkEncryptedRegionLengthOrEndList[i]))) + " > " + self.convertLongIntHexText(str(hex(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 8))) + ";\n")
             else:
-                status, results, cmdStr = self.blhost.fillMemory(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 4, 0x4, otpmkEncryptedRegionStartListList[i])
+                status, results, cmdStr = self.blhost.fillMemory(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 4, 0x4, otpmkEncryptedRegionStartList[i])
                 self.printLog(cmdStr)
                 if status != boot.status.kStatus_Success:
                     return False
-                status, results, cmdStr = self.blhost.fillMemory(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 8, 0x4, otpmkEncryptedRegionLengthList[i])
+                status, results, cmdStr = self.blhost.fillMemory(RTyyyy_rundef.kRamFreeSpaceStart_LoadPrdbOpt + i * 8 + 8, 0x4, otpmkEncryptedRegionLengthOrEndList[i])
                 self.printLog(cmdStr)
                 if status != boot.status.kStatus_Success:
                     return False
@@ -1194,63 +1219,93 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             pass
         return True
 
-    def _getMcuDeviceBeeKeySel( self ):
-        beeKeySel = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_BeeKeySel, '', False)
-        if beeKeySel != None:
-            self.mcuDeviceBeeKey0Sel = ((beeKeySel & RTyyyy_fusedef.kEfuseMask_BeeKey0Sel) >> RTyyyy_fusedef.kEfuseShift_BeeKey0Sel)
-            self.mcuDeviceBeeKey1Sel = ((beeKeySel & RTyyyy_fusedef.kEfuseMask_BeeKey1Sel) >> RTyyyy_fusedef.kEfuseShift_BeeKey1Sel)
-        return beeKeySel
+    def _getMcuDeviceHwCryptoKeySel( self ):
+        hwCryptoKeySel = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_HwCryptoKeySel, '', False)
+        if hwCryptoKeySel != None:
+            self.mcuDeviceHwCryptoKey0Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel)
+            self.mcuDeviceHwCryptoKey1Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel)
+        return hwCryptoKeySel
 
-    def burnBeeKeySel( self ):
-        setBeeKey0Sel = None
-        setBeeKey1Sel = None
+    def burnHwCryptoKeySel( self ):
+        setHwCryptoKey0Sel = None
+        setHwCryptoKey1Sel = None
         if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
-            otpmkKeyOpt, otpmkEncryptedRegionStartListList, otpmkEncryptedRegionLengthList = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
-            encryptedRegionCnt = (otpmkKeyOpt & 0x000F0000) >> 16
-            # One PRDB means one BEE_KEY, no matter how many FAC regions it has
-            if encryptedRegionCnt >= 0:
-                setBeeKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
-            #if encryptedRegionCnt > 1:
-            #    setBeeKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
+            otpmkKeyCommDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_OtpmkKey)
+            otpmkKeyOpt = otpmkKeyCommDict['opt']
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                encryptedRegionCnt = (otpmkKeyOpt & 0x000F0000) >> 16
+                # One PRDB means one BEE_KEY, no matter how many FAC regions it has
+                if encryptedRegionCnt >= 0:
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
+                #if encryptedRegionCnt > 1:
+                #    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
+            elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                keySource = (otpmkKeyOpt & 0x0000F000) >> 12
+                if keySource == 0:
+                    setOtfadKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkLow
+                elif keySource == 1:
+                    setOtfadKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkHigh
+                else:
+                    pass
+            else:
+                pass
         elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
             userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
             if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
                 if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
-                    setBeeKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
                 elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                    setBeeKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
                 elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                    setBeeKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
                 else:
                     pass
             if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
                 if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
-                    setBeeKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmk
+                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
                 elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                    setBeeKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
+                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
                 elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                    setBeeKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
+                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
                 else:
                     pass
         else:
             pass
-        getBeeKeySel = self._getMcuDeviceBeeKeySel()
-        if getBeeKeySel != None:
-            if setBeeKey0Sel != None:
-                getBeeKeySel = getBeeKeySel | (setBeeKey0Sel << RTyyyy_fusedef.kEfuseShift_BeeKey0Sel)
-                if ((getBeeKeySel & RTyyyy_fusedef.kEfuseMask_BeeKey0Sel) >> RTyyyy_fusedef.kEfuseShift_BeeKey0Sel) != setBeeKey0Sel:
-                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_beeKey0SelHasBeenBurned'][self.languageIndex])
+        getHwCryptoKeySel = self._getMcuDeviceHwCryptoKeySel()
+        if getHwCryptoKeySel != None:
+            if setHwCryptoKey0Sel != None:
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey0Sel << RTyyyy_fusedef.kEfuseShift_HwCrypto0Sel)
+                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCrypto0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCrypto0Sel) != setHwCryptoKey0Sel:
+                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey0SelHasBeenBurned'][self.languageIndex])
                     return False
-            if setBeeKey1Sel != None:
-                getBeeKeySel = getBeeKeySel | (setBeeKey1Sel << RTyyyy_fusedef.kEfuseShift_BeeKey1Sel)
-                if ((getBeeKeySel & RTyyyy_fusedef.kEfuseMask_BeeKey1Sel) >> RTyyyy_fusedef.kEfuseShift_BeeKey1Sel) != setBeeKey1Sel:
-                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_beeKey1SelHasBeenBurned'][self.languageIndex])
+            if setHwCryptoKey1Sel != None:
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey1Sel << RTyyyy_fusedef.kEfuseShift_HwCrypto1Sel)
+                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCrypto1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCrypto1Sel) != setHwCryptoKey1Sel:
+                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCrypto1SelHasBeenBurned'][self.languageIndex])
                     return False
-            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_BeeKeySel, getBeeKeySel)
+            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_HwCryptoKeySel, getHwCryptoKeySel)
             if not burnResult:
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnBeeKeyxSel'][self.languageIndex])
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnHwCryptoKeyxSel'][self.languageIndex])
                 return False
         return True
+
+    def enableOtfad( self ):
+        otfadCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_OtfadEnable, '', False)
+        if otfadCfg != None:
+            otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadEnable)
+            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_OtfadEnable, otfadCfg)
+            if not burnResult:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadEnablementBit'][self.languageIndex])
+                return False
+        return True
+
+    def burnHwCryptoEnablements( self ):
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            return True
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            return self.enableOtfad()
+        else:
+            pass
 
     def flashHabDekToGenerateKeyBlob ( self ):
         if os.path.isfile(self.habDekFilename) and self.habDekDataOffset != None:

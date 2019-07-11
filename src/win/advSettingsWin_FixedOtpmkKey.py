@@ -17,7 +17,7 @@ import wx.xrc
 class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 619,256 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 708,289 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
@@ -33,8 +33,8 @@ class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 
 		gSizer_encryptionOpt.Add( self.m_staticText_keySource, 0, wx.ALL, 5 )
 
-		m_choice_keySourceChoices = [ u"Fuse OTPMK - SNVS" ]
-		self.m_choice_keySource = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,-1 ), m_choice_keySourceChoices, 0 )
+		m_choice_keySourceChoices = [ u"Fuse OTPMK - SNVS[127:0]", u"Fuse OTPMK - SNVS[255:128]" ]
+		self.m_choice_keySource = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 190,-1 ), m_choice_keySourceChoices, 0 )
 		self.m_choice_keySource.SetSelection( 0 )
 		gSizer_encryptionOpt.Add( self.m_choice_keySource, 0, wx.ALL, 5 )
 
@@ -44,7 +44,7 @@ class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 		gSizer_encryptionOpt.Add( self.m_staticText_aesMode, 0, wx.ALL, 5 )
 
 		m_choice_aesModeChoices = [ u"CTR" ]
-		self.m_choice_aesMode = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,-1 ), m_choice_aesModeChoices, 0 )
+		self.m_choice_aesMode = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 190,-1 ), m_choice_aesModeChoices, 0 )
 		self.m_choice_aesMode.SetSelection( 0 )
 		gSizer_encryptionOpt.Add( self.m_choice_aesMode, 0, wx.ALL, 5 )
 
@@ -53,10 +53,18 @@ class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 
 		gSizer_encryptionOpt.Add( self.m_staticText_regionCnt, 0, wx.ALL, 5 )
 
-		m_choice_regionCntChoices = [ u"0 - Whole Image", u"1 - User Defined", u"2 - User Defined", u"3 - User Defined" ]
-		self.m_choice_regionCnt = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 150,-1 ), m_choice_regionCntChoices, 0 )
+		m_choice_regionCntChoices = [ u"0 - Whole Image", u"1 - User Defined", u"2 - User Defined", u"3 - User Defined", u"4 - User Defined" ]
+		self.m_choice_regionCnt = wx.Choice( self.m_panel_encryptionOpt, wx.ID_ANY, wx.DefaultPosition, wx.Size( 190,-1 ), m_choice_regionCntChoices, 0 )
 		self.m_choice_regionCnt.SetSelection( 0 )
 		gSizer_encryptionOpt.Add( self.m_choice_regionCnt, 0, wx.ALL, 5 )
+
+		self.m_staticText_redundantImageOffset = wx.StaticText( self.m_panel_encryptionOpt, wx.ID_ANY, u"Redundant image offset (in 256KB):", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText_redundantImageOffset.Wrap( -1 )
+
+		gSizer_encryptionOpt.Add( self.m_staticText_redundantImageOffset, 0, wx.ALL, 5 )
+
+		self.m_textCtrl_redundantImageOffset = wx.TextCtrl( self.m_panel_encryptionOpt, wx.ID_ANY, u"0x0", wx.DefaultPosition, wx.Size( 190,-1 ), 0 )
+		gSizer_encryptionOpt.Add( self.m_textCtrl_redundantImageOffset, 0, wx.ALL, 5 )
 
 
 		self.m_panel_encryptionOpt.SetSizer( gSizer_encryptionOpt )
@@ -98,6 +106,12 @@ class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 		self.m_textCtrl_region2Length = wx.TextCtrl( self.m_panel_regionInfo, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer_regionInfo.Add( self.m_textCtrl_region2Length, 0, wx.ALL, 5 )
 
+		self.m_textCtrl_region3Start = wx.TextCtrl( self.m_panel_regionInfo, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer_regionInfo.Add( self.m_textCtrl_region3Start, 0, wx.ALL, 5 )
+
+		self.m_textCtrl_region3Length = wx.TextCtrl( self.m_panel_regionInfo, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer_regionInfo.Add( self.m_textCtrl_region3Length, 0, wx.ALL, 5 )
+
 
 		self.m_panel_regionInfo.SetSizer( gSizer_regionInfo )
 		self.m_panel_regionInfo.Layout()
@@ -106,7 +120,7 @@ class advSettingsWin_FixedOtpmkKey ( wx.Frame ):
 
 		wSizer_win.Add( self.m_notebook_regionInfo, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_staticText_winNull0 = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 348,-1 ), 0 )
+		self.m_staticText_winNull0 = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 428,-1 ), 0 )
 		self.m_staticText_winNull0.Wrap( -1 )
 
 		wSizer_win.Add( self.m_staticText_winNull0, 0, wx.ALL, 5 )

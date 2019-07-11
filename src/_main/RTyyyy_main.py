@@ -413,6 +413,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 otpmkKeySettingsFrame = ui_settings_fixed_otpmk_key.secBootUiSettingsFixedOtpmkKey(None)
                 otpmkKeySettingsFrame.SetTitle(uilang.kSubLanguageContentDict['otpmkKey_title'][self.languageIndex])
+                otpmkKeySettingsFrame.setNecessaryInfo(self.secureBootType)
                 otpmkKeySettingsFrame.Show(True)
             elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 userKeySettingsFrame = ui_settings_flexible_user_keys.secBootUiSettingsFlexibleUserKeys(None)
@@ -532,8 +533,8 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                             if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
                                self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
                                 self.enableHab()
-                        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-                            if self.burnBeeKeySel():
+                        if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+                            if self.burnHwCryptoKeySel() and self.burnHwCryptoEnablements():
                                 status = True
                         else:
                             status = True

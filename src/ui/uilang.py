@@ -246,19 +246,20 @@ kSubLanguageContentDict = {
         'button_usdhcmmc_ok':                 ['Ok',                                    u"确定"],
         'button_usdhcmmc_cancel':             ['Cancel',                                u"取消"],
 
-        #otpmk
+        #bee/otfad otpmk
         'otpmkKey_title':                     ['Advanced Key Settings - Fixed OTPMK',   u"配置预设OTPMK密钥参数"],
         'panel_encryptionOpt':                ['Encryption Option',                     u"加密选项"],
         'sText_keySource':                    ['Key Source:',                           u"密钥源："],
         'sText_aesMode':                      ['AES Mode:',                             u"AES模式："],
         'sText_regionCnt':                    ['Region Count:',                         u"加密区域总数："],
+        'sText_redundantImageOffset':         ['Redundant Image Offset (in 256KB):',    u"备份程序偏移（以256KB为单位）："],
         'panel_regionInfo':                   ['Encrypted Region Info',                 u"加密区域信息"],
         'sText_regionStart':                  ['Region Start:',                         u"区域首地址："],
         'sText_regionLength':                 ['Region Length:',                        u"区域长度："],
         'button_otpmkkey_ok':                 ['Ok',                                    u"确定"],
         'button_otpmkkey_cancel':             ['Cancel',                                u"取消"],
 
-        #user key
+        #bee user key
         'userKey_title':                      ['Advanced Key Settings - Flexible User', u"配置灵活用户密钥参数"],
         'panel_encryptionOpt':                ['Encryption Option',                     u"加密选项"],
         'sText_engineSel':                    ['Engine Selection:',                     u"引擎选择："],
@@ -589,12 +590,14 @@ kMsgLanguageContentDict = {
                                                 u"Fuse MISC_CONF0[28:24]已经被烧录，它只可被烧写一次！"],
         'burnFuseError_failToBurnMiscConf0':  ['Fuse MISC_CONF0[28:24] LPSPI EEPROM region was not burned successfully!',
                                               u"Fuse MISC_CONF0[28:24]区域未成功烧录！"],
-        'burnFuseError_beeKey0SelHasBeenBurned': ['Fuse BOOT_CFG1[5:4] BEE_KEY0_SEL has been burned, it is program-once!',
-                                                 u"Fuse BOOT_CFG1[5:4] BEE_KEY0_SEL位已经被烧录过，它只可被烧写一次！"],
-        'burnFuseError_beeKey1SelHasBeenBurned': ['Fuse BOOT_CFG1[7:6] BEE_KEY1_SEL has been burned, it is program-once!',
-                                                 u"Fuse BOOT_CFG1[7:6] BEE_KEY1_SEL位已经被烧录过，它只可被烧写一次！"],
-        'burnFuseError_failToBurnBeeKeyxSel': ['Fuse BOOT_CFG1[7:4] BEE_KEY0/1_SEL region was not burned successfully!',
-                                              u"Fuse BOOT_CFG1[7:4] BEE_KEY0/1_SEL位未成功烧录！"],
+        'burnFuseError_hwCrypto0SelHasBeenBurned': ['Fuse BOOT_CFG1[5:4] XX_KEY0_SEL has been burned, it is program-once!',
+                                                 u"Fuse BOOT_CFG1[5:4] XX_KEY0_SEL位已经被烧录过，它只可被烧写一次！"],
+        'burnFuseError_hwCrypto1SelHasBeenBurned': ['Fuse BOOT_CFG1[7:6] XX_KEY1_SEL has been burned, it is program-once!',
+                                                 u"Fuse BOOT_CFG1[7:6] XX_KEY1_SEL位已经被烧录过，它只可被烧写一次！"],
+        'burnFuseError_failToBurnHwCryptoKeyxSel': ['Fuse BOOT_CFG1[7:4] XX_KEY0/1_SEL region was not burned successfully!',
+                                              u"Fuse BOOT_CFG1[7:4] XX_KEY0/1_SEL位未成功烧录！"],
+        'burnFuseError_failToBurnOtfadEnablementBit': ['Fuse 0x630[8] OTFAD_ENABLE region was not burned successfully!',
+                                              u"Fuse 0x630[8] OTFAD_ENABLE位未成功烧录！"],
         'certGenError_dekNotGen':             ['Dek file hasn\'t been generated!',
                                               u"DEK数据文件还没有生成!"],
         'burnFuseError_failToBurnSecConfig1': ['Fuse BOOT_CFG1[1] SEC_CONFIG[1] region was not burned successfully!',
