@@ -90,12 +90,19 @@ g_otpmkKeyCommDict = {'secureBootType':None,
                       'regionLengthList':[None] * 4}
 
 g_userKeyCtrlDict = {'mcu_device':None,
+                     # For BEE
                      'engine_sel':None,
                      'engine0_key_src':None,
                      'engine0_fac_cnt':None,
                      'engine1_key_src':None,
-                     'engine1_fac_cnt':None}
+                     'engine1_fac_cnt':None,
+                     # For OTFAD
+                     'total_regions':None,
+                     'kek_src':None,
+                     }
 g_userKeyCmdDict = {'base_addr':None,
+                    'hw_eng':None,
+                    # For BEE
                     'engine0_key':None,
                     'engine0_arg':None,
                     'engine0_lock':None,
@@ -103,7 +110,13 @@ g_userKeyCmdDict = {'base_addr':None,
                     'engine1_arg':None,
                     'engine1_lock':None,
                     'use_zero_key':None,
-                    'is_boot_image':None}
+                    'is_boot_image':None,
+                    # For OTFAD
+                    'kek':None,
+                    'otfad_arg':None,
+                    'scramble_arg':None,
+                    'otfad_ctx_lock':None,
+                    }
 
 def initVar(cfgFilename):
     global g_hasSubWinBeenOpened
@@ -256,7 +269,10 @@ def initVar(cfgFilename):
         g_userKeyCtrlDict['engine0_fac_cnt'] = 1
         g_userKeyCtrlDict['engine1_key_src'] = RTyyyy_uidef.kUserKeySource_SW_GP2
         g_userKeyCtrlDict['engine1_fac_cnt'] = 1
+        g_userKeyCtrlDict['total_regions'] = 1
+        g_userKeyCtrlDict['kek_src'] = RTyyyy_uidef.kUserKeySource_SW_GP2
         g_userKeyCmdDict['base_addr'] = '0x60000000'
+        g_userKeyCmdDict['hw_eng'] = 'bee'
         g_userKeyCmdDict['engine0_key'] = '0123456789abcdeffedcba9876543210'
         g_userKeyCmdDict['engine0_arg'] = '1,[0x60001000,0x1000,0]'
         g_userKeyCmdDict['engine0_lock'] = '0'
@@ -265,6 +281,10 @@ def initVar(cfgFilename):
         g_userKeyCmdDict['engine1_lock'] = '0'
         g_userKeyCmdDict['use_zero_key'] = '1'
         g_userKeyCmdDict['is_boot_image'] = '1'
+        g_userKeyCmdDict['kek'] = '0123456789abcdeffedcba9876543210'
+        g_userKeyCmdDict['otfad_arg'] = '[0123456789abcdeffedcba9876543210,0020406001030507,0x60001000,0x1000]'
+        g_userKeyCmdDict['scramble_arg'] = '0x33aa55cc,0x1b'
+        g_userKeyCmdDict['otfad_ctx_lock'] = '0,0,0,0'
 
 def deinitVar(cfgFilename=None):
     global g_cfgFilename

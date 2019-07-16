@@ -16,7 +16,8 @@ from fuse import RTyyyy_fusedef
 from ui import ui_cfg_dcd
 from ui import ui_settings_cert
 from ui import ui_settings_fixed_otpmk_key
-from ui import ui_settings_flexible_user_keys
+from ui import ui_settings_flexible_user_keys_bee
+from ui import ui_settings_flexible_user_keys_otfad
 from ui import RT10yy_ui_efuse_lock
 from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
 from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
@@ -416,7 +417,13 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 otpmkKeySettingsFrame.setNecessaryInfo(self.secureBootType)
                 otpmkKeySettingsFrame.Show(True)
             elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                userKeySettingsFrame = ui_settings_flexible_user_keys.secBootUiSettingsFlexibleUserKeys(None)
+                userKeySettingsFrame = None
+                if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                    userKeySettingsFrame = ui_settings_flexible_user_keys_bee.secBootUiSettingsFlexibleUserKeysBee(None)
+                elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                    userKeySettingsFrame = ui_settings_flexible_user_keys_otfad.secBootUiSettingsFlexibleUserKeysOtfad(None)
+                else:
+                    pass
                 userKeySettingsFrame.SetTitle(uilang.kSubLanguageContentDict['userKey_title'][self.languageIndex])
                 userKeySettingsFrame.setNecessaryInfo(self.mcuDevice, self.tgt.flexspiNorMemBase)
                 userKeySettingsFrame.Show(True)

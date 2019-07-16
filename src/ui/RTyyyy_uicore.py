@@ -407,7 +407,12 @@ class secBootRTyyyyUi(memcore.secBootMem):
             self.m_choice_enableCertForHwCrypto.SetSelection(self.m_choice_enableCertForHwCrypto.FindString(enableCertForHwCryptoTxt))
             self.setHwCryptoCertColor()
             self.m_choice_availHwCryptoEngines.Clear()
-            self.m_choice_availHwCryptoEngines.SetItems(['2'])
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                self.m_choice_availHwCryptoEngines.SetItems([str(RTyyyy_uidef.kMaxHwCryptoCount_Bee)])
+            elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                self.m_choice_availHwCryptoEngines.SetItems([str(RTyyyy_uidef.kMaxHwCryptoCount_Otfad)])
+            else:
+                pass
             self.m_choice_availHwCryptoEngines.SetSelection(0)
             self.m_button_prepHwCrypto.Enable( True )
             self.m_button_prepHwCrypto.SetLabel(uilang.kMainLanguageContentDict['button_prepHwCrypto_e'][self.languageIndex])
@@ -422,6 +427,14 @@ class secBootRTyyyyUi(memcore.secBootMem):
             self.m_button_operHwCrypto.SetBackgroundColour( uidef.kBootSeqColor_Active )
         else:
             pass
+        self.m_choice_maxFacCnt.Clear()
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            self.m_choice_maxFacCnt.SetItems([str(RTyyyy_uidef.kMaxFacRegionCount_Bee)])
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            self.m_choice_maxFacCnt.SetItems([str(RTyyyy_uidef.kMaxFacRegionCount_Otfad)])
+        else:
+            pass
+        self.m_choice_maxFacCnt.SetSelection(0)
         self.Refresh()
 
     def printSrkData( self, srkStr ):

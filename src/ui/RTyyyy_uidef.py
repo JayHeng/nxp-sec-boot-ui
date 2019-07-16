@@ -68,7 +68,11 @@ kSupportedKeySource_iMXRT105x = [kUserKeySource_SW_GP2]
 kSupportedKeySource_iMXRT106x = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
 kSupportedKeySource_iMXRT1064 = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
 
-kMaxFacRegionCount = 3
+kMaxHwCryptoCount_Bee   = 2
+kMaxHwCryptoCount_Otfad = 4
+
+kMaxFacRegionCount_Bee   = 3
+kMaxFacRegionCount_Otfad = 4
 
 kMemBlockColor_HwCryptoKeyBlob = wx.Colour( 0xff, 0x7f, 0x00 ) #wx.CORAL
 kMemBlockColor_NFCB            = wx.Colour( 0xf9, 0xb5, 0x00 ) #
