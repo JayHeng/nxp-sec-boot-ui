@@ -210,6 +210,14 @@ class secBootRTyyyyUi(memcore.secBootMem):
                     self.m_button_prepHwCrypto.SetBackgroundColour( activeColor )
                     self.m_button_operHwCrypto.Enable( setEnable )
                     self.m_button_operHwCrypto.SetBackgroundColour( activeColor )
+                    userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                        userKeyCmdDict['hw_eng'] = 'bee'
+                    elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                        userKeyCmdDict['hw_eng'] = 'otfad'
+                    else:
+                        pass
+                    uivar.setAdvancedSettings(uidef.kAdvancedSettings_UserKeys, userKeyCtrlDict, userKeyCmdDict)
                 else:
                     pass
                 self.m_button_genImage.Enable( setEnable )

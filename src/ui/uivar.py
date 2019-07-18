@@ -283,7 +283,8 @@ def initVar(cfgFilename):
         g_userKeyCmdDict['is_boot_image'] = '1'
         g_userKeyCmdDict['kek'] = '0123456789abcdeffedcba9876543210'
         g_userKeyCmdDict['otfad_arg'] = '[0123456789abcdeffedcba9876543210,0020406001030507,0x60001000,0x1000]'
-        g_userKeyCmdDict['scramble_arg'] = '0x33aa55cc,0x1b'
+        g_userKeyCmdDict['scramble'] = '0x33aa55cc'
+        g_userKeyCmdDict['scramble_align'] = '0x1b'
         g_userKeyCmdDict['otfad_ctx_lock'] = '0,0,0,0'
 
 def deinitVar(cfgFilename=None):

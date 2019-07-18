@@ -500,7 +500,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                 if self.connectStage == uidef.kConnectStage_ExternalMemory or \
                    self.connectStage == uidef.kConnectStage_Reset:
                     self._RTyyyy_startGaugeTimer()
-                    if self.burnBeeDekData():
+                    if self.burnHwCryptoDekData():
                         status = True
                     self._RTyyyy_stopGaugeTimer()
                 else:

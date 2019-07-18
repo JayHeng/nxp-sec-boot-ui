@@ -85,10 +85,9 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
             self.m_textCtrl_kekData.write(self.userKeyCmdDict['kek'])
         self.m_textCtrl_scrambleAlgo.Clear()
         self.m_textCtrl_scrambleAlignment.Clear()
-        if self.userKeyCmdDict['scramble_arg'] != None:
-            loc = self.userKeyCmdDict['scramble_arg'].find(',', 0)
-            self.m_textCtrl_scrambleAlgo.write(self.userKeyCmdDict['scramble_arg'][0:loc])
-            self.m_textCtrl_scrambleAlignment.write(self.userKeyCmdDict['scramble_arg'][loc+1:len(self.userKeyCmdDict['scramble_arg'])])
+        if self.userKeyCmdDict['scramble'] != None:
+            self.m_textCtrl_scrambleAlgo.write(self.userKeyCmdDict['scramble'])
+            self.m_textCtrl_scrambleAlignment.write(self.userKeyCmdDict['scramble_align'])
         self._changeTotalRegions()
         for i in range(self.userKeyCtrlDict['total_regions']):
             self._recoverRegionInfo(i)
@@ -141,24 +140,24 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
         return status
 
     def _getScrambleAlgo( self ):
-        self.userKeyCmdDict['scramble_arg'] = None
+        self.userKeyCmdDict['scramble'] = None
         scrambleAlgoStr = self.m_textCtrl_scrambleAlgo.GetLineText(0)
         validateStatus = True
         if len(scrambleAlgoStr):
             validateStatus = self._validateScrambleRange(scrambleAlgoStr, 32)
             if validateStatus:
-                self.userKeyCmdDict['scramble_arg'] = scrambleAlgoStr
+                self.userKeyCmdDict['scramble'] = scrambleAlgoStr
         return validateStatus
 
     def _getScrambleAlignment( self ):
         validateStatus = True
-        if self.userKeyCmdDict['scramble_arg'] != None:
+        if self.userKeyCmdDict['scramble'] != None:
             scrambleAlignmentStr = self.m_textCtrl_scrambleAlignment.GetLineText(0)
             validateStatus = self._validateScrambleRange(scrambleAlignmentStr, 8)
             if validateStatus:
-                self.userKeyCmdDict['scramble_arg'] += ',' + scrambleAlignmentStr
+                self.userKeyCmdDict['scramble_align'] = scrambleAlignmentStr
             else:
-                self.userKeyCmdDict['scramble_arg'] = None
+                self.userKeyCmdDict['scramble_align'] = None
         return validateStatus
 
     def _getScrambleArg( self ):
@@ -508,7 +507,8 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
         #print 'base_addr=' + self.userKeyCmdDict['base_addr']
         #print 'kek=' + self.userKeyCmdDict['kek']
         #print 'otfad_arg=' + self.userKeyCmdDict['otfad_arg']
-        #print 'scramble_arg=' + self.userKeyCmdDict['scramble_arg']
+        #print 'scramble=' + self.userKeyCmdDict['scramble']
+        #print 'scramble_align=' + self.userKeyCmdDict['scramble_align']
         #print 'otfad_ctx_lock=' + self.userKeyCmdDict['otfad_ctx_lock']
         uivar.setAdvancedSettings(uidef.kAdvancedSettings_UserKeys, self.userKeyCtrlDict, self.userKeyCmdDict)
         uivar.setRuntimeSettings(False)

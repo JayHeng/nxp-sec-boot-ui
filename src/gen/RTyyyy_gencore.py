@@ -85,13 +85,17 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self.sbUserEfuseBdFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_user_efuse_sb_gen.bd')
         self.sbUserEfuseBdBatFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_user_efuse_sb_gen.bat')
         self.updateAllCstPathToCorrectVersion()
-        self.imageEncPath = os.path.join(self.exeTopRoot, 'tools', 'image_enc', 'win', 'image_enc.exe')
+        self.imageEncPath = os.path.join(self.exeTopRoot, 'tools', 'image_enc2', 'win', 'image_enc.exe')
         self.beeDek0Filename = os.path.join(self.exeTopRoot, 'gen', 'bee_crypto', 'bee_dek0.bin')
         self.beeDek1Filename = os.path.join(self.exeTopRoot, 'gen', 'bee_crypto', 'bee_dek1.bin')
-        self.encBatFilename = os.path.join(self.exeTopRoot, 'gen', 'bee_crypto', 'imx_application_enc.bat')
+        self.beeEncBatFilename = os.path.join(self.exeTopRoot, 'gen', 'bee_crypto', 'imx_application_enc.bat')
         self.otpmkDekFilename = os.path.join(self.exeTopRoot, 'gen', 'bee_crypto', 'otpmk_dek.bin')
+        self.otfadDek0Filename = os.path.join(self.exeTopRoot, 'gen', 'otfad_crypto', 'otfad_dek0.bin')
+        self.otfadEncBatFilename = os.path.join(self.exeTopRoot, 'gen', 'otfad_crypto', 'imx_application_enc.bat')
         self.destEncAppFilename = None
         self.destEncAppNoCfgBlockFilename = None
+        self.otfadKeyblobFilenname = os.path.join(self.exeTopRoot, 'gen', 'otfad_crypto', 'otfad_keyblob.bin')
+        self.destEncAppNoKeyblobAndCfgBlockFilename = None
 
         self.flBdFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_flashloader_gen.bd')
         self.flBdBatFilename = os.path.join(self.exeTopRoot, 'gen', 'bd_file', 'imx_flashloader_gen.bat')
@@ -883,10 +887,10 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                     val32 = self.getVal32FromBinFile(self.habDekFilename, (i * 4))
                     self.printHabDekData(self.getFormattedHexValue(val32))
 
-    def _setDestAppFilenameForBee( self ):
+    def _setDestAppFilenameForHwCrypto( self, hwCryptoStr ):
         destAppPath, destAppFile = os.path.split(self.destAppFilename)
         destAppName, destAppType = os.path.splitext(destAppFile)
-        destAppName += '_bee_encrypted'
+        destAppName += '_' + hwCryptoStr + '_encrypted'
         self.destEncAppFilename = os.path.join(destAppPath, destAppName + destAppType)
 
     def _genBeeDekFile( self, engineIndex, keyContent ):
@@ -899,7 +903,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         else:
             pass
 
-    def _showBeeDekForGp4( self, dekFilename ):
+    def _showHwCryptoDekForGp4( self, dekFilename ):
         if os.path.isfile(dekFilename):
             self.clearGp4DekData()
             keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
@@ -907,7 +911,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                 val32 = self.getVal32FromBinFile(dekFilename, (i * 4))
                 self.printGp4DekData(self.getFormattedHexValue(val32))
 
-    def _showBeeDekForSwGp2( self, dekFilename ):
+    def _showHwCryptoDekForSwGp2( self, dekFilename ):
         if os.path.isfile(dekFilename):
             self.clearSwGp2DekData()
             keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
@@ -919,55 +923,93 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
             self._genBeeDekFile(0, userKeyCmdDict['engine0_key'])
             if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                self._showBeeDekForSwGp2(self.beeDek0Filename)
+                self._showHwCryptoDekForSwGp2(self.beeDek0Filename)
             elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                self._showBeeDekForGp4(self.beeDek0Filename)
+                self._showHwCryptoDekForGp4(self.beeDek0Filename)
             else:
                 pass
         if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
             self._genBeeDekFile(1, userKeyCmdDict['engine1_key'])
             if userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                self._showBeeDekForSwGp2(self.beeDek1Filename)
+                self._showHwCryptoDekForSwGp2(self.beeDek1Filename)
             elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                self._showBeeDekForGp4(self.beeDek1Filename)
+                self._showHwCryptoDekForGp4(self.beeDek1Filename)
             else:
                 pass
 
+    def _genOtfadDekFile( self, keyContent ):
+        self.fillDek128ContentIntoBinFile(self.otfadDek0Filename, keyContent)
+
+    def _genOtfadDekFilesAndShow( self, userKeyCtrlDict, userKeyCmdDict ):
+        self._genOtfadDekFile(userKeyCmdDict['kek'])
+        if userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+            self._showHwCryptoDekForSwGp2(self.otfadDek0Filename)
+        else:
+            pass
+
     def _updateEncBatfileContent( self, userKeyCtrlDict, userKeyCmdDict ):
         batContent = "\"" + self.imageEncPath + "\""
+        batContent += " hw_eng=" + userKeyCmdDict['hw_eng']
         batContent += " ifile=" + "\"" + self.destAppFilename + "\""
         batContent += " ofile=" + "\"" + self.destEncAppFilename + "\""
         batContent += " base_addr=" + userKeyCmdDict['base_addr']
-        if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-            batContent += " region0_key=" + userKeyCmdDict['engine0_key']
-            batContent += " region0_arg=" + userKeyCmdDict['engine0_arg']
-            batContent += " region0_lock=" + userKeyCmdDict['engine0_lock']
-        if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-            batContent += " region1_key=" + userKeyCmdDict['engine1_key']
-            batContent += " region1_arg=" + userKeyCmdDict['engine1_arg']
-            batContent += " region1_lock=" + userKeyCmdDict['engine1_lock']
-        batContent += " use_zero_key=" + userKeyCmdDict['use_zero_key']
-        batContent += " is_boot_image=" + userKeyCmdDict['is_boot_image']
-        with open(self.encBatFilename, 'wb') as fileObj:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                batContent += " region0_key=" + userKeyCmdDict['engine0_key']
+                batContent += " region0_arg=" + userKeyCmdDict['engine0_arg']
+                batContent += " region0_lock=" + userKeyCmdDict['engine0_lock']
+            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                batContent += " region1_key=" + userKeyCmdDict['engine1_key']
+                batContent += " region1_arg=" + userKeyCmdDict['engine1_arg']
+                batContent += " region1_lock=" + userKeyCmdDict['engine1_lock']
+            batContent += " use_zero_key=" + userKeyCmdDict['use_zero_key']
+            batContent += " is_boot_image=" + userKeyCmdDict['is_boot_image']
+            encBatFilename = self.beeEncBatFilename
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            batContent += " kek=" + userKeyCmdDict['kek']
+            batContent += " otfad_arg=" + userKeyCmdDict['otfad_arg']
+            if userKeyCmdDict['scramble'] != None:
+                batContent += " scramble=" + userKeyCmdDict['scramble']
+                batContent += " scramble_align=" + userKeyCmdDict['scramble_align']
+            batContent += " otfad_ctx_lock=" + userKeyCmdDict['otfad_ctx_lock']
+            encBatFilename = self.otfadEncBatFilename
+        else:
+            pass
+        with open(encBatFilename, 'wb') as fileObj:
             fileObj.write(batContent)
             fileObj.close()
 
     def _encrypteBootableImage( self ):
         curdir = os.getcwd()
         os.chdir(os.path.split(self.imageEncPath)[0])
-        process = subprocess.Popen(self.encBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        encBatFilename = None
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            encBatFilename = self.beeEncBatFilename
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            encBatFilename = self.otfadEncBatFilename
+        else:
+            pass
+        process = subprocess.Popen(encBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
         print commandOutput
 
     def encrypteImageUsingFlexibleUserKeys( self ):
         userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
-        if userKeyCmdDict['is_boot_image'] == '1':
-            self._setDestAppFilenameForBee()
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            if userKeyCmdDict['is_boot_image'] == '1':
+                self._setDestAppFilenameForHwCrypto('bee')
+                self._updateEncBatfileContent(userKeyCtrlDict, userKeyCmdDict)
+                self._encrypteBootableImage()
+                self._genBeeDekFilesAndShow(userKeyCtrlDict, userKeyCmdDict)
+            elif userKeyCmdDict['is_boot_image'] == '0':
+                pass
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            self._setDestAppFilenameForHwCrypto('otfad')
             self._updateEncBatfileContent(userKeyCtrlDict, userKeyCmdDict)
             self._encrypteBootableImage()
-            self._genBeeDekFilesAndShow(userKeyCtrlDict, userKeyCmdDict)
-        elif userKeyCmdDict['is_boot_image'] == '0':
+            self._genOtfadDekFilesAndShow(userKeyCtrlDict, userKeyCmdDict)
+        else:
             pass
 
     def _createSignedFlBdfile( self, srcFlFilename):
@@ -1161,7 +1203,12 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         if sbType == RTyyyy_gendef.kSbFileType_All or sbType == RTyyyy_gendef.kSbFileType_Flash:
             if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
                 if (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                    destAppFilename = self.destEncAppNoCfgBlockFilename
+                    if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                        destAppFilename = self.destEncAppNoCfgBlockFilename
+                    elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                        destAppFilename = self.destEncAppNoKeyblobAndCfgBlockFilename
+                    else:
+                        pass
                 else:
                     destAppFilename = self.destAppNoPaddingFilename
             elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand or \
@@ -1180,6 +1227,8 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         if sbType == RTyyyy_gendef.kSbFileType_All or sbType == RTyyyy_gendef.kSbFileType_Flash:
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto:
                 sbBatContent += ' ' + "\"" + self.habDekFilename + "\""
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+                sbBatContent += ' ' + "\"" + self.otfadKeyblobFilenname + "\""
         with open(sbAppBdBatFilename, 'wb') as fileObj:
             fileObj.write(sbBatContent)
             fileObj.close()

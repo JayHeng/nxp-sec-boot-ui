@@ -966,30 +966,39 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnGp4Lock'][self.languageIndex])
                 return False
 
-    def burnBeeDekData ( self ):
+    def burnHwCryptoDekData ( self ):
         needToBurnSwGp2 = False
         needToBurnGp4 = False
         swgp2DekFilename = None
         gp4DekFilename = None
         userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
-        if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-            if userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                if userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+                    needToBurnSwGp2 = True
+                    swgp2DekFilename = self.beeDek1Filename
+                elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
+                    needToBurnGp4 = True
+                    gp4DekFilename = self.beeDek1Filename
+                else:
+                    pass
+            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+                    needToBurnSwGp2 = True
+                    swgp2DekFilename = self.beeDek0Filename
+                elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
+                    needToBurnGp4 = True
+                    gp4DekFilename = self.beeDek0Filename
+                else:
+                    pass
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            if userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
                 needToBurnSwGp2 = True
-                swgp2DekFilename = self.beeDek1Filename
-            elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                needToBurnGp4 = True
-                gp4DekFilename = self.beeDek1Filename
+                swgp2DekFilename = self.otfadDek0Filename
             else:
                 pass
-        if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-            if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                needToBurnSwGp2 = True
-                swgp2DekFilename = self.beeDek0Filename
-            elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                needToBurnGp4 = True
-                gp4DekFilename = self.beeDek0Filename
-            else:
-                pass
+        else:
+            pass
         keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
         if needToBurnSwGp2:
             isReady, isBlank = self._isDeviceFuseSwGp2RegionReadyForBurn(swgp2DekFilename)
@@ -1041,6 +1050,45 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             fileObj.write(imageData)
             fileObj.close()
 
+    def _genDestEncAppFileWithoutKeyblobAndCfgBlock( self ):
+        destEncAppPath, destEncAppFile = os.path.split(self.destEncAppFilename)
+        destEncAppName, destEncAppType = os.path.splitext(destEncAppFile)
+        destEncAppName += '_nokeyblob_nocfgblock'
+        self.destEncAppNoKeyblobAndCfgBlockFilename = os.path.join(destEncAppPath, destEncAppName + destEncAppType)
+        imageLen = os.path.getsize(self.destEncAppFilename)
+        imageData = None
+        with open(self.destEncAppFilename, 'rb') as fileObj:
+            imageData = fileObj.read(imageLen)
+            if len(imageData) > self.tgt.xspiNorCfgInfoOffset + rundef.kFlexspiNorCfgInfo_Length:
+                imageData = imageData[self.tgt.xspiNorCfgInfoOffset + rundef.kFlexspiNorCfgInfo_Length:len(imageData)]
+            fileObj.close()
+        with open(self.destEncAppNoKeyblobAndCfgBlockFilename, 'wb') as fileObj:
+            fileObj.write(imageData)
+            fileObj.close()
+
+    def _extractOtfadKeyblobFromDestEncAppFile( self ):
+        imageLen = os.path.getsize(self.destEncAppFilename)
+        imageData = None
+        with open(self.destEncAppFilename, 'rb') as fileObj:
+            imageData = fileObj.read(imageLen)
+            if len(imageData) > RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob + RTyyyy_memdef.kMemBlockSize_HwCryptoKeyBlob:
+                imageData = imageData[RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob:RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob + RTyyyy_memdef.kMemBlockSize_HwCryptoKeyBlob]
+            fileObj.close()
+        with open(self.otfadKeyblobFilenname, 'wb') as fileObj:
+            fileObj.write(imageData)
+            fileObj.close()
+
+    def _programFlexspiNorOtfadKeyBlob( self ):
+        otfadKeyblobLoadAddr = self.bootDeviceMemBase + RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob
+        status = boot.status.kStatus_Success
+        if self.isSbFileEnabledToGen:
+            self._addFlashActionIntoSbAppBdContent("    load " + self.sbAccessBootDeviceMagic + " otfadKeyblobFile > " + self.convertLongIntHexText(str(hex(imageLoadAddr))) + ";\n")
+            status = boot.status.kStatus_Success
+        else:
+            status, results, cmdStr = self.blhost.writeMemory(otfadKeyblobLoadAddr, self.otfadKeyblobFilenname, self.bootDeviceMemId)
+            self.printLog(cmdStr)
+        return status == boot.status.kStatus_Success
+
     def RTyyyy_flashBootableImage ( self ):
         self._RTyyyy_prepareForBootDeviceOperation()
         imageLen = os.path.getsize(self.destAppFilename)
@@ -1067,19 +1115,34 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     return False
                 if self.secureBootType == RTyyyy_uidef.kSecureBootType_Development or \
                    self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth or \
-                   (self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys):
+                   (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys):
                     if not self._programFlexspiNorConfigBlock():
                         self.isFlexspiNorErasedForImage = False
                         return False
-            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
-                self._genDestEncAppFileWithoutCfgBlock()
-                imageLoadAddr = self.bootDeviceMemBase + rundef.kFlexspiNorCfgInfo_Length
+            if self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto and self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+                destEncAppFilename = None
+                if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                    self._genDestEncAppFileWithoutCfgBlock()
+                    destEncAppFilename = self.destEncAppNoCfgBlockFilename
+                elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                    self._genDestEncAppFileWithoutKeyblobAndCfgBlock()
+                    destEncAppFilename = self.destEncAppNoKeyblobAndCfgBlockFilename
+                else:
+                    pass
+                imageLoadAddr = self.bootDeviceMemBase + self.tgt.xspiNorCfgInfoOffset + rundef.kFlexspiNorCfgInfo_Length
                 if self.isSbFileEnabledToGen:
                     self._addFlashActionIntoSbAppBdContent("    load " + self.sbAccessBootDeviceMagic + " myBinFile > " + self.convertLongIntHexText(str(hex(imageLoadAddr))) + ";\n")
                     status = boot.status.kStatus_Success
                 else:
-                    status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, self.destEncAppNoCfgBlockFilename, self.bootDeviceMemId)
+                    status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, destEncAppFilename, self.bootDeviceMemId)
                     self.printLog(cmdStr)
+                if self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                    self._extractOtfadKeyblobFromDestEncAppFile()
+                    if not self._programFlexspiNorOtfadKeyBlob():
+                        self.isFlexspiNorErasedForImage = False
+                        return False
+                else:
+                    pass
             else:
                 imageLoadAddr = self.bootDeviceMemBase + RTyyyy_gendef.kIvtOffset_NOR
                 if self.isSbFileEnabledToGen:
@@ -1242,46 +1305,54 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
                 keySource = (otpmkKeyOpt & 0x0000F000) >> 12
                 if keySource == 0:
-                    setOtfadKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkLow
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkLow
                 elif keySource == 1:
-                    setOtfadKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkHigh
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromOtpmkHigh
                 else:
                     pass
             else:
                 pass
         elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
             userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
-            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-                if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
-                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
-                elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
-                elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                    setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
+            if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+                if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine0 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                    if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
+                        setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
+                    elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+                        setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
+                    elif userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
+                        setHwCryptoKey0Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
+                    else:
+                        pass
+                if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
+                    if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
+                        setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
+                    elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+                        setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
+                    elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
+                        setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
+                    else:
+                        pass
+            elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+                if userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromSwGp2
                 else:
                     pass
-            if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
-                if userKeyCtrlDict['engine0_key_src'] == RTyyyy_uidef.kUserKeySource_OTPMK:
-                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromOtpmkHigh
-                elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
-                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromSwGp2
-                elif userKeyCtrlDict['engine1_key_src'] == RTyyyy_uidef.kUserKeySource_GP4:
-                    setHwCryptoKey1Sel = RTyyyy_fusedef.kBeeKeySel_FromGp4
-                else:
-                    pass
+            else:
+                pass
         else:
             pass
         getHwCryptoKeySel = self._getMcuDeviceHwCryptoKeySel()
         if getHwCryptoKeySel != None:
             if setHwCryptoKey0Sel != None:
-                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey0Sel << RTyyyy_fusedef.kEfuseShift_HwCrypto0Sel)
-                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCrypto0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCrypto0Sel) != setHwCryptoKey0Sel:
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey0Sel << RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel)
+                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel) != setHwCryptoKey0Sel:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey0SelHasBeenBurned'][self.languageIndex])
                     return False
             if setHwCryptoKey1Sel != None:
-                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey1Sel << RTyyyy_fusedef.kEfuseShift_HwCrypto1Sel)
-                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCrypto1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCrypto1Sel) != setHwCryptoKey1Sel:
-                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCrypto1SelHasBeenBurned'][self.languageIndex])
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey1Sel << RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel)
+                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel) != setHwCryptoKey1Sel:
+                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey1SelHasBeenBurned'][self.languageIndex])
                     return False
             burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_HwCryptoKeySel, getHwCryptoKeySel)
             if not burnResult:
