@@ -1370,11 +1370,58 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 return False
         return True
 
+    def _isDeviceFuseOtfadKeyScrambleAlgoRegionReadyForBurn( self, scrambleAlgo ):
+        isReady = True
+        isBlank = True
+        key = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_KEY, '', False)
+        if key == None:
+            isReady = False
+        elif key != 0:
+            isBlank = False
+            if key != scrambleAlgo:
+                isReady = False
+        return isReady, isBlank
+
+    def burnOtfadKeyScrambleAlgo ( self, scrambleAlgo ):
+        isReady, isBlank = self._isDeviceFuseOtfadKeyScrambleAlgoRegionReadyForBurn(scrambleAlgo)
+        if isReady:
+            if isBlank:
+                burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_KEY, scrambleAlgo)
+                if not burnResult:
+                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadKeyScramble'][self.languageIndex])
+                    return False
+            return True
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_otfadKeyScrambleHasBeenBurned'][self.languageIndex])
+        return False
+
+    def burnOtfadScrambleFields( self ):
+        if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
+            userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
+            if userKeyCmdDict['scramble'] != None:
+                scrambleAlgo = int(userKeyCmdDict['scramble'][2:len(userKeyCmdDict['scramble'])], 16)
+                if not self.burnOtfadKeyScrambleAlgo(scrambleAlgo):
+                    return False
+                scrambleAlignment = int(userKeyCmdDict['scramble_align'][2:len(userKeyCmdDict['scramble_align'])], 16)
+                otfadCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG, '', False)
+                if otfadCfg != None:
+                    otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleEnable)
+                    otfadCfg = (otfadCfg & (~RTyyyy_fusedef.kEfuseMask_OtfadKeyScrambleAlign)) | (scrambleAlignment << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleAlign)
+                    burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG, otfadCfg)
+                    if not burnResult:
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadScrambleConfigurationField'][self.languageIndex])
+                        return False
+                return True
+            else:
+                return True
+        else:
+            return True
+
     def burnHwCryptoEnablements( self ):
         if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             return True
         elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
-            return self.enableOtfad()
+            return self.enableOtfad() and self.burnOtfadScrambleFields()
         else:
             pass
 

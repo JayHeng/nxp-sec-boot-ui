@@ -938,7 +938,11 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                 pass
 
     def _genOtfadDekFile( self, keyContent ):
-        self.fillDek128ContentIntoBinFile(self.otfadDek0Filename, keyContent)
+        newKeyContent = ''
+        for i in range(RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32):
+            offset = i * 8
+            newKeyContent += keyContent[offset+6:offset+8] + keyContent[offset+4:offset+6] + keyContent[offset+2:offset+4] + keyContent[offset+0:offset+2]
+        self.fillDek128ContentIntoBinFile(self.otfadDek0Filename, newKeyContent)
 
     def _genOtfadDekFilesAndShow( self, userKeyCtrlDict, userKeyCmdDict ):
         self._genOtfadDekFile(userKeyCmdDict['kek'])

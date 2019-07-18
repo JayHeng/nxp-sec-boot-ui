@@ -114,7 +114,8 @@ g_userKeyCmdDict = {'base_addr':None,
                     # For OTFAD
                     'kek':None,
                     'otfad_arg':None,
-                    'scramble_arg':None,
+                    'scramble':None,
+                    'scramble_align':None,
                     'otfad_ctx_lock':None,
                     }
 

@@ -79,8 +79,12 @@ kEfuseShift_HwCryptoKey0Sel = 12
 kEfuseShift_HwCryptoKey1Sel = 14
 kEfuseLocation_HwCryptoKeySel = kEfuseIndex_BOOT_CFG1
 
+kEfuseMask_OtfadKeyScrambleAlign  = 0x000000FF
+kEfuseShift_OtfadKeyScrambleAlign = 0
 kEfuseMask_OtfadEnable  = 0x00000100
 kEfuseShift_OtfadEnable = 8
+kEfuseMask_OtfadKeyScrambleEnable  = 0x00000400
+kEfuseShift_OtfadKeyScrambleEnable = 10
 kEfuseLocation_OtfadEnable = kEfuseIndex_OTFAD_CFG
 
 kEfuseMask_DefaultFlexramPart  = 0x000F0000

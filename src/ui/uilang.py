@@ -426,13 +426,14 @@ kRevision_2_0_0_en =  "【v2.0.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. Support i.MXRT5xx A0, i.MXRT6xx A0 \n" + \
                       "     2. Support i.MXRT1011, i.MXRT117x A0 \n" + \
-                      "     3. [RTxxx] Support both UART and USB-HID ISP modes \n" + \
-                      "     4. [RTxxx] Support for converting bare image into bootable image \n" + \
-                      "     5. [RTxxx] Original image can be a bootable image (with FDCB) \n" + \
-                      "     6. [RTxxx] Support for loading bootable image into FlexSPI/QuadSPI NOR boot device \n" + \
-                      "     7. [RTxxx] Support development boot case (Unsigned, CRC) \n" + \
-                      "     8. Add Execute action support for Flash Programmer \n" + \
-                      "     9. [RTyyyy] Can show FlexRAM info in device status  \n" + \
+                      "     3. [RTyyyy] Support OTFAD encryption secure boot case (SNVS Key, User Key) \n" + \
+                      "     4. [RTxxx] Support both UART and USB-HID ISP modes \n" + \
+                      "     5. [RTxxx] Support for converting bare image into bootable image \n" + \
+                      "     6. [RTxxx] Original image can be a bootable image (with FDCB) \n" + \
+                      "     7. [RTxxx] Support for loading bootable image into FlexSPI/QuadSPI NOR boot device \n" + \
+                      "     8. [RTxxx] Support development boot case (Unsigned, CRC) \n" + \
+                      "     9. Add Execute action support for Flash Programmer \n" + \
+                      "    10. [RTyyyy] Can show FlexRAM info in device status  \n" + \
                       "  Improvement: \n" + \
                       "     1. [RTyyyy] Improve stability of USB connection of i.MXRT105x board \n" + \
                       "     2. Can write/read RAM via Flash Programmer \n" + \
@@ -446,13 +447,14 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT5xx A0, i.MXRT6xx A0 \n" + \
                      u"     2. 支持i.MXRT1011, i.MXRT117x A0 \n" + \
-                     u"     3. [RTxxx] 支持UART和USB-HID两种串行编程方式（COM端口/USB设备自动识别） \n" + \
-                     u"     4. [RTxxx] 支持将裸源image文件自动转换成i.MXRT能启动的Bootable image \n" + \
-                     u"     5. [RTxxx] 用户输入的源程序文件可以包含i.MXRT启动头 (FDCB) \n" + \
-                     u"     6. [RTxxx] 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI NOR接口Flash \n" + \
-                     u"     7. [RTxxx] 支持用于开发阶段的非安全加密启动（未签名，CRC校验） \n" + \
-                     u"     8. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
-                     u"     9. [RTyyyy] 支持在device status里显示当前FlexRAM配置情况 \n" + \
+                      "     3. [RTyyyy] 支持基于OTFAD实现的安全加密启动（唯一SNVS key，用户自定义key） \n" + \
+                     u"     4. [RTxxx] 支持UART和USB-HID两种串行编程方式（COM端口/USB设备自动识别） \n" + \
+                     u"     5. [RTxxx] 支持将裸源image文件自动转换成i.MXRT能启动的Bootable image \n" + \
+                     u"     6. [RTxxx] 用户输入的源程序文件可以包含i.MXRT启动头 (FDCB) \n" + \
+                     u"     7. [RTxxx] 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI NOR接口Flash \n" + \
+                     u"     8. [RTxxx] 支持用于开发阶段的非安全加密启动（未签名，CRC校验） \n" + \
+                     u"     9. 在通用Flash编程器模式下增加执行(跳转)操作 \n" + \
+                     u"    10. [RTyyyy] 支持在device status里显示当前FlexRAM配置情况 \n" + \
                      u"  改进: \n" + \
                      u"     1. [RTyyyy] 提高i.MXRT105x目标板USB连接稳定性 \n" + \
                      u"     2. 通用Flash编程器里也支持读写RAM \n" + \
@@ -598,13 +600,19 @@ kMsgLanguageContentDict = {
         'burnFuseError_failToBurnMiscConf0':  ['Fuse MISC_CONF0[28:24] LPSPI EEPROM region was not burned successfully!',
                                               u"Fuse MISC_CONF0[28:24]区域未成功烧录！"],
         'burnFuseError_hwCryptoKey0SelHasBeenBurned': ['Fuse BOOT_CFG1[5:4] XX_KEY0_SEL has been burned, it is program-once!',
-                                                 u"Fuse BOOT_CFG1[5:4] XX_KEY0_SEL位已经被烧录过，它只可被烧写一次！"],
+                                                      u"Fuse BOOT_CFG1[5:4] XX_KEY0_SEL位已经被烧录过，它只可被烧写一次！"],
         'burnFuseError_hwCryptoKey1SelHasBeenBurned': ['Fuse BOOT_CFG1[7:6] XX_KEY1_SEL has been burned, it is program-once!',
-                                                 u"Fuse BOOT_CFG1[7:6] XX_KEY1_SEL位已经被烧录过，它只可被烧写一次！"],
+                                                      u"Fuse BOOT_CFG1[7:6] XX_KEY1_SEL位已经被烧录过，它只可被烧写一次！"],
         'burnFuseError_failToBurnHwCryptoKeyxSel': ['Fuse BOOT_CFG1[7:4] XX_KEY0/1_SEL region was not burned successfully!',
-                                              u"Fuse BOOT_CFG1[7:4] XX_KEY0/1_SEL位未成功烧录！"],
+                                                   u"Fuse BOOT_CFG1[7:4] XX_KEY0/1_SEL位未成功烧录！"],
         'burnFuseError_failToBurnOtfadEnablementBit': ['Fuse 0x630[8] OTFAD_ENABLE region was not burned successfully!',
-                                              u"Fuse 0x630[8] OTFAD_ENABLE位未成功烧录！"],
+                                                      u"Fuse 0x630[8] OTFAD_ENABLE位未成功烧录！"],
+        'burnFuseError_failToBurnOtfadKeyScramble': ['Fuse OTFAD Key Scramble Region was not burned successfully!',
+                                                    u"OTFAD Key Scramble数据未成功烧录进对应Fuse区域!"],
+        'burnFuseError_otfadKeyScrambleHasBeenBurned': ['Fuse OTFAD Key Scramble Region has been burned, it is program-once!',
+                                                       u"Fuse OTFAD Key Scramble区域已经被烧录过，它只可被烧写一次！"],
+        'burnFuseError_failToBurnOtfadScrambleConfigurationField': ['Fuse OTFAD Key Scramble configuration regions were not burned successfully!',
+                                                                   u"OTFAD Key Scramble配置数据未成功烧录进对应Fuse区域!"],
         'certGenError_dekNotGen':             ['Dek file hasn\'t been generated!',
                                               u"DEK数据文件还没有生成!"],
         'burnFuseError_failToBurnSecConfig1': ['Fuse BOOT_CFG1[1] SEC_CONFIG[1] region was not burned successfully!',
