@@ -1,6 +1,6 @@
 # NXP MCU Boot Utility
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v1.4.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v1.4.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
@@ -23,7 +23,7 @@ English | [中文](./README-zh.md)
 > * Support for loading bootable image into external boot devices  
 > * Support common boot device memory operation (Flash Programmer)  
 -------------------------------------------------------
-> * Support i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
+> * Support i.MXRT1011, i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
 > * User image file can be either bare image file or bootable image file 
 > * Support for converting bare image into .sb file for MfgTool and RT-Flash
 > * Support for loading bootable image into FlexSPI NOR boot device  
@@ -35,6 +35,7 @@ English | [中文](./README-zh.md)
 > * Support HAB encryption secure boot case (Signed only, Signed and Encrypted)  
 > * Can back up certificate with time stamp
 > * Support BEE encryption secure boot case (SNVS Key, User Keys)  
+> * Support OTFAD encryption secure boot case (SNVS Key, User Keys)  
 > * Support common eFuse memory operation (eFuse Programmer)  
 > * Support common FlexRAM memory operation (ISP Boot)  
 > * Support for reading back and marking bootable image(NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob) from boot device  
@@ -55,7 +56,7 @@ English | [中文](./README-zh.md)
 
 > Note1: Before using NXP-MCUBootUtility, you need to download [HAB Code Signing Tool](https://www.nxp.com/webapp/sps/download/license.jsp?colCode=IMX_CST_TOOL&appType=file2&location=null&DOWNLOAD_ID=null&lang_cd=en) from NXP website，upzip it and put it in the \NXP-MCUBootUtility\tools\cst\ directory, then modify the code to enable AES function and rebuild \NXP-MCUBootUtility\tools\cst\mingw32\bin\cst.exe, or HAB related encryption function can not be used properly。See more details in [《The step-by-step guide  to rebuild cst.exe for HAB encryption》](https://www.cnblogs.com/henjay724/p/10189593.html)  
 
-> Note2: Before using NXP-MCUBootUtility, you need to rebuild the source in \NXP-MCUBootUtility\tools\image_enc\code directory to generate image_enc.exe and put it in \NXP-MCUBootUtility\tools\image_enc\win directory, or BEE related encryption function can not be used properly。See more details in [《The step-by-step guide to build image_enc.exe for BEE encryption》](https://www.cnblogs.com/henjay724/p/10189602.html)  
+> Note2: Before using NXP-MCUBootUtility, you need to rebuild the source in \NXP-MCUBootUtility\tools\image_enc\code directory to generate image_enc.exe and put it in \NXP-MCUBootUtility\tools\image_enc\win directory, or BEE/OTFAD related encryption function can not be used properly。See more details in [《The step-by-step guide to build image_enc.exe for BEE/OTFAD encryption》](https://www.cnblogs.com/henjay724/p/10189602.html)  
 
 > Note3: The NXP-MCUBootUtility.exe in the source code package is packaged in the Windows 10 x64 environment and has only been tested in this environment. If it cannot be used directly for system environment reasons, you need to install [Python2.7.15 x86 version ](https://www.python.org/ftp/python/2.7.15/python-2.7.15.msi)(Confirm that the directory "\Python27\" and "\Python27\Scripts\" are in the system environment variable path after the installation is completed), then click on "do_setup_by_pip.bat" in the "\NXP-MCUBootUtility\env\" directory to install the Python library on which NXP-MCUBootUtility depends. Finally, click "do_pack_by_pyinstaller.bat" to regenerate the NXP-MCUBootUtility.exe.  
 
@@ -80,7 +81,9 @@ English | [中文](./README-zh.md)
                       \dcd_file           -- Generated DCD data file
                       \hab_cert           -- Generated HAB signature related files
                       \hab_crypto         -- Generated HAB encryption related files
+                      \json_file          -- Generated JSON files based on configuration
                       \log_file           -- Saved software operation log
+                      \otfad_crypto       -- Generated OTFAD encryption related files
                       \sb_image           -- Generated .sb file
                       \user_file          -- Temporary files
                 \gui                  --Place NXP-MCUBootUtility development UI build project file
@@ -244,6 +247,21 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　All operations are correct. Set Boot Mode to 2'b10(Internal Boot mode) via SW7 DIP switch on the board, and sets BT_CFG[1] to 1'b1 (Encrypted XIP is enabled). The rest remains all 0s. You can see that the BEE encrypted image is executed normally.  
 　　NXP-MCUBootUtility burns the user-defined Key into the Fuse SW_GP2/GP4 area for the dual-engine BEE encryption, but the Fuse content of the area can be read back. If the hacker gets the Key, it is still possible to crack Image ciphertext in the external Boot Device. Is there a way to protect the Fuse SW_GP2/GP4 area? Of course, you can lock the specified Fuse area, you can set the Fuse area access rights (read protection, write protection, coverage protection), as detailed in a separate chapter. The NXP-MCUBootUtility tool directly locks the SW_GP2/GP4 area for security reasons.  
 　　Compared with single-engine BEE encryption, dual-engine BEE encryption doubles the difficulty from the perspective of cracking. After all, two different keys can be enabled to jointly protect the image from being illegally obtained.  
+
+##### 3.3.6 Mode 6: Enable single-level OTFAD encryption (unique SNVS Key)
+　　The sixth mode is similar to the fourth mode, FlexSPI on-the-fly encryption module in early i.MXRT chip (eg i.MXRT105x) is BEE, it switches to OTFAD in subsequent i.MXRT chip (eg i.MXRT1011). OTFAD is enhanced than BEE.  
+
+##### 3.3.7 Mode 7: Enable dual-level OTFAD encryption (user-defined Key)
+　　The seventh mode is the top security mode. The specific differences between dual-engine BEE encryption and dual-level OTFAD encryption are as follows:  
+
+> * BEE encryption can support 3 protection regions and 2 user keys; OTFAD can support 4 protection regions, each region can have its own user key, besidesm there is a global key used to protect user keys.
+> * User keys used for BEE are stored in efuse directly; global key used for OTFAD can be protected by scramble algorithm.  
+
+　　Let's see the OTFAD flexible user key configuration:
+
+![NXP-MCUBootUtility_flexibleUserKeysWin_otfad](http://henjay724.com/image/cnblogs/nxpSecBoot_v2_0_0_flexibleUserKeysWin_otfad.PNG)
+
+　　kek is the global key, it is stored in eFuse. user keys are saved in OTFAD DEK KeyBlob, and KeyBlob is stored in NOR Flash, kek is used to protect KeyBlob.  
 
 #### 3.4 Generate .sb file
 　　Set Tools/Generate .sb file option as "Yes" in menu bar, then click 【All-In-One Action】 button, A .sb file will be generated into \NXP-MCUBootUtility\gen\sb_image\ folder, this .sb file can be used for MfgTool or RT-Flash tool. Note that clicking 【All-In-One Action】 button will not really perform any boot command on MCU，it just record all boot commands in \NXP-MCUBootUtility\gen\bd_file\imx_application_sb_gen.bd file to generate final .sb file。  

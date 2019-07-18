@@ -1,6 +1,6 @@
 # NXP MCU Boot Utility
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v1.4.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v1.4.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
 
 [English](./README.md) | 中文
 
@@ -22,7 +22,7 @@
 > * 支持下载Bootable image进外部启动设备
 > * 支持外部启动设备的任意读/写/擦操作（即通用Flash编程器）  
 -------------------------------------------------------
-> * 支持i.MXRT10yy全系列MCU，包含i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP  
+> * 支持i.MXRTyyyy全系列MCU，包含i.MXRT1011、i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP  
 > * 源image文件既可以是裸源image文件，也可以是含启动文件头的bootable image文件  
 > * 支持将裸源image文件自动转换成MfgTool和RT-Flash工具能下载的.sb格式文件  
 > * 支持下载Bootable image进主动启动设备 - FlexSPI接口NOR Flash  
@@ -33,6 +33,7 @@
 > * 支持用于开发阶段的非安全加密启动（未签名加密）  
 > * 支持基于HAB实现的安全加密启动（单签名，签名和加密），证书自动备份  
 > * 支持基于BEE实现的安全加密启动（唯一SNVS key，用户自定义key）  
+> * 支持基于OTFAD实现的安全加密启动（唯一SNVS key，用户自定义key）  
 > * 支持MCU芯片内部eFuse的回读和烧写操作（即专用eFuse烧写器）  
 > * 支持MCU芯片内部FlexRAM的读/写/执行操作（即专用FlexRAM编程器，可用于ISP启动）  
 > * 支持从外部启动设备回读Bootable image，并对其组成部分（NFCB/DBBT/FDCB/EKIB/EPRDB/IVT/Boot Data/DCD/Image/CSF/DEK KeyBlob）进行标注  
@@ -53,7 +54,7 @@
 
 > Note1: 使用NXP-MCUBootUtility之前必须先从NXP官网下载 [HAB Code Signing Tool工具](https://www.nxp.com/webapp/sps/download/license.jsp?colCode=IMX_CST_TOOL&appType=file2&location=null&DOWNLOAD_ID=null&lang_cd=en)，并将其解压放在\NXP-MCUBootUtility\tools\cst\目录下，并且需要修改代码使能AES功能重新生成\NXP-MCUBootUtility\tools\cst\mingw32\bin\cst.exe，否则HAB签名以及加密相关功能无法使用。具体步骤可以参考这篇博客 [《开启NXP-MCUBootUtility工具的HAB加密功能 - cst.exe》](https://www.cnblogs.com/henjay724/p/10189593.html)。   
 
-> Note2: 使用NXP-MCUBootUtility之前必须编译\NXP-MCUBootUtility\tools\image_enc\code下面的源文件生成image_enc.exe，并将其放置在\NXP-MCUBootUtility\tools\image_enc\win，否则BEE加密相关功能无法使用。具体步骤可以参考这篇博客 [《开启NXP-MCUBootUtility工具的BEE加密功能 - image_enc.exe》](https://www.cnblogs.com/henjay724/p/10189602.html)  
+> Note2: 使用NXP-MCUBootUtility之前必须编译\NXP-MCUBootUtility\tools\image_enc\code下面的源文件生成image_enc.exe，并将其放置在\NXP-MCUBootUtility\tools\image_enc\win，否则BEE/OTFAD加密相关功能无法使用。具体步骤可以参考这篇博客 [《开启NXP-MCUBootUtility工具的BEE/OTFAD加密功能 - image_enc.exe》](https://www.cnblogs.com/henjay724/p/10189602.html)  
 
 > Note3: 源代码包里的NXP-MCUBootUtility.exe是在Windows 10 x64环境下打包的，也仅在该环境下测试过，如果因系统原因无法直接使用，你需要先安装 [Python2.7.15 x86版本](https://www.python.org/ftp/python/2.7.15/python-2.7.15.msi) （安装完成后确认\Python27\\, \Python27\Scripts\\目录被添加到系统环境变量Path里），然后在\NXP-MCUBootUtility\env\目录下点击do_setup_by_pip.bat安装开发NXP-MCUBootUtility所依赖的Python库，最后点击do_pack_by_pyinstaller.bat重新生成NXP-MCUBootUtility.exe可执行文件。  
 
@@ -79,7 +80,9 @@
                       \dcd_file           --生成的DCD数据文件
                       \hab_cert           --HAB签名过程中生成的文件
                       \hab_crypto         --HAB加密过程中生成的文件
+                      \json_file          --根据配置动态生成的JSON文件
                       \log_file           --保存软件操作记录日志
+                      \otfad_crypto       --OTFAD加密过程中生成的文件
                       \sb_image           --生成的.sb格式文件
                       \user_file          --软件运行过程中缓存的临时文件
                 \gui                  --放置开发NXP-MCUBootUtility UI构建工程文件
@@ -244,6 +247,22 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　一切操作无误，板子上SW7拨码开关将Boot Mode设为2'b10即Internal Boot模式，并且将BT_CFG[1]设为1'b1（使能Encrypted XIP），其余保持全0，重新上电便可以看到BEE encrypted image正常执行了。  
 　　双引擎BEE加密是将用户自定义的Key烧录进了Fuse SW_GP2/GP4区域里，但该区域的Fuse内容是可以回读的，如果黑客拿到Key，还是有可能破解存在外部Boot Device里的image密文，有没有对Fuse SW_GP2/GP4区域进行保护的方法？当然有，你可以对指定的Fuse区域进行加锁，可设置Fuse区域访问权限（读保护，写保护，覆盖保护），具体后面有单独章节详细介绍。NXP-MCUBootUtility工具为了安全考虑，直接将SW_GP2/GP4区域锁了起来。  
 　　双引擎BEE加密相比单引擎BEE加密，从破解角度来说难度加倍，毕竟可以启用两组不同的Key来共同保护image不被非法获取。  
+
+##### 3.3.6 模式六：启用单重OTFAD加密（唯一SNVS Key）
+　　第六种模式是顶级的安全模式，即用唯一SNVS Key对image进行单重OTFAD级加密，该模式与单引擎BEE加密（唯一SNVS Key）是类似的，只是早期i.MXRT芯片（比如i.MXRT105x）的FlexSPI配套硬件加解密模块是BEE，而后期i.MXRT芯片（比如i.MXRT1011）的FlexSPI配套硬件加解密模块升级为OTFAD。  
+　　相比于BEE模块，OTFAD模块在加解密效率上提升了很多，并且提供了更加强大的加解密模式。关于OTFAD强大的加解密模式在下一节双重OTFAD加密模式中会进一步介绍。  
+
+##### 3.3.7 模式七：启用双重OTFAD加密（用户自定义Key）
+　　第七种模式是顶级的安全模式，即用用户自定义Key对image进行双重OTFAD级加密，前一节讲了OTFAD是BEE的升级，那么我们就来比较一下双重OTFAD加密与双引擎BEE加密区别：  
+
+> * 双引擎BEE加密最多可设3个加密区间，这3个加密区间最多仅能由2组用户密钥来保护；而双重OTFAD加密最多可设4个加密区间，每个加密区间均可设独立的用户密钥，并且所有的用户密钥还由一个全局密钥来保护。  
+> * 双引擎BEE加密的用户密钥是直接存在efuse里的；而双重OTFAD加密存在efuse里的全局密钥可引入扰乱算法来保护。  
+
+　　从软件操作流程上来说，双重OTFAD加密与双引擎BEE加密是类似的，只是密钥配置窗口有差别，我们打开OTFAD的密钥配置窗口看一下：  
+
+![NXP-MCUBootUtility_flexibleUserKeysWin_otfad](http://henjay724.com/image/cnblogs/nxpSecBoot_v2_0_0_flexibleUserKeysWin_otfad.PNG)
+
+　　kek即全局密钥，kek是存放在efuse里的；用户密钥个数与保护区间一致，所有用户密钥均在OTFAD DEK KeyBlob，KeyBlob是存放在外部NOR Flash里的，kek就是用来保护OTFAD DEK KeyBlob的。  
 
 #### 3.4 生成.sb格式文件
 　　在菜单栏Tools/Generate .sb file选项里勾选"Yes"，此时点击【All-In-One Action】按钮便会在\NXP-MCUBootUtility\gen\sb_image\目录下生成.sb格式的文件，该文件可用于MfgTool或者RT-Flash工具中。注意此时【All-In-One Action】按钮并不会在MCU上真正地执行3.3节里的各种操作，而只是将所有命令操作记录在\NXP-MCUBootUtility\gen\bd_file\imx_application_sb_gen.bd里，最终用于生成.sb格式文件。  
