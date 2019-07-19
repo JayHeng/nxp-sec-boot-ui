@@ -23,7 +23,6 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
         self.otpmkKeyOpt = otpmkKeyCommDict['opt']
         self.otpmkEncryptedRegionStartList = otpmkKeyCommDict['regionStartList'][:]
         self.otpmkEncryptedRegionLengthList = otpmkKeyCommDict['regionLengthList'][:]
-        self._recoverLastSettings()
 
     def _setLanguage( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -41,32 +40,34 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
 
     def setNecessaryInfo( self, secureBootType ):
         if self.secureBootType != secureBootType:
-            self.secureBootType = secureBootType
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
                 self.otpmkKeyOpt = 0xe0100000
-                keySource = ['Fuse OTPMK - SNVS[255:128]']
-                regionCnt = ['0 - Whole Image',
-                             '1 - User Defined',
-                             '2 - User Defined',
-                             '3 - User Defined']
             elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
                 self.otpmkKeyOpt = 0xe0000000
-                keySource = ['Fuse OTPMK - SNVS[127:0]',
-                             'Fuse OTPMK - SNVS[255:128]']
-                regionCnt = ['0 - Whole Image',
-                             '1 - User Defined',
-                             '2 - User Defined',
-                             '3 - User Defined',
-                             '4 - User Defined']
             else:
                 pass
-            self.m_choice_keySource.Clear()
-            self.m_choice_keySource.SetItems(keySource)
-            self.m_choice_keySource.SetSelection(0)
-            self.m_choice_regionCnt.Clear()
-            self.m_choice_regionCnt.SetItems(regionCnt)
-            self.m_choice_regionCnt.SetSelection(0)
-            self._recoverLastSettings()
+        self.secureBootType = secureBootType
+        if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
+            keySource = ['Fuse OTPMK - SNVS[255:128]']
+            regionCnt = ['0 - Whole Image',
+                         '1 - User Defined',
+                         '2 - User Defined',
+                         '3 - User Defined']
+        elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
+            keySource = ['Fuse OTPMK - SNVS[127:0]',
+                         'Fuse OTPMK - SNVS[255:128]']
+            regionCnt = ['0 - Whole Image',
+                         '1 - User Defined',
+                         '2 - User Defined',
+                         '3 - User Defined',
+                         '4 - User Defined']
+        else:
+            pass
+        self.m_choice_keySource.Clear()
+        self.m_choice_keySource.SetItems(keySource)
+        self.m_choice_regionCnt.Clear()
+        self.m_choice_regionCnt.SetItems(regionCnt)
+        self._recoverLastSettings()
 
     def _updateRegionInfoField ( self, regionCnt ):
         if regionCnt < 1:
