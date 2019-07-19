@@ -99,6 +99,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         self.comMemReadUnit = 0x1
 
         self.sbLastSharedFuseBootCfg1 = RTyyyy_fusedef.kEfuseValue_Invalid
+        self.sbLastSharedFuseOtfadCfg = RTyyyy_fusedef.kEfuseValue_Invalid
 
         self.RTyyyy_createMcuTarget()
 
@@ -366,6 +367,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             if self.isSbFileEnabledToGen:
                 if fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1 and self.sbLastSharedFuseBootCfg1 == RTyyyy_fusedef.kEfuseValue_Invalid:
                     self.sbLastSharedFuseBootCfg1 = results[1]
+                if fuseIndex == RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG and self.sbLastSharedFuseOtfadCfg == RTyyyy_fusedef.kEfuseValue_Invalid:
+                    self.sbLastSharedFuseOtfadCfg = results[1]
             return results[1]
         else:
             if needToShow:
@@ -881,6 +884,11 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 if fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1:
                     fuseValue = fuseValue | self.sbLastSharedFuseBootCfg1
                     self.sbLastSharedFuseBootCfg1 = fuseValue
+                elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG:
+                    fuseValue = fuseValue | self.sbLastSharedFuseOtfadCfg
+                    self.sbLastSharedFuseOtfadCfg = fuseValue
+                else:
+                    pass
                 sbAppBdContent = "    load fuse 0x" + self.getFormattedFuseValue(fuseValue) + " > " + self.convertLongIntHexText(str(hex(fuseIndex))) + ";\n"
                 self.sbAppBdContent += sbAppBdContent
                 self.sbAppEfuseBdContent += sbAppBdContent

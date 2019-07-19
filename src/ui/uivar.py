@@ -5,6 +5,7 @@ import os
 import json
 import uidef
 import RTyyyy_uidef
+import RTxxx_uidef
 
 g_exeTopRoot = None
 g_isQuietSoundEffect = None
@@ -327,7 +328,10 @@ def deinitVar(cfgFilename=None):
         fileObj.close()
 
 def getBootDeviceConfiguration( group ):
-    if group == uidef.kBootDevice_XspiNor:
+    if group == uidef.kBootDevice_XspiNor or \
+       group == RTyyyy_uidef.kBootDevice_FlexspiNor or \
+       group == RTxxx_uidef.kBootDevice_FlexspiNor or \
+       group == RTxxx_uidef.kBootDevice_QuadspiNor:
         global g_flexspiNorOpt0
         global g_flexspiNorOpt1
         global g_flexspiNorDeviceModel
@@ -347,10 +351,12 @@ def getBootDeviceConfiguration( group ):
         global g_semcNandFcbOpt
         global g_semcNandImageInfoList
         return g_semcNandOpt, g_semcNandFcbOpt, g_semcNandImageInfoList
-    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd or \
+         group == RTxxx_uidef.kBootDevice_UsdhcSd:
         global g_usdhcSdOpt
         return g_usdhcSdOpt
-    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc or \
+         group == RTxxx_uidef.kBootDevice_UsdhcMmc:
         global g_usdhcMmcOpt0
         global g_usdhcMmcOpt1
         return g_usdhcMmcOpt0, g_usdhcMmcOpt1
@@ -366,7 +372,10 @@ def getBootDeviceConfiguration( group ):
         pass
 
 def setBootDeviceConfiguration( group, *args ):
-    if group == uidef.kBootDevice_XspiNor:
+    if group == uidef.kBootDevice_XspiNor or \
+       group == RTyyyy_uidef.kBootDevice_FlexspiNor or \
+       group == RTxxx_uidef.kBootDevice_FlexspiNor or \
+       group == RTxxx_uidef.kBootDevice_QuadspiNor:
         global g_flexspiNorOpt0
         global g_flexspiNorOpt1
         global g_flexspiNorDeviceModel
@@ -394,10 +403,12 @@ def setBootDeviceConfiguration( group, *args ):
         g_semcNandOpt = args[0]
         g_semcNandFcbOpt = args[1]
         g_semcNandImageInfoList = args[2]
-    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcSd or \
+         group == RTxxx_uidef.kBootDevice_UsdhcSd:
         global g_usdhcSdOpt
         g_usdhcSdOpt = args[0]
-    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc:
+    elif group == RTyyyy_uidef.kBootDevice_UsdhcMmc or \
+         group == RTxxx_uidef.kBootDevice_UsdhcMmc:
         global g_usdhcMmcOpt0
         global g_usdhcMmcOpt1
         g_usdhcMmcOpt0 = args[0]

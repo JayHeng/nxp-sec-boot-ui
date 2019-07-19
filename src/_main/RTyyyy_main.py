@@ -204,7 +204,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                         self.isThereBoardConnection = True
                         self.RTyyyy_connectToDevice(uidef.kConnectStage_Flashloader)
                         self.RTyyyy_isDeviceEnabledToOperate = False
-                        self.configureBootDevice()
+                        self.RTyyyy_configureBootDevice()
                         self.connectStage = uidef.kConnectStage_Reset
                         self.updateConnectStatus('blue')
                 else:
