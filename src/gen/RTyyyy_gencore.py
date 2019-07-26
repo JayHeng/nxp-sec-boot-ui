@@ -346,15 +346,18 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         return ivtEntry, imageEntryPoint, len(imageDataBytes)
 
     def _RTyyyy_isSrcAppBootableImage( self, initialLoadAppBytes ):
-        ivtTag = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Tag]
-        ivtLen = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Len]
-        if ivtTag != RTyyyy_memdef.kBootHeaderTag_IVT or ivtLen != RTyyyy_memdef.kMemBlockSize_IVT:
+        try:
+            ivtTag = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Tag]
+            ivtLen = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Len]
+            if ivtTag != RTyyyy_memdef.kBootHeaderTag_IVT or ivtLen != RTyyyy_memdef.kMemBlockSize_IVT:
+                return False
+            ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[self.destAppIvtOffset:self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
+            if (ivtBd <= ivtSelf) or (ivtBd - ivtSelf != RTyyyy_memdef.kMemBlockSize_IVT):
+                return False
+            self.printLog('Origianl image file is a bootable image file')
+            return True
+        except:
             return False
-        ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[self.destAppIvtOffset:self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
-        if (ivtBd <= ivtSelf) or (ivtBd - ivtSelf != RTyyyy_memdef.kMemBlockSize_IVT):
-            return False
-        self.printLog('Origianl image file is a bootable image file')
-        return True
 
     def _RTyyyy_getImageInfo( self, srcAppFilename ):
         startAddress = None

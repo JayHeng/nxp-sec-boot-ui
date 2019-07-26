@@ -458,7 +458,8 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                    (uilang.kMsgLanguageContentDict['revisionHistory_v1_2_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v1_3_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v1_4_0'][self.languageIndex]) +
-                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]))
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_1_0'][self.languageIndex]))
         wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':

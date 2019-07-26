@@ -464,6 +464,16 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     2. [RTyyyy] 可视化方式去编辑混合eFuse区域并没有生效 \n" + \
                      u"     3. [RTyyyy] 无法支持32MB及以上容量的LPSPI NOR/EEPROM设备 \n" + \
                      u"     4. 在通用Flash编程器模式下无法擦除/读取外部启动设备的最后两个Page \n\n"
+kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
+                      "  Feature: \n" + \
+                      "  Improvement: \n" + \
+                      "  Bugfix: \n" + \
+                      "     1. Cannot generate bootable image when original image size is less than 4KB \n\n"
+kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"  改进: \n" + \
+                     u"  修复: \n" + \
+                     u"     1. 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -484,6 +494,7 @@ kMsgLanguageContentDict = {
         'revisionHistory_v1_3_0':             [kRevision_1_3_0_en,                      kRevision_1_3_0_zh],
         'revisionHistory_v1_4_0':             [kRevision_1_4_0_en,                      kRevision_1_4_0_zh],
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
+        'revisionHistory_v2_1_0':             [kRevision_2_1_0_en,                      kRevision_2_1_0_zh],
 
         'bootDeviceInfo_hasOnchipSerialNor':  ['MCU has on-chip QSPI NOR Flash (4MB, 133MHz), so you don\'t need to configure this boot device!',
                                               u"微控制器内置4MB的QSPI NOR Flash，所以无需配置该启动设备！"],
