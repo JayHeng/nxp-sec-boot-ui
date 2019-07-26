@@ -560,7 +560,7 @@ kMsgLanguageContentDict = {
         'srcImgError_nonXipNotForHwCrypto':   ['Non-XIP Application is detected but it is not appliable for HW Encrypted image boot!',
                                               u"检测到非XIP应用程序, 但它不适用于硬件加密启动!"],
         'srcImgError_notFound':               ['You should first specify a source image file (.elf/.axf/.srec/.hex/.bin)!',
-                                              u"请首先选定一个程序文件 (. elf/. axf/. srec/. srec/. hacn)!"],
+                                              u"请首先选定一个程序文件 (.elf/.axf/.srec/.hex/.bin)!"],
         'srcImgError_xipSizeTooLarge':        ['XIP Application is detected but the size exceeds maximum XIP size ',
                                               u"XIP应用程序被检测到, 但其大小超过最大XIP范围 "],
         'operCertError_notGen':               ['You should first generate certificates, or make sure you don\'t put the tool in path with blank space!',
