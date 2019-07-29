@@ -41,6 +41,8 @@ class secBootUi(secBootWin.secBootWin):
         toolCommDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Tool)
         self.toolCommDict = toolCommDict.copy()
 
+        self.fuseSettingFilename = os.path.join(self.exeTopRoot, 'bin', 'fuse_settings.json')
+
         self.logFolder = os.path.join(self.exeTopRoot, 'gen', 'log_file')
         self.logFilename = os.path.join(self.exeTopRoot, 'gen', 'log_file', 'log.txt')
 

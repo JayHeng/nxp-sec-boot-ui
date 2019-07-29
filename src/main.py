@@ -225,9 +225,9 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                     if self.isSbFileEnabledToGen:
                         self.genSbEfuseImage()
                 elif self.accessMemType == 'SaveFuse':
-                    self.SaveFuseRegions()
+                    self.saveFuseRegions()
                 elif self.accessMemType == 'LoadFuse':
-                    self.LoadFuseRegions()
+                    self.loadFuseRegions()
                 elif self.accessMemType == 'ReadMem':
                     if self.connectStage == uidef.kConnectStage_ExternalMemory:
                         self.readRamMemory()
@@ -488,7 +488,7 @@ if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = secBootMain(None)
-    g_main_win.SetTitle(u"NXP MCU Boot Utility v2.0.0")
+    g_main_win.SetTitle(u"NXP MCU Boot Utility v2.1.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)
