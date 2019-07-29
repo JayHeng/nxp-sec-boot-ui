@@ -224,6 +224,10 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                     self.burnAllFuseRegions()
                     if self.isSbFileEnabledToGen:
                         self.genSbEfuseImage()
+                elif self.accessMemType == 'SaveFuse':
+                    self.SaveFuseRegions()
+                elif self.accessMemType == 'LoadFuse':
+                    self.LoadFuseRegions()
                 elif self.accessMemType == 'ReadMem':
                     if self.connectStage == uidef.kConnectStage_ExternalMemory:
                         self.readRamMemory()
@@ -261,6 +265,24 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             self._startGaugeTimer()
             self.isAccessMemTaskPending = True
             self.accessMemType = 'BurnFuse'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackSaveFuse( self, event ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'SaveFuse'
+        else:
+            self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
+
+    def callbackLoadFuse( self, event ):
+        if self.connectStage == uidef.kConnectStage_ExternalMemory or \
+           self.connectStage == uidef.kConnectStage_Reset:
+            self._startGaugeTimer()
+            self.isAccessMemTaskPending = True
+            self.accessMemType = 'LoadFuse'
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 

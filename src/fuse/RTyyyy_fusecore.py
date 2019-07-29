@@ -1,17 +1,22 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import wx
+import json
 import sys
 import os
 import time
 import RTyyyy_fusedef
+import collections
+
 sys.path.append(os.path.abspath(".."))
 from run import RTyyyy_runcore
 from run import RTyyyy_rundef
 from ui import RTyyyy_uidef
+from ui import uicore
 from ui import uidef
 from ui import uivar
 from ui import uilang
+from operator import itemgetter
 
 class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
 
@@ -23,6 +28,7 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
         self.runModeFuseFlagList = [None] * RTyyyy_fusedef.kMaxEfuseWords
         self.toBeRefreshedFuseList = [False] * RTyyyy_fusedef.kMaxEfuseWords
         self.isRunModeFuseFlagRemapped = False
+        self.loadedFuseList = [None] * RTyyyy_fusedef.kMaxEfuseWords
         if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
             self.RTyyyy_initFuse()
 
@@ -158,3 +164,63 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
                     self.toBeBurnnedFuseList[46] = efuseDict['0x6e0_miscConf1']
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF1, efuseDict['0x6e0_miscConf1'])
             time.sleep(0.5)
+
+    def SaveFuseRegions(self):
+        FuseFilePath = os.path.dirname(os.getcwd())
+        FuseFilePath = os.path.join(FuseFilePath, 'bin')
+        FuseFilePath = os.path.join(FuseFilePath, 'FuseConfigFile.json')
+        print(FuseFilePath)
+        if os.path.isfile(FuseFilePath):
+            with open(FuseFilePath, 'r+') as fileObj:
+                FuseMapJson = json.load(fileObj)
+                FuseMapDict = FuseMapJson["FuseMAP"][0]
+                fileObj.close()
+            self.saveFuselist = [None] * RTyyyy_fusedef.kMaxEfuseWords
+            self.saveFuselist = self.getUserFuses()
+            with open(FuseFilePath, 'w') as fileObj:
+                FuseMapDict = collections.OrderedDict(sorted(FuseMapDict.iteritems(), key=itemgetter(0), reverse=False))
+                num = 0
+                for key in FuseMapDict:
+                    FuseMapDict[key] = self.saveFuselist[num]
+                    num = num + 1
+                num = 0
+                for key in FuseMapDict:
+                    if self.saveFuselist[num] == None:
+                        FuseMapDict[key] = "None"
+                    else:
+                        FuseMapDict[key] = (str(hex(self.saveFuselist[num])))[2:10]
+                    num = num + 1
+                cfgDict = {
+                    "FuseMAP": [FuseMapDict]
+                }
+                json.dump(cfgDict, fileObj, indent=1)
+                fileObj.close()
+
+
+    def LoadFuseRegions(self):
+        FuseFilePath = os.path.dirname(os.getcwd())
+        FuseFilePath = os.path.join(FuseFilePath, 'bin')
+        FuseFilePath = os.path.join(FuseFilePath, 'FuseConfigFile.json')
+        if os.path.isfile(FuseFilePath):
+            with open(FuseFilePath, 'r') as fileObj:
+                FuseMapJson = json.load(fileObj)
+                FuseMapDict = FuseMapJson["FuseMAP"][0]
+                fileObj.close()
+                FuseMapDict = collections.OrderedDict(sorted(FuseMapDict.iteritems(), key=itemgetter(0), reverse=False))
+            num = 0
+            for key in FuseMapDict:
+                self.loadedFuseList[num] = FuseMapDict[key]
+                num = num + 1
+            for i in range(RTyyyy_fusedef.kMaxEfuseWords):
+                if self.loadedFuseList[i] == "None":
+                    self.loadedFuseList[i] = None
+                else:
+                    self.loadedFuseList[i] = int(self.loadedFuseList[i], 16)
+        self.showScannedFuses(self.loadedFuseList)
+
+
+
+
+
+
+

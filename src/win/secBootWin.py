@@ -1599,16 +1599,22 @@ class secBootWin ( wx.Frame ):
 		self.m_textCtrl_fuse8f0 = wx.TextCtrl( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 75,20 ), 0 )
 		bSizer_fuseGroupCtrl5.Add( self.m_textCtrl_fuse8f0, 0, wx.ALL, 5 )
 
+		self.m_button_scan = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Scan", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		bSizer_fuseGroupCtrl5.Add( self.m_button_scan, 0, wx.ALL, 5 )
+
+		self.m_button_burn = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Burn", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		bSizer_fuseGroupCtrl5.Add( self.m_button_burn, 0, wx.ALL, 5 )
+
+		self.m_button_save = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Save", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		bSizer_fuseGroupCtrl5.Add( self.m_button_save, 0, wx.ALL, 5 )
+
+		self.m_button_load = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Load", wx.DefaultPosition, wx.Size( 75,20 ), 0 )
+		bSizer_fuseGroupCtrl5.Add( self.m_button_load, 0, wx.ALL, 5 )
+
 		self.m_staticText_null0Fuse = wx.StaticText( self.m_panel_fuseUtil, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 31,15 ), 0 )
 		self.m_staticText_null0Fuse.Wrap( -1 )
 
 		bSizer_fuseGroupCtrl5.Add( self.m_staticText_null0Fuse, 0, wx.ALL, 5 )
-
-		self.m_button_scan = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Scan", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
-		bSizer_fuseGroupCtrl5.Add( self.m_button_scan, 0, wx.ALL, 5 )
-
-		self.m_button_burn = wx.Button( self.m_panel_fuseUtil, wx.ID_ANY, u"Burn", wx.DefaultPosition, wx.Size( 75,-1 ), 0 )
-		bSizer_fuseGroupCtrl5.Add( self.m_button_burn, 0, wx.ALL, 5 )
 
 
 		wSizer_fuseUtil.Add( bSizer_fuseGroupCtrl5, 1, wx.EXPAND, 5 )
@@ -1851,6 +1857,8 @@ class secBootWin ( wx.Frame ):
 		self.m_textCtrl_fuse6e0.Bind( wx.EVT_TEXT_ENTER, self.callbackEnterEfuseMiscConf1 )
 		self.m_button_scan.Bind( wx.EVT_BUTTON, self.callbackScanFuse )
 		self.m_button_burn.Bind( wx.EVT_BUTTON, self.callbackBurnFuse )
+		self.m_button_save.Bind( wx.EVT_BUTTON, self.callbackSaveFuse )
+		self.m_button_load.Bind( wx.EVT_BUTTON, self.callbackLoadFuse )
 		self.m_button_readMem.Bind( wx.EVT_BUTTON, self.callbackReadMem )
 		self.m_button_eraseMem.Bind( wx.EVT_BUTTON, self.callbackEraseMem )
 		self.m_button_writeMem.Bind( wx.EVT_BUTTON, self.callbackWriteMem )
@@ -2046,6 +2054,12 @@ class secBootWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackBurnFuse( self, event ):
+		event.Skip()
+
+	def callbackSaveFuse( self, event ):
+		event.Skip()
+
+	def callbackLoadFuse( self, event ):
 		event.Skip()
 
 	def callbackReadMem( self, event ):
