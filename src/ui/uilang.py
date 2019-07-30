@@ -466,14 +466,18 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     4. 在通用Flash编程器模式下无法擦除/读取外部启动设备的最后两个Page \n\n"
 kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "  Feature: \n" + \
+                      "     1. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
                       "  Improvement: \n" + \
                       "  Bugfix: \n" + \
-                      "     1. Cannot generate bootable image when original image size is less than 4KB \n\n"
+                      "     1. 'Cmd Pads' is not set correctly for some typical octal-flash models \n" + \
+                      "     2. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
+                     u"     1. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
                      u"  改进: \n" + \
                      u"  修复: \n" + \
-                     u"     1. 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
+                     u"     1. 对于一些octal-flash模型，其Cmd Pads参数没有被正确设置 \n" + \
+                     u"     2. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],

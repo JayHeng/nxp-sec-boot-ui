@@ -57,9 +57,10 @@ availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
                             #RTyyyy_uidef.kSecureBootType_IeeCrypto
                             ]
 hasRemappedFuse = True
-availableBootDevices = RTyyyy_uidef.kBootDevice_Latest
+availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
+                        RTyyyy_uidef.kBootDevice_SemcNand]
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
-flexspiNorMemBase = 0x60000000
+flexspiNorMemBase = 0x30000000
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True

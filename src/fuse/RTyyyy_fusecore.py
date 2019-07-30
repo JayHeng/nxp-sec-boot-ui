@@ -165,19 +165,15 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
                     self.showSettedEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF1, efuseDict['0x6e0_miscConf1'])
             time.sleep(0.5)
 
-    def SaveFuseRegions(self):
-        FuseFilePath = os.path.dirname(os.getcwd())
-        FuseFilePath = os.path.join(FuseFilePath, 'bin')
-        FuseFilePath = os.path.join(FuseFilePath, 'FuseConfigFile.json')
-        print(FuseFilePath)
-        if os.path.isfile(FuseFilePath):
-            with open(FuseFilePath, 'r+') as fileObj:
+    def saveFuseRegions( self ):
+        if os.path.isfile(self.fuseSettingFilename):
+            with open(self.fuseSettingFilename, 'r+') as fileObj:
                 FuseMapJson = json.load(fileObj)
                 FuseMapDict = FuseMapJson["FuseMAP"][0]
                 fileObj.close()
             self.saveFuselist = [None] * RTyyyy_fusedef.kMaxEfuseWords
             self.saveFuselist = self.getUserFuses()
-            with open(FuseFilePath, 'w') as fileObj:
+            with open(self.fuseSettingFilename, 'w') as fileObj:
                 FuseMapDict = collections.OrderedDict(sorted(FuseMapDict.iteritems(), key=itemgetter(0), reverse=False))
                 num = 0
                 for key in FuseMapDict:
@@ -196,13 +192,9 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
                 json.dump(cfgDict, fileObj, indent=1)
                 fileObj.close()
 
-
-    def LoadFuseRegions(self):
-        FuseFilePath = os.path.dirname(os.getcwd())
-        FuseFilePath = os.path.join(FuseFilePath, 'bin')
-        FuseFilePath = os.path.join(FuseFilePath, 'FuseConfigFile.json')
-        if os.path.isfile(FuseFilePath):
-            with open(FuseFilePath, 'r') as fileObj:
+    def loadFuseRegions( self ):
+        if os.path.isfile(self.fuseSettingFilename):
+            with open(self.fuseSettingFilename, 'r') as fileObj:
                 FuseMapJson = json.load(fileObj)
                 FuseMapDict = FuseMapJson["FuseMAP"][0]
                 fileObj.close()

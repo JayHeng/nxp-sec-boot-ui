@@ -24,6 +24,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
             self.RTyyyy_initUi()
 
     def RTyyyy_initUi( self ):
+        self.isXipableDevice = False
         self.isNandDevice = False
         self.isSdmmcCard = False
         self.sbEnableBootDeviceMagic = None
@@ -91,37 +92,44 @@ class secBootRTyyyyUi(memcore.secBootMem):
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
         self.toolCommDict['bootDevice'] = self.m_choice_bootDevice.GetSelection()
         if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+            self.isXipableDevice = True
             self.isNandDevice = False
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'flexspinor'
             self.sbAccessBootDeviceMagic = ''
             self._setFlexspiNorDeviceForEvkBoard()
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
+            self.isXipableDevice = True
             self.isNandDevice = False
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'semcnor'
             self.sbAccessBootDeviceMagic = ''
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
+            self.isXipableDevice = False
             self.isNandDevice = False
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'spieeprom'
             self.sbAccessBootDeviceMagic = 'spieeprom'
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNand:
+            self.isXipableDevice = False
             self.isNandDevice = True
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'flexspinand'
             self.sbAccessBootDeviceMagic = 'flexspinand'
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
+            self.isXipableDevice = False
             self.isNandDevice = True
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'semcnand'
             self.sbAccessBootDeviceMagic = 'semcnand'
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd:
+            self.isXipableDevice = False
             self.isNandDevice = True
             self.isSdmmcCard = True
             self.sbEnableBootDeviceMagic = 'sdcard'
             self.sbAccessBootDeviceMagic = 'sdcard'
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcMmc:
+            self.isXipableDevice = False
             self.isNandDevice = True
             self.isSdmmcCard = True
             self.sbEnableBootDeviceMagic = 'mmccard'

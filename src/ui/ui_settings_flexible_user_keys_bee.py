@@ -88,10 +88,7 @@ class secBootUiSettingsFlexibleUserKeysBee(advSettingsWin_FlexibleUserKeys_Bee.a
         if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
             keySource = None
             engineSel = None
-            if mcuDevice == uidef.kMcuDevice_iMXRT1011:
-                keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT1011
-                engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT1011
-            elif mcuDevice == uidef.kMcuDevice_iMXRT1015:
+            if mcuDevice == uidef.kMcuDevice_iMXRT1015:
                 keySource = RTyyyy_uidef.kSupportedKeySource_iMXRT1015
                 engineSel = RTyyyy_uidef.kSupportedEngineSel_iMXRT1015
             elif mcuDevice == uidef.kMcuDevice_iMXRT102x:
