@@ -199,7 +199,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                 contentToShow, memContent = self.getOneLineContentToShow(addr, memLeft, fileObj)
                 memLeft -= len(memContent)
                 addr += len(memContent)
-                if addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset:
+                if (self.isXipableDevice and addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset):
                     if self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
                         keyBlobStart = imageMemBase + RTyyyy_memdef.kMemBlockOffset_HwCryptoKeyBlob
                         if addr > keyBlobStart and addr <= keyBlobStart + RTyyyy_memdef.kMemBlockSize_HwCryptoKeyBlob:
@@ -211,7 +211,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
                             self.printMem(contentToShow)
                     else:
                         self.printMem(contentToShow)
-                elif addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset + RTyyyy_memdef.kMemBlockSize_FDCB:
+                elif (self.isXipableDevice and addr <= imageMemBase + self.tgt.xspiNorCfgInfoOffset + RTyyyy_memdef.kMemBlockSize_FDCB) or (addr <= imageMemBase + RTyyyy_memdef.kMemBlockSize_FDCB):
                     if not self.isSdmmcCard:
                         if self.needToShowCfgIntr:
                             self.printMem('------------------------------------FDCB----------------------------------------------', RTyyyy_uidef.kMemBlockColor_FDCB)
