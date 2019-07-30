@@ -96,7 +96,7 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
             self.m_choice_queryPads.SetSelection(queryPads - 1)
 
         cmdPads = (self.flexspiNorOpt0 & 0x0000F000) >> 12
-        if queryPads == 0:
+        if cmdPads == 0:
             self.m_choice_cmdPads.SetSelection(cmdPads)
         else:
             self.m_choice_cmdPads.SetSelection(cmdPads - 1)
