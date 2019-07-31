@@ -44,6 +44,7 @@ kMainLanguageContentDict = {
         'mItem_flashloaderResidentItcm':      ['ITCM',                                  u"ITCM"],
         'mItem_flashloaderResidentDtcm':      ['DTCM',                                  u"DTCM"],
         'mItem_flashloaderResidentOcram':     ['OCRAM',                                 u"OCRAM"],
+        'subMenu_efuseGroup':                 ['eFuse Group',                           u"eFuse分组号"],
         'menu_window':                        ['Window',                                u"界面"],
         'menu_help':                          ['Help',                                  u"帮助"],
         'mItem_homePage':                     ['Home Page',                             u"项目主页"],

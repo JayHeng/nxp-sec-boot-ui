@@ -66,6 +66,8 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
         self._setUartUsbPort()
         if self.isMcuSeriesChanged:
             if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
@@ -439,6 +441,22 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetFlashloaderResidentToOcram( self, event ):
         self.setFlashloaderResident()
+
+    def callbackSetEfuseGroupTo0( self, event ):
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
+
+    def callbackSetEfuseGroupTo1( self, event ):
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
+
+    def callbackSetEfuseGroupTo2( self, event ):
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
+
+    def callbackSetEfuseGroupTo3( self, event ):
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
 
     def _doSetLanguage( self ):
         self.setLanguage()

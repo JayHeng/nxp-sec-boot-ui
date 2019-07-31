@@ -34,6 +34,7 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
 
     def RTyyyy_initFuse( self ):
         self.applyFuseOperToRunMode()
+        self.updateFuseGroupText()
 
     def _initEntryModeFuseFlag( self ):
         if self.isToolRunAsEntryMode:
