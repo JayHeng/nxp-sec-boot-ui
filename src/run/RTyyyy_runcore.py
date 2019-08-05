@@ -644,7 +644,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             totalSizeKB = results[2]
             self.printDeviceStatus("Block Size  = " + self.showAsOptimalMemoryUnit(blockByteSize))
             strTotalSizeGB = ("%.2f" % (totalSizeKB / 1024.0 / 1024))
-            self.printDeviceStatus("Total Size  = " + self.convertLongIntHexText(strTotalSizeGB)) + ' GB'
+            self.printDeviceStatus("Total Size  = " + self.convertLongIntHexText(strTotalSizeGB) + ' GB')
             self.comMemWriteUnit = blockByteSize
             self.comMemEraseUnit = blockByteSize
             self.comMemReadUnit = blockByteSize
