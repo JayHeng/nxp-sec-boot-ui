@@ -365,9 +365,9 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             if needToShow:
                 self.printDeviceStatus(fuseName + " = " + self.convertLongIntHexText(str(hex(results[1]))))
             if self.isSbFileEnabledToGen:
-                if fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1 and self.sbLastSharedFuseBootCfg1 == RTyyyy_fusedef.kEfuseValue_Invalid:
+                if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1'] and self.sbLastSharedFuseBootCfg1 == RTyyyy_fusedef.kEfuseValue_Invalid:
                     self.sbLastSharedFuseBootCfg1 = results[1]
-                if fuseIndex == RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG and self.sbLastSharedFuseOtfadCfg == RTyyyy_fusedef.kEfuseValue_Invalid:
+                if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG'] and self.sbLastSharedFuseOtfadCfg == RTyyyy_fusedef.kEfuseValue_Invalid:
                     self.sbLastSharedFuseOtfadCfg = results[1]
             return results[1]
         else:
@@ -376,15 +376,15 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             return None
 
     def _readMcuDeviceFuseTester( self ):
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_TESTER0, '(0x410) TESTER0')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_TESTER1, '(0x420) TESTER1')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_TESTER2, '(0x430) TESTER2')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_TESTER3, '(0x440) TESTER3')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_TESTER0'], '(0x410) TESTER0')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_TESTER1'], '(0x420) TESTER1')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_TESTER2'], '(0x430) TESTER2')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_TESTER3'], '(0x440) TESTER3')
 
     def _readMcuDeviceFuseBootCfg( self ):
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0, '(0x450) BOOT_CFG0')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1, '(0x460) BOOT_CFG1')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2, '(0x470) BOOT_CFG2')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0'], '(0x450) BOOT_CFG0')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1'], '(0x460) BOOT_CFG1')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2'], '(0x470) BOOT_CFG2')
 
     def _genOtpmkDekFile( self, otpmk4, otpmk5, otpmk6, otpmk7 ):
         try:
@@ -397,28 +397,28 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         self.fillVal32IntoBinFile(self.otpmkDekFilename, otpmk7)
 
     def _readMcuDeviceFuseOtpmkDek( self ):
-        otpmk4 = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTPMK4, '', False)
-        otpmk5 = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTPMK5, '', False)
-        otpmk6 = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTPMK6, '', False)
-        otpmk7 = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTPMK7, '', False)
+        otpmk4 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTPMK4'], '', False)
+        otpmk5 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTPMK5'], '', False)
+        otpmk6 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTPMK6'], '', False)
+        otpmk7 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTPMK7'], '', False)
         if otpmk4 != None and otpmk5 != None and otpmk6 != None and otpmk7 != None:
             self._genOtpmkDekFile(otpmk4, otpmk5, otpmk6, otpmk7)
 
     def _readMcuDeviceFuseSrk( self ):
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK0, '(0x580) SRK0')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK1, '(0x590) SRK1')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK2, '(0x5A0) SRK2')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK3, '(0x5B0) SRK3')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK4, '(0x5C0) SRK4')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK5, '(0x5D0) SRK5')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK6, '(0x5E0) SRK6')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK7, '(0x5F0) SRK7')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK0'], '(0x580) SRK0')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK1'], '(0x590) SRK1')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK2'], '(0x5A0) SRK2')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK3'], '(0x5B0) SRK3')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK4'], '(0x5C0) SRK4')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK5'], '(0x5D0) SRK5')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK6'], '(0x5E0) SRK6')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK7'], '(0x5F0) SRK7')
 
     def _readMcuDeviceFuseSwGp2( self ):
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_0, '(0x690) SW_GP2_0')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_1, '(0x6A0) SW_GP2_1')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_2, '(0x6B0) SW_GP2_2')
-        self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_3, '(0x6C0) SW_GP2_3')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_0'], '(0x690) SW_GP2_0')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_1'], '(0x6A0) SW_GP2_1')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_2'], '(0x6B0) SW_GP2_2')
+        self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_3'], '(0x6C0) SW_GP2_3')
 
     def getMcuDeviceInfoViaFlashloader( self ):
         self.printDeviceStatus("--------MCU device eFusemap--------")
@@ -865,7 +865,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         isBlank = True
         keyWords = RTyyyy_gendef.kSecKeyLengthInBits_SRK / 32
         for i in range(keyWords):
-            srk = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK0 + i, '(' + str(hex(0x580 + i * 0x10)) + ') ' + 'SRK' + str(i), False)
+            srk = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK0'] + i, '(' + str(hex(0x580 + i * 0x10)) + ') ' + 'SRK' + str(i), False)
             if srk == None:
                 isReady = False
                 break
@@ -881,10 +881,10 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         status = boot.status.kStatus_Success
         if self.isSbFileEnabledToGen:
             if actionFrom == RTyyyy_rundef.kActionFrom_AllInOne:
-                if fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1:
+                if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1']:
                     fuseValue = fuseValue | self.sbLastSharedFuseBootCfg1
                     self.sbLastSharedFuseBootCfg1 = fuseValue
-                elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG:
+                elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG']:
                     fuseValue = fuseValue | self.sbLastSharedFuseOtfadCfg
                     self.sbLastSharedFuseOtfadCfg = fuseValue
                 else:
@@ -910,7 +910,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     keyWords = RTyyyy_gendef.kSecKeyLengthInBits_SRK / 32
                     for i in range(keyWords):
                         val32 = self.getVal32FromBinFile(self.srkFuseFilename, (i * 4))
-                        burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SRK0 + i, val32)
+                        burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SRK0'] + i, val32)
                         if not burnResult:
                             self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnSrk'][self.languageIndex])
                             return False
@@ -926,7 +926,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         isBlank = True
         keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
         for i in range(keyWords):
-            dek = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_0 + i, '(' + str(hex(0x690 + i * 0x10)) + ') ' + 'SW_GP2_' + str(i), False)
+            dek = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_0'] + i, '(' + str(hex(0x690 + i * 0x10)) + ') ' + 'SW_GP2_' + str(i), False)
             if dek == None:
                 isReady = False
                 break
@@ -943,7 +943,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         isBlank = True
         keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
         for i in range(keyWords):
-            dek = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_GP4_0 + i, '(' + str(hex(0x8C0 + i * 0x10)) + ') ' + 'GP4_' + str(i), False)
+            dek = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_GP4_0'] + i, '(' + str(hex(0x8C0 + i * 0x10)) + ') ' + 'GP4_' + str(i), False)
             if dek == None:
                 isReady = False
                 break
@@ -956,20 +956,20 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         return isReady, isBlank
 
     def _lockFuseSwGp2( self ):
-        lock = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_LOCK, '', False)
+        lock = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'], '', False)
         if lock != None:
             lock = (lock | (RTyyyy_fusedef.kEfuseMask_WLockSwGp2 | RTyyyy_fusedef.kEfuseMask_RLockSwGp2)) & (~RTyyyy_fusedef.kEfuseMask_LockHigh)
-            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_LOCK, lock)
+            burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'], lock)
             if not burnResult:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnSwgp2Lock'][self.languageIndex])
                 return False
         return True
 
     def _lockFuseGp4( self ):
-        lock = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_LOCK, '', False)
+        lock = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'], '', False)
         if lock != None:
             lock = (lock | (RTyyyy_fusedef.kEfuseMask_WLockGp4 | RTyyyy_fusedef.kEfuseMask_RLockGp4)) & (~RTyyyy_fusedef.kEfuseMask_LockHigh)
-            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_LOCK, lock)
+            burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'], lock)
             if not burnResult:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnGp4Lock'][self.languageIndex])
                 return False
@@ -1014,7 +1014,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 if isBlank:
                     for i in range(keyWords):
                         val32 = self.getVal32FromBinFile(swgp2DekFilename, (i * 4))
-                        burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_SW_GP2_0 + i, val32)
+                        burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_SW_GP2_0'] + i, val32)
                         if not burnResult:
                             self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnSwgp2'][self.languageIndex])
                             return False
@@ -1030,7 +1030,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 if isBlank:
                     for i in range(keyWords):
                         val32 = self.getVal32FromBinFile(gp4DekFilename, (i * 4))
-                        burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_GP4_0 + i, val32)
+                        burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_GP4_0'] + i, val32)
                         if not burnResult:
                             self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnGp4'][self.languageIndex])
                             return False
@@ -1383,7 +1383,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def _isDeviceFuseOtfadKeyScrambleAlgoRegionReadyForBurn( self, scrambleAlgo ):
         isReady = True
         isBlank = True
-        key = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_KEY, '', False)
+        key = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_KEY'], '', False)
         if key == None:
             isReady = False
         elif key != 0:
@@ -1396,7 +1396,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         isReady, isBlank = self._isDeviceFuseOtfadKeyScrambleAlgoRegionReadyForBurn(scrambleAlgo)
         if isReady:
             if isBlank:
-                burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_KEY, scrambleAlgo)
+                burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_KEY'], scrambleAlgo)
                 if not burnResult:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadKeyScramble'][self.languageIndex])
                     return False
@@ -1413,11 +1413,11 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 if not self.burnOtfadKeyScrambleAlgo(scrambleAlgo):
                     return False
                 scrambleAlignment = int(userKeyCmdDict['scramble_align'][2:len(userKeyCmdDict['scramble_align'])], 16)
-                otfadCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG, '', False)
+                otfadCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG'], '', False)
                 if otfadCfg != None:
                     otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleEnable)
                     otfadCfg = (otfadCfg & (~RTyyyy_fusedef.kEfuseMask_OtfadKeyScrambleAlign)) | (scrambleAlignment << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleAlign)
-                    burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseIndex_OTFAD_CFG, otfadCfg)
+                    burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG'], otfadCfg)
                     if not burnResult:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadScrambleConfigurationField'][self.languageIndex])
                         return False

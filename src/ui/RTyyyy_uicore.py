@@ -1262,39 +1262,39 @@ class secBootRTyyyyUi(memcore.secBootMem):
 
     def enterSettableEfuse( self, fuseIndex ):
         efuseDict = uivar.getEfuseSettings()
-        if fuseIndex == RTyyyy_fusedef.kEfuseIndex_LOCK:
+        if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_LOCK']:
             efuseDict['0x400_lock'] = self._parseUserFuseValue(self.m_textCtrl_fuse400.GetLineText(0))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0']:
             efuseDict['0x450_bootCfg0'] = self._parseUserFuseValue(self.m_textCtrl_fuse450.GetLineText(0))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1']:
             efuseDict['0x460_bootCfg1'] = self._parseUserFuseValue(self.m_textCtrl_fuse460.GetLineText(0))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2']:
             efuseDict['0x470_bootCfg2'] = self._parseUserFuseValue(self.m_textCtrl_fuse470.GetLineText(0))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_MISC_CONF0:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF0']:
             efuseDict['0x6d0_miscConf0'] = self._parseUserFuseValue(self.m_textCtrl_fuse6d0.GetLineText(0))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_MISC_CONF1:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF1']:
             efuseDict['0x6e0_miscConf1'] = self._parseUserFuseValue(self.m_textCtrl_fuse6e0.GetLineText(0))
         else:
             pass
         uivar.setEfuseSettings(efuseDict)
 
     def showSettedEfuse( self , fuseIndex, fuseValue ):
-        if fuseIndex == RTyyyy_fusedef.kEfuseIndex_LOCK:
+        if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_LOCK']:
             self.m_textCtrl_fuse400.Clear()
             self.m_textCtrl_fuse400.write(self._parseReadFuseValue(fuseValue))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0']:
             self.m_textCtrl_fuse450.Clear()
             self.m_textCtrl_fuse450.write(self._parseReadFuseValue(fuseValue))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1']:
             self.m_textCtrl_fuse460.Clear()
             self.m_textCtrl_fuse460.write(self._parseReadFuseValue(fuseValue))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2']:
             self.m_textCtrl_fuse470.Clear()
             self.m_textCtrl_fuse470.write(self._parseReadFuseValue(fuseValue))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_MISC_CONF0:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF0']:
             self.m_textCtrl_fuse6d0.Clear()
             self.m_textCtrl_fuse6d0.write(self._parseReadFuseValue(fuseValue))
-        elif fuseIndex == RTyyyy_fusedef.kEfuseIndex_MISC_CONF1:
+        elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF1']:
             self.m_textCtrl_fuse6e0.Clear()
             self.m_textCtrl_fuse6e0.write(self._parseReadFuseValue(fuseValue))
         else:

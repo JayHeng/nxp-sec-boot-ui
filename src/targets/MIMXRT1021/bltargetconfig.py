@@ -68,6 +68,8 @@ isSwEccSetAsDefaultInNandOpt = True
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
+efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
+
 efuse_0x400_bit14    = {'SRK':                     ['0 - Unlock', '1 - W,0,RP']}
 efuse_0x400_bit15    = {'OTPMK_MSB':               ['0 - Unlock', '1 - W,0,RP']}
 efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',

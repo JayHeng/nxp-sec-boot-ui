@@ -64,6 +64,9 @@ isSwEccSetAsDefaultInNandOpt = None
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
+efusemapIndexDict = None
+efuseDescDiffDict = None
+
 # memory map
 memoryRange = {
     # SRAM, 3MByte
