@@ -68,7 +68,8 @@ efuse_0x6d0_flexramPartion512KB = {'Default_FlexRAM_Partion':['0000 - 128KB ITCM
 
 efusemapIndexDict_RT10yy = {'kEfuseIndex_START' :0x0,
 
-                            'kEfuseIndex_LOCK' :0x0,
+                            'kEfuseIndex_LOCK'  :0x0,
+                            'kEfuseIndex_LOCK2' :None,
 
                             'kEfuseIndex_TESTER0' :0x1,
                             'kEfuseIndex_TESTER1' :0x2,
@@ -119,4 +120,36 @@ efusemapIndexDict_RT10yy = {'kEfuseIndex_START' :0x0,
                             'kEfuseIndex_GP4_1' :0x3D,
                             'kEfuseIndex_GP4_2' :0x3E,
                             'kEfuseIndex_GP4_3' :0x3F,
+
+                            'kEfuseEntryModeRegion0IndexStart' :0x01,
+                            'kEfuseEntryModeRegion0IndexEnd'   :0x02,
+                            'kEfuseEntryModeRegion1IndexStart' :0x05,
+                            'kEfuseEntryModeRegion1IndexEnd'   :0x07,
+                            'kEfuseEntryModeRegion2IndexStart' :0x18,
+                            'kEfuseEntryModeRegion2IndexEnd'   :0x1F,
+                            'kEfuseEntryModeRegion3IndexStart' :0x29,
+                            'kEfuseEntryModeRegion3IndexEnd'   :0x2E,
+                            'kEfuseEntryModeRegion4IndexStart' :0x4C,
+                            'kEfuseEntryModeRegion4IndexEnd'   :0x4F,
+                            'kEfuseEntryModeRegion5IndexStart' :None,
+                            'kEfuseEntryModeRegion5IndexEnd'   :None,
+                            }
+
+efusemapIndexDict_RT11yy = {'kEfuseIndex_START' :0x0,
+
+                            'kEfuseIndex_LOCK'  :0x8,
+                            'kEfuseIndex_LOCK2' :0x9,
+
+                            'kEfuseEntryModeRegion0IndexStart' :0x10,
+                            'kEfuseEntryModeRegion0IndexEnd'   :0x1B,
+                            'kEfuseEntryModeRegion1IndexStart' :0x2E,
+                            'kEfuseEntryModeRegion1IndexEnd'   :0x2E,
+                            'kEfuseEntryModeRegion2IndexStart' :0x30,
+                            'kEfuseEntryModeRegion2IndexEnd'   :0x3F,
+                            'kEfuseEntryModeRegion3IndexStart' :0x47,
+                            'kEfuseEntryModeRegion3IndexEnd'   :0x4A,
+                            'kEfuseEntryModeRegion4IndexStart' :0x60,
+                            'kEfuseEntryModeRegion4IndexEnd'   :0x87,
+                            'kEfuseEntryModeRegion5IndexStart' :0xB0,
+                            'kEfuseEntryModeRegion5IndexEnd'   :0x10F,
                             }

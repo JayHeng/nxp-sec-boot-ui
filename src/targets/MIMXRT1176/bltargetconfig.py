@@ -56,7 +56,7 @@ availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
                             #RTyyyy_uidef.kSecureBootType_OtfadCrypto,
                             #RTyyyy_uidef.kSecureBootType_IeeCrypto
                             ]
-hasRemappedFuse = True
+hasRemappedFuse = False
 availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_SemcNand]
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
@@ -71,7 +71,7 @@ isSwEccSetAsDefaultInNandOpt = False
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
-efusemapIndexDict = None
+efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT11yy
 
 efuse_0x400_bit7     = {'GP4_R':                   ['0 - Unlock', '1 - RP']}
 efuse_0x400_bit15    = {'ROM_PATCH':               ['0 - Unlock', '1 - W,0P']}

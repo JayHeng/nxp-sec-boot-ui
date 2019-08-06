@@ -596,85 +596,115 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
     def callbackSetEfuseLock( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseLockFrame = RT10yy_ui_efuse_lock.secBootUiEfuseLock(None)
-        efuseLockFrame.SetTitle("eFuse 0x400 Lock")
-        efuseLockFrame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseLockFrame.Show(True)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseLockFrame = RT10yy_ui_efuse_lock.secBootUiEfuseLock(None)
+            efuseLockFrame.SetTitle("eFuse 0x400 Lock")
+            efuseLockFrame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseLockFrame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
+        else:
+            pass
 
     def callbackEnterEfuseLock( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_LOCK)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'])
 
     def callbackSetEfuseBootCfg0( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseBootCfg0Frame = None
-        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-            if self.tgt.flexspiNorEfuseBootCfg0Bits == 3:
-                efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_3bits.secBootUiEfuseBootCfg0FlexspiNor3bits(None)
-            elif self.tgt.flexspiNorEfuseBootCfg0Bits == 10:
-                efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_10bits.secBootUiEfuseBootCfg0FlexspiNor10bits(None)
-            elif self.tgt.flexspiNorEfuseBootCfg0Bits == 12:
-                efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_12bits.secBootUiEfuseBootCfg0FlexspiNor12bits(None)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseBootCfg0Frame = None
+            if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+                if self.tgt.flexspiNorEfuseBootCfg0Bits == 3:
+                    efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_3bits.secBootUiEfuseBootCfg0FlexspiNor3bits(None)
+                elif self.tgt.flexspiNorEfuseBootCfg0Bits == 10:
+                    efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_10bits.secBootUiEfuseBootCfg0FlexspiNor10bits(None)
+                elif self.tgt.flexspiNorEfuseBootCfg0Bits == 12:
+                    efuseBootCfg0Frame = RT10yy_ui_efuse_bootcfg0_flexspinor_12bits.secBootUiEfuseBootCfg0FlexspiNor12bits(None)
+                else:
+                    pass
+                efuseBootCfg0Frame.SetTitle("eFuse 0x450 Boot Cfg0 - FlexSPI NOR")
             else:
-                pass
-            efuseBootCfg0Frame.SetTitle("eFuse 0x450 Boot Cfg0 - FlexSPI NOR")
+                uivar.setRuntimeSettings(False)
+                return
+            efuseBootCfg0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseBootCfg0Frame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
         else:
-            uivar.setRuntimeSettings(False)
-            return
-        efuseBootCfg0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseBootCfg0Frame.Show(True)
+            pass
 
     def callbackEnterEfuseBootCfg0( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG0)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0'])
 
     def callbackSetEfuseBootCfg1( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseBootCfg1Frame = RT10yy_ui_efuse_bootcfg1.secBootUiEfuseBootCfg1(None)
-        efuseBootCfg1Frame.SetTitle("eFuse 0x460 Boot Cfg1")
-        efuseBootCfg1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseBootCfg1Frame.Show(True)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseBootCfg1Frame = RT10yy_ui_efuse_bootcfg1.secBootUiEfuseBootCfg1(None)
+            efuseBootCfg1Frame.SetTitle("eFuse 0x460 Boot Cfg1")
+            efuseBootCfg1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseBootCfg1Frame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
+        else:
+            pass
 
     def callbackEnterEfuseBootCfg1( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG1)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1'])
 
     def callbackSetEfuseBootCfg2( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseBootCfg2Frame = RT10yy_ui_efuse_bootcfg2.secBootUiEfuseBootCfg2(None)
-        efuseBootCfg2Frame.SetTitle("eFuse 0x470 Boot Cfg2")
-        efuseBootCfg2Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseBootCfg2Frame.Show(True)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseBootCfg2Frame = RT10yy_ui_efuse_bootcfg2.secBootUiEfuseBootCfg2(None)
+            efuseBootCfg2Frame.SetTitle("eFuse 0x470 Boot Cfg2")
+            efuseBootCfg2Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseBootCfg2Frame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
+        else:
+            pass
 
     def callbackEnterEfuseBootCfg2( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_BOOT_CFG2)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2'])
 
     def callbackSetEfuseMiscConf0( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseMiscConf0Frame = RT10yy_ui_efuse_miscconf0.secBootUiEfuseMiscConf0(None)
-        efuseMiscConf0Frame.SetTitle("eFuse 0x6d0 Misc Conf0")
-        efuseMiscConf0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseMiscConf0Frame.Show(True)
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseMiscConf0Frame = RT10yy_ui_efuse_miscconf0.secBootUiEfuseMiscConf0(None)
+            efuseMiscConf0Frame.SetTitle("eFuse 0x6d0 Misc Conf0")
+            efuseMiscConf0Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseMiscConf0Frame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
+        else:
+            pass
 
     def callbackEnterEfuseMiscConf0( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF0)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF0'])
 
     def callbackSetEfuseMiscConf1( self, event ):
         if self.checkIfSubWinHasBeenOpened():
             return
-        efuseMiscConf1Frame = None
-        if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
-            efuseMiscConf1Frame = RT10yy_ui_efuse_miscconf1_flexspinor.secBootUiEfuseMiscConf1FlexspiNor(None)
-            efuseMiscConf1Frame.SetTitle("eFuse 0x6e0 Misc Conf1 - FlexSPI NOR")
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+            efuseMiscConf1Frame = None
+            if self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
+                efuseMiscConf1Frame = RT10yy_ui_efuse_miscconf1_flexspinor.secBootUiEfuseMiscConf1FlexspiNor(None)
+                efuseMiscConf1Frame.SetTitle("eFuse 0x6e0 Misc Conf1 - FlexSPI NOR")
+            else:
+                uivar.setRuntimeSettings(False)
+                return
+            efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
+            efuseMiscConf1Frame.Show(True)
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            pass
         else:
-            uivar.setRuntimeSettings(False)
-            return
-        efuseMiscConf1Frame.setNecessaryInfo(self.tgt.efuseDescDiffDict)
-        efuseMiscConf1Frame.Show(True)
+            pass
 
     def callbackEnterEfuseMiscConf1( self, event ):
-        self.enterSettableEfuse(RTyyyy_fusedef.kEfuseIndex_MISC_CONF1)
+        self.enterSettableEfuse(self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF1'])
 
     def _RTyyyy_doViewMem( self ):
         if self.connectStage == uidef.kConnectStage_Reset:

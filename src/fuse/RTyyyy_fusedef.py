@@ -1,6 +1,7 @@
 import sys, os
 
-kMaxEfuseWords  = 80
+kGroupEfuseWords = 80
+kTotalEfuseWords = 320
 
 ##################################################
 
@@ -76,18 +77,6 @@ kSpiAddressing_2Bytes = 0x1
 kEfuseRemapIndex_Src  = 0x30
 kEfuseRemapIndex_Dest = 0x40
 kEfuseRemapLen = 16
-
-##################################################
-kEfuseEntryModeRegion0IndexStart = 0x01
-kEfuseEntryModeRegion0IndexEnd   = 0x02
-kEfuseEntryModeRegion1IndexStart = 0x05
-kEfuseEntryModeRegion1IndexEnd   = 0x07
-kEfuseEntryModeRegion2IndexStart = 0x18
-kEfuseEntryModeRegion2IndexEnd   = 0x1F
-kEfuseEntryModeRegion3IndexStart = 0x29
-kEfuseEntryModeRegion3IndexEnd   = 0x2E
-kEfuseEntryModeRegion4IndexStart = 0x4C
-kEfuseEntryModeRegion4IndexEnd   = 0x4F
 
 ##################################################
 kEfuseValue_Invalid = 0xdeadbeef

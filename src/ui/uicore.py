@@ -86,7 +86,7 @@ class secBootUi(secBootWin.secBootWin):
         self._initTargetSetupValue()
         self.setTargetSetupValue()
 
-        self.efuseGroupIndex = None
+        self.efuseGroupSel = None
         self._initEfuseGroup()
         self.setEfuseGroup()
 
@@ -207,22 +207,22 @@ class secBootUi(secBootWin.secBootWin):
         self.toolCommDict['flashloaderResident'] = self.flashloaderResident
 
     def _initEfuseGroup( self ):
-        if self.toolCommDict['efuseGroup'] == 0:
+        if self.toolCommDict['efuseGroupSel'] == 0:
             self.m_menuItem_efuseGroup0.Check(True)
             self.m_menuItem_efuseGroup1.Check(False)
             self.m_menuItem_efuseGroup2.Check(False)
             self.m_menuItem_efuseGroup3.Check(False)
-        elif self.toolCommDict['efuseGroup'] == 1:
+        elif self.toolCommDict['efuseGroupSel'] == 1:
             self.m_menuItem_efuseGroup0.Check(False)
             self.m_menuItem_efuseGroup1.Check(True)
             self.m_menuItem_efuseGroup2.Check(False)
             self.m_menuItem_efuseGroup3.Check(False)
-        elif self.toolCommDict['efuseGroup'] == 2:
+        elif self.toolCommDict['efuseGroupSel'] == 2:
             self.m_menuItem_efuseGroup0.Check(False)
             self.m_menuItem_efuseGroup1.Check(False)
             self.m_menuItem_efuseGroup2.Check(True)
             self.m_menuItem_efuseGroup3.Check(False)
-        elif self.toolCommDict['efuseGroup'] == 3:
+        elif self.toolCommDict['efuseGroupSel'] == 3:
             self.m_menuItem_efuseGroup0.Check(False)
             self.m_menuItem_efuseGroup1.Check(False)
             self.m_menuItem_efuseGroup2.Check(False)
@@ -233,22 +233,22 @@ class secBootUi(secBootWin.secBootWin):
     def setEfuseGroup( self ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
             if self.m_menuItem_efuseGroup0.IsChecked():
-                self.efuseGroupIndex = 0
+                self.efuseGroupSel = 0
             elif self.m_menuItem_efuseGroup1.IsChecked():
-                self.efuseGroupIndex = 1
+                self.efuseGroupSel = 1
             elif self.m_menuItem_efuseGroup2.IsChecked():
-                self.efuseGroupIndex = 2
+                self.efuseGroupSel = 2
             elif self.m_menuItem_efuseGroup3.IsChecked():
-                self.efuseGroupIndex = 3
+                self.efuseGroupSel = 3
             else:
                 pass
         else:
-            self.efuseGroupIndex = 0
+            self.efuseGroupSel = 0
             self.m_menuItem_efuseGroup0.Check(True)
             self.m_menuItem_efuseGroup1.Check(False)
             self.m_menuItem_efuseGroup2.Check(False)
             self.m_menuItem_efuseGroup3.Check(False)
-        self.toolCommDict['efuseGroup'] = self.efuseGroupIndex
+        self.toolCommDict['efuseGroupSel'] = self.efuseGroupSel
 
     def checkIfSubWinHasBeenOpened( self ):
         runtimeSettings = uivar.getRuntimeSettings()
