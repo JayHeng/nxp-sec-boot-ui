@@ -433,7 +433,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
 
     def getMcuDeviceBtFuseSel( self ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-            btFuseSel = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_BtFuseSel, '', False)
+            btFuseSel = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_BtFuseSel'], '', False)
             if btFuseSel != None:
                 self.mcuDeviceBtFuseSel = ((btFuseSel & RTyyyy_fusedef.kEfuseMask_BtFuseSel) >> RTyyyy_fusedef.kEfuseShift_BtFuseSel)
                 if self.mcuDeviceBtFuseSel == 0:
@@ -1204,11 +1204,11 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         return True
 
     def _getMcuDeviceSemcNandCfg( self ):
-        semcNandCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_SemcNandCfg, '', False)
+        semcNandCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SemcNandCfg'], '', False)
         return semcNandCfg
 
     def _getMcuDeviceLpspiCfg( self ):
-        lpspiCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_LpspiCfg, '', False)
+        lpspiCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_LpspiCfg'], '', False)
         return lpspiCfg
 
     def burnBootDeviceFuses( self ):
@@ -1243,7 +1243,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_miscConf1HasBeenBurned'][self.languageIndex])
                     return False
                 else:
-                    burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_SemcNandCfg, getSemcNandCfg)
+                    burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SemcNandCfg'], getSemcNandCfg)
                     if not burnResult:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnMiscConf1'][self.languageIndex])
                         return False
@@ -1280,7 +1280,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_miscConf0HasBeenBurned'][self.languageIndex])
                     return False
                 else:
-                    burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_LpspiCfg, getLpspiCfg)
+                    burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_LpspiCfg'], getLpspiCfg)
                     if not burnResult:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnMiscConf0'][self.languageIndex])
                         return False
@@ -1293,7 +1293,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         return True
 
     def _getMcuDeviceHwCryptoKeySel( self ):
-        hwCryptoKeySel = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_HwCryptoKeySel, '', False)
+        hwCryptoKeySel = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_HwCryptoKeySel'], '', False)
         if hwCryptoKeySel != None:
             self.mcuDeviceHwCryptoKey0Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel)
             self.mcuDeviceHwCryptoKey1Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel)
@@ -1364,17 +1364,17 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel) != setHwCryptoKey1Sel:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey1SelHasBeenBurned'][self.languageIndex])
                     return False
-            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_HwCryptoKeySel, getHwCryptoKeySel)
+            burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_HwCryptoKeySel'], getHwCryptoKeySel)
             if not burnResult:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnHwCryptoKeyxSel'][self.languageIndex])
                 return False
         return True
 
     def enableOtfad( self ):
-        otfadCfg = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_OtfadEnable, '', False)
+        otfadCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_OtfadEnable'], '', False)
         if otfadCfg != None:
             otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadEnable)
-            burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_OtfadEnable, otfadCfg)
+            burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_OtfadEnable'], otfadCfg)
             if not burnResult:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadEnablementBit'][self.languageIndex])
                 return False
@@ -1541,10 +1541,10 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def enableHab( self ):
         if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \
            self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
-            secConfig1 = self.readMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_SecConfig1, '', False)
+            secConfig1 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SecConfig1'], '', False)
             if secConfig1 != None:
                 secConfig1 = secConfig1 | RTyyyy_fusedef.kEfuseMask_SecConfig1
-                burnResult = self.burnMcuDeviceFuseByBlhost(RTyyyy_fusedef.kEfuseLocation_SecConfig1, secConfig1)
+                burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SecConfig1'], secConfig1)
                 if not burnResult:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnSecConfig1'][self.languageIndex])
                     return False

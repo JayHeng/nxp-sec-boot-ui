@@ -74,9 +74,13 @@ efusemapIndexDict_RT10yy = {'kEfuseIndex_START' :0x0,
                             'kEfuseIndex_TESTER1' :0x2,
                             'kEfuseIndex_TESTER2' :0x3,
                             'kEfuseIndex_TESTER3' :0x4,
+                            'kEfuseLocation_SecConfig0' :0x4,
 
                             'kEfuseIndex_BOOT_CFG0' :0x5,
                             'kEfuseIndex_BOOT_CFG1' :0x6,
+                            'kEfuseLocation_SecConfig1' :0x6,
+                            'kEfuseLocation_BtFuseSel' :0x6,
+                            'kEfuseLocation_HwCryptoKeySel' :0x6,
                             'kEfuseIndex_BOOT_CFG2' :0x7,
 
                             'kEfuseIndex_OTPMK0' :0x10,
@@ -99,6 +103,7 @@ efusemapIndexDict_RT10yy = {'kEfuseIndex_START' :0x0,
 
                             'kEfuseIndex_OTFAD_KEY' :0x22,
                             'kEfuseIndex_OTFAD_CFG' :0x23,
+                            'kEfuseLocation_OtfadEnable' :0x23,
 
                             'kEfuseIndex_SW_GP2_0' :0x29,
                             'kEfuseIndex_SW_GP2_1' :0x2A,
@@ -106,7 +111,9 @@ efusemapIndexDict_RT10yy = {'kEfuseIndex_START' :0x0,
                             'kEfuseIndex_SW_GP2_3' :0x2C,
 
                             'kEfuseIndex_MISC_CONF0' :0x2D,
+                            'kEfuseLocation_LpspiCfg' :0x2D,
                             'kEfuseIndex_MISC_CONF1' :0x2E,
+                            'kEfuseLocation_SemcNandCfg' :0x2E,
 
                             'kEfuseIndex_GP4_0' :0x3C,
                             'kEfuseIndex_GP4_1' :0x3D,
