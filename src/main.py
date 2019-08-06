@@ -121,6 +121,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
             semcNandFrame = ui_cfg_semcnand.secBootUiCfgSemcNand(None)
             semcNandFrame.SetTitle(uilang.kSubLanguageContentDict['semcnand_title'][self.languageIndex])
+            semcNandFrame.setNecessaryInfo(self.tgt.isSwEccSetAsDefaultInNandOpt)
             semcNandFrame.Show(True)
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd:
             usdhcSdFrame = ui_cfg_usdhcsd.secBootUiUsdhcSd(None)

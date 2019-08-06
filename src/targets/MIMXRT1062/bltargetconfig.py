@@ -63,6 +63,7 @@ flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
 isSipFlexspiNorDevice = False
 isEccTypeSetInFuseMiscConf = True
+isSwEccSetAsDefaultInNandOpt = True
 
 quadspiNorDevice = None
 quadspiNorMemBase = None
