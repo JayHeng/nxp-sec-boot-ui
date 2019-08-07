@@ -63,9 +63,12 @@ flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
 isSipFlexspiNorDevice = False
 isEccTypeSetInFuseMiscConf = True
+isSwEccSetAsDefaultInNandOpt = True
 
 quadspiNorDevice = None
 quadspiNorMemBase = None
+
+efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
 
 efuse_0x400_bit7     = {'GP4_R':                   ['0 - Unlock', '1 - RP']}
 efuse_0x400_bit15    = {'ROM_PATCH':               ['0 - Unlock', '1 - W,0P']}

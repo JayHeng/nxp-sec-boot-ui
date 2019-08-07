@@ -86,6 +86,10 @@ class secBootUi(secBootWin.secBootWin):
         self._initTargetSetupValue()
         self.setTargetSetupValue()
 
+        self.efuseGroupSel = None
+        self._initEfuseGroup()
+        self.setEfuseGroup()
+
         self.isUartPortSelected = None
         self.isUsbhidPortSelected = None
         self.uartComPort = None
@@ -201,6 +205,50 @@ class secBootUi(secBootWin.secBootWin):
         else:
             pass
         self.toolCommDict['flashloaderResident'] = self.flashloaderResident
+
+    def _initEfuseGroup( self ):
+        if self.toolCommDict['efuseGroupSel'] == 0:
+            self.m_menuItem_efuseGroup0.Check(True)
+            self.m_menuItem_efuseGroup1.Check(False)
+            self.m_menuItem_efuseGroup2.Check(False)
+            self.m_menuItem_efuseGroup3.Check(False)
+        elif self.toolCommDict['efuseGroupSel'] == 1:
+            self.m_menuItem_efuseGroup0.Check(False)
+            self.m_menuItem_efuseGroup1.Check(True)
+            self.m_menuItem_efuseGroup2.Check(False)
+            self.m_menuItem_efuseGroup3.Check(False)
+        elif self.toolCommDict['efuseGroupSel'] == 2:
+            self.m_menuItem_efuseGroup0.Check(False)
+            self.m_menuItem_efuseGroup1.Check(False)
+            self.m_menuItem_efuseGroup2.Check(True)
+            self.m_menuItem_efuseGroup3.Check(False)
+        elif self.toolCommDict['efuseGroupSel'] == 3:
+            self.m_menuItem_efuseGroup0.Check(False)
+            self.m_menuItem_efuseGroup1.Check(False)
+            self.m_menuItem_efuseGroup2.Check(False)
+            self.m_menuItem_efuseGroup3.Check(True)
+        else:
+            pass
+
+    def setEfuseGroup( self ):
+        if self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+            if self.m_menuItem_efuseGroup0.IsChecked():
+                self.efuseGroupSel = 0
+            elif self.m_menuItem_efuseGroup1.IsChecked():
+                self.efuseGroupSel = 1
+            elif self.m_menuItem_efuseGroup2.IsChecked():
+                self.efuseGroupSel = 2
+            elif self.m_menuItem_efuseGroup3.IsChecked():
+                self.efuseGroupSel = 3
+            else:
+                pass
+        else:
+            self.efuseGroupSel = 0
+            self.m_menuItem_efuseGroup0.Check(True)
+            self.m_menuItem_efuseGroup1.Check(False)
+            self.m_menuItem_efuseGroup2.Check(False)
+            self.m_menuItem_efuseGroup3.Check(False)
+        self.toolCommDict['efuseGroupSel'] = self.efuseGroupSel
 
     def checkIfSubWinHasBeenOpened( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -739,6 +787,7 @@ class secBootUi(secBootWin.secBootWin):
         self.m_menuItem_flashloaderResidentItcm.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentItcm'][langIndex])
         self.m_menuItem_flashloaderResidentDtcm.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentDtcm'][langIndex])
         self.m_menuItem_flashloaderResidentOcram.SetItemLabel(uilang.kMainLanguageContentDict['mItem_flashloaderResidentOcram'][langIndex])
+        self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_efuseGroup'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_efuseGroup'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Window, uilang.kMainLanguageContentDict['menu_window'][langIndex])
         self.m_menubar.SetMenuLabel(uilang.kMenuPosition_Help, uilang.kMainLanguageContentDict['menu_help'][langIndex])
         self.m_menuItem_homePage.SetItemLabel(uilang.kMainLanguageContentDict['mItem_homePage'][langIndex])

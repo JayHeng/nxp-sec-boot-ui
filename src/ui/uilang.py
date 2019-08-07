@@ -44,6 +44,7 @@ kMainLanguageContentDict = {
         'mItem_flashloaderResidentItcm':      ['ITCM',                                  u"ITCM"],
         'mItem_flashloaderResidentDtcm':      ['DTCM',                                  u"DTCM"],
         'mItem_flashloaderResidentOcram':     ['OCRAM',                                 u"OCRAM"],
+        'subMenu_efuseGroup':                 ['eFuse Group',                           u"eFuse分组号"],
         'menu_window':                        ['Window',                                u"界面"],
         'menu_help':                          ['Help',                                  u"帮助"],
         'mItem_homePage':                     ['Home Page',                             u"项目主页"],
@@ -466,18 +467,22 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     4. 在通用Flash编程器模式下无法擦除/读取外部启动设备的最后两个Page \n\n"
 kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
+                      "     1. [RTyyyy] Support efuse memory operation for RT117x A0 \n" + \
+                      "     2. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
                       "  Improvement: \n" + \
                       "  Bugfix: \n" + \
                       "     1. 'Cmd Pads' is not set correctly for some typical octal-flash models \n" + \
-                      "     2. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
+                      "     2. [RTyyyy] Cannot show total size of SD/eMMC correctly, so SD/eMMC cannot be programmed \n" + \
+                      "     3. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
+                      "     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
+                     u"     2. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
                      u"  改进: \n" + \
                      u"  修复: \n" + \
                      u"     1. 对于一些octal-flash模型，其Cmd Pads参数没有被正确设置 \n" + \
-                     u"     2. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
+                     u"     2. [RTyyyy] SD/eMMC总容量未能正确显示，导致无法编程SD/eMMC \n" + \
+                     u"     3. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -488,7 +493,7 @@ kMsgLanguageContentDict = {
         'aboutAuthor_email2':                 ['Email:     hengjie1989@foxmail.com \n', u"邮箱：hengjie1989@foxmail.com \n"],
         'aboutAuthor_blog':                   [u"Blog:      痞子衡嵌入式 https://www.cnblogs.com/henjay724/ \n",                   u"博客：痞子衡嵌入式 https://www.cnblogs.com/henjay724/ \n"],
         'contributors_title':                 ['Contributors',                          u"贡献者名单"],
-        'contributors_info':                  [u"李嘉奕Joyeee、祁凯Kelvin \n",          u"李嘉奕Joyeee、祁凯Kelvin \n"],
+        'contributors_info':                  [u"李嘉奕Joyeee、祁凯Kelvin、范全有James \n",                                        u"李嘉奕Joyeee、祁凯Kelvin、范全有James \n"],
         'specialThanks_title':                ['Special Thanks',                        u"特别感谢"],
         'specialThanks_info':                 [u"Special thanks to 周小朋Clare、杨帆、刘华东Howard、沈浩杰Jayson \n",              u"特别感谢我亲爱的同事们：周小朋Clare、杨帆、刘华东Howard、沈浩杰Jayson \n"],
         'revisionHistory_title':              ['Revision History',                      u"版本历史"],

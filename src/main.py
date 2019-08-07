@@ -66,6 +66,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetMcuDevice( self, event ):
         self.setTargetSetupValue()
+        self._switchEfuseGroup()
         self._setUartUsbPort()
         if self.isMcuSeriesChanged:
             if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
@@ -119,6 +120,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
             semcNandFrame = ui_cfg_semcnand.secBootUiCfgSemcNand(None)
             semcNandFrame.SetTitle(uilang.kSubLanguageContentDict['semcnand_title'][self.languageIndex])
+            semcNandFrame.setNecessaryInfo(self.tgt.isSwEccSetAsDefaultInNandOpt)
             semcNandFrame.Show(True)
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd:
             usdhcSdFrame = ui_cfg_usdhcsd.secBootUiUsdhcSd(None)
@@ -439,6 +441,23 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetFlashloaderResidentToOcram( self, event ):
         self.setFlashloaderResident()
+
+    def _switchEfuseGroup( self ):
+        self.setEfuseGroup()
+        self.updateFuseGroupText()
+        self.updateFuseRegionField()
+
+    def callbackSetEfuseGroupTo0( self, event ):
+        self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo1( self, event ):
+        self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo2( self, event ):
+        self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo3( self, event ):
+        self._switchEfuseGroup()
 
     def _doSetLanguage( self ):
         self.setLanguage()

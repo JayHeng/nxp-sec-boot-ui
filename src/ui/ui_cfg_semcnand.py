@@ -20,7 +20,7 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
         self.semcNandOpt = semcNandOpt
         self.semcNandFcbOpt = semcNandFcbOpt
         self.semcNandImageInfoList = semcNandImageInfoList[:]
-        self._recoverLastSettings()
+        self.isSwEccSetAsDefaultInNandOpt = True
 
     def _setLanguage( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -42,6 +42,10 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
         self.m_staticText_blockCount.SetLabel(uilang.kSubLanguageContentDict['sText_blockCount'][langIndex])
         self.m_button_ok.SetLabel(uilang.kSubLanguageContentDict['button_semcnand_ok'][langIndex])
         self.m_button_cancel.SetLabel(uilang.kSubLanguageContentDict['button_semcnand_cancel'][langIndex])
+
+    def setNecessaryInfo( self, isSwEccSetAsDefaultInNandOpt ):
+        self.isSwEccSetAsDefaultInNandOpt = isSwEccSetAsDefaultInNandOpt
+        self._recoverLastSettings()
 
     def _updateImageInfoField ( self, imageCopies ):
         if imageCopies < 2:
@@ -118,7 +122,10 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
         self.m_choice_pcsPort.SetSelection(pcsPort)
 
         eccType = (self.semcNandOpt & 0x00010000) >> 16
-        self.m_choice_eccType.SetSelection(eccType)
+        if self.isSwEccSetAsDefaultInNandOpt:
+            self.m_choice_eccType.SetSelection(eccType)
+        else:
+            self.m_choice_eccType.SetSelection((eccType + 1) % 2)
 
         eccStatus = (self.semcNandOpt & 0x00020000) >> 17
         self.m_choice_eccStatus.SetSelection(eccStatus)
@@ -248,9 +255,15 @@ class secBootUiCfgSemcNand(bootDeviceWin_SemcNand.bootDeviceWin_SemcNand):
 
     def _getEccType( self ):
         txt = self.m_choice_eccType.GetString(self.m_choice_eccType.GetSelection())
-        if txt == 'SW - 1bit ECC':
+        if self.isSwEccSetAsDefaultInNandOpt:
+            zeroSelStr = 'SW - 1bit ECC'
+            oneSelStr = 'HW'
+        else:
+            zeroSelStr = 'HW'
+            oneSelStr = 'SW - 1bit ECC'
+        if txt == zeroSelStr:
             val = 0x0
-        elif txt == 'HW':
+        elif txt == oneSelStr:
             val = 0x1
         else:
             pass
