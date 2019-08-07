@@ -69,6 +69,7 @@ quadspiNorDevice = None
 quadspiNorMemBase = None
 
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
+efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT10yy
 
 efuse_0x460_bit6     = {'BL_UART_INT':               ['0 - Enabled', '1 - Disabled']}
 efuse_0x460_bit13_12 = {'OTFAD_KEY0_SEL':            ['00 - From OTPMK[127:0]', '01 - From OTPMK[255:128]', '10 - From SW-GP2', '11 - From SW-GP2']}

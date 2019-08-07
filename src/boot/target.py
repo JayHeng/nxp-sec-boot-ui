@@ -73,6 +73,7 @@ class Target(object):
         self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
 
         self.efusemapIndexDict = misc.get_dict_default(kwargs, 'efusemapIndexDict', None)
+        self.efusemapDefnDict = misc.get_dict_default(kwargs, 'efusemapDefnDict', None)
         self.efuseDescDiffDict = misc.get_dict_default(kwargs, 'efuseDescDiffDict', None)
 
     ##

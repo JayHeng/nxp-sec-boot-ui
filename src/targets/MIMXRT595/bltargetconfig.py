@@ -65,6 +65,7 @@ quadspiNorDevice = None
 quadspiNorMemBase = None
 
 efusemapIndexDict = None
+efusemapDefnDict  = None
 efuseDescDiffDict = None
 
 # memory map

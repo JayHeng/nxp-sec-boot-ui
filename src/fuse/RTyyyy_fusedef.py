@@ -23,18 +23,6 @@ kEfuseShift_SecConfig1 = 1
 kEfuseMask_BtFuseSel = 0x00000010
 kEfuseShift_BtFuseSel = 4
 
-kEfuseMask_HwCryptoKey0Sel = 0x00003000
-kEfuseMask_HwCryptoKey1Sel = 0x0000C000
-kEfuseShift_HwCryptoKey0Sel = 12
-kEfuseShift_HwCryptoKey1Sel = 14
-
-kEfuseMask_OtfadKeyScrambleAlign  = 0x000000FF
-kEfuseShift_OtfadKeyScrambleAlign = 0
-kEfuseMask_OtfadEnable  = 0x00000100
-kEfuseShift_OtfadEnable = 8
-kEfuseMask_OtfadKeyScrambleEnable  = 0x00000400
-kEfuseShift_OtfadKeyScrambleEnable = 10
-
 kEfuseMask_DefaultFlexramPart  = 0x000F0000
 kEfuseShift_DefaultFlexramPart = 16
 kEfuseMask_EepromEnable        = 0x01000000
@@ -69,6 +57,9 @@ kOtfadKeySel_FromOtpmkLow  = 0x0
 kOtfadKeySel_FromOtpmkHigh = 0x1
 kOtfadKeySel_Reserved      = 0x2
 kOtfadKeySel_FromSwGp2     = 0x3
+
+kOtfadKeySel_FromPuf      = 0x0
+kOtfadKeySel_FromUserKey5 = 0x0  # Fixme
 
 kSpiAddressing_3Bytes = 0x0
 kSpiAddressing_2Bytes = 0x1

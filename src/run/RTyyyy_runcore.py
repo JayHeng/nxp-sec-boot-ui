@@ -955,6 +955,23 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     break
         return isReady, isBlank
 
+    def _isDeviceFuseUserKey5RegionReadyForBurn( self, userkey5DekFilename ):
+        isReady = True
+        isBlank = True
+        keyWords = RTyyyy_gendef.kSecKeyLengthInBits_DEK / 32
+        for i in range(keyWords):
+            dek = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_USER_KEY5_0'] + i, '(' + str(hex(0x1000 + i * 0x10)) + ') ' + 'USER_KEY5_' + str(i), False)
+            if dek == None:
+                isReady = False
+                break
+            elif dek != 0:
+                isBlank = False
+                val32 = self.getVal32FromBinFile(userkey5DekFilename, (i * 4))
+                if dek != val32:
+                    isReady = False
+                    break
+        return isReady, isBlank
+
     def _lockFuseSwGp2( self ):
         lock = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_LOCK'], '', False)
         if lock != None:
@@ -977,8 +994,10 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def burnHwCryptoDekData ( self ):
         needToBurnSwGp2 = False
         needToBurnGp4 = False
+        needToBurnUserKey5 = False
         swgp2DekFilename = None
         gp4DekFilename = None
+        userkey5DekFilename = None
         userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
         if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
             if userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_Engine1 or userKeyCtrlDict['engine_sel'] == RTyyyy_uidef.kUserEngineSel_BothEngines:
@@ -1003,6 +1022,9 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             if userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
                 needToBurnSwGp2 = True
                 swgp2DekFilename = self.otfadDek0Filename
+            elif userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_USER_KEY5:
+                needToBurnUserKey5 = True
+                userkey5DekFilename = self.otfadDek0Filename
             else:
                 pass
         else:
@@ -1038,6 +1060,22 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                         return False
             else:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_gp4HasBeenBurned'][self.languageIndex])
+        else:
+            pass
+        if needToBurnUserKey5:
+            isReady, isBlank = self._isDeviceFuseUserKey5RegionReadyForBurn(userkey5DekFilename)
+            if isReady:
+                if isBlank:
+                    for i in range(keyWords):
+                        val32 = self.getVal32FromBinFile(userkey5DekFilename, (i * 4))
+                        burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_USER_KEY5_0'] + i, val32)
+                        if not burnResult:
+                            self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnUserkey5'][self.languageIndex])
+                            return False
+                    #if not self._lockFuseUserKey5():
+                    #    return False
+            else:
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_userkey5HasBeenBurned'][self.languageIndex])
         else:
             pass
         return True
@@ -1295,8 +1333,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def _getMcuDeviceHwCryptoKeySel( self ):
         hwCryptoKeySel = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_HwCryptoKeySel'], '', False)
         if hwCryptoKeySel != None:
-            self.mcuDeviceHwCryptoKey0Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel)
-            self.mcuDeviceHwCryptoKey1Sel = ((hwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel)
+            self.mcuDeviceHwCryptoKey0Sel = ((hwCryptoKeySel & self.tgt.efusemapDefnDict['kEfuseMask_HwCryptoKey0Sel']) >> self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey0Sel'])
+            self.mcuDeviceHwCryptoKey1Sel = ((hwCryptoKeySel & self.tgt.efusemapDefnDict['kEfuseMask_HwCryptoKey1Sel']) >> self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey1Sel'])
         return hwCryptoKeySel
 
     def burnHwCryptoKeySel( self ):
@@ -1346,6 +1384,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             elif self.secureBootType == RTyyyy_uidef.kSecureBootType_OtfadCrypto:
                 if userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
                     setHwCryptoKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromSwGp2
+                elif userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_USER_KEY5:
+                    setHwCryptoKey0Sel = RTyyyy_fusedef.kOtfadKeySel_FromUserKey5
                 else:
                     pass
             else:
@@ -1355,13 +1395,13 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         getHwCryptoKeySel = self._getMcuDeviceHwCryptoKeySel()
         if getHwCryptoKeySel != None:
             if setHwCryptoKey0Sel != None:
-                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey0Sel << RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel)
-                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey0Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey0Sel) != setHwCryptoKey0Sel:
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey0Sel << self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey0Sel'])
+                if ((getHwCryptoKeySel & self.tgt.efusemapDefnDict['kEfuseMask_HwCryptoKey0Sel']) >> self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey0Sel']) != setHwCryptoKey0Sel:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey0SelHasBeenBurned'][self.languageIndex])
                     return False
             if setHwCryptoKey1Sel != None:
-                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey1Sel << RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel)
-                if ((getHwCryptoKeySel & RTyyyy_fusedef.kEfuseMask_HwCryptoKey1Sel) >> RTyyyy_fusedef.kEfuseShift_HwCryptoKey1Sel) != setHwCryptoKey1Sel:
+                getHwCryptoKeySel = getHwCryptoKeySel | (setHwCryptoKey1Sel << self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey1Sel'])
+                if ((getHwCryptoKeySel & self.tgt.efusemapDefnDict['kEfuseMask_HwCryptoKey1Sel']) >> self.tgt.efusemapDefnDict['kEfuseShift_HwCryptoKey1Sel']) != setHwCryptoKey1Sel:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_hwCryptoKey1SelHasBeenBurned'][self.languageIndex])
                     return False
             burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_HwCryptoKeySel'], getHwCryptoKeySel)
@@ -1373,7 +1413,15 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def enableOtfad( self ):
         otfadCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_OtfadEnable'], '', False)
         if otfadCfg != None:
-            otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadEnable)
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_OtfadEnable'])
+            elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_OtfadKeyblobEnable'])
+                otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_OtfadKeyblobCrcEnable'])
+                otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_Otfad2KeyblobEnable'])
+                otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_Otfad2KeyblobCrcEnable'])
+            else:
+                pass
             burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_OtfadEnable'], otfadCfg)
             if not burnResult:
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadEnablementBit'][self.languageIndex])
@@ -1415,8 +1463,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                 scrambleAlignment = int(userKeyCmdDict['scramble_align'][2:len(userKeyCmdDict['scramble_align'])], 16)
                 otfadCfg = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG'], '', False)
                 if otfadCfg != None:
-                    otfadCfg = otfadCfg | (0x1 << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleEnable)
-                    otfadCfg = (otfadCfg & (~RTyyyy_fusedef.kEfuseMask_OtfadKeyScrambleAlign)) | (scrambleAlignment << RTyyyy_fusedef.kEfuseShift_OtfadKeyScrambleAlign)
+                    otfadCfg = otfadCfg | (0x1 << self.tgt.efusemapDefnDict['kEfuseShift_OtfadKeyScrambleEnable'])
+                    otfadCfg = (otfadCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_OtfadKeyScrambleAlign'])) | (scrambleAlignment << self.tgt.efusemapDefnDict['kEfuseShift_OtfadKeyScrambleAlign'])
                     burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseIndex_OTFAD_CFG'], otfadCfg)
                     if not burnResult:
                         self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnOtfadScrambleConfigurationField'][self.languageIndex])

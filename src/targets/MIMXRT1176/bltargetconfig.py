@@ -51,9 +51,9 @@ flashloaderJumpAddr = None
 availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 availableSecureBootTypes = [RTyyyy_uidef.kSecureBootType_Development,
-                            #RTyyyy_uidef.kSecureBootType_HabAuth,
+                            RTyyyy_uidef.kSecureBootType_HabAuth,
                             #RTyyyy_uidef.kSecureBootType_HabCrypto,
-                            #RTyyyy_uidef.kSecureBootType_OtfadCrypto,
+                            RTyyyy_uidef.kSecureBootType_OtfadCrypto,
                             #RTyyyy_uidef.kSecureBootType_IeeCrypto
                             ]
 hasRemappedFuse = False
@@ -72,6 +72,7 @@ quadspiNorDevice = None
 quadspiNorMemBase = None
 
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT11yy
+efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT11yy
 
 efuse_0x400_bit7     = {'GP4_R':                   ['0 - Unlock', '1 - RP']}
 efuse_0x400_bit15    = {'ROM_PATCH':               ['0 - Unlock', '1 - W,0P']}

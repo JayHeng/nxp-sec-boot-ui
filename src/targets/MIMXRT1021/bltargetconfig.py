@@ -69,6 +69,7 @@ quadspiNorDevice = None
 quadspiNorMemBase = None
 
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
+efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT10yy
 
 efuse_0x400_bit14    = {'SRK':                     ['0 - Unlock', '1 - W,0,RP']}
 efuse_0x400_bit15    = {'OTPMK_MSB':               ['0 - Unlock', '1 - W,0,RP']}
