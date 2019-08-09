@@ -68,7 +68,8 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
 
     def setNecessaryInfo( self, mcuDevice, xipBaseAddr ):
         self.xipBaseAddr = xipBaseAddr
-        if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        #if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        if True:
             kekSource = None
             if mcuDevice == uidef.kMcuDevice_iMXRT1011:
                 kekSource = RTyyyy_uidef.kSupportedKeySource_iMXRT1011

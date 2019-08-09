@@ -473,7 +473,8 @@ kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "  Bugfix: \n" + \
                       "     1. 'Cmd Pads' is not set correctly for some typical octal-flash models \n" + \
                       "     2. [RTyyyy] Cannot show total size of SD/eMMC correctly, so SD/eMMC cannot be programmed \n" + \
-                      "     3. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
+                      "     3. [RTyyyy] Some fields are not aligned with selected MCU device in Flexible User Key Setting \n" + \
+                      "     4. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
                       "     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
@@ -482,7 +483,8 @@ kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  修复: \n" + \
                      u"     1. 对于一些octal-flash模型，其Cmd Pads参数没有被正确设置 \n" + \
                      u"     2. [RTyyyy] SD/eMMC总容量未能正确显示，导致无法编程SD/eMMC \n" + \
-                     u"     3. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
+                     u"     3. [RTyyyy] 在用户自定义Key设置界面里，有些选项与当前选中的MCU型号不匹配 \n" + \
+                     u"     4. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
