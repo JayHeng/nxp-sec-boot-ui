@@ -189,17 +189,50 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
             self.saveFuselist = self.getUserFuses()
             with open(self.fuseSettingFilename, 'w') as fileObj:
                 FuseMapDict = collections.OrderedDict(sorted(FuseMapDict.iteritems(), key=itemgetter(0), reverse=False))
-                num = 0
-                for key in FuseMapDict:
-                    FuseMapDict[key] = self.saveFuselist[num]
-                    num = num + 1
-                num = 0
-                for key in FuseMapDict:
-                    if self.saveFuselist[num] == None:
-                        FuseMapDict[key] = "None"
+                if self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                    if self.efuseGroupSel == 0:
+                        for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                            new_str = 'Fuse' + str(hex(2048 + i * 16))
+                            new_str = new_str[0:6] + '0' + new_str[6:9]
+                            if self.saveFuselist[i] == None:
+                                FuseMapDict[new_str] = "None"
+                            else:
+                                FuseMapDict[new_str] = (str(hex(self.saveFuselist[i])))[2:10]
+                    elif self.efuseGroupSel == 1:
+                        for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                            if i<48:
+                                new_str = 'Fuse' + str(hex(3328 + i * 16))
+                                new_str = new_str[0:6] + '0' + new_str[6:9]
+                            else:
+                                 new_str = 'Fuse' + str(hex(3328 + i * 16))
+                            if self.saveFuselist[i] == None:
+                                FuseMapDict[new_str] = "None"
+                            else:
+                                FuseMapDict[new_str] = (str(hex(self.saveFuselist[i])))[2:10]
+                    elif self.efuseGroupSel == 2:
+                        for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                            new_str = 'Fuse' + str(hex(4608 + i * 16))
+                            if self.saveFuselist[i] == None:
+                                FuseMapDict[new_str] = "None"
+                            else:
+                                FuseMapDict[new_str] = (str(hex(self.saveFuselist[i])))[2:10]
+                    elif self.efuseGroupSel == 3:
+                        for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                            new_str = 'Fuse' + str(hex(5888 + i * 16))
+                            if self.saveFuselist[i] == None:
+                                FuseMapDict[new_str] = "None"
+                            else:
+                                FuseMapDict[new_str] = (str(hex(self.saveFuselist[i])))[2:10]
                     else:
-                        FuseMapDict[key] = (str(hex(self.saveFuselist[num])))[2:10]
-                    num = num + 1
+                        pass
+                else:
+                    for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                        new_str = 'Fuse' + str(hex(1024 + i * 16))
+                        new_str = new_str[0:6] + '0' + new_str[6:9]
+                        if self.saveFuselist[i] == None:
+                            FuseMapDict[new_str] = "None"
+                        else:
+                            FuseMapDict[new_str] = (str(hex(self.saveFuselist[i])))[2:10]
                 cfgDict = {
                     "FuseMAP": [FuseMapDict]
                 }
@@ -213,11 +246,36 @@ class secBootRTyyyyFuse(RTyyyy_runcore.secBootRTyyyyRun):
                 FuseMapDict = FuseMapJson["FuseMAP"][0]
                 fileObj.close()
                 FuseMapDict = collections.OrderedDict(sorted(FuseMapDict.iteritems(), key=itemgetter(0), reverse=False))
-            num = 0
-            for key in FuseMapDict:
-                self.loadedFuseList[num] = FuseMapDict[key]
-                num = num + 1
-            for i in range(RTyyyy_fusedef.kTotalEfuseWords):
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                if self.efuseGroupSel == 0:
+                    for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                        new_str = 'Fuse' + str(hex(2048 + i * 16))
+                        new_str = new_str[0:6] + '0' + new_str[6:9]
+                        self.loadedFuseList[i] = FuseMapDict[new_str]
+                elif self.efuseGroupSel == 1:
+                    for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                        if i < 48:
+                            new_str = 'Fuse' + str(hex(3328 + i * 16))
+                            new_str = new_str[0:6] + '0' + new_str[6:9]
+                        else:
+                            new_str = 'Fuse' + str(hex(3328 + i * 16))
+                        self.loadedFuseList[i] = FuseMapDict[new_str]
+                elif self.efuseGroupSel == 2:
+                    for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                        new_str = 'Fuse' + str(hex(4608 + i * 16))
+                        self.loadedFuseList[i] = FuseMapDict[new_str]
+                elif self.efuseGroupSel == 3:
+                    for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                        new_str = 'Fuse' + str(hex(5888 + i * 16))
+                        self.loadedFuseList[i] = FuseMapDict[new_str]
+                else:
+                    pass
+            else:
+                for i in range(RTyyyy_fusedef.kGroupEfuseWords):
+                    new_str = 'Fuse' + str(hex(1024 + i * 16))
+                    new_str = new_str[0:6] + '0' + new_str[6:9]
+                    self.loadedFuseList[i] = FuseMapDict[new_str]
+            for i in range(RTyyyy_fusedef.kGroupEfuseWords):
                 if self.loadedFuseList[i] == "None":
                     self.loadedFuseList[i] = None
                 else:
