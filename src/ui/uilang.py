@@ -401,7 +401,7 @@ kRevision_1_3_0_zh = u"【v1.3.0】 \n" + \
                      u"     1. HAB签名模式在i.MXRT1020/1015下应不支持从FlexSPI NOR/SEMC NOR启动设备中Non-XIP启动 \n" + \
                      u"     2. HAB加密模式在i.MXRT1020/1015下应不支持从FlexSPI NOR/SEMC NOR启动设备中启动 \n" + \
                      u"     3. 当All-In-One操作中包含efuse烧写操作时，会生成3个.sb文件(全部操作、仅flash操作、仅efuse操作) \n" + \
-                      "     4. 当启动设备是NOR型Flash时，可以不用连接板子直接生成.sb文件 \n" + \
+                     u"     4. 当启动设备是NOR型Flash时，可以不用连接板子直接生成.sb文件 \n" + \
                      u"     5. 一键操作下的自动程序回读可以被禁掉，用以节省操作时间 \n" + \
                      u"     6. 菜单栏里的语言选项标签应该是静态且易于理解的(中英双语同时显示) \n" + \
                      u"  修复: \n" + \
@@ -448,7 +448,7 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. 支持i.MXRT5xx A0, i.MXRT6xx A0 \n" + \
                      u"     2. 支持i.MXRT1011, i.MXRT117x A0 \n" + \
-                      "     3. [RTyyyy] 支持基于OTFAD实现的安全加密启动（唯一SNVS key，用户自定义key） \n" + \
+                     u"     3. [RTyyyy] 支持基于OTFAD实现的安全加密启动（唯一SNVS key，用户自定义key） \n" + \
                      u"     4. [RTxxx] 支持UART和USB-HID两种串行编程方式（COM端口/USB设备自动识别） \n" + \
                      u"     5. [RTxxx] 支持将裸源image文件自动转换成i.MXRT能启动的Bootable image \n" + \
                      u"     6. [RTxxx] 用户输入的源程序文件可以包含i.MXRT启动头 (FDCB) \n" + \
@@ -469,6 +469,7 @@ kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "  Feature: \n" + \
                       "     1. [RTyyyy] Support efuse memory operation for RT117x A0 \n" + \
                       "     2. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
+                      "     3. [RTyyyy] Enable OTFAD encryption secure boot mode (User Key) for RT117x A0 \n" + \
                       "  Improvement: \n" + \
                       "  Bugfix: \n" + \
                       "     1. 'Cmd Pads' is not set correctly for some typical octal-flash models \n" + \
@@ -477,8 +478,9 @@ kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "     4. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
-                      "     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
+                     u"     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
                      u"     2. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
+                     u"     3. [RTyyyy] 为RT117x A0开启OTFAD加密(User Key)支持 \n" + \
                      u"  改进: \n" + \
                      u"  修复: \n" + \
                      u"     1. 对于一些octal-flash模型，其Cmd Pads参数没有被正确设置 \n" + \

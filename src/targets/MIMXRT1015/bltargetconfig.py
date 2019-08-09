@@ -34,6 +34,7 @@ from boot.memoryrange import MemoryRange
 from ui import RTyyyy_uidef
 from ui import RTyyyy_uidef_efuse
 from ui import uidef
+from run import RTyyyy_rundef
 
 cpu = 'MIMXRT1015'
 board = 'EVK'
@@ -68,6 +69,9 @@ isSwEccSetAsDefaultInNandOpt = None
 
 quadspiNorDevice = None
 quadspiNorMemBase = None
+
+registerAddrDict = RTyyyy_rundef.registerAddrDict_RT10yy
+registerDefnDict  = RTyyyy_rundef.registerDefnDict_RT10yy
 
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
 efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT10yy

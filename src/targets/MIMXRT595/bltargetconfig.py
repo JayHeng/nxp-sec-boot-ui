@@ -64,6 +64,9 @@ isSwEccSetAsDefaultInNandOpt = None
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
+registerAddrDict = None
+registerDefnDict  = None
+
 efusemapIndexDict = None
 efusemapDefnDict  = None
 efuseDescDiffDict = None

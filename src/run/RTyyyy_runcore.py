@@ -211,14 +211,14 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             return None
 
     def _readMcuDeviceRegisterUuid( self ):
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID1, 'OCOTP->UUID[31:00]')
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_UUID2, 'OCOTP->UUID[63:32]')
+        self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_OCOTP_UUID1'], 'OCOTP->UUID[31:00]')
+        self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_OCOTP_UUID2'], 'OCOTP->UUID[63:32]')
 
     def _readMcuDeviceRegisterSrcSmbr( self ):
-        self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR1, 'SRC->SBMR1')
-        sbmr2 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR2, 'SRC->SBMR2')
+        self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_SRC_SBMR1'], 'SRC->SBMR1')
+        sbmr2 = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_SRC_SBMR2'], 'SRC->SBMR2')
         if sbmr2 != None:
-            bmod = ((sbmr2 & RTyyyy_rundef.kRegisterMask_SRC_SBMR2_Bmod) >> RTyyyy_rundef.kRegisterShift_SRC_SBMR2_Bmod)
+            bmod = ((sbmr2 & self.tgt.registerDefnDict['kRegisterMask_SRC_SBMR2_Bmod']) >> self.tgt.registerDefnDict['kRegisterShift_SRC_SBMR2_Bmod'])
             if bmod == 0:
                 self.printDeviceStatus('BMOD[1:0] = 2\'b00 (Boot From Fuses)')
             elif bmod == 1:
@@ -241,18 +241,18 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def getFlexramInfoViaRom( self ):
         self.printDeviceStatus("----------FlexRAM memory-----------")
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-            #gpr16 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR16, 'IOMUXC_GPR->GPR16')
+            #gpr16 = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_IOMUXC_GPR_GPR16'], 'IOMUXC_GPR->GPR16')
             #if gpr16 == None:
             #    return
-            #if not (gpr16 & RTyyyy_rundef.kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel):
+            #if not (gpr16 & self.tgt.registerDefnDict['kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel']):
             if True:
-                miscConf0 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_OCOTP_MiscConf0, 'OCOTP->MISC_CONF0[31:00]')
+                miscConf0 = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_OCOTP_FlexramCfg'], 'OCOTP->MISC_CONF0[31:00]')
                 if miscConf0 != None:
                     self.printDeviceStatus('Assume that FlexRAM configuration is from eFuse')
                     defaultFlexramPart = (miscConf0 & RTyyyy_fusedef.kEfuseMask_DefaultFlexramPart) >> RTyyyy_fusedef.kEfuseShift_DefaultFlexramPart
                     self.printDeviceStatus(self.tgt.efuseDescDiffDict['0x6d0_miscconf0_bit19_16']['Default_FlexRAM_Partion'][defaultFlexramPart])
             else:
-                #gpr17 = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR17, 'IOMUXC_GPR->GPR17')
+                #gpr17 = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_IOMUXC_GPR_GPR17'], 'IOMUXC_GPR->GPR17')
                 #if gpr17 != None:
                 #    self.printDeviceStatus('FlexRAM configuration is from IOMUXC_GPR Register')
                 pass
@@ -262,9 +262,9 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
     def getMcuDeviceHabStatus( self ):
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             if self.tgt.hasSdpReadRegisterCmd:
-                secConfig = self._getDeviceRegisterBySdphost( RTyyyy_rundef.kRegisterAddr_SRC_SBMR2, '', False)
+                secConfig = self._getDeviceRegisterBySdphost( self.tgt.registerAddrDict['kRegisterAddr_SRC_SBMR2'], '', False)
                 if secConfig != None:
-                    self.mcuDeviceHabStatus = ((secConfig & RTyyyy_rundef.kRegisterMask_SRC_SBMR2_SecConfig) >> RTyyyy_rundef.kRegisterShift_SRC_SBMR2_SecConfig)
+                    self.mcuDeviceHabStatus = ((secConfig & self.tgt.registerDefnDict['kRegisterMask_SRC_SBMR2_SecConfig']) >> self.tgt.registerDefnDict['kRegisterShift_SRC_SBMR2_SecConfig'])
                     if self.mcuDeviceHabStatus == RTyyyy_fusedef.kHabStatus_FAB:
                         self.printDeviceStatus('HAB status = FAB')
                     elif self.mcuDeviceHabStatus == RTyyyy_fusedef.kHabStatus_Open:
@@ -432,20 +432,19 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             pass
 
     def getMcuDeviceBtFuseSel( self ):
-        if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
-            btFuseSel = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_BtFuseSel'], '', False)
-            if btFuseSel != None:
-                self.mcuDeviceBtFuseSel = ((btFuseSel & RTyyyy_fusedef.kEfuseMask_BtFuseSel) >> RTyyyy_fusedef.kEfuseShift_BtFuseSel)
-                if self.mcuDeviceBtFuseSel == 0:
-                    self.printDeviceStatus('BT_FUSE_SEL = 1\'b0')
-                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is no application in boot device, MCU will enter serial downloader mode directly')
-                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to both BOOT_CFGx pins and Fuse BOOT_CFGx')
-                elif self.mcuDeviceBtFuseSel == 1:
-                    self.printDeviceStatus('BT_FUSE_SEL = 1\'b1')
-                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is application in boot device, MCU will boot application according to Fuse BOOT_CFGx')
-                    self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to Fuse BOOT_CFGx only')
-                else:
-                    pass
+        btFuseSel = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_BtFuseSel'], '', False)
+        if btFuseSel != None:
+            self.mcuDeviceBtFuseSel = ((btFuseSel & self.tgt.efusemapDefnDict['kEfuseMask_BtFuseSel']) >> self.tgt.efusemapDefnDict['kEfuseShift_BtFuseSel'])
+            if self.mcuDeviceBtFuseSel == 0:
+                self.printDeviceStatus('BT_FUSE_SEL = 1\'b0')
+                self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is no application in boot device, MCU will enter serial downloader mode directly')
+                self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to both BOOT_CFGx pins and Fuse BOOT_CFGx')
+            elif self.mcuDeviceBtFuseSel == 1:
+                self.printDeviceStatus('BT_FUSE_SEL = 1\'b1')
+                self.printDeviceStatus('  When BMOD[1:0] = 2\'b00 (Boot From Fuses), It means there is application in boot device, MCU will boot application according to Fuse BOOT_CFGx')
+                self.printDeviceStatus('  When BMOD[1:0] = 2\'b10 (Internal Boot), It means MCU will boot application according to Fuse BOOT_CFGx only')
+            else:
+                pass
 
     def _getDeviceRegisterByBlhost( self, regAddr, regName, needToShow=True):
         filename = 'readReg.dat'
@@ -491,20 +490,25 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
 
     def getFlexramInfoViaFlashloader( self ):
         self.printDeviceStatus("----------FlexRAM memory-----------")
-        gpr16 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR16, 'IOMUXC_GPR->GPR16')
+        gpr16 = self._getDeviceRegisterByBlhost( self.tgt.registerAddrDict['kRegisterAddr_IOMUXC_GPR_GPR16'], 'IOMUXC_GPR->GPR16')
         if gpr16 == None:
             return
-        if not (gpr16 & RTyyyy_rundef.kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel):
+        if not (gpr16 & self.tgt.registerDefnDict['kRegisterMask_IOMUXC_GPR_GPR16_FlexramBankCfgSel']):
             self.printDeviceStatus('FlexRAM configuration is from eFuse')
-            miscConf0 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_OCOTP_MiscConf0, 'OCOTP->MISC_CONF0[31:00]')
-            if miscConf0 != None:
-                defaultFlexramPart = (miscConf0 & RTyyyy_fusedef.kEfuseMask_DefaultFlexramPart) >> RTyyyy_fusedef.kEfuseShift_DefaultFlexramPart
-                self.printDeviceStatus("FlexRAM Partion =" + self.tgt.efuseDescDiffDict['0x6d0_miscconf0_bit19_16']['Default_FlexRAM_Partion'][defaultFlexramPart])
+            flexramCfg = self._getDeviceRegisterByBlhost( self.tgt.registerAddrDict['kRegisterAddr_OCOTP_FlexramCfg'], 'OCOTP->MISC_CONF0[31:00]')
+            if flexramCfg != None:
+                defaultFlexramPart = (flexramCfg & self.tgt.efusemapDefnDict['kEfuseMask_DefaultFlexramPart']) >> self.tgt.efusemapDefnDict['kEfuseShift_DefaultFlexramPart']
+                if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                    self.printDeviceStatus("FlexRAM Partion =" + self.tgt.efuseDescDiffDict['0x6d0_miscconf0_bit19_16']['Default_FlexRAM_Partion'][defaultFlexramPart])
+                elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                    self.printDeviceStatus("FlexRAM Partion =" + self.tgt.efuseDescDiffDict['0xc70_flexramcfg_bit21_16']['Default_FlexRAM_Partion'][defaultFlexramPart])
+                else:
+                    pass
         else:
             self.printDeviceStatus('FlexRAM configuration is from IOMUXC_GPR Register')
-            gpr17 = self._getDeviceRegisterByBlhost( RTyyyy_rundef.kRegisterAddr_IOMUXC_GPR_GPR17, 'IOMUXC_GPR->GPR17')
+            gpr17 = self._getDeviceRegisterByBlhost( self.tgt.registerAddrDict['kRegisterAddr_IOMUXC_GPR_GPR17'], 'IOMUXC_GPR->GPR17')
             if gpr17 != None:
-                flexramBankCfg = (gpr17 & RTyyyy_rundef.kRegisterMask_IOMUXC_GPR_GPR17_FlexramBankCfg) >> RTyyyy_rundef.kRegisterShift_IOMUXC_GPR_GPR17_FlexramBankCfg
+                flexramBankCfg = (gpr17 & self.tgt.registerDefnDict['kRegisterMask_IOMUXC_GPR_GPR17_FlexramBankCfg']) >> self.tgt.registerDefnDict['kRegisterShift_IOMUXC_GPR_GPR17_FlexramBankCfg']
                 self._showFlexramAccordingToBankCfg(flexramBankCfg)
 
     def _RTyyyy_prepareForBootDeviceOperation ( self ):
@@ -1257,27 +1261,27 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             eccStatus = (semcNandOpt & 0x00020000) >> 17
             if not self.tgt.isSwEccSetAsDefaultInNandOpt:
                 eccStatus = (eccStatus + 1) % 2
-            setSemcNandCfg = (setSemcNandCfg & (~RTyyyy_fusedef.kEfuseMask_RawNandEccStatus) | (eccStatus << RTyyyy_fusedef.kEfuseShift_RawNandEccStatus))
+            setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccStatus']) | (eccStatus << self.tgt.efusemapDefnDict['kEfuseShift_RawNandEccStatus']))
             # Set I/O Port Size
             portSize = (semcNandOpt & 0x00000300) >> 8
             if portSize <= 1:
                 portSize = 0
             else:
                 portSize = 1
-            setSemcNandCfg = (setSemcNandCfg & (~RTyyyy_fusedef.kEfuseMask_RawNandPortSize) | (portSize << RTyyyy_fusedef.kEfuseShift_RawNandPortSize))
+            setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandPortSize']) | (portSize << self.tgt.efusemapDefnDict['kEfuseShift_RawNandPortSize']))
             if self.tgt.isEccTypeSetInFuseMiscConf:
                 # Set ECC Check Type
                 eccType = (semcNandOpt & 0x00010000) >> 16
                 eccType = (eccType + 1) % 2
-                setSemcNandCfg = (setSemcNandCfg & (~RTyyyy_fusedef.kEfuseMask_RawNandEccEdoSet) | (eccType << RTyyyy_fusedef.kEfuseShift_RawNandEccEdoSet))
+                setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccEdoSet']) | (eccType << self.tgt.efusemapDefnDict['kEfuseShift_RawNandEccEdoSet']))
             else:
                 # Set EDO mode
                 edoMode = (semcNandOpt & 0x00000008) >> 3
-                setSemcNandCfg = (setSemcNandCfg & (~RTyyyy_fusedef.kEfuseMask_RawNandEccEdoSet) | (edoMode << RTyyyy_fusedef.kEfuseShift_RawNandEccEdoSet))
+                setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccEdoSet']) | (edoMode << self.tgt.efusemapDefnDict['kEfuseShift_RawNandEccEdoSet']))
             getSemcNandCfg = self._getMcuDeviceSemcNandCfg()
             if getSemcNandCfg != None:
                 getSemcNandCfg = getSemcNandCfg | setSemcNandCfg
-                if (getSemcNandCfg & (RTyyyy_fusedef.kEfuseMask_RawNandEccStatus | RTyyyy_fusedef.kEfuseMask_RawNandPortSize | RTyyyy_fusedef.kEfuseMask_RawNandEccEdoSet)) != setSemcNandCfg:
+                if (getSemcNandCfg & (self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccStatus'] | self.tgt.efusemapDefnDict['kEfuseMask_RawNandPortSize'] | self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccEdoSet'])) != setSemcNandCfg:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_miscConf1HasBeenBurned'][self.languageIndex])
                     return False
                 else:
@@ -1290,31 +1294,36 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
             setLpspiCfg = 0
             # Set EEPROM enable
-            setLpspiCfg = setLpspiCfg | RTyyyy_fusedef.kEfuseMask_EepromEnable
+            setLpspiCfg = setLpspiCfg | self.tgt.efusemapDefnDict['kEfuseMask_EepromEnable']
             lpspiNorOpt0, lpspiNorOpt1 = uivar.getBootDeviceConfiguration(self.bootDevice)
             # Set Spi Index
             spiIndex = ((lpspiNorOpt0 & 0x00F00000) >> 20) - 1
-            setLpspiCfg = (setLpspiCfg & (~RTyyyy_fusedef.kEfuseMask_LpspiIndex) | (spiIndex << RTyyyy_fusedef.kEfuseShift_LpspiIndex))
+            setLpspiCfg = (setLpspiCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_LpspiIndex']) | (spiIndex << self.tgt.efusemapDefnDict['kEfuseShift_LpspiIndex']))
             # Set Spi Speed
             spiSpeed = (lpspiNorOpt1 & 0x0000000F) >> 0
-            setLpspiCfg = (setLpspiCfg & (~RTyyyy_fusedef.kEfuseMask_LpspiSpeed) | (spiSpeed << RTyyyy_fusedef.kEfuseShift_LpspiSpeed))
-            # Set Spi Addressing
-            spiAddressing = 0
-            val = (lpspiNorOpt0 & 0x00000F00) >> 8
-            totalByteSize = 0
-            if val <= 11:
-                totalByteSize = int(math.pow(2, val + 19))
+            setLpspiCfg = (setLpspiCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_LpspiSpeed']) | (spiSpeed << self.tgt.efusemapDefnDict['kEfuseShift_LpspiSpeed']))
+            if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
+                # Set Spi Addressing
+                spiAddressing = 0
+                val = (lpspiNorOpt0 & 0x00000F00) >> 8
+                totalByteSize = 0
+                if val <= 11:
+                    totalByteSize = int(math.pow(2, val + 19))
+                else:
+                    totalByteSize = int(math.pow(2, val + 3))
+                if totalByteSize > (64 * 1024):
+                    spiAddressing = RTyyyy_fusedef.kSpiAddressing_3Bytes
+                else:
+                    spiAddressing = RTyyyy_fusedef.kSpiAddressing_2Bytes
+                setLpspiCfg = (setLpspiCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_SpiAddressing']) | (spiAddressing << self.tgt.efusemapDefnDict['kEfuseShift_SpiAddressing']))
+            elif self.mcuSeries == uidef.kMcuSeries_iMXRT11yy:
+                pass
             else:
-                totalByteSize = int(math.pow(2, val + 3))
-            if totalByteSize > (64 * 1024):
-                spiAddressing = RTyyyy_fusedef.kSpiAddressing_3Bytes
-            else:
-                spiAddressing = RTyyyy_fusedef.kSpiAddressing_2Bytes
-            setLpspiCfg = (setLpspiCfg & (~RTyyyy_fusedef.kEfuseMask_SpiAddressing) | (spiAddressing << RTyyyy_fusedef.kEfuseShift_SpiAddressing))
+                pass
             getLpspiCfg = self._getMcuDeviceLpspiCfg()
             if getLpspiCfg != None:
                 getLpspiCfg = getLpspiCfg | setLpspiCfg
-                if (getLpspiCfg & (RTyyyy_fusedef.kEfuseMask_EepromEnable | RTyyyy_fusedef.kEfuseMask_LpspiIndex | RTyyyy_fusedef.kEfuseMask_SpiAddressing | RTyyyy_fusedef.kEfuseMask_LpspiSpeed)) != setLpspiCfg:
+                if (getLpspiCfg & (self.tgt.efusemapDefnDict['kEfuseMask_EepromEnable'] | self.tgt.efusemapDefnDict['kEfuseMask_LpspiIndex'] | self.tgt.efusemapDefnDict['kEfuseMask_SpiAddressing'] | self.tgt.efusemapDefnDict['kEfuseMask_LpspiSpeed'])) != setLpspiCfg:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_miscConf0HasBeenBurned'][self.languageIndex])
                     return False
                 else:
@@ -1591,7 +1600,7 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
            self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed1:
             secConfig1 = self.readMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SecConfig1'], '', False)
             if secConfig1 != None:
-                secConfig1 = secConfig1 | RTyyyy_fusedef.kEfuseMask_SecConfig1
+                secConfig1 = secConfig1 | self.tgt.efusemapDefnDict['kEfuseMask_SecConfig1']
                 burnResult = self.burnMcuDeviceFuseByBlhost(self.tgt.efusemapIndexDict['kEfuseLocation_SecConfig1'], secConfig1)
                 if not burnResult:
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['burnFuseError_failToBurnSecConfig1'][self.languageIndex])

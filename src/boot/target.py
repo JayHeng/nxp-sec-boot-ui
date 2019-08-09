@@ -72,6 +72,8 @@ class Target(object):
         self.quadspiNorDevice = misc.get_dict_default(kwargs, 'quadspiNorDevice', None)
         self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
 
+        self.registerAddrDict = misc.get_dict_default(kwargs, 'registerAddrDict', None)
+        self.registerDefnDict = misc.get_dict_default(kwargs, 'registerDefnDict', None)
         self.efusemapIndexDict = misc.get_dict_default(kwargs, 'efusemapIndexDict', None)
         self.efusemapDefnDict = misc.get_dict_default(kwargs, 'efusemapDefnDict', None)
         self.efuseDescDiffDict = misc.get_dict_default(kwargs, 'efuseDescDiffDict', None)
