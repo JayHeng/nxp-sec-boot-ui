@@ -1259,8 +1259,6 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             semcNandOpt, semcNandFcbOpt, imageInfo = uivar.getBootDeviceConfiguration(self.bootDevice)
             # Set Device Ecc Status
             eccStatus = (semcNandOpt & 0x00020000) >> 17
-            if not self.tgt.isSwEccSetAsDefaultInNandOpt:
-                eccStatus = (eccStatus + 1) % 2
             setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccStatus']) | (eccStatus << self.tgt.efusemapDefnDict['kEfuseShift_RawNandEccStatus']))
             # Set I/O Port Size
             portSize = (semcNandOpt & 0x00000300) >> 8
@@ -1272,7 +1270,8 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             if self.tgt.isEccTypeSetInFuseMiscConf:
                 # Set ECC Check Type
                 eccType = (semcNandOpt & 0x00010000) >> 16
-                eccType = (eccType + 1) % 2
+                if self.tgt.isSwEccSetAsDefaultInNandOpt:
+                    eccType = (eccType + 1) % 2
                 setSemcNandCfg = (setSemcNandCfg & (~self.tgt.efusemapDefnDict['kEfuseMask_RawNandEccEdoSet']) | (eccType << self.tgt.efusemapDefnDict['kEfuseShift_RawNandEccEdoSet']))
             else:
                 # Set EDO mode
