@@ -108,6 +108,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                 flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['quadspinor_title'][self.languageIndex])
             else:
                 flexspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['flexspinor_title'][self.languageIndex])
+            flexspiNorFrame.setNecessaryInfo(self.tgt.flexspiFreqs)
             flexspiNorFrame.Show(True)
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNand:
             flexspiNandFrame = ui_cfg_flexspinand.secBootUiFlexspiNand(None)

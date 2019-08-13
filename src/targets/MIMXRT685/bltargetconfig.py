@@ -54,6 +54,7 @@ hasRemappedFuse = None
 availableBootDevices = [RTxxx_uidef.kBootDevice_QuadspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_None
 flexspiNorMemBase = None
+flexspiFreqs = None
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = None
 isSipFlexspiNorDevice = False

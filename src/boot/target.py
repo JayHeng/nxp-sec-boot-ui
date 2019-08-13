@@ -62,6 +62,7 @@ class Target(object):
         self.availableBootDevices = misc.get_dict_default(kwargs, 'availableBootDevices', None)
         self.flexspiNorDevice = misc.get_dict_default(kwargs, 'flexspiNorDevice', None)
         self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
+        self.flexspiFreqs = misc.get_dict_default(kwargs, 'flexspiFreqs', None)
         self.xspiNorCfgInfoOffset = misc.get_dict_default(kwargs, 'xspiNorCfgInfoOffset', None)
         self.flexspiNorEfuseBootCfg0Bits = misc.get_dict_default(kwargs, 'flexspiNorEfuseBootCfg0Bits', None)
         self.isNonXipImageAppliableForXipableDeviceUnderClosedHab = misc.get_dict_default(kwargs, 'isNonXipImageAppliableForXipableDeviceUnderClosedHab', None)

@@ -59,6 +59,7 @@ hasRemappedFuse = False
 availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
 flexspiNorMemBase = 0x60000000
+flexspiFreqs = ['30MHz', '50MHz', '60MHz', '75MHz', '80MHz', '100MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = 3
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
