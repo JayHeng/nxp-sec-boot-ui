@@ -31,6 +31,7 @@ kMainLanguageContentDict = {
         'mItem_usbDetectionDynamic':          ['Dynamic',                               u"动态"],
         'mItem_usbDetectionStatic':           ['Static',                                u"静态"],
         'subMenu_soundEffect':                ['Sound Effect',                          u"音效模式"],
+        'mItem_soundEffectContra':             ['Contra',                                u"魂斗罗"],
         'mItem_soundEffectMario':             ['Mario',                                 u"马里奥"],
         'mItem_soundEffectQuiet':             ['Quiet',                                 u"静音"],
         'subMenu_genSbFile':                  ['Generate .sb file',                     u"生成.sb文件"],
@@ -476,7 +477,9 @@ kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "     2. 'Max Frequency' option is not exactly aligned with selected MCU device in FlexSPI NOR configuration \n" + \
                       "     3. [RTyyyy] Cannot show total size of SD/eMMC correctly, so SD/eMMC cannot be programmed \n" + \
                       "     4. [RTyyyy] Some fields are not aligned with selected MCU device in Flexible User Key Setting \n" + \
-                      "     5. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n\n"
+                      "     5. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n" + \
+                      "  Interest: \n" + \
+                      "     1. Add sound effect (Contra) \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
                      u"     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
@@ -488,7 +491,9 @@ kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"     2. 在FlexSPI NOR配置界面里，Max Frequency参数选项与当前MCU型号不完全匹配 \n" + \
                      u"     3. [RTyyyy] SD/eMMC总容量未能正确显示，导致无法编程SD/eMMC \n" + \
                      u"     4. [RTyyyy] 在用户自定义Key设置界面里，有些选项与当前选中的MCU型号不匹配 \n" + \
-                     u"     5. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n\n"
+                     u"     5. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n" + \
+                     u"  个性: \n" + \
+                     u"     1. 增加魂斗罗音效 \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],

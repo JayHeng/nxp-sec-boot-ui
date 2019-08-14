@@ -64,6 +64,9 @@ class secBootWin ( wx.Frame ):
 		self.m_menu_tools.AppendSubMenu( self.m_menu_usbDetection, u"USB Detection" )
 
 		self.m_menu_soundEffect = wx.Menu()
+		self.m_menuItem_soundEffectContra = wx.MenuItem( self.m_menu_soundEffect, wx.ID_ANY, u"Contra", wx.EmptyString, wx.ITEM_RADIO )
+		self.m_menu_soundEffect.Append( self.m_menuItem_soundEffectContra )
+
 		self.m_menuItem_soundEffectMario = wx.MenuItem( self.m_menu_soundEffect, wx.ID_ANY, u"Mario", wx.EmptyString, wx.ITEM_RADIO )
 		self.m_menu_soundEffect.Append( self.m_menuItem_soundEffectMario )
 
@@ -1819,6 +1822,7 @@ class secBootWin ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.callbackSetRunModeAsMaster, id = self.m_menuItem_runModeMaster.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetUsbDetectionAsDynamic, id = self.m_menuItem_usbDetectionDynamic.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetUsbDetectionAsStatic, id = self.m_menuItem_usbDetectionStatic.GetId() )
+		self.Bind( wx.EVT_MENU, self.callbackSetSoundEffectAsContra, id = self.m_menuItem_soundEffectContra.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetSoundEffectAsMario, id = self.m_menuItem_soundEffectMario.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetSoundEffectAsQuiet, id = self.m_menuItem_soundEffectQuiet.GetId() )
 		self.Bind( wx.EVT_MENU, self.callbackSetGenSbFileAsYes, id = self.m_menuItem_genSbFileYes.GetId() )
@@ -1914,6 +1918,9 @@ class secBootWin ( wx.Frame ):
 		event.Skip()
 
 	def callbackSetUsbDetectionAsStatic( self, event ):
+		event.Skip()
+
+	def callbackSetSoundEffectAsContra( self, event ):
 		event.Skip()
 
 	def callbackSetSoundEffectAsMario( self, event ):

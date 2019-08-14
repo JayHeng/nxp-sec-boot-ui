@@ -61,7 +61,7 @@ class secBootUi(secBootWin.secBootWin):
         self._initUsbDetection()
         self.setUsbDetection()
 
-        self.isQuietSoundEffect = None
+        self.soundEffectType = None
         self._initSoundEffect()
         self.setSoundEffect()
 
@@ -130,20 +130,35 @@ class secBootUi(secBootWin.secBootWin):
         self.toolCommDict['isDymaticUsbDetection'] = self.isDymaticUsbDetection
 
     def _initSoundEffect( self ):
-        if self.toolCommDict['isQuietSoundEffect']:
+        if self.toolCommDict['soundEffectType'] == 'quiet':
             self.m_menuItem_soundEffectQuiet.Check(True)
             self.m_menuItem_soundEffectMario.Check(False)
-        else:
+            self.m_menuItem_soundEffectContra.Check(False)
+        elif self.toolCommDict['soundEffectType'] == 'mario':
             self.m_menuItem_soundEffectQuiet.Check(False)
             self.m_menuItem_soundEffectMario.Check(True)
+            self.m_menuItem_soundEffectContra.Check(False)
+        elif self.toolCommDict['soundEffectType'] == 'contra':
+            self.m_menuItem_soundEffectQuiet.Check(False)
+            self.m_menuItem_soundEffectMario.Check(False)
+            self.m_menuItem_soundEffectContra.Check(True)
+        else:
+            pass
 
     def setSoundEffect( self ):
-        self.isQuietSoundEffect = self.m_menuItem_soundEffectQuiet.IsChecked()
-        self.toolCommDict['isQuietSoundEffect'] = self.isQuietSoundEffect
-        uivar.setRuntimeSettings(None, None, self.isQuietSoundEffect)
+        if self.m_menuItem_soundEffectQuiet.IsChecked():
+            self.soundEffectType = 'quiet'
+        elif self.m_menuItem_soundEffectMario.IsChecked():
+            self.soundEffectType = 'mario'
+        elif self.m_menuItem_soundEffectContra.IsChecked():
+            self.soundEffectType = 'contra'
+        else:
+            pass
+        self.toolCommDict['soundEffectType'] = self.soundEffectType
+        uivar.setRuntimeSettings(None, None, self.soundEffectType)
 
     def playSoundEffect( self, soundFilename ):
-        sound.playSoundEffect(self.exeTopRoot, self.isQuietSoundEffect, soundFilename)
+        sound.playSoundEffect(self.exeTopRoot, self.soundEffectType, soundFilename)
 
     def _initGenSbFile( self ):
         if self.toolCommDict['isSbFileEnabledToGen']:
@@ -774,6 +789,7 @@ class secBootUi(secBootWin.secBootWin):
         self.m_menuItem_usbDetectionDynamic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionDynamic'][langIndex])
         self.m_menuItem_usbDetectionStatic.SetItemLabel(uilang.kMainLanguageContentDict['mItem_usbDetectionStatic'][langIndex])
         self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_soundEffect'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_soundEffect'][langIndex])
+        self.m_menuItem_soundEffectContra.SetItemLabel(uilang.kMainLanguageContentDict['mItem_soundEffectContra'][langIndex])
         self.m_menuItem_soundEffectMario.SetItemLabel(uilang.kMainLanguageContentDict['mItem_soundEffectMario'][langIndex])
         self.m_menuItem_soundEffectQuiet.SetItemLabel(uilang.kMainLanguageContentDict['mItem_soundEffectQuiet'][langIndex])
         self.m_menu_tools.SetLabel(self.m_menu_tools.FindItem(uilang.kMainLanguageContentDict['subMenu_genSbFile'][lastIndex]), uilang.kMainLanguageContentDict['subMenu_genSbFile'][langIndex])

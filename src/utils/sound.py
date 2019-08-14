@@ -5,10 +5,10 @@ import os
 import wave
 import pyaudio
 
-def playSoundEffect( exeTopRoot, isQuiet, soundFilename ):
-    if isQuiet:
+def playSoundEffect( exeTopRoot, soundType, soundFilename ):
+    if soundType == 'quiet':
         return
-    wavPath = os.path.join(exeTopRoot, 'sound', 'mario', soundFilename)
+    wavPath = os.path.join(exeTopRoot, 'sound', soundType, soundFilename)
     if os.path.isfile(wavPath):
         wavFile =  wave.open(wavPath, "rb")
         wavPyaudio = pyaudio.PyAudio()

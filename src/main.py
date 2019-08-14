@@ -413,6 +413,9 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def callbackSetUsbDetectionAsStatic( self, event ):
         self.setUsbDetection()
 
+    def callbackSetSoundEffectAsContra( self, event ):
+        self.setSoundEffect()
+
     def callbackSetSoundEffectAsMario( self, event ):
         self.setSoundEffect()
 

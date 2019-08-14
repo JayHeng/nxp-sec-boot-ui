@@ -89,10 +89,10 @@ kAppImageFormat_MotoSrec    = 'Motorola S-Records (.srec/.s19)'
 kAppImageFormat_IntelHex    = 'Intel Extended Hex (.hex)'
 kAppImageFormat_RawBinary   = 'Raw Binary (.bin)'
 
-kSoundEffectFilename_Success  = 'levelwin_success.wav'
-kSoundEffectFilename_Failure  = 'dead_failure.wav'
-kSoundEffectFilename_Progress = 'getcoin_progress.wav'
-kSoundEffectFilename_Restart  = 'pluslife_restart.wav'
+kSoundEffectFilename_Success  = 'snd_success.wav'
+kSoundEffectFilename_Failure  = 'snd_failure.wav'
+kSoundEffectFilename_Progress = 'snd_progress.wav'
+kSoundEffectFilename_Restart  = 'snd_restart.wav'
 
 kMemBlockColor_Background = wx.WHITE
 kMemBlockColor_Padding    = wx.BLACK
