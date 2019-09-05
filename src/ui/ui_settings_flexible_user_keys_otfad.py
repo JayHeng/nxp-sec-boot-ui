@@ -68,11 +68,22 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
 
     def setNecessaryInfo( self, mcuDevice, xipBaseAddr ):
         self.xipBaseAddr = xipBaseAddr
-        if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        #if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        if True:
+            kekSource = None
+            if mcuDevice == uidef.kMcuDevice_iMXRT1011:
+                kekSource = RTyyyy_uidef.kSupportedKeySource_iMXRT1011
+            elif mcuDevice == uidef.kMcuDevice_iMXRT117x:
+                kekSource = RTyyyy_uidef.kSupportedKeySource_iMXRT117x
+            else:
+                pass
             self.m_choice_xipBaseAddr.Clear()
             xipBaseAddr = [str(hex(xipBaseAddr))]
             self.m_choice_xipBaseAddr.SetItems(xipBaseAddr)
             self.m_choice_xipBaseAddr.SetSelection(0)
+            self.m_choice_kekSource.Clear()
+            self.m_choice_kekSource.SetItems(kekSource)
+            self.m_choice_kekSource.SetSelection(0)
             self._recoverLastSettings()
             self.userKeyCtrlDict['mcu_device'] = mcuDevice
 
@@ -80,6 +91,10 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
         self.m_choice_totalRegions.SetSelection(self.userKeyCtrlDict['total_regions'] - 1)
         if self.userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_SW_GP2:
             self.m_choice_kekSource.SetSelection(0)
+        elif self.userKeyCtrlDict['kek_src'] == RTyyyy_uidef.kUserKeySource_USER_KEY5:
+            self.m_choice_kekSource.SetSelection(0)
+        else:
+            pass
         self.m_textCtrl_kekData.Clear()
         if self.userKeyCmdDict['kek'] != None:
             self.m_textCtrl_kekData.write(self.userKeyCmdDict['kek'])

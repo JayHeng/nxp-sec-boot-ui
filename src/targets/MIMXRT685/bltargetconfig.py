@@ -54,6 +54,7 @@ hasRemappedFuse = None
 availableBootDevices = [RTxxx_uidef.kBootDevice_QuadspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_None
 flexspiNorMemBase = None
+flexspiFreqs = None
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = None
 isSipFlexspiNorDevice = False
@@ -64,7 +65,11 @@ isSwEccSetAsDefaultInNandOpt = None
 quadspiNorDevice = None
 quadspiNorMemBase = 0x08000000
 
+registerAddrDict = None
+registerDefnDict  = None
+
 efusemapIndexDict = None
+efusemapDefnDict  = None
 efuseDescDiffDict = None
 
 # memory map

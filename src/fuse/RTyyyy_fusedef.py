@@ -15,44 +15,6 @@ kEfuseMask_RLockSwGp2 = 0x00800000
 kEfuseShift_LockLow  = 0
 kEfuseShift_LockHigh = 28
 
-kEfuseMask_SecConfig0 = 0x00000002
-kEfuseMask_SecConfig1 = 0x00000002
-kEfuseShift_SecConfig0 = 1
-kEfuseShift_SecConfig1 = 1
-
-kEfuseMask_BtFuseSel = 0x00000010
-kEfuseShift_BtFuseSel = 4
-
-kEfuseMask_HwCryptoKey0Sel = 0x00003000
-kEfuseMask_HwCryptoKey1Sel = 0x0000C000
-kEfuseShift_HwCryptoKey0Sel = 12
-kEfuseShift_HwCryptoKey1Sel = 14
-
-kEfuseMask_OtfadKeyScrambleAlign  = 0x000000FF
-kEfuseShift_OtfadKeyScrambleAlign = 0
-kEfuseMask_OtfadEnable  = 0x00000100
-kEfuseShift_OtfadEnable = 8
-kEfuseMask_OtfadKeyScrambleEnable  = 0x00000400
-kEfuseShift_OtfadKeyScrambleEnable = 10
-
-kEfuseMask_DefaultFlexramPart  = 0x000F0000
-kEfuseShift_DefaultFlexramPart = 16
-kEfuseMask_EepromEnable        = 0x01000000
-kEfuseShift_EepromEnable       = 24
-kEfuseMask_LpspiIndex          = 0x06000000
-kEfuseShift_LpspiIndex         = 25
-kEfuseMask_SpiAddressing       = 0x08000000
-kEfuseShift_SpiAddressing      = 27
-kEfuseMask_LpspiSpeed          = 0x30000000
-kEfuseShift_LpspiSpeed         = 28
-
-kEfuseMask_RawNandPortSize   = 0x00000008
-kEfuseShift_RawNandPortSize  = 3
-kEfuseMask_RawNandEccEdoSet  = 0x00000010
-kEfuseShift_RawNandEccEdoSet = 4
-kEfuseMask_RawNandEccStatus  = 0x01000000
-kEfuseShift_RawNandEccStatus = 24
-
 ##################################################
 
 kHabStatus_FAB     = 0x0
@@ -69,6 +31,9 @@ kOtfadKeySel_FromOtpmkLow  = 0x0
 kOtfadKeySel_FromOtpmkHigh = 0x1
 kOtfadKeySel_Reserved      = 0x2
 kOtfadKeySel_FromSwGp2     = 0x3
+
+kOtfadKeySel_FromPuf      = 0x0
+kOtfadKeySel_FromUserKey5 = 0x0  # Fixme
 
 kSpiAddressing_3Bytes = 0x0
 kSpiAddressing_2Bytes = 0x1

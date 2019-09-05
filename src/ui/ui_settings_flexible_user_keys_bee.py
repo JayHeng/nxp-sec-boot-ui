@@ -85,7 +85,8 @@ class secBootUiSettingsFlexibleUserKeysBee(advSettingsWin_FlexibleUserKeys_Bee.a
 
     def setNecessaryInfo( self, mcuDevice, xipBaseAddr ):
         self.xipBaseAddr = xipBaseAddr
-        if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        #if self.userKeyCtrlDict['mcu_device'] != mcuDevice:
+        if True:
             keySource = None
             engineSel = None
             if mcuDevice == uidef.kMcuDevice_iMXRT1015:

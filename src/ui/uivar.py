@@ -8,7 +8,7 @@ import RTyyyy_uidef
 import RTxxx_uidef
 
 g_exeTopRoot = None
-g_isQuietSoundEffect = None
+g_soundEffectType = None
 g_languageIndex = None
 g_hasSubWinBeenOpened = False
 g_efuseDict = {'0x400_lock':0x00000000,
@@ -22,7 +22,7 @@ g_efuseDict = {'0x400_lock':0x00000000,
 g_cfgFilename = None
 g_toolCommDict = {'isToolRunAsEntryMode':None,
                   'isDymaticUsbDetection':None,
-                  'isQuietSoundEffect':None,
+                  'soundEffectType':None,
                   'isSbFileEnabledToGen':None,
                   'isAutomaticImageReadback':None,
                   'flashloaderResident':None,
@@ -200,7 +200,7 @@ def initVar(cfgFilename):
     else:
         g_toolCommDict = {'isToolRunAsEntryMode':True,
                           'isDymaticUsbDetection':True,
-                          'isQuietSoundEffect':False,
+                          'soundEffectType':'contra',
                           'isSbFileEnabledToGen':False,
                           'isAutomaticImageReadback':True,
                           'flashloaderResident':None,
@@ -466,9 +466,9 @@ def setAdvancedSettings( group, *args ):
 def getRuntimeSettings( ):
     global g_hasSubWinBeenOpened
     global g_exeTopRoot
-    global g_isQuietSoundEffect
+    global g_soundEffectType
     global g_languageIndex
-    return g_hasSubWinBeenOpened, g_exeTopRoot, g_isQuietSoundEffect, g_languageIndex
+    return g_hasSubWinBeenOpened, g_exeTopRoot, g_soundEffectType, g_languageIndex
 
 def setRuntimeSettings( *args ):
     global g_hasSubWinBeenOpened
@@ -481,9 +481,9 @@ def setRuntimeSettings( *args ):
     except:
         pass
     try:
-        global g_isQuietSoundEffect
+        global g_soundEffectType
         if args[2] != None:
-            g_isQuietSoundEffect = args[2]
+            g_soundEffectType = args[2]
     except:
         pass
     try:

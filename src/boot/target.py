@@ -62,6 +62,7 @@ class Target(object):
         self.availableBootDevices = misc.get_dict_default(kwargs, 'availableBootDevices', None)
         self.flexspiNorDevice = misc.get_dict_default(kwargs, 'flexspiNorDevice', None)
         self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
+        self.flexspiFreqs = misc.get_dict_default(kwargs, 'flexspiFreqs', None)
         self.xspiNorCfgInfoOffset = misc.get_dict_default(kwargs, 'xspiNorCfgInfoOffset', None)
         self.flexspiNorEfuseBootCfg0Bits = misc.get_dict_default(kwargs, 'flexspiNorEfuseBootCfg0Bits', None)
         self.isNonXipImageAppliableForXipableDeviceUnderClosedHab = misc.get_dict_default(kwargs, 'isNonXipImageAppliableForXipableDeviceUnderClosedHab', None)
@@ -72,7 +73,10 @@ class Target(object):
         self.quadspiNorDevice = misc.get_dict_default(kwargs, 'quadspiNorDevice', None)
         self.quadspiNorMemBase = misc.get_dict_default(kwargs, 'quadspiNorMemBase', None)
 
+        self.registerAddrDict = misc.get_dict_default(kwargs, 'registerAddrDict', None)
+        self.registerDefnDict = misc.get_dict_default(kwargs, 'registerDefnDict', None)
         self.efusemapIndexDict = misc.get_dict_default(kwargs, 'efusemapIndexDict', None)
+        self.efusemapDefnDict = misc.get_dict_default(kwargs, 'efusemapDefnDict', None)
         self.efuseDescDiffDict = misc.get_dict_default(kwargs, 'efuseDescDiffDict', None)
 
     ##

@@ -43,7 +43,6 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
         self.flexspiNorOpt0 = flexspiNorOpt0
         self.flexspiNorOpt1 = flexspiNorOpt1
         self.flexspiDeviceModel = flexspiDeviceModel
-        self._recoverLastSettings()
 
     def _setLanguage( self ):
         runtimeSettings = uivar.getRuntimeSettings()
@@ -66,6 +65,13 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
         self.m_staticText_dummyCycles.SetLabel(uilang.kSubLanguageContentDict['sText_dummyCycles'][langIndex])
         self.m_button_ok.SetLabel(uilang.kSubLanguageContentDict['button_flexspinor_ok'][langIndex])
         self.m_button_cancel.SetLabel(uilang.kSubLanguageContentDict['button_flexspinor_cancel'][langIndex])
+
+    def setNecessaryInfo( self, flexspiFreqs ):
+        if flexspiFreqs != None:
+            self.m_choice_maxFrequency.Clear()
+            self.m_choice_maxFrequency.SetItems(flexspiFreqs)
+            self.m_choice_maxFrequency.SetSelection(0)
+        self._recoverLastSettings()
 
     def _updateOpt1Field ( self, isEnabled ):
         if isEnabled:
@@ -206,25 +212,7 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
         self.flexspiNorOpt0 = (self.flexspiNorOpt0 & 0xFFFFFF0F) | (val << 4)
 
     def _getMaxFrequency( self ):
-        txt = self.m_choice_maxFrequency.GetString(self.m_choice_maxFrequency.GetSelection())
-        if txt == '30MHz':
-            val = 0x1
-        elif txt == '50MHz':
-            val = 0x2
-        elif txt == '60MHz':
-            val = 0x3
-        elif txt == '75MHz':
-            val = 0x4
-        elif txt == '80MHz':
-            val = 0x5
-        elif txt == '100MHz':
-            val = 0x6
-        elif txt == '133MHz':
-            val = 0x7
-        elif txt == '166MHz':
-            val = 0x8
-        else:
-            pass
+        val = self.m_choice_maxFrequency.GetSelection() + 1
         self.flexspiNorOpt0 = (self.flexspiNorOpt0 & 0xFFFFFFF0) | (val << 0)
 
     def _getHasOpt1( self ):

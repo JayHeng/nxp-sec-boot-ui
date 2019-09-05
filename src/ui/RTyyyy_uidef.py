@@ -50,16 +50,16 @@ kUserEngineSel_Engine0     = 'Engine 0'
 kUserEngineSel_Engine1     = 'Engine 1'
 kUserEngineSel_BothEngines = 'Both Engines'
 
-kSupportedEngineSel_iMXRT1011 = [kUserEngineSel_Engine0, kUserEngineSel_Engine1]
 kSupportedEngineSel_iMXRT1015 = [kUserEngineSel_Engine0, kUserEngineSel_Engine1]
 kSupportedEngineSel_iMXRT102x = [kUserEngineSel_Engine0, kUserEngineSel_Engine1]
 kSupportedEngineSel_iMXRT105x = [kUserEngineSel_Engine0, kUserEngineSel_Engine1]
 kSupportedEngineSel_iMXRT106x = [kUserEngineSel_Engine0, kUserEngineSel_Engine1, kUserEngineSel_BothEngines]
 kSupportedEngineSel_iMXRT1064 = [kUserEngineSel_Engine0, kUserEngineSel_Engine1, kUserEngineSel_BothEngines]
 
-kUserKeySource_OTPMK  = 'Fuse OTPMK[255:128]'
-kUserKeySource_SW_GP2 = 'Fuse SW-GP2'
-kUserKeySource_GP4    = 'Fuse GP4[127:0]'
+kUserKeySource_OTPMK     = 'Fuse OTPMK[255:128]'
+kUserKeySource_SW_GP2    = 'Fuse SW-GP2'
+kUserKeySource_GP4       = 'Fuse GP4[127:0]'
+kUserKeySource_USER_KEY5 = 'Fuse USER_KEY5[127:0]'
 
 kSupportedKeySource_iMXRT1011 = [kUserKeySource_SW_GP2]
 kSupportedKeySource_iMXRT1015 = [kUserKeySource_SW_GP2]
@@ -67,6 +67,7 @@ kSupportedKeySource_iMXRT102x = [kUserKeySource_SW_GP2]
 kSupportedKeySource_iMXRT105x = [kUserKeySource_SW_GP2]
 kSupportedKeySource_iMXRT106x = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
 kSupportedKeySource_iMXRT1064 = [kUserKeySource_SW_GP2, kUserKeySource_GP4]
+kSupportedKeySource_iMXRT117x = [kUserKeySource_USER_KEY5]
 
 kMaxHwCryptoCount_Bee   = 2
 kMaxHwCryptoCount_Otfad = 4

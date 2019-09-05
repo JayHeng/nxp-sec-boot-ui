@@ -34,6 +34,7 @@ from boot.memoryrange import MemoryRange
 from ui import RTyyyy_uidef
 from ui import RTyyyy_uidef_efuse
 from ui import uidef
+from run import RTyyyy_rundef
 
 cpu = 'MIMXRT1015'
 board = 'EVK'
@@ -59,6 +60,7 @@ availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_LpspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
 flexspiNorMemBase = 0x60000000
+flexspiFreqs = ['30MHz', '50MHz', '60MHz', '75MHz', '80MHz', '100MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x0
 flexspiNorEfuseBootCfg0Bits = 10
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = False
@@ -69,7 +71,11 @@ isSwEccSetAsDefaultInNandOpt = None
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
+registerAddrDict = RTyyyy_rundef.registerAddrDict_RT10yy
+registerDefnDict  = RTyyyy_rundef.registerDefnDict_RT10yy
+
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
+efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT10yy
 
 efuse_0x450_bit7_4   = {'Boot_Device_Selection':   ['0000 - FlexSPI NOR',
                                                     '0001 - Reserved',

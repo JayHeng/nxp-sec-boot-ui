@@ -34,6 +34,7 @@ from boot.memoryrange import MemoryRange
 from ui import RTyyyy_uidef
 from ui import RTyyyy_uidef_efuse
 from ui import uidef
+from run import RTyyyy_rundef
 
 cpu = 'MIMXRT1064'
 board = 'EVK'
@@ -61,6 +62,7 @@ availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_LpspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_None
 flexspiNorMemBase = 0x70000000
+flexspiFreqs = ['30MHz', '50MHz', '60MHz', '75MHz', '80MHz', '100MHz', '120MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x0
 flexspiNorEfuseBootCfg0Bits = 12
 isNonXipImageAppliableForXipableDeviceUnderClosedHab = True
@@ -71,7 +73,11 @@ isSwEccSetAsDefaultInNandOpt = None
 quadspiNorDevice = None
 quadspiNorMemBase = None
 
+registerAddrDict = RTyyyy_rundef.registerAddrDict_RT10yy
+registerDefnDict  = RTyyyy_rundef.registerDefnDict_RT10yy
+
 efusemapIndexDict = RTyyyy_uidef_efuse.efusemapIndexDict_RT10yy
+efusemapDefnDict  = RTyyyy_uidef_efuse.efusemapDefnDict_RT10yy
 
 efuse_0x400_bit7     = {'GP4_R':                   ['0 - Unlock', '1 - RP']}
 efuse_0x400_bit15    = {'ROM_PATCH':               ['0 - Unlock', '1 - W,0P']}
