@@ -15,7 +15,7 @@ kBootDevice_Dcd            = 'DCD'
 kBootDevice_RamFlashloader = 'RAM FLASHLOADER'
 
 kBootDevice_v1_0_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand,                                            kBootDevice_LpspiNor]
-kBootDevice_v1_4_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand, kBootDevice_UsdhcSd, kBootDevice_UsdhcMmc, kBootDevice_LpspiNor]
+kBootDevice_v1_4_0 = [kBootDevice_FlexspiNor, kBootDevice_SemcNand, kBootDevice_UsdhcSd, kBootDevice_UsdhcMmc, kBootDevice_LpspiNor, kBootDevice_SemcNor]
 kBootDevice_Latest = kBootDevice_v1_4_0
 
 kSecureBootType_Development = 'DEV Unsigned Image Boot'

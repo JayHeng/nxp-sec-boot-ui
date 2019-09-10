@@ -54,6 +54,11 @@ g_flexspiNandKeyBlob = None
 
 g_semcNorOpt = None
 g_semcNorSetting = None
+g_semcNorDeviceModel = None
+
+g_semcNorOpt = 0xD0000600
+g_semcNorSetting = 0x00010601
+g_semcNorDeviceModel = uidef.kSemcNorDevice_None
 
 g_semcNandOpt = None
 g_semcNandFcbOpt = None
@@ -146,6 +151,7 @@ def initVar(cfgFilename):
 
     global g_semcNorOpt
     global g_semcNorSetting
+    global g_semcNorDeviceModel
 
     global g_usdhcSdOpt
 
@@ -182,6 +188,10 @@ def initVar(cfgFilename):
 
         g_lpspiNorOpt0 = cfgDict["cfgLpspiNor"][0]
         g_lpspiNorOpt1 = cfgDict["cfgLpspiNor"][1]
+
+        g_semcNorOpt = cfgDict["cfgSemcNor"][0]
+        g_semcNorSetting = cfgDict["cfgSemcNor"][1]
+        g_semcNorDeviceModel = cfgDict["cfgSemcNor"][2]
 
         g_usdhcSdOpt = cfgDict["cfgUsdhcSd"][0]
 
@@ -238,8 +248,9 @@ def initVar(cfgFilename):
         g_flexspiNandImageInfo = 0x0
         g_flexspiNandKeyBlob = 0x0
 
-        g_semcNorOpt = 0xD0010101
+        g_semcNorOpt = 0xD0000600
         g_semcNorSetting = 0x00010601
+        g_semcNorDeviceModel = uidef.kSemcNorDevice_None
 
         g_usdhcSdOpt = 0xD0000000
 
@@ -347,7 +358,8 @@ def getBootDeviceConfiguration( group ):
     elif group == RTyyyy_uidef.kBootDevice_SemcNor:
         global g_semcNorOpt
         global g_semcNorSetting
-        return g_semcNorOpt, g_semcNorSetting
+        global g_semcNorDeviceModel
+        return g_semcNorOpt, g_semcNorSetting, g_semcNorDeviceModel
     elif group == RTyyyy_uidef.kBootDevice_SemcNand:
         global g_semcNandOpt
         global g_semcNandFcbOpt
@@ -396,8 +408,10 @@ def setBootDeviceConfiguration( group, *args ):
     elif group == RTyyyy_uidef.kBootDevice_SemcNor:
         global g_semcNorOpt
         global g_semcNorSetting
+        global g_semcNorDeviceModel
         g_semcNorOpt = args[0]
         g_semcNorSetting = args[1]
+        g_semcNorDeviceModel = args[2]
     elif group == RTyyyy_uidef.kBootDevice_SemcNand:
         global g_semcNandOpt
         global g_semcNandFcbOpt

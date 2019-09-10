@@ -110,3 +110,10 @@ kPageIndex_ImageGenerationSequence = 0
 kPageIndex_ImageLoadingSequence    = 1
 kPageIndex_EfuseOperationUtility   = 2
 kPageIndex_BootDeviceMemory        = 3
+
+kSemcNorDevice_None                  = 'No'
+kSemcNorDevice_Micron_MT28EW128ABA   = 'Micron_MT28EW128ABA'
+kSemcNorDevice_Micron_MT28UG128ABA   = 'Micron_MT28UG128ABA'
+
+kSemcNorOpt0_Micron_MT28EW128ABA       = 0xD0000600
+kSemcNorOpt0_Micron_MT28UG128ABA       = 0xD0000601

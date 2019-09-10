@@ -3,37 +3,37 @@
 import wx
 import sys
 import os
-import uivar
 import RTyyyy_uidef
+import uidef
+import uivar
+import uilang
 sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_SemcNor
+from utils import sound
 
 class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
     def __init__(self, parent):
         bootDeviceWin_SemcNor.bootDeviceWin_SemcNor.__init__(self, parent)
-        semcNorOpt, semcNorSetting = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNor)
+        semcNorOpt, semcNorSetting, semcNorDeviceModel = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNor)
         self.semcNorOpt = semcNorOpt
         self.semcNorSetting = semcNorSetting
+        self.semcNorDeviceModel = semcNorDeviceModel
+        self._recoverSemcNorLastSettings()
 
-    def _getPCSPort( self ):
-        txt = self.m_choice_PCS_Port.GetString(self.m_choice_PCS_Port.GetSelection())
-        if txt == 'CSX0':
+    def _getTimingMode( self ):
+        txt = self.m_choice_CFITimingMode.GetString(self.m_choice_CFITimingMode.GetSelection())
+        if txt == 'Safe mode':
             val = 0x0
-        elif txt == 'CSX1':
+        elif txt == 'Fast mode':
             val = 0x1
-        elif txt == 'CSX2':
+        elif txt == 'User defined':
             val = 0x2
-        elif txt == 'CSX3':
-            val = 0x3
-        elif txt == 'A8':
-            val = 0x4
         else:
             pass
-        self.semcNorOpt = (self.semcNorOpt & 0xFFFF8FFF) | (val << 12)
-
+        self.semcNorOpt = (self.semcNorOpt & 0xFFFFFFF3) | (val << 2)
 
     def _getADVPolarity( self ):
-        txt = self.m_choice_ADV_Polarity.GetString(self.m_choice_ADV_Polarity.GetSelection())
+        txt = self.m_choice_AdvPolarity.GetString(self.m_choice_AdvPolarity.GetSelection())
         if txt == 'Low active':
             val = 0x0
         elif txt == 'High active':
@@ -42,58 +42,90 @@ class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
             pass
         self.semcNorOpt = (self.semcNorOpt & 0xFFFFFBFF) | (val << 10)
 
-
     def _getDataPortSize( self ):
-        txt = self.m_choice_DataPort_Size.GetString(self.m_choice_DataPort_Size.GetSelection())
-        if txt == '8bits':
+        txt = self.m_choice_ioPortSize.GetString(self.m_choice_ioPortSize.GetSelection())
+        if txt == 'x8 bits':
             val = 0x0
-        elif txt == '8bits':
+        elif txt == 'x8 bits':
             val = 0x1
-        elif txt == '16bits':
+        elif txt == 'x16 bits':
             val = 0x2
-        elif txt == '24bits':
+        elif txt == 'x24 bits':
             val = 0x3
         else:
             pass
         self.semcNorOpt = (self.semcNorOpt & 0xFFFFFCFF) | (val << 8)
 
-
-
-    def _getTimingMode( self ):
-        txt = self.m_choice_Timing_Mode.GetString(self.m_choice_Timing_Mode.GetSelection())
-        if txt == 'Safe mode':
+    def _getPCSPort( self ):
+        txt = self.m_choice_PcsPort.GetString(self.m_choice_PcsPort.GetSelection())
+        if txt == 'CSX0':
             val = 0x0
-        elif txt == 'Fast mode':
-            val = 0x1
-        elif txt == 'User defined(Field 0x04-0x19)':
-            val = 0x2
         else:
             pass
-        self.semcNorOpt = (self.semcNorOpt & 0xFFFFFFF3) | (val << 2)
+        self.semcNorOpt = (self.semcNorOpt & 0xFFFF8FFF) | (val << 12)
 
     def _getCommandSet( self ):
-        txt = self.m_choice_Command_Set.GetString(self.m_choice_Command_Set.GetSelection())
-        if txt == 'EPSCD-As Micron MT28EW':
+        txt = self.m_choice_CommandSet.GetString(self.m_choice_CommandSet.GetSelection())
+        if txt == 'MT28EW':
             val = 0x0
-        elif txt == 'SFMCD-As Micron MT28GU':
+        elif txt == 'MT28GU':
             val = 0x1
         else:
             pass
-        self.semcNorOpt = (self.semcNorOpt & 0xFFFFFFFC) | (val << 2)
+        self.semcNorOpt = (self.semcNorOpt & 0xFFFFFFFC) | (val << 0)
 
-    def cancel_of_SEMC_NOR(self, event):
-        self.Show(False)
+    def _recoverSemcNorLastSettings ( self ):
+        self.m_choice_deviceMode_SEMCNOR.SetSelection(self.m_choice_deviceMode_SEMCNOR.FindString(self.semcNorDeviceModel))
 
-    def apply_of_SEMC_NOR(self, event):
-        self._getPCSPort()
+        TimingMode = (self.semcNorOpt & 0x0000000C) >> 2
+        self.m_choice_CFITimingMode.SetSelection(TimingMode)
+
+        ADVPolarity = (self.semcNorOpt & 0x00000400) >> 10
+        self.m_choice_AdvPolarity.SetSelection(ADVPolarity)
+
+        DataPortSize = (self.semcNorOpt & 0x00000300) >> 8
+        if DataPortSize == 0:
+            DataPortSize = 1
+        self.m_choice_ioPortSize.SetSelection(DataPortSize-1)
+        print(DataPortSize)
+
+        PCSPort = (self.semcNorOpt & 0x00007000) >> 12
+        self.m_choice_PcsPort.SetSelection(PCSPort)
+
+        CommandSet = (self.semcNorOpt & 0x00000003) >> 0
+        self.m_choice_CommandSet.SetSelection(CommandSet)
+
+
+
+    def callbackUseTypicalDeviceModel_SEMCNOR( self, event ):
+        txt = self.m_choice_deviceMode_SEMCNOR.GetString(self.m_choice_deviceMode_SEMCNOR.GetSelection())
+        self.semcNorDeviceModel = txt
+        if txt == uidef.kSemcNorDevice_Micron_MT28EW128ABA:
+            self.semcNorOpt = uidef.kSemcNorOpt0_Micron_MT28EW128ABA
+        elif txt == uidef.kSemcNorDevice_Micron_MT28UG128ABA:
+            self.semcNorOpt = uidef.kSemcNorOpt0_Micron_MT28UG128ABA
+        else:
+            pass
+        if txt != 'No':
+            self._recoverSemcNorLastSettings()
+
+
+    def callbackOk( self, event ):
+        self._getTimingMode()
         self._getADVPolarity()
         self._getDataPortSize()
-        self._getTimingMode()
+        self._getPCSPort()
         self._getCommandSet()
-        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNor, self.semcNorOpt, self.semcNorSetting)
+        uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNor, self.semcNorOpt, self.semcNorSetting, self.semcNorDeviceModel)
+        uivar.setRuntimeSettings(False)
+        self.Show(False)
+        print( hex(self.semcNorOpt),self.semcNorSetting,self.semcNorDeviceModel)
+
+    def callbackCancel( self, event ):
+        uivar.setRuntimeSettings(False)
         self.Show(False)
 
-    def OnClose_SEMC_NOR(self, event):
-        ret = wx.MessageBox('Do you really want to leave?', 'Confirm', wx.OK | wx.CANCEL)
-        if ret == wx.OK:
-            self.Show(False)
+    def callbackClose( self, event ):
+        uivar.setRuntimeSettings(False)
+        self.Show(False)
+
