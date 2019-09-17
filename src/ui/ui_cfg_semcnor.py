@@ -87,15 +87,12 @@ class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
         if DataPortSize == 0:
             DataPortSize = 1
         self.m_choice_ioPortSize.SetSelection(DataPortSize-1)
-        print(DataPortSize)
 
         PCSPort = (self.semcNorOpt & 0x00007000) >> 12
         self.m_choice_PcsPort.SetSelection(PCSPort)
 
         CommandSet = (self.semcNorOpt & 0x00000003) >> 0
         self.m_choice_CommandSet.SetSelection(CommandSet)
-
-
 
     def callbackUseTypicalDeviceModel_SEMCNOR( self, event ):
         txt = self.m_choice_deviceMode_SEMCNOR.GetString(self.m_choice_deviceMode_SEMCNOR.GetSelection())
@@ -109,7 +106,6 @@ class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
         if txt != 'No':
             self._recoverSemcNorLastSettings()
 
-
     def callbackOk( self, event ):
         self._getTimingMode()
         self._getADVPolarity()
@@ -119,7 +115,6 @@ class secBootUiSemcNor(bootDeviceWin_SemcNor.bootDeviceWin_SemcNor):
         uivar.setBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_SemcNor, self.semcNorOpt, self.semcNorSetting, self.semcNorDeviceModel)
         uivar.setRuntimeSettings(False)
         self.Show(False)
-        print( hex(self.semcNorOpt),self.semcNorSetting,self.semcNorDeviceModel)
 
     def callbackCancel( self, event ):
         uivar.setRuntimeSettings(False)

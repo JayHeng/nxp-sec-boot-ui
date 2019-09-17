@@ -572,6 +572,35 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
             pass
         return True
 
+    def _getSemcNorDeviceInfo ( self ):
+        filename = 'SemcNorCfg.dat'
+        filepath = os.path.join(self.blhostVectorsDir, filename)
+        status, results, cmdStr = self.blhost.readMemory(self.bootDeviceMemBase, 0x2D, filename, self.bootDeviceMemId)
+        self.printLog(cmdStr)
+        if status != boot.status.kStatus_Success:
+            return False
+        # flexspiTag = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_FlexspiTag)
+        # if flexspiTag == rundef.kFlexspiNorCfgTag_Flexspi:
+        #     pageByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_PageByteSize)
+        #     sectorByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_SectorByteSize)
+        #     blockByteSize = self.getVal32FromBinFile(filepath, rundef.kFlexspiNorCfgOffset_BlockByteSize)
+        #     self.printDeviceStatus("Page Size   = " + self.showAsOptimalMemoryUnit(pageByteSize))
+        #     self.printDeviceStatus("Sector Size = " + self.showAsOptimalMemoryUnit(sectorByteSize))
+        #     self.printDeviceStatus("Block Size  = " + self.showAsOptimalMemoryUnit(blockByteSize))
+        #     self.comMemWriteUnit = pageByteSize
+        #     self.comMemEraseUnit = sectorByteSize
+        #     self.comMemReadUnit = pageByteSize
+        # else:
+        #     self.printDeviceStatus("Page Size   = --------")
+        #     self.printDeviceStatus("Sector Size = --------")
+        #     self.printDeviceStatus("Block Size  = --------")
+        #     return False
+        # try:
+        #     os.remove(filepath)
+        # except:
+        #     pass
+        return True
+
     def _getFlexspiNorDeviceInfo ( self ):
         if not self.RTyyyy_isDeviceEnabledToOperate and self.isSbFileEnabledToGen:
             return True
@@ -662,6 +691,9 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
         if self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNand:
             self.printDeviceStatus("--------SEMC NAND memory----------")
             self._getSemcNandDeviceInfo()
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
+            self.printDeviceStatus("--------SEMC Nor memory----------")
+            self._getSemcNorDeviceInfo()
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             self.printDeviceStatus("--------FlexSPI NOR memory--------")
             if not self._getFlexspiNorDeviceInfo():
@@ -732,6 +764,9 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     configOptList.extend([semcNandImageInfoList[i]])
                 else:
                     break
+        if self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
+            semcNorOpt, semcNorSetting, semcNorDeviceModel= uivar.getBootDeviceConfiguration(self.bootDevice)
+            configOptList.extend([semcNorOpt])
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             flexspiNorOpt0, flexspiNorOpt1, flexspiNorDeviceModel = uivar.getBootDeviceConfiguration(uidef.kBootDevice_XspiNor)
             configOptList.extend([flexspiNorOpt0, flexspiNorOpt1])
@@ -1159,6 +1194,23 @@ class secBootRTyyyyRun(RTyyyy_gencore.secBootRTyyyyGen):
                     self.printLog(cmdStr)
                     if status != boot.status.kStatus_Success:
                         return False
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
+            semcNorOpt, semcNorSetting, semcNorDeviceModel = uivar.getBootDeviceConfiguration(self.bootDevice)
+            memEraseLen = self.destAppBinaryBytes+self.destAppVectorAddress
+            imageLoadAddr = self.bootDeviceMemBase
+            if self.isSbFileEnabledToGen:
+                self._addFlashActionIntoSbAppBdContent("    erase " + self.sbAccessBootDeviceMagic + " " + self.convertLongIntHexText(str(hex(imageLoadAddr))) + ".." + self.convertLongIntHexText(str(hex(imageLoadAddr + memEraseLen))) + ";\n")
+                self._addFlashActionIntoSbAppBdContent("    load " + self.sbAccessBootDeviceMagic + " myBinFile > " + self.convertLongIntHexText(str(hex(imageLoadAddr))) + ";\n")
+            else:
+                status, results, cmdStr = self.blhost.flashEraseRegion(imageLoadAddr, memEraseLen, self.bootDeviceMemId)
+                self.printLog(cmdStr)
+                if status != boot.status.kStatus_Success:
+                    return False
+                status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, self.destAppFilename,
+                                                                  self.bootDeviceMemId)
+                self.printLog(cmdStr)
+                if status != boot.status.kStatus_Success:
+                    return False
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor:
             if not self.isFlexspiNorErasedForImage:
                 if not self._eraseFlexspiNorForImageLoading():

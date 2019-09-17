@@ -328,6 +328,7 @@ def deinitVar(cfgFilename=None):
         cfgDict = {
             "cfgToolCommon": [g_toolCommDict],
             "cfgFlexspiNor": [g_flexspiNorOpt0, g_flexspiNorOpt1, g_flexspiNorDeviceModel],
+            "cfgSemcNor": [g_semcNorOpt, g_semcNorSetting, g_semcNorDeviceModel],
             "cfgSemcNand": [g_semcNandOpt, g_semcNandFcbOpt, g_semcNandImageInfoList],
             "cfgLpspiNor": [g_lpspiNorOpt0, g_lpspiNorOpt1],
             "cfgUsdhcSd": [g_usdhcSdOpt],

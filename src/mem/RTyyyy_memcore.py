@@ -171,6 +171,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
             # Only Readout first image
             imageMemBase = self.bootDeviceMemBase + (semcNandImageInfoList[0] >> 16) * self.semcNandBlockSize
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_FlexspiNor or \
+             self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor or \
              self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
             imageMemBase = self.bootDeviceMemBase
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_UsdhcSd or \
