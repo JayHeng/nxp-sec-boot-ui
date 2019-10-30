@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('gen/')
+
+
 import RTxxx_gencore
 import RTxxx_gendef
 import RTyyyy_gencore

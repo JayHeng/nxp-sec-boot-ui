@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 import wx
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+if sys.version_info.major == 2:
+    # No need to set default encoding to utf in python3
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 import os
 import time
 sys.path.append(os.path.abspath(".."))

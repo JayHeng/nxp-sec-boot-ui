@@ -19,6 +19,16 @@ from boot import bltest
 from boot import target
 from utils import misc
 
+def execfilePY3(filepath, globals=None, locals=None):
+    if globals is None:
+        globals = {}
+    globals.update({
+        "__file__": filepath,
+        "__name__": "__main__",
+    })
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), globals, locals)
+
 def RTyyyy_createTarget(device, exeBinRoot):
     # Build path to target directory and config file.
     cpu = "MIMXRT1052"
@@ -58,7 +68,10 @@ def RTyyyy_createTarget(device, exeBinRoot):
     targetConfig['__name__'] = 'bltargetconfig'
 
     # Execute the target config script.
-    execfile(targetConfigFile, globals(), targetConfig)
+    if sys.version_info.major == 2:
+        execfile(targetConfigFile, globals(), targetConfig)
+    else:
+        execfilePY3(targetConfigFile, globals(), targetConfig)
 
     # Create the target object.
     tgt = target.Target(**targetConfig)

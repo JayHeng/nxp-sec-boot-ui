@@ -291,7 +291,7 @@ class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):
             process = subprocess.Popen(self.appJsonBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             os.chdir(curdir)
             commandOutput = process.communicate()[0]
-            print commandOutput
+            print(commandOutput)
             if self._RTxxx_parseBootableImageGenerationResult(commandOutput):
                 return True
             else:

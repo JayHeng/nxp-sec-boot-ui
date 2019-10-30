@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('fuse/')
+
 import RTyyyy_fusecore
 import RTyyyy_fusedef
 

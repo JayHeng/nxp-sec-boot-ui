@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('ui/')
+
+
 import RTxxx_uicore
 import RTxxx_uidef
 import RTyyyy_uicore

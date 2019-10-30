@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('run/')
+
 import RTxxx_runcore
 import RTxxx_rundef
 import RTyyyy_runcore

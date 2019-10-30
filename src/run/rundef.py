@@ -27,3 +27,14 @@ kFlexspiNorCfgOffset_FlexspiTag     = 0x000
 kFlexspiNorCfgOffset_PageByteSize   = 0x1c0
 kFlexspiNorCfgOffset_SectorByteSize = 0x1c4
 kFlexspiNorCfgOffset_BlockByteSize  = 0x1d0
+
+if sys.version_info.major == 2:
+    def execfile(filepath, globals=None, locals=None):
+        if globals is None:
+            globals = {}
+        globals.update({
+            "__file__": filepath,
+            "__name__": "__main__",
+        })
+        with open(filepath, 'rb') as file:
+            exec(compile(file.read(), filepath, 'exec'), globals, locals)

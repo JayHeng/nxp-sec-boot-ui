@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('_main/')
+
 import RTxxx_main
 import RTyyyy_main
 

@@ -35,7 +35,7 @@ import unittest
 __all__ = ["align_down", "align_up", "mymkarg", "findPathListCommonPrefix", "splitPath", "rebuildPathSimple", "onlyHyphensPlease", "suite"]
 
 def get_dict_default(d, k, default):
-    if not d.has_key(k):
+    if k not in d:
         return default
     else:
         return d[k]
@@ -128,8 +128,8 @@ def rebuildPathSimple(originalDir, newDir, path):
         
     absOriginal = os.path.abspath(originalDir)
     absNew = os.path.abspath(newDir)
-    print "absOrig=",absOriginal
-    print 'absNew=',absNew
+    print( "absOrig=",absOriginal)
+    print( 'absNew=',absNew)
     
     originalDirSplit = absOriginal.split(os.path.sep)
     newDirSplit = absNew.split(os.path.sep)

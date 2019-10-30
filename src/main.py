@@ -2,13 +2,17 @@
 # -*- coding: UTF-8 -*-
 import wx
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+if sys.version_info.major == 2:
+    # No need to set default encoding to utf in python3
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
 import os
 import time
 import threading
 import inspect
 import ctypes
+
 from _main import RTxxx_main
 from _main import RTyyyy_main
 from ui import RTyyyy_uidef

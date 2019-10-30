@@ -473,7 +473,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.dcdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseDcdGenerationResult(commandOutput):
             return True
         else:
@@ -874,7 +874,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.appBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         self._recoverDcdBecauseOfSrcApp()
         if self._RTyyyy_parseBootableImageGenerationResult(commandOutput):
             return True
@@ -999,7 +999,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(encBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print(commandOutput)
 
     def encrypteImageUsingFlexibleUserKeys( self ):
         userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
@@ -1045,7 +1045,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             process = subprocess.Popen(self.flBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             os.chdir(curdir)
             commandOutput = process.communicate()[0]
-            print commandOutput
+            print (commandOutput)
             return self.destFlFilename
         else:
             return None
@@ -1276,7 +1276,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(sbAppBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseSbImageGenerationResult(commandOutput):
             return True
         else:
@@ -1325,7 +1325,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.sbUserEfuseBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseSbImageGenerationResult(commandOutput):
             return True
         else:

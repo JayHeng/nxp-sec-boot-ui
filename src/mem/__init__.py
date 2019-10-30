@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('mem/')
+
 import RTxxx_memcore
 import RTxxx_memdef
 import RTyyyy_memcore

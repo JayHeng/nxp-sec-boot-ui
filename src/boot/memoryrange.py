@@ -28,8 +28,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import exceptions
+import os,sys
+if sys.version_info.major == 2:
+	import exceptions
+else:
+	import builtins as exceptions
+
+
 
 ##
 # @brief Failure trying to merge two MemoryRange objects.
@@ -191,7 +196,7 @@ def coalesceRangeList(ranges):
 # @brief Unit test for memory range merging.
 class TestRangeLists:
     def setup_method(self, method):
-        print method
+        print( method)
         self.a = MemoryRange(0,0x100)
         self.b = MemoryRange(0x100,0x400)
         self.c = MemoryRange(0x800,0x100)
@@ -218,25 +223,25 @@ class TestRangeLists:
     
     def test_add_list1(self):
         l = addRangeToListAndCoalesce([], self.c)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x800, 0x100)
         
         l = addRangeToListAndCoalesce(l, self.a)
-        print l
+        print(l)
         assert len(l) == 2
         self.checkStartLength(l[0], 0, 0x100)
         self.checkStartLength(l[1], 0x800, 0x100)
         
         l = addRangeToListAndCoalesce(l, self.z)
-        print l
+        print(l)
         assert len(l) == 3
         self.checkStartLength(l[0], 0, 0x100)
         self.checkStartLength(l[1], 0x800, 0x100)
         self.checkStartLength(l[2], 0x20000, 0x1000)
         
         l = addRangeToListAndCoalesce(l, self.b)
-        print l
+        print(l)
         assert len(l) == 3
         self.checkStartLength(l[0], 0, 0x500)
         self.checkStartLength(l[1], 0x800, 0x100)
@@ -244,45 +249,45 @@ class TestRangeLists:
     
     def test_add_list_ab(self):
         l = addRangeToListAndCoalesce([], self.a)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0, 0x100)
         
         l = addRangeToListAndCoalesce(l, self.b)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0, 0x500)
     
     def test_add_list_ba(self):
         l = addRangeToListAndCoalesce([], self.b)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x100, 0x400)
         
         l = addRangeToListAndCoalesce(l, self.a)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0, 0x500)
     
     def test_add_list_cd(self):
         l = addRangeToListAndCoalesce([], self.c)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x800, 0x100)
         
         l = addRangeToListAndCoalesce(l, self.d)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x700, 0x1000)
     
     def test_add_list_dc(self):
         l = addRangeToListAndCoalesce([], self.d)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x700, 0x1000)
         
         l = addRangeToListAndCoalesce(l, self.c)
-        print l
+        print(l)
         assert len(l) == 1
         self.checkStartLength(l[0], 0x700, 0x1000)
         

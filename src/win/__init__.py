@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append('win/')
+
 import secBootWin
 import bootDeviceWin_FlexspiNor
 import bootDeviceWin_FlexspiNand

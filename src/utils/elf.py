@@ -131,10 +131,10 @@ class ELFSection:
     SHT_REL         = 9
     SHT_SHLIB       = 10
     SHT_DYNSYM      = 11
-    SHT_LOPROC      = 0x70000000L
-    SHT_HIPROC      = 0x7fffffffL
-    SHT_LOUSER      = 0x80000000L
-    SHT_HIUSER      = 0xffffffffL
+    SHT_LOPROC      = 0x70000000
+    SHT_HIPROC      = 0x7fffffff
+    SHT_LOUSER      = 0x80000000
+    SHT_HIUSER      = 0xffffffff
     #section attribute flags
     SHF_WRITE       = 0x1
     SHF_ALLOC       = 0x2
@@ -179,8 +179,8 @@ class ELFProgramHeader:
     PT_NOTE         = 4
     PT_SHLIB        = 5
     PT_PHDR         = 6
-    PT_LOPROC       = 0x70000000L
-    PT_HIPROC       = 0x7fffffffL
+    PT_LOPROC       = 0x70000000
+    PT_HIPROC       = 0x7fffffff
     
     #segment flags
     PF_R            = 0x4       #segment is readable
@@ -387,18 +387,18 @@ class ELFObject:
 
 
 if __name__ == '__main__':
-    print "This is only a module test!"
+    print("This is only a module test!")
     elf = ELFObject()
     elf.fromFile(open("test.elf"))
     if elf.e_type != ELFObject.ET_EXEC:
         raise Exception("No executable")
-    print elf
+    print(elf)
 
     #~ print repr(elf.getSection('.text').data)
     #~ print [(s.name, hex(s.sh_addr)) for s in elf.getSections()]
-    print "-"*20
-    for p in elf.sections: print p
-    print "-"*20
-    for p in elf.getSections(): print p
-    print "-"*20
-    for p in elf.getProgrammableSections(): print p
+    print("-"*20)
+    for p in elf.sections: print(p)
+    print("-"*20)
+    for p in elf.getSections(): print (p)
+    print("-"*20)
+    for p in elf.getProgrammableSections(): print(p)
