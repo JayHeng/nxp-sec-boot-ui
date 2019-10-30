@@ -706,11 +706,11 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             pass
 
         if bootDevice == RTyyyy_uidef.kBootDevice_RamFlashloader:
-            with open(self.flBdFilename, 'wb') as fileObj:
+            with open(self.flBdFilename, 'w') as fileObj:
                 fileObj.write(bdContent)
                 fileObj.close()
         else:
-            with open(self.appBdFilename, 'wb') as fileObj:
+            with open(self.appBdFilename, 'w') as fileObj:
                 fileObj.write(bdContent)
                 fileObj.close()
 
@@ -836,7 +836,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self._adjustDestAppFilenameForBd()
         batContent = "\"" + self.elftosbPath + "\""
         batContent += " -f imx -V -c " + "\"" + self.appBdFilename + "\"" + ' -o ' + "\"" + self.destAppFilename + "\"" + ' ' + "\"" + self.srcAppFilename + "\""
-        with open(self.appBdBatFilename, 'wb') as fileObj:
+        with open(self.appBdBatFilename, 'w') as fileObj:
             fileObj.write(batContent)
             fileObj.close()
 
@@ -849,6 +849,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         # (Encrypted)  Key Blob Address is 0xe000.
         # (Encrypted)  Key Blob data should be placed at Offset :0x6000 in the image
         info = 'iMX bootable image generated successfully'
+        output = str(output)
         if output.find(info) != -1:
             self.printLog('Bootable image is generated: ' + self.destAppFilename)
             info1 = 'Key Blob data should be placed at Offset :0x'

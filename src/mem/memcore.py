@@ -11,8 +11,8 @@ from ui import uivar
 from ui import uilang
 from utils import misc
 
-s_visibleAsciiStart = ' '
-s_visibleAsciiEnd = '~'
+s_visibleAsciiStart = ord(' ')
+s_visibleAsciiEnd = ord('~')
 
 class secBootMem(runcore.secBootRun):
 
@@ -49,13 +49,13 @@ class secBootMem(runcore.secBootRun):
         for i in range(16):
             if i >= padBytesBefore and \
                i < padBytesBefore + len(memContent):
-                halfbyteStr = str(hex((ord(memContent[i-padBytesBefore]) & 0xF0)>> 4))
+                halfbyteStr = str(hex((int(memContent[i-padBytesBefore]) & 0xF0)>> 4))
                 contentToShow += halfbyteStr[2]
-                halfbyteStr = str(hex((ord(memContent[i-padBytesBefore]) & 0x0F)>> 0))
+                halfbyteStr = str(hex((int(memContent[i-padBytesBefore]) & 0x0F)>> 0))
                 contentToShow += halfbyteStr[2] + ' '
                 if memContent[i-padBytesBefore] >= s_visibleAsciiStart and \
                    memContent[i-padBytesBefore] <= s_visibleAsciiEnd:
-                    visibleContent += memContent[i-padBytesBefore]
+                    visibleContent += str(memContent[i-padBytesBefore])
                 else:
                     visibleContent += '.'
             else:

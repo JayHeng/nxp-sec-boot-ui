@@ -685,7 +685,10 @@ class secBootUi(secBootWin.secBootWin):
     def getUserAppFilePath( self ):
         appPath = self.m_filePicker_appPath.GetPath()
         self.toolCommDict['appFilename'] = appPath.encode("utf-8")
-        return appPath.encode('utf-8').encode("gbk")
+        if sys.version_info.major == 2:
+            return appPath.encode('utf-8').encode("gbk")
+        else:
+            return appPath
 
     def _setUserBinaryBaseField( self ):
         txt = self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
@@ -731,7 +734,10 @@ class secBootUi(secBootWin.secBootWin):
 
     def getComMemBinFile( self ):
         memBinFile = self.m_filePicker_memBinFile.GetPath()
-        return memBinFile.encode('utf-8').encode("gbk")
+        if sys.version_info.major == 2:
+            return memBinFile.encode('utf-8').encode("gbk")
+        else:
+            return memBinFile
 
     def needToSaveReadbackImageData( self ):
         return self.m_checkBox_saveImageData.GetValue()
