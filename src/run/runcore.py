@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import rundef
-sys.path.append(os.path.abspath(".."))
+from run import rundef
+#sys.path.append(os.path.abspath(".."))
 from gen import gencore
 from ui import uidef
 from ui import uivar

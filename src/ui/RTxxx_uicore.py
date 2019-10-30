@@ -8,11 +8,11 @@ if sys.version_info.major == 2:
     sys.setdefaultencoding('utf-8')
 
 import os
-import RTxxx_uidef
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import RTxxx_uidef
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from _main import RTyyyy_main
 
 class secBootRTxxxUi(RTyyyy_main.secBootRTyyyyMain):

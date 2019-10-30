@@ -28,16 +28,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import sys
-sys.path.append('boot/')
 
-
-import bltest
-import commands
-import memoryrange
-import peripherals
-import properties
-import status
+from boot import bltest
+from boot import commands
+from boot import memoryrange
+from boot import peripherals
+from boot import properties
+from boot import status
 
 __all__ = ["bltest", "commands", "memoryrange", "peripherals", "properties", "status"]
 

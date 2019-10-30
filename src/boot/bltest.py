@@ -33,11 +33,15 @@ import os
 import copy
 import json
 import time
-import peripherals
-import peripheralspeed
+from boot import peripherals
+from boot import peripheralspeed
 import subprocess
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from utils import filetools
+
+if sys.version_info.major == 3:
+    def long(x):
+        return int(x)
 
 # Constants for command JSON response dictionary keys.
 kCmdResponse_Command = "command"
@@ -144,10 +148,14 @@ class Bootloader(object):
     # @brief Utility function to return the JSON formatted results.
     def _parseResults(self, output):
         if self.toolStatus == 0:
-            jsonResults = output[output.find('{'):output.rfind('}')+1]
-
-            if len(jsonResults):
+            try:
+                # works in python 3 directly.
+                actualResults = json.loads(output)
+            except json.decoder.JSONDecodeError:
+                jsonResults = output[output.find('{'):output.rfind('}')+1]
                 actualResults = json.loads(jsonResults)
+
+            if len(actualResults) > 1:
                 return actualResults
 
             # No json was found, create artificial results.

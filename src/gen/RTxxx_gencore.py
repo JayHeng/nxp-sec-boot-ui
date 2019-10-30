@@ -6,9 +6,9 @@ import shutil
 import json
 import subprocess
 import bincopy
-import gendef
-import RTxxx_gendef
-sys.path.append(os.path.abspath(".."))
+from gen import gendef
+from gen import RTxxx_gendef
+#sys.path.append(os.path.abspath(".."))
 from ui import RTxxx_uicore
 from ui import RTxxx_uidef
 from ui import uidef

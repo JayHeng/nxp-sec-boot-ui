@@ -4,8 +4,8 @@ import sys
 import os
 import shutil
 import boot
-import RTyyyy_memdef
-sys.path.append(os.path.abspath(".."))
+from mem import RTyyyy_memdef
+#sys.path.append(os.path.abspath(".."))
 from fuse import RTyyyy_fusecore
 from run import RTyyyy_rundef
 from ui import RTyyyy_uidef

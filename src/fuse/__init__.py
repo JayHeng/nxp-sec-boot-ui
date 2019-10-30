@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 
-import sys
-sys.path.append('fuse/')
 
-import RTyyyy_fusecore
-import RTyyyy_fusedef
+from fuse import RTyyyy_fusecore
+from fuse import RTyyyy_fusedef
 
 __all__ = ["RTyyyy_fusecore", "RTyyyy_fusedef"]
 

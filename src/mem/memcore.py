@@ -4,7 +4,7 @@ import sys
 import os
 import shutil
 import boot
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from run import runcore
 from ui import uidef
 from ui import uivar

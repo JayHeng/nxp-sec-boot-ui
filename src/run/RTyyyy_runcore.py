@@ -3,10 +3,10 @@
 import sys
 import os
 import math
-import RTyyyy_rundef
-import rundef
+from run import RTyyyy_rundef
+from run import rundef
 import boot
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from gen import RTyyyy_gencore
 from gen import RTyyyy_gendef
 from fuse import RTyyyy_fusedef

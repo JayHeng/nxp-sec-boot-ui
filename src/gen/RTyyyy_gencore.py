@@ -6,9 +6,9 @@ import time
 import shutil
 import subprocess
 import bincopy
-import gendef
-import RTyyyy_gendef
-sys.path.append(os.path.abspath(".."))
+from gen import gendef
+from gen import RTyyyy_gendef
+#sys.path.append(os.path.abspath(".."))
 from ui import RTyyyy_uicore
 from ui import RTyyyy_uidef
 from ui import uidef

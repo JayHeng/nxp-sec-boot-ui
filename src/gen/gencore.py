@@ -4,8 +4,8 @@ import sys
 import os
 import bincopy
 import array
-import gendef
-sys.path.append(os.path.abspath(".."))
+from gen import gendef
+#sys.path.append(os.path.abspath(".."))
 from ui import uicore
 from ui import uidef
 from ui import uivar
@@ -155,12 +155,12 @@ class secBootGen(uicore.secBootUi):
     def getVal32FromBinFile( self, filename, offset=0):
         var32Vaule = 0
         if os.path.isfile(filename):
-            var32Vaule = array.array('c', [chr(0xff)]) * 4
+            var32Vaule = array.array('B', [255 for _ in range(4)])
             with open(filename, 'rb') as fileObj:
                 fileObj.seek(offset)
                 var32Vaule = fileObj.read(4)
                 fileObj.close()
-            var32Vaule = (ord(var32Vaule[3])<<24) + (ord(var32Vaule[2])<<16) + (ord(var32Vaule[1])<<8) + ord(var32Vaule[0])
+            var32Vaule = (int(var32Vaule[3])<<24) + (int(var32Vaule[2])<<16) + (int(var32Vaule[1])<<8) + int(var32Vaule[0])
         return var32Vaule
 
     def getVal32FromByteArray( self, binarray, offset=0):

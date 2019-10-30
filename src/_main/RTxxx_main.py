@@ -8,7 +8,7 @@ if sys.version_info.major == 2:
     sys.setdefaultencoding('utf-8')
 import os
 import time
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from mem import RTxxx_memcore
 from ui import RTxxx_uidef
 from ui import uidef

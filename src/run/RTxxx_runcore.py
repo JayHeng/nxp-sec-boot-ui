@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import RTxxx_rundef
-import rundef
+from run import RTxxx_rundef
+from run import rundef
 import boot
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from gen import RTxxx_gencore
 from gen import RTxxx_gendef
 from ui import RTxxx_uidef

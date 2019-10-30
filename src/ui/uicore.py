@@ -12,11 +12,11 @@ import time
 import math
 import serial.tools.list_ports
 import pywinusb.hid
-import RTyyyy_uidef
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import RTyyyy_uidef
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from win import secBootWin
 from run import rundef
 from utils import sound
@@ -40,6 +40,7 @@ class secBootUi(secBootWin.secBootWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
         uivar.setRuntimeSettings(None, self.exeTopRoot)
+        print('Dir: {}'.format(self.exeTopRoot))
         uivar.initVar(os.path.join(self.exeTopRoot, 'bin', 'nsb_settings.json'))
         toolCommDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Tool)
         self.toolCommDict = toolCommDict.copy()

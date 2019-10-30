@@ -5,10 +5,10 @@ import json
 import sys
 import os
 import time
-import RTyyyy_fusedef
+from fuse import RTyyyy_fusedef
 import collections
 
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from run import RTyyyy_runcore
 from run import RTyyyy_rundef
 from ui import RTyyyy_uidef

@@ -4,10 +4,10 @@ import wx
 import sys
 import os
 import math
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_FlexspiNor
 from utils import sound
 
