@@ -397,7 +397,9 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                     for i in range(elfObj.e_phnum):
                         lengthInByte += elfObj.programmheaders[i].p_memsz
                     isConvSuccessed = True
-                except:
+                except Exception as e:
+                    print('Trying {}... failed with {}'.format(appType,e))
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
             elif appType.lower() in gendef.kAppImageFileExtensionList_S19:
                 try:
@@ -420,7 +422,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                 startAddress = None
                 entryPointAddress = None
                 lengthInByte = 0
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['genImgError_formatNotValid'][self.languageIndex] + srcAppFilename.encode('utf-8'))
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['genImgError_formatNotValid'][self.languageIndex] + str(srcAppFilename.encode('utf-8')))
         #print ('Image Vector address is 0x%x' %(startAddress))
         #print ('Image Entry address is 0x%x' %(entryPointAddress))
         #print ('Image length is 0x%x' %(lengthInByte))

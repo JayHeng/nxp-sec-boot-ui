@@ -351,7 +351,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def _doExecuteApp( self ):
         if self.connectStage == uidef.kConnectStage_ExternalMemory or \
            self.connectStage == uidef.kConnectStage_Reset:
-            self.executeAppInFlexram()
+            self.executeAppInRam()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 

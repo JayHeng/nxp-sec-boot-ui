@@ -59,7 +59,7 @@ class secBootGen(uicore.secBootUi):
         #    batContent = "\"" + self.mdkAxfConvToolPath + "\" --m32 \"" + appFilename +"\" --output \"" + destSrecAppFilename + "\""
         else:
             pass
-        with open(self.appFmtBatFilename, 'wb') as fileObj:
+        with open(self.appFmtBatFilename, 'w') as fileObj:
             fileObj.write(batContent)
             fileObj.close()
         try:

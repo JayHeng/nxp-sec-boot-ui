@@ -55,7 +55,7 @@ class secBootMem(runcore.secBootRun):
                 contentToShow += halfbyteStr[2] + ' '
                 if memContent[i-padBytesBefore] >= s_visibleAsciiStart and \
                    memContent[i-padBytesBefore] <= s_visibleAsciiEnd:
-                    visibleContent += str(memContent[i-padBytesBefore])
+                    visibleContent += chr(memContent[i-padBytesBefore])
                 else:
                     visibleContent += '.'
             else:

@@ -272,7 +272,7 @@ class ELFObject:
             #load program headers
             fileobj.seek(self.e_phoff)
             for sectionnum in range(self.e_phnum):
-                shdr = (fileobj.read(self.e_phentsize) + '\0'* struct.calcsize(ELFProgramHeader.Elf32_Phdr))[0:struct.calcsize(ELFProgramHeader.Elf32_Phdr)]
+                shdr = (fileobj.read(self.e_phentsize) + b'\0'* struct.calcsize(ELFProgramHeader.Elf32_Phdr))[0:struct.calcsize(ELFProgramHeader.Elf32_Phdr)]
                 psection = ELFProgramHeader()
                 psection.fromString(shdr)
                 if psection.p_offset:   #skip if section has invalid offset in file
@@ -289,7 +289,7 @@ class ELFObject:
         self.sections = []
         fileobj.seek(self.e_shoff)
         for sectionnum in range(self.e_shnum):
-            shdr = (fileobj.read(self.e_shentsize) + '\0'* struct.calcsize(ELFSection.Elf32_Shdr))[0:struct.calcsize(ELFSection.Elf32_Shdr)]
+            shdr = (fileobj.read(self.e_shentsize) + b'\0'* struct.calcsize(ELFSection.Elf32_Shdr))[0:struct.calcsize(ELFSection.Elf32_Shdr)]
             elfsection = ELFSection()
             elfsection.fromString(shdr)
             self.sections.append(elfsection)
@@ -300,7 +300,7 @@ class ELFObject:
             data = fileobj.read(section.sh_size)
             section.data = data
             if section.sh_type == ELFSection.SHT_STRTAB:
-                section.values = data.split('\0')
+                section.values = data.split(b'\0')
             section.lma = self.getLMA(section)
         
         #get section names
@@ -310,9 +310,9 @@ class ELFObject:
             section.name = self.getString(self.e_shstrndx, section.sh_name)
 
         # Load symbols.
-        symtab = self.getSection('.symtab')
+        symtab = self.getSection('.symtab')        
         symsize = symtab.sh_entsize
-        self.symbolCount = symtab.sh_size / symsize
+        self.symbolCount = symtab.sh_size // symsize
         self.symbols = []
         self.symbolDict = {}
         for symnum in range(self.symbolCount):
@@ -333,11 +333,14 @@ class ELFObject:
         
     def getString(self, table, index):
         start = self.sections[table].data[index:]
-        return start.split('\0')[0]
+        return start.split(b'\0')[0]
     
     def getSection(self, name):
         """get section by name"""
-        for section in self.sections:
+        if type(name) == str:
+            name = name.encode('utf')
+                
+        for section in self.sections:            
             if section.name == name:
                 return section
     
