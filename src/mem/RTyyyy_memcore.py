@@ -68,7 +68,7 @@ class secBootRTyyyyMem(RTyyyy_fusecore.secBootRTyyyyFuse):
         if dcdCtrlDict['isDcdEnabled']:
             self.destAppDcdLength = os.path.getsize(self.dcdBinFilename)
         else:
-            self.destAppDcdLength = 0
+            pass
 
     def _showSemcNandFcb( self ):
         memFilename = 'semcNandFcb.dat'

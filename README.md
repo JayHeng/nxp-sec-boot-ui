@@ -1,11 +1,11 @@
 # NXP MCU Boot Utility
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.2.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.2.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
 
 English | [中文](./README-zh.md)
 
 ```text
-对于MCUBootUtility，RT-Flash工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
+对于MCUBootUtility，MCUBootFlasher（RT-Flash）工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
 ```
 
 <img src="http://henjay724.com/image/cnblogs/MCUBootUtility_qq.png" style="zoom:100%" />
@@ -23,11 +23,12 @@ English | [中文](./README-zh.md)
 > * Support for loading bootable image into external boot devices  
 > * Support common boot device memory operation (Flash Programmer)  
 -------------------------------------------------------
-> * Support i.MXRT1011, i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP  
+> * Support i.MXRT1011, i.MXRT1015, i.MXRT1021, i.MXRT1051/1052, i.MXRT1061/1062, i.MXRT1064 SIP, i.MXRT1171/1172/1173/1174/1175/1176  
 > * User image file can be either bare image file or bootable image file 
 > * Support for converting bare image into .sb file for MfgTool and RT-Flash
 > * Support for loading bootable image into FlexSPI NOR boot device  
 > * Support for loading bootable image into SEMC NAND boot device  
+> * Support for loading bootable image into SEMC NOR boot device  
 > * Support for loading bootable image into uSDHC SD/eMMC boot device  
 > * Support for loading bootable image into LPSPI NOR/EEPROM recovery boot device  
 > * Support DCD which can help load image to SDRAM  
@@ -42,7 +43,9 @@ English | [中文](./README-zh.md)
 -------------------------------------------------------
 > * Support i.MXRT533/535/553/555/583/585/593/595, i.MXRT633/635/685  
 > * Support for loading bootable image into FlexSPI/QuadSPI NOR boot device  
+> * Support for loading bootable image into Flexcomm SPI NOR recovery boot device  
 > * Support development boot case (Unsigned, CRC)  
+> * Support common OTP memory operation (OTP Programmer)  
 > * Support common SRAM memory operation (ISP Boot)  
 > * Support for reading back and marking bootable image(OTFAD KeyBlob/FDCB/KeyStore/Image) from boot device  
 

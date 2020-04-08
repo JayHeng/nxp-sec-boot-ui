@@ -3,7 +3,6 @@
 import sys
 #sys.path.append('ui/')
 
-
 from ui import RTxxx_uicore
 from ui import RTxxx_uidef
 from ui import RTyyyy_uicore
@@ -18,12 +17,13 @@ from ui import ui_cfg_semcnor
 from ui import ui_cfg_semcnand
 from ui import ui_cfg_usdhcsd
 from ui import ui_cfg_usdhcmmc
-from ui import ui_cfg_lpspinor
+from ui import ui_cfg_recoveryspinor
 from ui import ui_cfg_dcd
 from ui import ui_settings_cert
 from ui import ui_settings_fixed_otpmk_key
 from ui import ui_settings_flexible_user_keys_bee
 from ui import ui_settings_flexible_user_keys_otfad
+from ui import RTxxx_uidef_otp
 from ui import RTyyyy_uidef_efuse
 from ui import RT10yy_ui_efuse_lock
 from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
@@ -48,13 +48,14 @@ __all__ = ["RTxxx_uicore",
            "ui_cfg_semcnand",
            "ui_cfg_usdhcsd",
            "ui_cfg_usdhcmmc",
-           "ui_cfg_lpspinor",
+           "ui_cfg_recoveryspinor",
            "ui_cfg_dcd",
            "ui_settings_cert",
            "ui_settings_fixed_otpmk_key",
            "ui_settings_flexible_user_keys_bee",
            "ui_settings_flexible_user_keys_otfad",
-           "RT10yy_uidef_efuse",
+           "RTxxx_uidef_otp",
+           "RTyyyy_uidef_efuse",
            "RT10yy_ui_efuse_lock",
            "RT10yy_ui_efuse_bootcfg0_flexspinor_3bits",
            "RT10yy_ui_efuse_bootcfg0_flexspinor_10bits",

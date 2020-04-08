@@ -219,7 +219,8 @@ class secBootRTxxxMain(RTxxx_memcore.secBootRTxxxMem):
                 self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
             else:
                 self.isBootableAppAllowedToView = True
-                status = True
+                if self.RTxxx_burnBootDeviceOtps():
+                    status = True
             self._RTxxx_stopGaugeTimer()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotCfgBootDevice'][self.languageIndex])

@@ -38,7 +38,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self.srkFolder = os.path.join(self.exeTopRoot, 'gen', 'hab_cert')
         self.srkTableFilename = None
         self.srkFuseFilename = None
-        self.crtSrkCaPemFileList = [None] * 4
+        self.crtSrkCaOrUsrPemFileList = [None] * 4
         self.crtCsfUsrPemFileList = [None] * 4
         self.crtImgUsrPemFileList = [None] * 4
         self.certBackupFolder = os.path.join(self.exeTopRoot, 'gen', 'hab_cert', 'backup')
@@ -51,6 +51,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self.opensslBinFolder = os.path.join(self.exeTopRoot, 'tools', 'openssl', '1.1.0j', 'win32')
         self.habDekFilename = os.path.join(self.exeTopRoot, 'gen', 'hab_crypto', 'hab_dek.bin')
         self.habDekDataOffset = None
+        self.isHabCertFastBoot = False
 
         self.dcdFolder = os.path.join(self.exeTopRoot, 'gen', 'dcd_file')
         self.dcdBinFilename = os.path.join(self.exeTopRoot, 'gen', 'dcd_file', RTyyyy_gendef.kStdDcdFilename_Bin)
@@ -60,6 +61,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self.dcdModelFolder = os.path.join(self.exeTopRoot, 'src', 'targets', 'dcd_model')
         self.dcdSdramBaseAddress = None
         self.isDcdFromSrcApp = False
+        self.destAppDcdLength = 0
 
         self.srcAppFilename = None
         self.destAppFilename = os.path.join(self.exeTopRoot, 'gen', 'bootable_image', 'ivt_application.bin')
@@ -207,6 +209,10 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
 
     def _setSrkFilenames( self ):
         certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
+        if certSettingsDict['caFlagSet'] == 'y':
+            self.isHabCertFastBoot = False
+        else:
+            self.isHabCertFastBoot = True
         srkTableName = 'SRK'
         srkFuseName = 'SRK'
         for i in range(certSettingsDict['SRKs']):
@@ -214,20 +220,32 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             srkFuseName += '_' + str(i + 1)
         srkTableName += '_table.bin'
         srkFuseName += '_fuse.bin'
-        self.srkTableFilename = os.path.join(self.srkFolder, srkTableName)
+        if not self.isHabCertFastBoot:
+            self.srkTableFilename = os.path.join(self.srkFolder, srkTableName)
+        else:
+            self.srkTableFilename = os.path.join(self.srkFolder, 'SRK_fast_boot_table.bin')
         self.srkFuseFilename = os.path.join(self.srkFolder, srkFuseName)
 
-    def _getCrtSrkCaPemFilenames( self ):
+    def _getCrtSrkCaUsrPemFilenames( self ):
         certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
+        if certSettingsDict['caFlagSet'] == 'y':
+            self.isHabCertFastBoot = False
+        else:
+            self.isHabCertFastBoot = True
         for i in range(certSettingsDict['SRKs']):
-            self.crtSrkCaPemFileList[i] = self.cstCrtsFolder + '\\'
-            self.crtSrkCaPemFileList[i] += 'SRK' + str(i + 1) + '_sha256'
-            if certSettingsDict['cstVersion'] == RTyyyy_uidef.kCstVersion_v3_1_0 and certSettingsDict['useEllipticCurveCrypto'] == 'y':
-                self.crtSrkCaPemFileList[i] += '_' + certSettingsDict['pkiTreeKeyCn']
-                self.crtSrkCaPemFileList[i] += '_v3_ca_crt.pem'
+            caUsrStr = None
+            if not self.isHabCertFastBoot:
+                caUsrStr = 'ca'
             else:
-                self.crtSrkCaPemFileList[i] += '_' + str(certSettingsDict['pkiTreeKeyLen'])
-                self.crtSrkCaPemFileList[i] += '_65537_v3_ca_crt.pem'
+                caUsrStr = 'usr'
+            self.crtSrkCaOrUsrPemFileList[i] = self.cstCrtsFolder + '\\'
+            self.crtSrkCaOrUsrPemFileList[i] += 'SRK' + str(i + 1) + '_sha256'
+            if certSettingsDict['cstVersion'] == RTyyyy_uidef.kCstVersion_v3_1_0 and certSettingsDict['useEllipticCurveCrypto'] == 'y':
+                self.crtSrkCaOrUsrPemFileList[i] += '_' + certSettingsDict['pkiTreeKeyCn']
+                self.crtSrkCaOrUsrPemFileList[i] += '_v3_' + caUsrStr + '_crt.pem'
+            else:
+                self.crtSrkCaOrUsrPemFileList[i] += '_' + str(certSettingsDict['pkiTreeKeyLen'])
+                self.crtSrkCaOrUsrPemFileList[i] += '_65537_v3_' + caUsrStr + '_crt.pem'
 
     def _getCrtCsfImgUsrPemFilenames( self ):
         certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
@@ -251,19 +269,20 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
 
     def _updateSrkBatfileContent( self ):
         self._setSrkFilenames()
-        self._getCrtSrkCaPemFilenames()
+        self._getCrtSrkCaUsrPemFilenames()
         self._getCrtCsfImgUsrPemFilenames()
         certSettingsDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Cert)
         batContent = "\"" + self.srktoolPath + "\""
         batContent += " -h 4"
-        batContent += " -t " + "\"" + self.srkTableFilename + "\""
-        batContent += " -e " + "\"" + self.srkFuseFilename + "\""
+        if not self.isHabCertFastBoot:
+            batContent += " -t " + "\"" + self.srkTableFilename + "\""
+            batContent += " -e " + "\"" + self.srkFuseFilename + "\""
         batContent += " -d sha256"
         batContent += " -c "
         for i in range(certSettingsDict['SRKs']):
             if i != 0:
                 batContent += ','
-            batContent += "\"" + self.crtSrkCaPemFileList[i] + "\""
+            batContent += "\"" + self.crtSrkCaOrUsrPemFileList[i] + "\""
         batContent += " -f 1"
         with open(self.srkBatFilename, 'wb') as fileObj:
             fileObj.write(batContent)
@@ -300,8 +319,9 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         os.mkdir(backupFoldername)
         shutil.copytree(self.cstKeysFolder, os.path.join(backupFoldername, 'keys'))
         shutil.copytree(self.cstCrtsFolder, os.path.join(backupFoldername, 'crts'))
-        shutil.copy(self.srkTableFilename, backupFoldername)
-        shutil.copy(self.srkFuseFilename, backupFoldername)
+        if not self.isHabCertFastBoot:
+            shutil.copy(self.srkTableFilename, backupFoldername)
+            shutil.copy(self.srkFuseFilename, backupFoldername)
         shutil.make_archive(backupFoldername, 'zip', root_dir=backupFoldername)
         shutil.rmtree(backupFoldername)
 
@@ -313,16 +333,17 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         return ivtEntry, ivtDcd, ivtBd, ivtSelf
 
     def _extractDcdDataFromSrcApp(self, initialLoadAppBytes ):
-        ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[self.destAppIvtOffset:self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
+        destAppIvtOffset = self.destAppIvtOffset - self.tgt.xspiNorCfgInfoOffset
+        ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[destAppIvtOffset:destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
         dcdCtrlDict, dcdSettingsDict = uivar.getBootDeviceConfiguration(RTyyyy_uidef.kBootDevice_Dcd)
         if ivtDcd != 0 and ivtDcd < ivtEntry and (not dcdCtrlDict['isDcdEnabled']):
-            dcdDataOffset = self.destAppIvtOffset + ivtDcd - ivtSelf
+            dcdDataOffset = destAppIvtOffset + ivtDcd - ivtSelf
             # Note: We cannot specify dcd offset when generating bootable image by elftosb, dcd offset is always kMemBlockOffsetToIvt_DCD
             #       but dcd offset can be set arbitrarily in src app image as it is generated by IDE
             dcdHoleBytes = 0x0
             if ivtDcd - ivtSelf < RTyyyy_memdef.kMemBlockOffsetToIvt_DCD:
                 dcdHoleBytes = RTyyyy_memdef.kMemBlockOffsetToIvt_DCD - (ivtDcd - ivtSelf)
-            dcdDataBytes = initialLoadAppBytes[dcdDataOffset:len(initialLoadAppBytes) - dcdHoleBytes]
+            dcdDataBytes = initialLoadAppBytes[dcdDataOffset:(len(initialLoadAppBytes) - self.tgt.xspiNorCfgInfoOffset) - dcdHoleBytes]
             dcdDataTag = dcdDataBytes[RTyyyy_memdef.kMemberOffsetInDcd_Tag]
             if dcdDataTag == RTyyyy_memdef.kBootHeaderTag_DCD:
                 with open(self.dcdBinFilename, 'wb') as fileObj:
@@ -330,10 +351,14 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                     fileObj.close()
                 self._enableDcdBecauseOfSrcApp()
                 self.isDcdFromSrcApp = True
+                self.destAppDcdLength = len(dcdDataBytes)
+        else:
+            self.destAppDcdLength = 0
 
     def _extractImageDataFromSrcApp(self, wholeSrcAppBytes, appName ):
-        ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(wholeSrcAppBytes[self.destAppIvtOffset:self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
-        imageDataOffset = self.destAppIvtOffset + ivtEntry - ivtSelf
+        destAppIvtOffset = self.destAppIvtOffset - self.tgt.xspiNorCfgInfoOffset
+        ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(wholeSrcAppBytes[destAppIvtOffset:destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
+        imageDataOffset = destAppIvtOffset + ivtEntry - ivtSelf
         imageDataBytes = wholeSrcAppBytes[imageDataOffset:len(wholeSrcAppBytes)]
         imageEntryPoint = self.getVal32FromByteArray(wholeSrcAppBytes[imageDataOffset + 0x4:imageDataOffset + 0x8])
         fmtObj = bincopy.BinFile()
@@ -347,26 +372,27 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
 
     def _RTyyyy_isSrcAppBootableImage( self, initialLoadAppBytes ):
         try:
-            ivtTag = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Tag]
-            ivtLen = initialLoadAppBytes[self.destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Len]
+            destAppIvtOffset = self.destAppIvtOffset - self.tgt.xspiNorCfgInfoOffset
+            ivtTag = initialLoadAppBytes[destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Tag]
+            ivtLen = initialLoadAppBytes[destAppIvtOffset + RTyyyy_memdef.kMemberOffsetInIvt_Len]
             if ivtTag != RTyyyy_memdef.kBootHeaderTag_IVT or ivtLen != RTyyyy_memdef.kMemBlockSize_IVT:
                 return False
-            ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[self.destAppIvtOffset:self.destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
+            ivtEntry, ivtDcd, ivtBd, ivtSelf = self._getIvtInfoFromIvtBlockBytes(initialLoadAppBytes[destAppIvtOffset:destAppIvtOffset + RTyyyy_memdef.kMemBlockSize_IVT])
             if (ivtBd <= ivtSelf) or (ivtBd - ivtSelf != RTyyyy_memdef.kMemBlockSize_IVT):
                 return False
-            self.printLog('Origianl image file is a bootable image file')
+            self.printLog('Original image file is a bootable image file')
             return True
         except:
             return False
 
-    def _RTyyyy_getImageInfo( self, srcAppFilename ):
+    def _RTyyyy_getImageInfo( self, srcAppFilename, ideType=None ):
         startAddress = None
         entryPointAddress = None
         lengthInByte = 0
         if os.path.isfile(srcAppFilename):
             appPath, appFilename = os.path.split(srcAppFilename)
             appName, appType = os.path.splitext(appFilename)
-            srcAppFilename, appType = self.convertImageFormatToSrec(srcAppFilename, appName, appType)
+            srcAppFilename, appType = self.convertImageFormatToSrec(srcAppFilename, appName, appType, ideType)
             isConvSuccessed = False
             if appType.lower() in gendef.kAppImageFileExtensionList_Elf:
                 try:
@@ -410,6 +436,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                         self._extractDcdDataFromSrcApp(initialLoadAppBytes)
                         startAddress, entryPointAddress, lengthInByte = self._extractImageDataFromSrcApp(srecObj.as_binary(), appName)
                     else:
+                        self.destAppDcdLength = 0
                         #entryPointAddress = srecObj.execution_start_address
                         entryPointAddress = self.getVal32FromByteArray(srecObj.as_binary(startAddress + 0x4, startAddress  + 0x8))
                         lengthInByte = len(srecObj.as_binary())
@@ -436,6 +463,8 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
              executeBase = self.tgt.memoryRange['dtcm'].start
         elif ((vectorAddr >= self.tgt.memoryRange['ocram'].start) and (vectorAddr < self.tgt.memoryRange['ocram'].start + self.tgt.memoryRange['ocram'].length)):
              executeBase = self.tgt.memoryRange['ocram'].start
+        elif (('itcm_cm4' in self.tgt.memoryRange) and ((vectorAddr >= self.tgt.memoryRange['itcm_cm4'].start) and (vectorAddr < self.tgt.memoryRange['itcm_cm4'].start + self.tgt.memoryRange['itcm_cm4'].length))):
+            executeBase = self.tgt.memoryRange['itcm_cm4'].start
         elif ((vectorAddr >= self.tgt.flexspiNorMemBase) and (vectorAddr < self.tgt.flexspiNorMemBase + RTyyyy_rundef.kBootDeviceMemXipSize_FlexspiNor)):
              executeBase = self.tgt.flexspiNorMemBase
         elif ((vectorAddr >= RTyyyy_rundef.kBootDeviceMemBase_SemcNor) and (vectorAddr < RTyyyy_rundef.kBootDeviceMemBase_SemcNor + RTyyyy_rundef.kBootDeviceMemXipSize_SemcNor)):
@@ -580,11 +609,14 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         bdContent += "    startAddress = " + self.convertLongIntHexText(str(hex(startAddress))) + ";\n"
         bdContent += "    ivtOffset = " + self.convertLongIntHexText(str(hex(self.destAppIvtOffset))) + ";\n"
         bdContent += "    initialLoadSize = " + self.convertLongIntHexText(str(hex(self.destAppInitialLoadSize))) + ";\n"
-        dcdConvResult, dcdContent = self._addDcdContentIfAppliable()
-        if dcdConvResult:
-            bdContent += dcdContent
+        if bootDevice != RTyyyy_uidef.kBootDevice_RamFlashloader:
+            dcdConvResult, dcdContent = self._addDcdContentIfAppliable()
+            if dcdConvResult:
+                bdContent += dcdContent
+            else:
+                return False
         else:
-            return False
+            pass
         if secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth:
             #bdContent += "    cstFolderPath = \"" + self.cstBinFolder + "\";\n"
             #bdContent += "    cstFolderPath = \"" + self.cstBinToElftosbPath + "\";\n"
@@ -641,30 +673,49 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             bdContent += "{\n"
             bdContent += "}\n"
             ########################################################################
-            bdContent += "\nsection (SEC_CSF_INSTALL_SRK;\n"
-            #bdContent += "    InstallSRK_Table=\"" + self.srkTableFilename + "\",\n"
-            bdContent += "    InstallSRK_Table=\"" + self.genCertToElftosbPath + os.path.split(self.srkTableFilename)[1] + "\",\n"
-            bdContent += "    InstallSRK_SourceIndex=0\n"
-            bdContent += "    )\n"
-            bdContent += "{\n"
-            bdContent += "}\n"
-            bdContent += "\nsection (SEC_CSF_INSTALL_CSFK;\n"
-            #bdContent += "    InstallCSFK_File=\"" + self.crtCsfUsrPemFileList[0] + "\",\n"
-            bdContent += "    InstallCSFK_File=\"" + self.cstCrtsToElftosbPath + os.path.split(self.crtCsfUsrPemFileList[0])[1] + "\",\n"
-            bdContent += "    InstallCSFK_CertificateFormat=\"x509\"\n"
-            bdContent += "    )\n"
-            bdContent += "{\n"
-            bdContent += "}\n"
-            bdContent += "\nsection (SEC_CSF_AUTHENTICATE_CSF)\n"
-            bdContent += "{\n"
-            bdContent += "}\n"
-            bdContent += "\nsection (SEC_CSF_INSTALL_KEY;\n"
-            #bdContent += "    InstallKey_File=\"" + self.crtImgUsrPemFileList[0] + "\",\n"
-            bdContent += "    InstallKey_File=\"" + self.cstCrtsToElftosbPath + os.path.split(self.crtImgUsrPemFileList[0])[1] + "\",\n"
-            bdContent += "    InstallKey_VerificationIndex=0,\n"
-            bdContent += "    InstallKey_TargetIndex=2)\n"
-            bdContent += "{\n"
-            bdContent += "}\n"
+            if not self.isHabCertFastBoot:
+                bdContent += "\nsection (SEC_CSF_INSTALL_SRK;\n"
+                #bdContent += "    InstallSRK_Table=\"" + self.srkTableFilename + "\",\n"
+                bdContent += "    InstallSRK_Table=\"" + self.genCertToElftosbPath + os.path.split(self.srkTableFilename)[1] + "\",\n"
+                bdContent += "    InstallSRK_SourceIndex=0\n"
+                bdContent += "    )\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+                bdContent += "\nsection (SEC_CSF_INSTALL_CSFK;\n"
+                #bdContent += "    InstallCSFK_File=\"" + self.crtCsfUsrPemFileList[0] + "\",\n"
+                bdContent += "    InstallCSFK_File=\"" + self.cstCrtsToElftosbPath + os.path.split(self.crtCsfUsrPemFileList[0])[1] + "\",\n"
+                bdContent += "    InstallCSFK_CertificateFormat=\"x509\"\n"
+                bdContent += "    )\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+                bdContent += "\nsection (SEC_CSF_AUTHENTICATE_CSF)\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+                bdContent += "\nsection (SEC_CSF_INSTALL_KEY;\n"
+                #bdContent += "    InstallKey_File=\"" + self.crtImgUsrPemFileList[0] + "\",\n"
+                bdContent += "    InstallKey_File=\"" + self.cstCrtsToElftosbPath + os.path.split(self.crtImgUsrPemFileList[0])[1] + "\",\n"
+                bdContent += "    InstallKey_VerificationIndex=0,\n"
+                bdContent += "    InstallKey_TargetIndex=2)\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+            else:
+                bdContent += "\nsection (SEC_CSF_INSTALL_SRK;\n"
+                #bdContent += "    InstallSRK_Table=\"" + self.srkTableFilename + "\",\n"
+                bdContent += "    InstallSRK_Table=\"" + self.genCertToElftosbPath + os.path.split(self.srkTableFilename)[1] + "\",\n"
+                bdContent += "    InstallSRK_SourceIndex=0\n"
+                bdContent += "    )\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+                bdContent += "\nsection (SEC_CSF_INSTALL_NOCAK;\n"
+                #bdContent += "    InstallNOCAK_File=\"" + self.crtSrkCaOrUsrPemFileList[0] + "\",\n"
+                bdContent += "    InstallNOCAK_File=\"" + self.cstCrtsToElftosbPath + os.path.split(self.crtSrkCaOrUsrPemFileList[0])[1] + "\",\n"
+                bdContent += "    InstallNOCAK_CertificateFormat=\"x509\"\n"
+                bdContent += "    )\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
+                bdContent += "\nsection (SEC_CSF_AUTHENTICATE_CSF)\n"
+                bdContent += "{\n"
+                bdContent += "}\n"
             bdContent += "\nsection (SEC_CSF_AUTHENTICATE_DATA;\n"
             bdContent += "    AuthenticateData_VerificationIndex=2,\n"
             bdContent += "    AuthenticateData_Engine=\"DCP\",\n"
@@ -720,7 +771,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
 
     def _tryToReuseExistingCert( self ):
         self._setSrkFilenames()
-        self._getCrtSrkCaPemFilenames()
+        self._getCrtSrkCaUsrPemFilenames()
         self._getCrtCsfImgUsrPemFilenames()
 
     def isCertificateGenerated( self, secureBootType ):
@@ -728,13 +779,18 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
            secureBootType == RTyyyy_uidef.kSecureBootType_HabCrypto or \
            ((secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto) and self.isCertEnabledForHwCrypto):
             self._tryToReuseExistingCert()
-            if (os.path.isfile(self.srkTableFilename) and \
-                os.path.isfile(self.srkFuseFilename) and \
-                os.path.isfile(self.crtSrkCaPemFileList[0]) and \
-                os.path.isfile(self.crtCsfUsrPemFileList[0]) and \
-                os.path.isfile(self.crtImgUsrPemFileList[0])):
-                self.showSuperRootKeys()
-                return True
+            if os.path.isfile(self.crtSrkCaOrUsrPemFileList[0]):
+                if not self.isHabCertFastBoot:
+                    if (os.path.isfile(self.srkTableFilename) and \
+                        os.path.isfile(self.srkFuseFilename) and \
+                        os.path.isfile(self.crtImgUsrPemFileList[0]) and \
+                        os.path.isfile(self.crtCsfUsrPemFileList[0])):
+                        self.showSuperRootKeys()
+                        return True
+                    else:
+                        return False
+                else:
+                    return True
             else:
                 return False
         elif secureBootType == RTyyyy_uidef.kSecureBootType_Development or \
@@ -771,10 +827,10 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                return False
             return self._RTyyyy_isValidNonXipAppImage(imageStartAddr)
 
-    def createMatchedAppBdfile( self ):
+    def _createMatchedAppBdfile( self, ideRetryType ):
         self.srcAppFilename = self.getUserAppFilePath()
         self._setDestAppInitialBootHeaderInfo(self.bootDevice)
-        imageStartAddr, imageEntryAddr, imageLength = self._RTyyyy_getImageInfo(self.srcAppFilename)
+        imageStartAddr, imageEntryAddr, imageLength = self._RTyyyy_getImageInfo(self.srcAppFilename, ideRetryType)
         if imageStartAddr == None or imageEntryAddr == None:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['srcImgError_notFound'][self.languageIndex])
             return False
@@ -809,6 +865,19 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             self.popupMsgBox(uilang.kMsgLanguageContentDict['operCertError_notGen'][self.languageIndex])
             return False
         return self._updateBdfileContent(self.secureBootType, self.bootDevice, imageStartAddr, imageEntryAddr)
+
+    def createMatchedAppBdfile( self ):
+        ideRetryCnt = 2
+        ideRetryType = None
+        ideRetryResult = False
+        while ((ideRetryCnt != 0) and not ideRetryResult):
+            if ideRetryCnt == 1:
+                ideRetryType = gendef.kIdeType_MCUX
+            ideRetryResult = self._createMatchedAppBdfile(ideRetryType)
+            ideRetryCnt = ideRetryCnt - 1
+            if not ideRetryResult:
+                self.deinitGauge()
+        return ideRetryResult
 
     def _adjustDestAppFilenameForBd( self ):
         srcAppName = os.path.splitext(os.path.split(self.srcAppFilename)[1])[0]

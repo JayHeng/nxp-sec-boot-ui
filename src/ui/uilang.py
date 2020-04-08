@@ -79,6 +79,7 @@ kMainLanguageContentDict = {
 
         'sText_secureBootType':               ['Secure Boot Type',                      u"安全启动模式："],
         'button_allInOneAction':              ['All-In-One Action',                     u"一键启动"],
+        'button_genSbFileAction':             ['Gen-Sb-File Action',                    u"一键生成"],
 
         'panel_genSeq':                       ['Image Generation Sequence',             u"       生成可启动程序       "],
         'sText_serial':                       ['Serial (8 digits):',                    u"序列号（仅8位数字）："],
@@ -189,6 +190,7 @@ kSubLanguageContentDict = {
 
         #lpspinor
         'lpspinor_title':                     ['LPSPI NOR/EEPROM Device Configuration', u"配置LPSPI接口NOR/EEPROM启动设备"],
+        'flexcommspinor_title':               ['Flexcomm SPI NOR Device Configuration', u"配置Flexcomm SPI接口NOR Flash启动设备"],
         'panel_memOpt':                       ['Memory Option',                         u"存储器选项"],
         'sText_deviceType':                   ['Device Type:',                          u"设备类型："],
         'sText_pageSize':                     ['Page Size (Bytes):',                    u"页大小(B)："],
@@ -468,32 +470,80 @@ kRevision_2_0_0_zh = u"【v2.0.0】 \n" + \
                      u"     4. 在通用Flash编程器模式下无法擦除/读取外部启动设备的最后两个Page \n\n"
 kRevision_2_1_0_en =  "【v2.1.0】 \n" + \
                       "  Feature: \n" + \
-                      "     1. [RTyyyy] Support efuse memory operation for RT117x A0 \n" + \
-                      "     2. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
-                      "     3. [RTyyyy] Enable OTFAD encryption secure boot mode (User Key) for RT117x A0 \n" + \
+                      "     1. [RTyyyy] Support for loading bootable image into SEMC NOR boot device \n" + \
+                      "     2. [RTyyyy] Support operation under both CM7 and CM4 of RT117x A0 \n" + \
+                      "     3. [RTyyyy] Support two FlexSPI map addresses for RT117x A0 \n" + \
+                      "     4. [RTyyyy] Support efuse memory operation for RT117x A0 \n" + \
+                      "     5. [RTyyyy] Can import user fuse table file to set efuse value \n" + \
+                      "     6. [RTyyyy] Enable OTFAD encryption secure boot mode (User Key) for RT117x A0 \n" + \
+                      "     7. [RTyyyy] Support RT1170/1010 bootable image from SDK as source input \n" + \
                       "  Improvement: \n" + \
+                      "     1. [RTyyyy] Lock word should be placed at the end of operation when generating user efuse .sb file \n" + \
+                      "     2. [RTyyyy] Image format auto detection can be used for axf file from MCUX or GCC \n" + \
+                      "     3. Specify file path instead of file to save readback data \n" + \
+                      "     4. If readback data is enabled to be saved in file, then it will not displayed on the screen \n" + \
                       "  Bugfix: \n" + \
                       "     1. 'Cmd Pads' is not set correctly for some typical octal-flash models in FlexSPI NOR configuration \n" + \
                       "     2. 'Max Frequency' option is not exactly aligned with selected MCU device in FlexSPI NOR configuration \n" + \
                       "     3. [RTyyyy] Cannot show total size of SD/eMMC correctly, so SD/eMMC cannot be programmed \n" + \
-                      "     4. [RTyyyy] Some fields are not aligned with selected MCU device in Flexible User Key Setting \n" + \
-                      "     5. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n" + \
+                      "     4. [RTyyyy] Cannot save eMMC device configuration \n" + \
+                      "     5. [RTyyyy] Some fields are not aligned with selected MCU device in Flexible User Key Setting \n" + \
+                      "     6. [RTyyyy] Cannot generate bootable image when original image size is less than 4KB \n" + \
+                      "     7. [RTyyyy] Sometimes tool cannot recognize .axf format from MCUX or Keil MDK \n" + \
+                      "     8. [RTyyyy] Signed flashloader cannot be generated if DCD is enabled \n" + \
+                      "     9. [RTyyyy] Cannot mark DCD in readback image if it comes from source bootable image \n" + \
                       "  Interest: \n" + \
                       "     1. Add sound effect (Contra) \n\n"
 kRevision_2_1_0_zh = u"【v2.1.0】 \n" + \
                      u"  特性: \n" + \
-                     u"     1. [RTyyyy] 支持RT117x的eFuse回读与烧写 \n" + \
-                     u"     2. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
-                     u"     3. [RTyyyy] 为RT117x A0开启OTFAD加密(User Key)支持 \n" + \
+                     u"     1. [RTyyyy] 支持下载Bootable image进主动启动设备 - SEMC NOR接口Flash \n" + \
+                     u"     2. [RTyyyy] 在RT1170无论是CM7还是CM4作为主核下均能正常工作 \n" + \
+                     u"     3. [RTyyyy] 支持RT1170的两个FlexSPI XIP映射地址 \n" + \
+                     u"     4. [RTyyyy] 支持RT1170的eFuse回读与烧写 \n" + \
+                     u"     5. [RTyyyy] 支持导入用户fuse配置文件去设置fuse \n" + \
+                     u"     6. [RTyyyy] 为RT1170 A0开启OTFAD加密(User Key)支持 \n" + \
+                     u"     7. [RTyyyy] 支持RT1170/RT1010 SDK生成的Bootable image作为源文件输入 \n" + \
                      u"  改进: \n" + \
+                     u"     1. [RTyyyy] 生成用户efuse烧录sb文件时应将lock位操作放在最后面 \n" + \
+                     u"     2. [RTyyyy] 程序格式自动检测选项也可用于MCUX生成的axf格式源文件 \n" + \
+                     u"     3. 指定目录而不是指定文件去存放回读的数据 \n" + \
+                     u"     4. 如果回读的数据已经选择保存到文件中，那么点击Read按钮将不会在窗口显示数据 \n" + \
                      u"  修复: \n" + \
                      u"     1. 在FlexSPI NOR配置界面里，对于一些octal-flash模型，其Cmd Pads参数没有被正确设置 \n" + \
                      u"     2. 在FlexSPI NOR配置界面里，Max Frequency参数选项与当前MCU型号不完全匹配 \n" + \
                      u"     3. [RTyyyy] SD/eMMC总容量未能正确显示，导致无法编程SD/eMMC \n" + \
-                     u"     4. [RTyyyy] 在用户自定义Key设置界面里，有些选项与当前选中的MCU型号不匹配 \n" + \
-                     u"     5. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n" + \
+                     u"     4. [RTyyyy] 无法正常保存默认eMMC设备配置(主要是Partition Access参数) \n" + \
+                     u"     5. [RTyyyy] 在用户自定义Key设置界面里，有些选项与当前选中的MCU型号不匹配 \n" + \
+                     u"     6. [RTyyyy] 当输入的源image文件大小小于4KB时，生成可启动程序会失败 \n" + \
+                     u"     7. [RTyyyy] 有时候无法识别MCUX或Keil MDK生成的axf格式源文件 \n" + \
+                     u"     8. [RTyyyy] 当DCD使能的时候，无法生成含签名的Flashloader \n" + \
+                     u"     9. [RTyyyy] 如果DCD来自源Bootable image，则无法在读回的image中标记DCD \n" + \
                      u"  个性: \n" + \
                      u"     1. 增加魂斗罗音效 \n\n"
+kRevision_2_2_0_en =  "【v2.2.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. [RTxxx] Support i.MXRT6xx B0, switch to FlexSPI NOR boot device \n" + \
+                      "     2. [RTxxx] Support for loading bootable image into Flexcomm SPI NOR recovery boot device \n" + \
+                      "     3. [RTxxx] Support otp memory operation \n\n"
+kRevision_2_2_0_zh = u"【v2.2.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. [RTxxx] 将i.MXRT6xx B0启动设备从QuadSPI NOR切换到FlexSPI NOR \n" + \
+                     u"     2. [RTxxx] 支持下载Bootable image进主动启动设备 - Flexcomm SPI接口NOR Flash \n" + \
+                     u"     3. [RTxxx] 支持OTP回读与烧写 \n\n"
+kRevision_2_3_0_en =  "【v2.3.0】 \n" + \
+                      "  Feature: \n" + \
+                      "     1. [RTxxx] Add more selections of FlexSPI NOR model \n" + \
+                      "  Improvement: \n" + \
+                      "     1. \n" + \
+                      "  Bugfix: \n" + \
+                      "     1. \n\n"
+kRevision_2_3_0_zh = u"【v2.3.0】 \n" + \
+                     u"  特性: \n" + \
+                     u"     1. [RTxxx] 在FlexSPI NOR模型参数里增加更多选项 \n" + \
+                     u"  改进: \n" + \
+                     u"     1. \n" + \
+                     u"  修复: \n" + \
+                     u"     1. \n\n"
 
 kMsgLanguageContentDict = {
         'homePage_title':                     ['Home Page',                             u"项目主页"],
@@ -515,6 +565,8 @@ kMsgLanguageContentDict = {
         'revisionHistory_v1_4_0':             [kRevision_1_4_0_en,                      kRevision_1_4_0_zh],
         'revisionHistory_v2_0_0':             [kRevision_2_0_0_en,                      kRevision_2_0_0_zh],
         'revisionHistory_v2_1_0':             [kRevision_2_1_0_en,                      kRevision_2_1_0_zh],
+        'revisionHistory_v2_2_0':             [kRevision_2_2_0_en,                      kRevision_2_2_0_zh],
+        'revisionHistory_v2_3_0':             [kRevision_2_3_0_en,                      kRevision_2_3_0_zh],
 
         'bootDeviceInfo_hasOnchipSerialNor':  ['MCU has on-chip QSPI NOR Flash (4MB, 133MHz), so you don\'t need to configure this boot device!',
                                               u"微控制器内置4MB的QSPI NOR Flash，所以无需配置该启动设备！"],
@@ -663,5 +715,10 @@ kMsgLanguageContentDict = {
 
         'connectError_doubleCheckIsp':        ['Make sure that you have put MCU in ISP (In-System Programming) modes (ISP[2:0] pins = 3\'b010 (USB) or 3\'b110 (UART))!',
                                               u"请检查ISP[2:0]引脚状态是否为3\'b010 (USB)或3\'b110 (UART)以确认微控制器处于ROM ISP模式！"],
+
+        'burnOtpError_bootCfg0HasBeenBurned': ['Otp BOOT_CFG0[19:17] REDUNDANT_SPI_PORT has been burned, it is program-once!',
+                                                u"Otp BOOT_CFG0[19:17]已经被烧录，它只可被烧写一次！"],
+        'burnOtpError_failToBurnBootCfg0':   ['Otp BOOT_CFG0[19:17] REDUNDANT_SPI_PORT region was not burned successfully!',
+                                              u"Otp BOOT_CFG0[19:17]区域未成功烧录！"],
 
 }

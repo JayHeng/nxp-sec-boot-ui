@@ -416,7 +416,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
             if self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FixedOtpmkKey:
                 otpmkKeySettingsFrame = ui_settings_fixed_otpmk_key.secBootUiSettingsFixedOtpmkKey(None)
                 otpmkKeySettingsFrame.SetTitle(uilang.kSubLanguageContentDict['otpmkKey_title'][self.languageIndex])
-                otpmkKeySettingsFrame.setNecessaryInfo(self.secureBootType)
+                otpmkKeySettingsFrame.setNecessaryInfo(self.secureBootType, self.tgt.flexspiNorMemBase)
                 otpmkKeySettingsFrame.Show(True)
             elif self.keyStorageRegion == RTyyyy_uidef.kKeyStorageRegion_FlexibleUserKeys:
                 userKeySettingsFrame = None
@@ -536,7 +536,7 @@ class secBootRTyyyyMain(RTyyyy_memcore.secBootRTyyyyMem):
                     self.popupMsgBox(uilang.kMsgLanguageContentDict['operImgError_failToFlashImage'][self.languageIndex])
                 else:
                     self.isBootableAppAllowedToView = True
-                    if self.burnBootDeviceFuses():
+                    if self.RTyyyy_burnBootDeviceFuses():
                         if (self.secureBootType == RTyyyy_uidef.kSecureBootType_HabAuth) or \
                            (self.secureBootType in RTyyyy_uidef.kSecureBootType_HwCrypto and self.isCertEnabledForHwCrypto):
                             if self.mcuDeviceHabStatus != RTyyyy_fusedef.kHabStatus_Closed0 and \

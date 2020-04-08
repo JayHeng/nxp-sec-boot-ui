@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version Aug  8 2018)
+## Python code generated with wxFormBuilder (version Oct 26 2018)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -53,7 +53,7 @@ class bootDeviceWin_UsdhcMmc ( wx.Frame ):
 
         gSizer_mmcOpt0.Add( self.m_staticText_partitionAccess, 0, wx.ALL, 5 )
 
-        m_choice_partitionAccessChoices = [ u"User Aera Normal", u"Read/Write Boot1", u"Read/Write Boot2", u"Replay Protected Mem Block", u"General Purpose1", u"General Purpose2", u"General Purpose3", u"General Purpose4" ]
+        m_choice_partitionAccessChoices = [ u"User Area Normal", u"Read/Write Boot1", u"Read/Write Boot2", u"Replay Protected Mem Block", u"General Purpose1", u"General Purpose2", u"General Purpose3", u"General Purpose4" ]
         self.m_choice_partitionAccess = wx.Choice( self.m_panel_mmcrOpt0, wx.ID_ANY, wx.DefaultPosition, wx.Size( 140,-1 ), m_choice_partitionAccessChoices, 0 )
         self.m_choice_partitionAccess.SetSelection( 0 )
         gSizer_mmcOpt0.Add( self.m_choice_partitionAccess, 0, wx.ALL, 5 )

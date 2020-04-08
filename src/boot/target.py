@@ -61,7 +61,9 @@ class Target(object):
         self.hasRemappedFuse = misc.get_dict_default(kwargs, 'hasRemappedFuse', None)
         self.availableBootDevices = misc.get_dict_default(kwargs, 'availableBootDevices', None)
         self.flexspiNorDevice = misc.get_dict_default(kwargs, 'flexspiNorDevice', None)
-        self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase', None)
+        self.flexspiNorMemBase = misc.get_dict_default(kwargs, 'flexspiNorMemBase0', None)
+        self.flexspiNorMemBase0 = misc.get_dict_default(kwargs, 'flexspiNorMemBase0', None)
+        self.flexspiNorMemBase1 = misc.get_dict_default(kwargs, 'flexspiNorMemBase1', None)
         self.flexspiFreqs = misc.get_dict_default(kwargs, 'flexspiFreqs', None)
         self.xspiNorCfgInfoOffset = misc.get_dict_default(kwargs, 'xspiNorCfgInfoOffset', None)
         self.flexspiNorEfuseBootCfg0Bits = misc.get_dict_default(kwargs, 'flexspiNorEfuseBootCfg0Bits', None)
@@ -78,6 +80,9 @@ class Target(object):
         self.efusemapIndexDict = misc.get_dict_default(kwargs, 'efusemapIndexDict', None)
         self.efusemapDefnDict = misc.get_dict_default(kwargs, 'efusemapDefnDict', None)
         self.efuseDescDiffDict = misc.get_dict_default(kwargs, 'efuseDescDiffDict', None)
+        self.otpmapIndexDict = misc.get_dict_default(kwargs, 'otpmapIndexDict', None)
+        self.otpmapDefnDict = misc.get_dict_default(kwargs, 'otpmapDefnDict', None)
+        self.otpDescDiffDict = misc.get_dict_default(kwargs, 'otpDescDiffDict', None)
 
     ##
     # @brief Check if a command is supported by the target.

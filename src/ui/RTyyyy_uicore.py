@@ -52,41 +52,6 @@ class secBootRTyyyyUi(memcore.secBootMem):
         else:
             self.m_choice_bootDevice.SetSelection(0)
 
-    def _setFlexspiNorDeviceForEvkBoard( self ):
-        try:
-            flexspiNorOpt0 = uidef.kFlexspiNorOpt0_ISSI_IS25LP064A
-            flexspiNorOpt1 = 0x0
-            flexspiDeviceModel = self.tgt.flexspiNorDevice
-            if flexspiDeviceModel == uidef.kFlexspiNorDevice_ISSI_IS25LP064A:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_ISSI_IS25LP064A
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_ISSI_IS26KS512S:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_ISSI_IS26KS512S
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_MXIC_MX25UM51245G:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_MXIC_MX25UM51245G
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_MXIC_MX25UM51345G:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_MXIC_MX25UM51345G
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_Micron_MT35X:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Micron_MT35X
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_Adesto_AT25SF128A:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Adesto_AT25SF128A
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_Adesto_ATXP032:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Adesto_ATXP032
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_Cypress_S26KS512S:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Cypress_S26KS512S
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_GigaDevice_GD25LB256E:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LB256E
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_GigaDevice_GD25LT256E:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LT256E
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_GigaDevice_GD25LX256E:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_GigaDevice_GD25LX256E
-            elif flexspiDeviceModel == uidef.kFlexspiNorDevice_Winbond_W25Q128JV:
-                flexspiNorOpt0 = uidef.kFlexspiNorOpt0_Winbond_W25Q128JV
-            else:
-                pass
-            uivar.setBootDeviceConfiguration(uidef.kBootDevice_XspiNor, flexspiNorOpt0, flexspiNorOpt1, flexspiDeviceModel)
-        except:
-            pass
-
     def RTyyyy_setTargetSetupValue( self ):
         self.showPageInMainBootSeqWin(uidef.kPageIndex_ImageGenerationSequence)
         self.bootDevice = self.m_choice_bootDevice.GetString(self.m_choice_bootDevice.GetSelection())
@@ -100,7 +65,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
             self.isSdmmcCard = False
             self.sbEnableBootDeviceMagic = 'flexspinor'
             self.sbAccessBootDeviceMagic = ''
-            self._setFlexspiNorDeviceForEvkBoard()
+            self.setFlexspiNorDeviceForEvkBoard()
         elif self.bootDevice == RTyyyy_uidef.kBootDevice_SemcNor:
             self.isXipableDevice = True
             self.isNandDevice = False
@@ -488,7 +453,7 @@ class secBootRTyyyyUi(memcore.secBootMem):
     def clearSwGp2DekData( self ):
         self.m_textCtrl_swgp2Dek128bit.Clear()
 
-    def updateFuseGroupText( self ):
+    def RTyyyy_updateFuseGroupText( self ):
         self.clearUserFuses()
         if self.mcuSeries == uidef.kMcuSeries_iMXRT10yy:
             self.m_button_fuse400.SetLabel('Lock')
@@ -901,92 +866,8 @@ class secBootRTyyyyUi(memcore.secBootMem):
         else:
             pass
 
-    def _resetFuseRegionField( self ):
-        color = wx.SYS_COLOUR_WINDOW
-        self.m_textCtrl_fuse400.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse410.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse420.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse430.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse440.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse450.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse460.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse470.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse480.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse490.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4a0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4b0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4c0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4d0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4e0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse4f0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse500.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse510.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse520.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse530.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse540.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse550.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse560.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse570.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse580.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse590.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5a0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5b0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5c0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5d0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5e0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse5f0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse600.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse610.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse620.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse630.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse640.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse650.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse660.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse670.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse680.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse690.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6a0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6b0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6c0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6d0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6e0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse6f0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse700.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse710.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse720.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse730.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse740.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse750.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse760.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse770.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse780.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse790.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7a0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7b0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7c0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7d0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7e0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse7f0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse800.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse810.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse820.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse830.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse840.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse850.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse860.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse870.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse880.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse890.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8a0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8b0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8c0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8d0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8e0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.m_textCtrl_fuse8f0.SetBackgroundColour( wx.SystemSettings.GetColour( color ) )
-        self.Refresh()
-
-    def updateFuseRegionField( self ):
-        self._resetFuseRegionField()
+    def RTyyyy_updateFuseRegionField( self ):
+        self.resetFuseOtpRegionField()
         color = None
         if self.isToolRunAsEntryMode:
             color = wx.SYS_COLOUR_GRAYTEXT
@@ -1219,318 +1100,118 @@ class secBootRTyyyyUi(memcore.secBootMem):
                 pass
         self.Refresh()
 
-    def getFormattedFuseValue( self, fuseValue, direction='LSB'):
-        formattedVal32 = ''
-        for i in range(8):
-            loc = 0
-            if direction =='LSB':
-                loc = 32 - (i + 1) * 4
-            elif direction =='MSB':
-                loc = i * 4
-            else:
-                pass
-            halfbyteStr = str(hex((fuseValue & (0xF << loc))>> loc))
-            formattedVal32 += halfbyteStr[2]
-        return formattedVal32
-
-    def getFormattedHexValue( self, val32 ):
-        return ('0x' + self.getFormattedFuseValue(val32))
-
-    def _parseReadFuseValue( self, fuseValue ):
-        if fuseValue != None:
-            return self.getFormattedHexValue(fuseValue)
-        else:
-            return '--------'
-
-    def clearUserFuses( self ):
-        self.m_textCtrl_fuse400.Clear()
-        self.m_textCtrl_fuse410.Clear()
-        self.m_textCtrl_fuse420.Clear()
-        self.m_textCtrl_fuse430.Clear()
-        self.m_textCtrl_fuse440.Clear()
-        self.m_textCtrl_fuse450.Clear()
-        self.m_textCtrl_fuse460.Clear()
-        self.m_textCtrl_fuse470.Clear()
-        self.m_textCtrl_fuse480.Clear()
-        self.m_textCtrl_fuse490.Clear()
-        self.m_textCtrl_fuse4a0.Clear()
-        self.m_textCtrl_fuse4b0.Clear()
-        self.m_textCtrl_fuse4c0.Clear()
-        self.m_textCtrl_fuse4d0.Clear()
-        self.m_textCtrl_fuse4e0.Clear()
-        self.m_textCtrl_fuse4f0.Clear()
-        self.m_textCtrl_fuse500.Clear()
-        self.m_textCtrl_fuse510.Clear()
-        self.m_textCtrl_fuse520.Clear()
-        self.m_textCtrl_fuse530.Clear()
-        self.m_textCtrl_fuse540.Clear()
-        self.m_textCtrl_fuse550.Clear()
-        self.m_textCtrl_fuse560.Clear()
-        self.m_textCtrl_fuse570.Clear()
-        self.m_textCtrl_fuse580.Clear()
-        self.m_textCtrl_fuse590.Clear()
-        self.m_textCtrl_fuse5a0.Clear()
-        self.m_textCtrl_fuse5b0.Clear()
-        self.m_textCtrl_fuse5c0.Clear()
-        self.m_textCtrl_fuse5d0.Clear()
-        self.m_textCtrl_fuse5e0.Clear()
-        self.m_textCtrl_fuse5f0.Clear()
-        self.m_textCtrl_fuse600.Clear()
-        self.m_textCtrl_fuse610.Clear()
-        self.m_textCtrl_fuse620.Clear()
-        self.m_textCtrl_fuse630.Clear()
-        self.m_textCtrl_fuse640.Clear()
-        self.m_textCtrl_fuse650.Clear()
-        self.m_textCtrl_fuse660.Clear()
-        self.m_textCtrl_fuse670.Clear()
-        self.m_textCtrl_fuse680.Clear()
-        self.m_textCtrl_fuse690.Clear()
-        self.m_textCtrl_fuse6a0.Clear()
-        self.m_textCtrl_fuse6b0.Clear()
-        self.m_textCtrl_fuse6c0.Clear()
-        self.m_textCtrl_fuse6d0.Clear()
-        self.m_textCtrl_fuse6e0.Clear()
-        self.m_textCtrl_fuse6f0.Clear()
-        self.m_textCtrl_fuse700.Clear()
-        self.m_textCtrl_fuse710.Clear()
-        self.m_textCtrl_fuse720.Clear()
-        self.m_textCtrl_fuse730.Clear()
-        self.m_textCtrl_fuse740.Clear()
-        self.m_textCtrl_fuse750.Clear()
-        self.m_textCtrl_fuse760.Clear()
-        self.m_textCtrl_fuse770.Clear()
-        self.m_textCtrl_fuse780.Clear()
-        self.m_textCtrl_fuse790.Clear()
-        self.m_textCtrl_fuse7a0.Clear()
-        self.m_textCtrl_fuse7b0.Clear()
-        self.m_textCtrl_fuse7c0.Clear()
-        self.m_textCtrl_fuse7d0.Clear()
-        self.m_textCtrl_fuse7e0.Clear()
-        self.m_textCtrl_fuse7f0.Clear()
-        self.m_textCtrl_fuse800.Clear()
-        self.m_textCtrl_fuse810.Clear()
-        self.m_textCtrl_fuse820.Clear()
-        self.m_textCtrl_fuse830.Clear()
-        self.m_textCtrl_fuse840.Clear()
-        self.m_textCtrl_fuse850.Clear()
-        self.m_textCtrl_fuse860.Clear()
-        self.m_textCtrl_fuse870.Clear()
-        self.m_textCtrl_fuse880.Clear()
-        self.m_textCtrl_fuse890.Clear()
-        self.m_textCtrl_fuse8a0.Clear()
-        self.m_textCtrl_fuse8b0.Clear()
-        self.m_textCtrl_fuse8c0.Clear()
-        self.m_textCtrl_fuse8d0.Clear()
-        self.m_textCtrl_fuse8e0.Clear()
-        self.m_textCtrl_fuse8f0.Clear()
-
-    def showScannedFuses( self , scannedFuseList ):
+    def RTyyyy_showScannedFuses( self , scannedFuseList ):
         efuseDict = uivar.getEfuseSettings()
 
         self.clearUserFuses()
 
-        self.m_textCtrl_fuse400.write(self._parseReadFuseValue(scannedFuseList[0]))
+        self.m_textCtrl_fuse400.write(self.parseReadFuseValue(scannedFuseList[0]))
         efuseDict['0x400_lock'] = scannedFuseList[0]
-        self.m_textCtrl_fuse410.write(self._parseReadFuseValue(scannedFuseList[1]))
-        self.m_textCtrl_fuse420.write(self._parseReadFuseValue(scannedFuseList[2]))
-        self.m_textCtrl_fuse430.write(self._parseReadFuseValue(scannedFuseList[3]))
-        self.m_textCtrl_fuse440.write(self._parseReadFuseValue(scannedFuseList[4]))
-        self.m_textCtrl_fuse450.write(self._parseReadFuseValue(scannedFuseList[5]))
+        self.m_textCtrl_fuse410.write(self.parseReadFuseValue(scannedFuseList[1]))
+        self.m_textCtrl_fuse420.write(self.parseReadFuseValue(scannedFuseList[2]))
+        self.m_textCtrl_fuse430.write(self.parseReadFuseValue(scannedFuseList[3]))
+        self.m_textCtrl_fuse440.write(self.parseReadFuseValue(scannedFuseList[4]))
+        self.m_textCtrl_fuse450.write(self.parseReadFuseValue(scannedFuseList[5]))
         efuseDict['0x450_bootCfg0'] = scannedFuseList[5]
-        self.m_textCtrl_fuse460.write(self._parseReadFuseValue(scannedFuseList[6]))
+        self.m_textCtrl_fuse460.write(self.parseReadFuseValue(scannedFuseList[6]))
         efuseDict['0x460_bootCfg1'] = scannedFuseList[6]
-        self.m_textCtrl_fuse470.write(self._parseReadFuseValue(scannedFuseList[7]))
+        self.m_textCtrl_fuse470.write(self.parseReadFuseValue(scannedFuseList[7]))
         efuseDict['0x470_bootCfg2'] = scannedFuseList[7]
-        self.m_textCtrl_fuse480.write(self._parseReadFuseValue(scannedFuseList[8]))
-        self.m_textCtrl_fuse490.write(self._parseReadFuseValue(scannedFuseList[9]))
-        self.m_textCtrl_fuse4a0.write(self._parseReadFuseValue(scannedFuseList[10]))
-        self.m_textCtrl_fuse4b0.write(self._parseReadFuseValue(scannedFuseList[11]))
-        self.m_textCtrl_fuse4c0.write(self._parseReadFuseValue(scannedFuseList[12]))
-        self.m_textCtrl_fuse4d0.write(self._parseReadFuseValue(scannedFuseList[13]))
-        self.m_textCtrl_fuse4e0.write(self._parseReadFuseValue(scannedFuseList[14]))
-        self.m_textCtrl_fuse4f0.write(self._parseReadFuseValue(scannedFuseList[15]))
+        self.m_textCtrl_fuse480.write(self.parseReadFuseValue(scannedFuseList[8]))
+        self.m_textCtrl_fuse490.write(self.parseReadFuseValue(scannedFuseList[9]))
+        self.m_textCtrl_fuse4a0.write(self.parseReadFuseValue(scannedFuseList[10]))
+        self.m_textCtrl_fuse4b0.write(self.parseReadFuseValue(scannedFuseList[11]))
+        self.m_textCtrl_fuse4c0.write(self.parseReadFuseValue(scannedFuseList[12]))
+        self.m_textCtrl_fuse4d0.write(self.parseReadFuseValue(scannedFuseList[13]))
+        self.m_textCtrl_fuse4e0.write(self.parseReadFuseValue(scannedFuseList[14]))
+        self.m_textCtrl_fuse4f0.write(self.parseReadFuseValue(scannedFuseList[15]))
 
-        self.m_textCtrl_fuse500.write(self._parseReadFuseValue(scannedFuseList[16]))
-        self.m_textCtrl_fuse510.write(self._parseReadFuseValue(scannedFuseList[17]))
-        self.m_textCtrl_fuse520.write(self._parseReadFuseValue(scannedFuseList[18]))
-        self.m_textCtrl_fuse530.write(self._parseReadFuseValue(scannedFuseList[19]))
-        self.m_textCtrl_fuse540.write(self._parseReadFuseValue(scannedFuseList[20]))
-        self.m_textCtrl_fuse550.write(self._parseReadFuseValue(scannedFuseList[21]))
-        self.m_textCtrl_fuse560.write(self._parseReadFuseValue(scannedFuseList[22]))
-        self.m_textCtrl_fuse570.write(self._parseReadFuseValue(scannedFuseList[23]))
-        self.m_textCtrl_fuse580.write(self._parseReadFuseValue(scannedFuseList[24]))
-        self.m_textCtrl_fuse590.write(self._parseReadFuseValue(scannedFuseList[25]))
-        self.m_textCtrl_fuse5a0.write(self._parseReadFuseValue(scannedFuseList[26]))
-        self.m_textCtrl_fuse5b0.write(self._parseReadFuseValue(scannedFuseList[27]))
-        self.m_textCtrl_fuse5c0.write(self._parseReadFuseValue(scannedFuseList[28]))
-        self.m_textCtrl_fuse5d0.write(self._parseReadFuseValue(scannedFuseList[29]))
-        self.m_textCtrl_fuse5e0.write(self._parseReadFuseValue(scannedFuseList[30]))
-        self.m_textCtrl_fuse5f0.write(self._parseReadFuseValue(scannedFuseList[31]))
+        self.m_textCtrl_fuse500.write(self.parseReadFuseValue(scannedFuseList[16]))
+        self.m_textCtrl_fuse510.write(self.parseReadFuseValue(scannedFuseList[17]))
+        self.m_textCtrl_fuse520.write(self.parseReadFuseValue(scannedFuseList[18]))
+        self.m_textCtrl_fuse530.write(self.parseReadFuseValue(scannedFuseList[19]))
+        self.m_textCtrl_fuse540.write(self.parseReadFuseValue(scannedFuseList[20]))
+        self.m_textCtrl_fuse550.write(self.parseReadFuseValue(scannedFuseList[21]))
+        self.m_textCtrl_fuse560.write(self.parseReadFuseValue(scannedFuseList[22]))
+        self.m_textCtrl_fuse570.write(self.parseReadFuseValue(scannedFuseList[23]))
+        self.m_textCtrl_fuse580.write(self.parseReadFuseValue(scannedFuseList[24]))
+        self.m_textCtrl_fuse590.write(self.parseReadFuseValue(scannedFuseList[25]))
+        self.m_textCtrl_fuse5a0.write(self.parseReadFuseValue(scannedFuseList[26]))
+        self.m_textCtrl_fuse5b0.write(self.parseReadFuseValue(scannedFuseList[27]))
+        self.m_textCtrl_fuse5c0.write(self.parseReadFuseValue(scannedFuseList[28]))
+        self.m_textCtrl_fuse5d0.write(self.parseReadFuseValue(scannedFuseList[29]))
+        self.m_textCtrl_fuse5e0.write(self.parseReadFuseValue(scannedFuseList[30]))
+        self.m_textCtrl_fuse5f0.write(self.parseReadFuseValue(scannedFuseList[31]))
 
-        self.m_textCtrl_fuse600.write(self._parseReadFuseValue(scannedFuseList[32]))
-        self.m_textCtrl_fuse610.write(self._parseReadFuseValue(scannedFuseList[33]))
-        self.m_textCtrl_fuse620.write(self._parseReadFuseValue(scannedFuseList[34]))
-        self.m_textCtrl_fuse630.write(self._parseReadFuseValue(scannedFuseList[35]))
-        self.m_textCtrl_fuse640.write(self._parseReadFuseValue(scannedFuseList[36]))
-        self.m_textCtrl_fuse650.write(self._parseReadFuseValue(scannedFuseList[37]))
-        self.m_textCtrl_fuse660.write(self._parseReadFuseValue(scannedFuseList[38]))
-        self.m_textCtrl_fuse670.write(self._parseReadFuseValue(scannedFuseList[39]))
-        self.m_textCtrl_fuse680.write(self._parseReadFuseValue(scannedFuseList[40]))
-        self.m_textCtrl_fuse690.write(self._parseReadFuseValue(scannedFuseList[41]))
-        self.m_textCtrl_fuse6a0.write(self._parseReadFuseValue(scannedFuseList[42]))
-        self.m_textCtrl_fuse6b0.write(self._parseReadFuseValue(scannedFuseList[43]))
-        self.m_textCtrl_fuse6c0.write(self._parseReadFuseValue(scannedFuseList[44]))
-        self.m_textCtrl_fuse6d0.write(self._parseReadFuseValue(scannedFuseList[45]))
+        self.m_textCtrl_fuse600.write(self.parseReadFuseValue(scannedFuseList[32]))
+        self.m_textCtrl_fuse610.write(self.parseReadFuseValue(scannedFuseList[33]))
+        self.m_textCtrl_fuse620.write(self.parseReadFuseValue(scannedFuseList[34]))
+        self.m_textCtrl_fuse630.write(self.parseReadFuseValue(scannedFuseList[35]))
+        self.m_textCtrl_fuse640.write(self.parseReadFuseValue(scannedFuseList[36]))
+        self.m_textCtrl_fuse650.write(self.parseReadFuseValue(scannedFuseList[37]))
+        self.m_textCtrl_fuse660.write(self.parseReadFuseValue(scannedFuseList[38]))
+        self.m_textCtrl_fuse670.write(self.parseReadFuseValue(scannedFuseList[39]))
+        self.m_textCtrl_fuse680.write(self.parseReadFuseValue(scannedFuseList[40]))
+        self.m_textCtrl_fuse690.write(self.parseReadFuseValue(scannedFuseList[41]))
+        self.m_textCtrl_fuse6a0.write(self.parseReadFuseValue(scannedFuseList[42]))
+        self.m_textCtrl_fuse6b0.write(self.parseReadFuseValue(scannedFuseList[43]))
+        self.m_textCtrl_fuse6c0.write(self.parseReadFuseValue(scannedFuseList[44]))
+        self.m_textCtrl_fuse6d0.write(self.parseReadFuseValue(scannedFuseList[45]))
         efuseDict['0x6d0_miscConf0'] = scannedFuseList[45]
-        self.m_textCtrl_fuse6e0.write(self._parseReadFuseValue(scannedFuseList[46]))
+        self.m_textCtrl_fuse6e0.write(self.parseReadFuseValue(scannedFuseList[46]))
         efuseDict['0x6e0_miscConf1'] = scannedFuseList[46]
-        self.m_textCtrl_fuse6f0.write(self._parseReadFuseValue(scannedFuseList[47]))
+        self.m_textCtrl_fuse6f0.write(self.parseReadFuseValue(scannedFuseList[47]))
 
-        self.m_textCtrl_fuse700.write(self._parseReadFuseValue(scannedFuseList[48]))
-        self.m_textCtrl_fuse710.write(self._parseReadFuseValue(scannedFuseList[49]))
-        self.m_textCtrl_fuse720.write(self._parseReadFuseValue(scannedFuseList[50]))
-        self.m_textCtrl_fuse730.write(self._parseReadFuseValue(scannedFuseList[51]))
-        self.m_textCtrl_fuse740.write(self._parseReadFuseValue(scannedFuseList[52]))
-        self.m_textCtrl_fuse750.write(self._parseReadFuseValue(scannedFuseList[53]))
-        self.m_textCtrl_fuse760.write(self._parseReadFuseValue(scannedFuseList[54]))
-        self.m_textCtrl_fuse770.write(self._parseReadFuseValue(scannedFuseList[55]))
-        self.m_textCtrl_fuse780.write(self._parseReadFuseValue(scannedFuseList[56]))
-        self.m_textCtrl_fuse790.write(self._parseReadFuseValue(scannedFuseList[57]))
-        self.m_textCtrl_fuse7a0.write(self._parseReadFuseValue(scannedFuseList[58]))
-        self.m_textCtrl_fuse7b0.write(self._parseReadFuseValue(scannedFuseList[59]))
-        self.m_textCtrl_fuse7c0.write(self._parseReadFuseValue(scannedFuseList[60]))
-        self.m_textCtrl_fuse7d0.write(self._parseReadFuseValue(scannedFuseList[61]))
-        self.m_textCtrl_fuse7e0.write(self._parseReadFuseValue(scannedFuseList[62]))
-        self.m_textCtrl_fuse7f0.write(self._parseReadFuseValue(scannedFuseList[63]))
+        self.m_textCtrl_fuse700.write(self.parseReadFuseValue(scannedFuseList[48]))
+        self.m_textCtrl_fuse710.write(self.parseReadFuseValue(scannedFuseList[49]))
+        self.m_textCtrl_fuse720.write(self.parseReadFuseValue(scannedFuseList[50]))
+        self.m_textCtrl_fuse730.write(self.parseReadFuseValue(scannedFuseList[51]))
+        self.m_textCtrl_fuse740.write(self.parseReadFuseValue(scannedFuseList[52]))
+        self.m_textCtrl_fuse750.write(self.parseReadFuseValue(scannedFuseList[53]))
+        self.m_textCtrl_fuse760.write(self.parseReadFuseValue(scannedFuseList[54]))
+        self.m_textCtrl_fuse770.write(self.parseReadFuseValue(scannedFuseList[55]))
+        self.m_textCtrl_fuse780.write(self.parseReadFuseValue(scannedFuseList[56]))
+        self.m_textCtrl_fuse790.write(self.parseReadFuseValue(scannedFuseList[57]))
+        self.m_textCtrl_fuse7a0.write(self.parseReadFuseValue(scannedFuseList[58]))
+        self.m_textCtrl_fuse7b0.write(self.parseReadFuseValue(scannedFuseList[59]))
+        self.m_textCtrl_fuse7c0.write(self.parseReadFuseValue(scannedFuseList[60]))
+        self.m_textCtrl_fuse7d0.write(self.parseReadFuseValue(scannedFuseList[61]))
+        self.m_textCtrl_fuse7e0.write(self.parseReadFuseValue(scannedFuseList[62]))
+        self.m_textCtrl_fuse7f0.write(self.parseReadFuseValue(scannedFuseList[63]))
 
-        self.m_textCtrl_fuse800.write(self._parseReadFuseValue(scannedFuseList[64]))
-        self.m_textCtrl_fuse810.write(self._parseReadFuseValue(scannedFuseList[65]))
-        self.m_textCtrl_fuse820.write(self._parseReadFuseValue(scannedFuseList[66]))
-        self.m_textCtrl_fuse830.write(self._parseReadFuseValue(scannedFuseList[67]))
-        self.m_textCtrl_fuse840.write(self._parseReadFuseValue(scannedFuseList[68]))
-        self.m_textCtrl_fuse850.write(self._parseReadFuseValue(scannedFuseList[69]))
-        self.m_textCtrl_fuse860.write(self._parseReadFuseValue(scannedFuseList[70]))
-        self.m_textCtrl_fuse870.write(self._parseReadFuseValue(scannedFuseList[71]))
-        self.m_textCtrl_fuse880.write(self._parseReadFuseValue(scannedFuseList[72]))
-        self.m_textCtrl_fuse890.write(self._parseReadFuseValue(scannedFuseList[73]))
-        self.m_textCtrl_fuse8a0.write(self._parseReadFuseValue(scannedFuseList[74]))
-        self.m_textCtrl_fuse8b0.write(self._parseReadFuseValue(scannedFuseList[75]))
-        self.m_textCtrl_fuse8c0.write(self._parseReadFuseValue(scannedFuseList[76]))
-        self.m_textCtrl_fuse8d0.write(self._parseReadFuseValue(scannedFuseList[77]))
-        self.m_textCtrl_fuse8e0.write(self._parseReadFuseValue(scannedFuseList[78]))
-        self.m_textCtrl_fuse8f0.write(self._parseReadFuseValue(scannedFuseList[79]))
+        self.m_textCtrl_fuse800.write(self.parseReadFuseValue(scannedFuseList[64]))
+        self.m_textCtrl_fuse810.write(self.parseReadFuseValue(scannedFuseList[65]))
+        self.m_textCtrl_fuse820.write(self.parseReadFuseValue(scannedFuseList[66]))
+        self.m_textCtrl_fuse830.write(self.parseReadFuseValue(scannedFuseList[67]))
+        self.m_textCtrl_fuse840.write(self.parseReadFuseValue(scannedFuseList[68]))
+        self.m_textCtrl_fuse850.write(self.parseReadFuseValue(scannedFuseList[69]))
+        self.m_textCtrl_fuse860.write(self.parseReadFuseValue(scannedFuseList[70]))
+        self.m_textCtrl_fuse870.write(self.parseReadFuseValue(scannedFuseList[71]))
+        self.m_textCtrl_fuse880.write(self.parseReadFuseValue(scannedFuseList[72]))
+        self.m_textCtrl_fuse890.write(self.parseReadFuseValue(scannedFuseList[73]))
+        self.m_textCtrl_fuse8a0.write(self.parseReadFuseValue(scannedFuseList[74]))
+        self.m_textCtrl_fuse8b0.write(self.parseReadFuseValue(scannedFuseList[75]))
+        self.m_textCtrl_fuse8c0.write(self.parseReadFuseValue(scannedFuseList[76]))
+        self.m_textCtrl_fuse8d0.write(self.parseReadFuseValue(scannedFuseList[77]))
+        self.m_textCtrl_fuse8e0.write(self.parseReadFuseValue(scannedFuseList[78]))
+        self.m_textCtrl_fuse8f0.write(self.parseReadFuseValue(scannedFuseList[79]))
 
         uivar.setEfuseSettings(efuseDict)
-
-    def _parseUserFuseValue( self, fuseText ):
-        if len(fuseText) >= 3 and fuseText[0:2] == '0x':
-            return int(fuseText[2:len(fuseText)], 16)
-        else:
-            return None
-
-    def getUserFuses( self ):
-        userFuseList = [None] * RTyyyy_fusedef.kGroupEfuseWords
-        userFuseList[0] = self._parseUserFuseValue(self.m_textCtrl_fuse400.GetLineText(0))
-        userFuseList[1] = self._parseUserFuseValue(self.m_textCtrl_fuse410.GetLineText(0))
-        userFuseList[2] = self._parseUserFuseValue(self.m_textCtrl_fuse420.GetLineText(0))
-        userFuseList[3] = self._parseUserFuseValue(self.m_textCtrl_fuse430.GetLineText(0))
-        userFuseList[4] = self._parseUserFuseValue(self.m_textCtrl_fuse440.GetLineText(0))
-        userFuseList[5] = self._parseUserFuseValue(self.m_textCtrl_fuse450.GetLineText(0))
-        userFuseList[6] = self._parseUserFuseValue(self.m_textCtrl_fuse460.GetLineText(0))
-        userFuseList[7] = self._parseUserFuseValue(self.m_textCtrl_fuse470.GetLineText(0))
-        userFuseList[8] = self._parseUserFuseValue(self.m_textCtrl_fuse480.GetLineText(0))
-        userFuseList[9] = self._parseUserFuseValue(self.m_textCtrl_fuse490.GetLineText(0))
-        userFuseList[10] = self._parseUserFuseValue(self.m_textCtrl_fuse4a0.GetLineText(0))
-        userFuseList[11] = self._parseUserFuseValue(self.m_textCtrl_fuse4b0.GetLineText(0))
-        userFuseList[12] = self._parseUserFuseValue(self.m_textCtrl_fuse4c0.GetLineText(0))
-        userFuseList[13] = self._parseUserFuseValue(self.m_textCtrl_fuse4d0.GetLineText(0))
-        userFuseList[14] = self._parseUserFuseValue(self.m_textCtrl_fuse4e0.GetLineText(0))
-        userFuseList[15] = self._parseUserFuseValue(self.m_textCtrl_fuse4f0.GetLineText(0))
-
-        userFuseList[16] = self._parseUserFuseValue(self.m_textCtrl_fuse500.GetLineText(0))
-        userFuseList[17] = self._parseUserFuseValue(self.m_textCtrl_fuse510.GetLineText(0))
-        userFuseList[18] = self._parseUserFuseValue(self.m_textCtrl_fuse520.GetLineText(0))
-        userFuseList[19] = self._parseUserFuseValue(self.m_textCtrl_fuse530.GetLineText(0))
-        userFuseList[20] = self._parseUserFuseValue(self.m_textCtrl_fuse540.GetLineText(0))
-        userFuseList[21] = self._parseUserFuseValue(self.m_textCtrl_fuse550.GetLineText(0))
-        userFuseList[22] = self._parseUserFuseValue(self.m_textCtrl_fuse560.GetLineText(0))
-        userFuseList[23] = self._parseUserFuseValue(self.m_textCtrl_fuse570.GetLineText(0))
-        userFuseList[24] = self._parseUserFuseValue(self.m_textCtrl_fuse580.GetLineText(0))
-        userFuseList[25] = self._parseUserFuseValue(self.m_textCtrl_fuse590.GetLineText(0))
-        userFuseList[26] = self._parseUserFuseValue(self.m_textCtrl_fuse5a0.GetLineText(0))
-        userFuseList[27] = self._parseUserFuseValue(self.m_textCtrl_fuse5b0.GetLineText(0))
-        userFuseList[28] = self._parseUserFuseValue(self.m_textCtrl_fuse5c0.GetLineText(0))
-        userFuseList[29] = self._parseUserFuseValue(self.m_textCtrl_fuse5d0.GetLineText(0))
-        userFuseList[30] = self._parseUserFuseValue(self.m_textCtrl_fuse5e0.GetLineText(0))
-        userFuseList[31] = self._parseUserFuseValue(self.m_textCtrl_fuse5f0.GetLineText(0))
-
-        userFuseList[32] = self._parseUserFuseValue(self.m_textCtrl_fuse600.GetLineText(0))
-        userFuseList[33] = self._parseUserFuseValue(self.m_textCtrl_fuse610.GetLineText(0))
-        userFuseList[34] = self._parseUserFuseValue(self.m_textCtrl_fuse620.GetLineText(0))
-        userFuseList[35] = self._parseUserFuseValue(self.m_textCtrl_fuse630.GetLineText(0))
-        userFuseList[36] = self._parseUserFuseValue(self.m_textCtrl_fuse640.GetLineText(0))
-        userFuseList[37] = self._parseUserFuseValue(self.m_textCtrl_fuse650.GetLineText(0))
-        userFuseList[38] = self._parseUserFuseValue(self.m_textCtrl_fuse660.GetLineText(0))
-        userFuseList[39] = self._parseUserFuseValue(self.m_textCtrl_fuse670.GetLineText(0))
-        userFuseList[40] = self._parseUserFuseValue(self.m_textCtrl_fuse680.GetLineText(0))
-        userFuseList[41] = self._parseUserFuseValue(self.m_textCtrl_fuse690.GetLineText(0))
-        userFuseList[42] = self._parseUserFuseValue(self.m_textCtrl_fuse6a0.GetLineText(0))
-        userFuseList[43] = self._parseUserFuseValue(self.m_textCtrl_fuse6b0.GetLineText(0))
-        userFuseList[44] = self._parseUserFuseValue(self.m_textCtrl_fuse6c0.GetLineText(0))
-        userFuseList[45] = self._parseUserFuseValue(self.m_textCtrl_fuse6d0.GetLineText(0))
-        userFuseList[46] = self._parseUserFuseValue(self.m_textCtrl_fuse6e0.GetLineText(0))
-        userFuseList[47] = self._parseUserFuseValue(self.m_textCtrl_fuse6f0.GetLineText(0))
-
-        userFuseList[48] = self._parseUserFuseValue(self.m_textCtrl_fuse700.GetLineText(0))
-        userFuseList[49] = self._parseUserFuseValue(self.m_textCtrl_fuse710.GetLineText(0))
-        userFuseList[50] = self._parseUserFuseValue(self.m_textCtrl_fuse720.GetLineText(0))
-        userFuseList[51] = self._parseUserFuseValue(self.m_textCtrl_fuse730.GetLineText(0))
-        userFuseList[52] = self._parseUserFuseValue(self.m_textCtrl_fuse730.GetLineText(0))
-        userFuseList[53] = self._parseUserFuseValue(self.m_textCtrl_fuse750.GetLineText(0))
-        userFuseList[54] = self._parseUserFuseValue(self.m_textCtrl_fuse760.GetLineText(0))
-        userFuseList[55] = self._parseUserFuseValue(self.m_textCtrl_fuse770.GetLineText(0))
-        userFuseList[56] = self._parseUserFuseValue(self.m_textCtrl_fuse780.GetLineText(0))
-        userFuseList[57] = self._parseUserFuseValue(self.m_textCtrl_fuse790.GetLineText(0))
-        userFuseList[58] = self._parseUserFuseValue(self.m_textCtrl_fuse7a0.GetLineText(0))
-        userFuseList[59] = self._parseUserFuseValue(self.m_textCtrl_fuse7b0.GetLineText(0))
-        userFuseList[60] = self._parseUserFuseValue(self.m_textCtrl_fuse7c0.GetLineText(0))
-        userFuseList[61] = self._parseUserFuseValue(self.m_textCtrl_fuse7d0.GetLineText(0))
-        userFuseList[62] = self._parseUserFuseValue(self.m_textCtrl_fuse7e0.GetLineText(0))
-        userFuseList[63] = self._parseUserFuseValue(self.m_textCtrl_fuse7f0.GetLineText(0))
-
-        userFuseList[64] = self._parseUserFuseValue(self.m_textCtrl_fuse800.GetLineText(0))
-        userFuseList[65] = self._parseUserFuseValue(self.m_textCtrl_fuse810.GetLineText(0))
-        userFuseList[66] = self._parseUserFuseValue(self.m_textCtrl_fuse820.GetLineText(0))
-        userFuseList[67] = self._parseUserFuseValue(self.m_textCtrl_fuse830.GetLineText(0))
-        userFuseList[68] = self._parseUserFuseValue(self.m_textCtrl_fuse840.GetLineText(0))
-        userFuseList[69] = self._parseUserFuseValue(self.m_textCtrl_fuse850.GetLineText(0))
-        userFuseList[70] = self._parseUserFuseValue(self.m_textCtrl_fuse860.GetLineText(0))
-        userFuseList[71] = self._parseUserFuseValue(self.m_textCtrl_fuse870.GetLineText(0))
-        userFuseList[72] = self._parseUserFuseValue(self.m_textCtrl_fuse880.GetLineText(0))
-        userFuseList[73] = self._parseUserFuseValue(self.m_textCtrl_fuse890.GetLineText(0))
-        userFuseList[74] = self._parseUserFuseValue(self.m_textCtrl_fuse8a0.GetLineText(0))
-        userFuseList[75] = self._parseUserFuseValue(self.m_textCtrl_fuse8b0.GetLineText(0))
-        userFuseList[76] = self._parseUserFuseValue(self.m_textCtrl_fuse8c0.GetLineText(0))
-        userFuseList[77] = self._parseUserFuseValue(self.m_textCtrl_fuse8d0.GetLineText(0))
-        userFuseList[78] = self._parseUserFuseValue(self.m_textCtrl_fuse8e0.GetLineText(0))
-        userFuseList[79] = self._parseUserFuseValue(self.m_textCtrl_fuse8f0.GetLineText(0))
-
-        return userFuseList
 
     def enterSettableEfuse( self, fuseIndex ):
         efuseDict = uivar.getEfuseSettings()
         if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_LOCK']:
-            efuseDict['0x400_lock'] = self._parseUserFuseValue(self.m_textCtrl_fuse400.GetLineText(0))
+            efuseDict['0x400_lock'] = self.parseUserFuseValue(self.m_textCtrl_fuse400.GetLineText(0))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0']:
-            efuseDict['0x450_bootCfg0'] = self._parseUserFuseValue(self.m_textCtrl_fuse450.GetLineText(0))
+            efuseDict['0x450_bootCfg0'] = self.parseUserFuseValue(self.m_textCtrl_fuse450.GetLineText(0))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1']:
-            efuseDict['0x460_bootCfg1'] = self._parseUserFuseValue(self.m_textCtrl_fuse460.GetLineText(0))
+            efuseDict['0x460_bootCfg1'] = self.parseUserFuseValue(self.m_textCtrl_fuse460.GetLineText(0))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2']:
-            efuseDict['0x470_bootCfg2'] = self._parseUserFuseValue(self.m_textCtrl_fuse470.GetLineText(0))
+            efuseDict['0x470_bootCfg2'] = self.parseUserFuseValue(self.m_textCtrl_fuse470.GetLineText(0))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF0']:
-            efuseDict['0x6d0_miscConf0'] = self._parseUserFuseValue(self.m_textCtrl_fuse6d0.GetLineText(0))
+            efuseDict['0x6d0_miscConf0'] = self.parseUserFuseValue(self.m_textCtrl_fuse6d0.GetLineText(0))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF1']:
-            efuseDict['0x6e0_miscConf1'] = self._parseUserFuseValue(self.m_textCtrl_fuse6e0.GetLineText(0))
+            efuseDict['0x6e0_miscConf1'] = self.parseUserFuseValue(self.m_textCtrl_fuse6e0.GetLineText(0))
         else:
             pass
         uivar.setEfuseSettings(efuseDict)
@@ -1538,22 +1219,22 @@ class secBootRTyyyyUi(memcore.secBootMem):
     def showSettedEfuse( self , fuseIndex, fuseValue ):
         if fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_LOCK']:
             self.m_textCtrl_fuse400.Clear()
-            self.m_textCtrl_fuse400.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse400.write(self.parseReadFuseValue(fuseValue))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG0']:
             self.m_textCtrl_fuse450.Clear()
-            self.m_textCtrl_fuse450.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse450.write(self.parseReadFuseValue(fuseValue))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG1']:
             self.m_textCtrl_fuse460.Clear()
-            self.m_textCtrl_fuse460.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse460.write(self.parseReadFuseValue(fuseValue))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_BOOT_CFG2']:
             self.m_textCtrl_fuse470.Clear()
-            self.m_textCtrl_fuse470.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse470.write(self.parseReadFuseValue(fuseValue))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF0']:
             self.m_textCtrl_fuse6d0.Clear()
-            self.m_textCtrl_fuse6d0.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse6d0.write(self.parseReadFuseValue(fuseValue))
         elif fuseIndex == self.tgt.efusemapIndexDict['kEfuseIndex_MISC_CONF1']:
             self.m_textCtrl_fuse6e0.Clear()
-            self.m_textCtrl_fuse6e0.write(self._parseReadFuseValue(fuseValue))
+            self.m_textCtrl_fuse6e0.write(self.parseReadFuseValue(fuseValue))
         else:
             pass
 

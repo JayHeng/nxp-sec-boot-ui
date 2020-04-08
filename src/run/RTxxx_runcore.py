@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import math
 from run import RTxxx_rundef
 from run import rundef
 import boot
@@ -118,8 +119,27 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
         self.printLog(cmdStr)
         return (status == boot.status.kStatus_Success)
 
+    def RTxxx_readMcuDeviceOtpByBlhost( self, otpIndex, otpName, needToShow=True):
+        status, results, cmdStr = self.blhost.efuseReadOnce(otpIndex)
+        self.printLog(cmdStr)
+        if (status == boot.status.kStatus_Success):
+            if needToShow:
+                self.printDeviceStatus(otpName + " = " + self.convertLongIntHexText(str(hex(results[1]))))
+            return results[1]
+        else:
+            if needToShow:
+                self.printDeviceStatus(otpName + " = --------")
+            return None
+
+    def _RTxxx_readMcuDeviceOtpBootCfg( self ):
+        self.RTxxx_readMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpIndex_BOOT_CFG0'], '(0x60) BOOT_CFG0')
+        self.RTxxx_readMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpIndex_BOOT_CFG1'], '(0x61) BOOT_CFG1')
+        self.RTxxx_readMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpIndex_BOOT_CFG2'], '(0x62) BOOT_CFG2')
+        self.RTxxx_readMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpIndex_BOOT_CFG3'], '(0x63) BOOT_CFG3')
+
     def RTxxx_getMcuDeviceInfoViaRom( self ):
-        self.printDeviceStatus("--------MCU device Register----------")
+        self.printDeviceStatus("--------MCU device otpmap--------")
+        self._RTxxx_readMcuDeviceOtpBootCfg()
 
     def _getXspiNorDeviceInfo ( self ):
         if not self.RTxxx_isDeviceEnabledToOperate:
@@ -152,6 +172,34 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
             pass
         return True
 
+    def _getFlexcommSpiNorDeviceInfo ( self ):
+        pageByteSize = 0
+        sectorByteSize = 0
+        totalByteSize = 0
+        flexcommSpiNorOpt0, flexcommSpiNorOpt1 = uivar.getBootDeviceConfiguration(self.bootDevice)
+        val = (flexcommSpiNorOpt0 & 0x0000000F) >> 0
+        if val <= 2:
+            pageByteSize = int(math.pow(2, val + 8))
+        else:
+            pageByteSize = int(math.pow(2, val + 2))
+        val = (flexcommSpiNorOpt0 & 0x000000F0) >> 4
+        if val <= 1:
+            sectorByteSize = int(math.pow(2, val + 12))
+        else:
+            sectorByteSize = int(math.pow(2, val + 13))
+        val = (flexcommSpiNorOpt0 & 0x00000F00) >> 8
+        if val <= 11:
+            totalByteSize = int(math.pow(2, val + 19))
+        else:
+            totalByteSize = int(math.pow(2, val + 3))
+        self.printDeviceStatus("Page Size   = " + self.showAsOptimalMemoryUnit(pageByteSize))
+        self.printDeviceStatus("Sector Size = " + self.showAsOptimalMemoryUnit(sectorByteSize))
+        self.printDeviceStatus("Total Size  = " + self.showAsOptimalMemoryUnit(totalByteSize))
+        self.comMemWriteUnit = pageByteSize
+        self.comMemEraseUnit = sectorByteSize
+        self.comMemReadUnit = pageByteSize
+        return True
+
     def RTxxx_getBootDeviceInfoViaRom ( self ):
         if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor or \
            self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
@@ -168,8 +216,8 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
                     return False
                 self._getXspiNorDeviceInfo()
         elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
-            self.printDeviceStatus("--Flexcomm SPI NOR/EEPROM memory--")
-            pass
+            self.printDeviceStatus("--Flexcomm SPI NOR memory--")
+            self._getFlexcommSpiNorDeviceInfo()
         elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcSd:
             self.printDeviceStatus("--------uSDHC SD Card info--------")
             pass
@@ -235,6 +283,9 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
            self.bootDevice == RTxxx_uidef.kBootDevice_QuadspiNor:
             flexspiNorOpt0, flexspiNorOpt1, flexspiNorDeviceModel = uivar.getBootDeviceConfiguration(uidef.kBootDevice_XspiNor)
             configOptList.extend([flexspiNorOpt0, flexspiNorOpt1])
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            flexcommSpiNorOpt0, flexcommSpiNorOpt1 = uivar.getBootDeviceConfiguration(self.bootDevice)
+            configOptList.extend([flexcommSpiNorOpt0, flexcommSpiNorOpt1])
         else:
             pass
         status = boot.status.kStatus_Success
@@ -269,6 +320,11 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
         self.isXspiNorErasedForImage = True
         return True
 
+    def RTxxx_burnMcuDeviceOtpByBlhost( self, otpIndex, otpValue, actionFrom=RTxxx_rundef.kActionFrom_AllInOne):
+        status, results, cmdStr = self.blhost.efuseProgramOnce(otpIndex, self.getFormattedFuseValue(otpValue))
+        self.printLog(cmdStr)
+        return (status == boot.status.kStatus_Success)
+
     def RTxxx_flashBootableImage ( self ):
         self._RTxxx_prepareForBootDeviceOperation()
         imageLen = os.path.getsize(self.destAppFilename)
@@ -290,6 +346,17 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
             self.isFdcbFromSrcApp = False
             if status != boot.status.kStatus_Success:
                 return False
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            memEraseLen = misc.align_up(imageLen, self.comMemEraseUnit)
+            imageLoadAddr = self.bootDeviceMemBase + RTxxx_gendef.kBootImageOffset_NOR_SD_EEPROM
+            status, results, cmdStr = self.blhost.flashEraseRegion(imageLoadAddr, memEraseLen, self.bootDeviceMemId)
+            self.printLog(cmdStr)
+            if status != boot.status.kStatus_Success:
+                return False
+            status, results, cmdStr = self.blhost.writeMemory(imageLoadAddr, self.destAppFilename, self.bootDeviceMemId)
+            self.printLog(cmdStr)
+            if status != boot.status.kStatus_Success:
+                return False
         else:
             pass
         if self.isConvertedAppUsed:
@@ -298,6 +365,38 @@ class secBootRTxxxRun(RTxxx_gencore.secBootRTxxxGen):
             except:
                 pass
             self.isConvertedAppUsed = False
+        return True
+
+    def _getMcuDeviceFlexcommSpiCfg( self ):
+        flexcommSpi = self.RTxxx_readMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpLocation_FlexcommSpiCfg'], '', False)
+        return flexcommSpi
+
+    def RTxxx_burnBootDeviceOtps( self ):
+        if self.bootDevice == RTxxx_uidef.kBootDevice_FlexspiNor:
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            setFlexcommSpiCfg = 0
+            flexcommSpiNorOpt0, flexcommSpiNorOpt1 = uivar.getBootDeviceConfiguration(self.bootDevice)
+            # Set Spi Index
+            spiIndex = ((flexcommSpiNorOpt0 & 0x00F00000) >> 20)
+            setFlexcommSpiCfg = (setFlexcommSpiCfg & (~self.tgt.otpmapDefnDict['kOtpMask_RedundantSpiPort']) | (spiIndex << self.tgt.otpmapDefnDict['kOtpShift_RedundantSpiPort']))
+            getFlexcommSpiCfg = self._getMcuDeviceFlexcommSpiCfg()
+            if getFlexcommSpiCfg != None:
+                getFlexcommSpiCfg = getFlexcommSpiCfg | setFlexcommSpiCfg
+                if (getFlexcommSpiCfg & self.tgt.otpmapDefnDict['kOtpMask_RedundantSpiPort']) != setFlexcommSpiCfg:
+                    self.popupMsgBox(uilang.kMsgLanguageContentDict['burnOtpError_bootCfg0HasBeenBurned'][self.languageIndex])
+                    return False
+                else:
+                    burnResult = self.RTxxx_burnMcuDeviceOtpByBlhost(self.tgt.otpmapIndexDict['kOtpLocation_FlexcommSpiCfg'], getFlexcommSpiCfg)
+                    if not burnResult:
+                        self.popupMsgBox(uilang.kMsgLanguageContentDict['burnOtpError_failToBurnBootCfg0'][self.languageIndex])
+                        return False
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcSd:
+            pass
+        elif self.bootDevice == RTxxx_uidef.kBootDevice_UsdhcMmc:
+            pass
+        else:
+            pass
         return True
 
     def RTxxx_resetMcuDevice( self ):

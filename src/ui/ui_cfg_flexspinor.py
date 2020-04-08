@@ -111,7 +111,10 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
         self.m_choice_quadModeSetting.SetSelection(quadModeSetting)
 
         miscMode = (self.flexspiNorOpt0 & 0x000000F0) >> 4
-        self.m_choice_miscMode.SetSelection(miscMode)
+        if miscMode <= 3:
+            self.m_choice_miscMode.SetSelection(miscMode)
+        else:
+            self.m_choice_miscMode.SetSelection(miscMode - 1)
 
         maxFrequency = (self.flexspiNorOpt0 & 0x0000000F) >> 0
         self.m_choice_maxFrequency.SetSelection(maxFrequency - 1)
@@ -207,6 +210,10 @@ class secBootUiCfgFlexspiNor(bootDeviceWin_FlexspiNor.bootDeviceWin_FlexspiNor):
             val = 0x2
         elif txt == 'Data Order Swapped':
             val = 0x3
+        elif txt == 'Data Samp Intr Loopback':
+            val = 0x5
+        elif txt == 'Stand SPI mode':
+            val = 0x6
         else:
             pass
         self.flexspiNorOpt0 = (self.flexspiNorOpt0 & 0xFFFFFF0F) | (val << 4)

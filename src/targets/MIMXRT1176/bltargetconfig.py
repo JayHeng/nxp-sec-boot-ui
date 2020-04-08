@@ -61,7 +61,8 @@ hasRemappedFuse = False
 availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_SemcNand]
 flexspiNorDevice = uidef.kFlexspiNorDevice_ISSI_IS25LP064A
-flexspiNorMemBase = 0x30000000
+flexspiNorMemBase0 = 0x30000000
+flexspiNorMemBase1 = 0x60000000
 flexspiFreqs = ['30MHz', '50MHz', '60MHz', '80MHz', '100MHz', '120MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = 12
@@ -83,10 +84,16 @@ efuseDescDiffDict = {
                      '0xc70_flexramcfg_bit21_16':RTyyyy_uidef_efuse.efuse_0xc70_flexramPartion512KB,
                     }
 
+otpmapIndexDict = None
+otpmapDefnDict  = None
+otpDescDiffDict = None
+
 # memory map
 memoryRange = {
-    # ITCM, 512KByte
+    # ITCM_CM7, 512KByte
     'itcm' : MemoryRange(0x00000000, 0x80000, 'state_mem0.dat'),
+    # ITCM_CM4, 128KByte
+    'itcm_cm4' : MemoryRange(0x1FFE0000, 0x20000, 'state_mem0.dat'),
     # DTCM, 512KByte
     'dtcm' : MemoryRange(0x20000000, 0x80000, 'state_mem1.dat'),
     # OCRAM, 2MByte

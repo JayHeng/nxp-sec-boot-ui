@@ -24,10 +24,10 @@ class secBootMem(runcore.secBootRun):
 
     def tryToSaveImageDataFile( self, readbackFilename ):
         if self.needToSaveReadbackImageData():
-            savedBinFile = self.getImageDataFileToSave()
-            if os.path.isfile(savedBinFile):
-                if readbackFilename != savedBinFile:
-                    shutil.copy(readbackFilename, savedBinFile)
+            savedBinFolder = self.getImageDataFolderToSave()
+            if os.path.isdir(savedBinFolder):
+                savedBinFile = os.path.join(savedBinFolder, u"readbackBootDeviceMemory.dat")
+                shutil.copy(readbackFilename, savedBinFile)
             else:
                 finalBinFile = os.path.join(self.userFolder, os.path.split(readbackFilename)[1])
                 shutil.copy(readbackFilename, finalBinFile)
@@ -103,16 +103,18 @@ class secBootMem(runcore.secBootRun):
             self.printLog(cmdStr)
             if status == boot.status.kStatus_Success:
                 self.clearMem()
-                memLeft = memLength
-                addr = memStart
-                with open(memFilepath, 'rb') as fileObj:
-                    fileObj.seek(memStart - alignedMemStart)
-                    while memLeft > 0:
-                        contentToShow, memContent = self.getOneLineContentToShow(addr, memLeft, fileObj)
-                        memLeft -= len(memContent)
-                        addr += len(memContent)
-                        self.printMem(contentToShow)
-                self.tryToSaveImageDataFile(memFilepath)
+                if not self.needToSaveReadbackImageData():
+                    memLeft = memLength
+                    addr = memStart
+                    with open(memFilepath, 'rb') as fileObj:
+                        fileObj.seek(memStart - alignedMemStart)
+                        while memLeft > 0:
+                            contentToShow, memContent = self.getOneLineContentToShow(addr, memLeft, fileObj)
+                            memLeft -= len(memContent)
+                            addr += len(memContent)
+                            self.printMem(contentToShow)
+                else:
+                    self.tryToSaveImageDataFile(memFilepath)
             else:
                 if self.languageIndex == uilang.kLanguageIndex_English:
                     self.popupMsgBox('Failed to read boot device, error code is %d !' %(status))

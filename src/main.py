@@ -26,7 +26,7 @@ from ui import ui_cfg_semcnor
 from ui import ui_cfg_semcnand
 from ui import ui_cfg_usdhcsd
 from ui import ui_cfg_usdhcmmc
-from ui import ui_cfg_lpspinor
+from ui import ui_cfg_recoveryspinor
 
 g_main_win = None
 g_task_detectUsbhid = None
@@ -135,10 +135,15 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
             usdhcMmcFrame = ui_cfg_usdhcmmc.secBootUiUsdhcMmc(None)
             usdhcMmcFrame.SetTitle(uilang.kSubLanguageContentDict['usdhcmmc_title'][self.languageIndex])
             usdhcMmcFrame.Show(True)
-        elif self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor:
-            lpspiNorFrame = ui_cfg_lpspinor.secBootUiCfgLpspiNor(None)
-            lpspiNorFrame.SetTitle(uilang.kSubLanguageContentDict['lpspinor_title'][self.languageIndex])
-            lpspiNorFrame.Show(True)
+        elif self.bootDevice == RTyyyy_uidef.kBootDevice_LpspiNor or \
+             self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+            recoverySpiNorFrame = ui_cfg_recoveryspinor.secBootUiCfgRecoverySpiNor(None)
+            if self.bootDevice == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+                recoverySpiNorFrame.SetTitle(uilang.kSubLanguageContentDict['flexcommspinor_title'][self.languageIndex])
+            else:
+                recoverySpiNorFrame.SetTitle(uilang.kSubLanguageContentDict['lpspinor_title'][self.languageIndex])
+            recoverySpiNorFrame.setNecessaryInfo(self.mcuSeries)
+            recoverySpiNorFrame.Show(True)
         else:
             pass
 
@@ -224,13 +229,23 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
         while True:
             if self.isAccessMemTaskPending:
                 if self.accessMemType == 'ScanFuse':
-                    self.scanAllFuseRegions()
-                    if self.isSbFileEnabledToGen:
-                        self.initSbEfuseBdfileContent()
+                    if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
+                        self.RTyyyy_scanAllFuseRegions()
+                        if self.isSbFileEnabledToGen:
+                            self.initSbEfuseBdfileContent()
+                    elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+                        self.RTxxx_scanAllOtpRegions()
+                    else:
+                        pass
                 elif self.accessMemType == 'BurnFuse':
-                    self.burnAllFuseRegions()
-                    if self.isSbFileEnabledToGen:
-                        self.genSbEfuseImage()
+                    if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
+                        self.RTyyyy_burnAllFuseRegions()
+                        if self.isSbFileEnabledToGen:
+                            self.genSbEfuseImage()
+                    elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+                        self.RTxxx_burnAllOtpRegions()
+                    else:
+                        pass
                 elif self.accessMemType == 'SaveFuse':
                     self.saveFuseRegions()
                 elif self.accessMemType == 'LoadFuse':
@@ -452,8 +467,14 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def _switchEfuseGroup( self ):
         self.setEfuseGroup()
-        self.updateFuseGroupText()
-        self.updateFuseRegionField()
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
+            self.RTyyyy_updateFuseGroupText()
+            self.RTyyyy_updateFuseRegionField()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            self.RTxxx_updateOtpGroupText()
+            self.RTxxx_updateOtpRegionField()
+        else:
+            pass
 
     def callbackSetEfuseGroupTo0( self, event ):
         self._switchEfuseGroup()
@@ -466,6 +487,30 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
 
     def callbackSetEfuseGroupTo3( self, event ):
         self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo4( self, event ):
+        self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo5( self, event ):
+        self._switchEfuseGroup()
+
+    def callbackSetEfuseGroupTo6( self, event ):
+        self._switchEfuseGroup()
+
+    def _switchFlexspiXipRegion( self ):
+        self.setFlexspiXipRegion()
+        if self.mcuSeries in uidef.kMcuSeries_iMXRTyyyy:
+            self.RTyyyy_updateFlexspiNorMemBase()
+        elif self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
+            pass
+        else:
+            pass
+
+    def callbackSetFlexspiXipRegionTo0( self, event ):
+        self._switchFlexspiXipRegion()
+
+    def callbackSetFlexspiXipRegionTo1( self, event ):
+        self._switchFlexspiXipRegion()
 
     def _doSetLanguage( self ):
         self.setLanguage()
@@ -508,14 +553,16 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
                    (uilang.kMsgLanguageContentDict['revisionHistory_v1_3_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v1_4_0'][self.languageIndex]) +
                    (uilang.kMsgLanguageContentDict['revisionHistory_v2_0_0'][self.languageIndex]) +
-                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_1_0'][self.languageIndex]))
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_1_0'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_2_0'][self.languageIndex]) +
+                   (uilang.kMsgLanguageContentDict['revisionHistory_v2_3_0'][self.languageIndex]))
         wx.MessageBox(msgText, uilang.kMsgLanguageContentDict['revisionHistory_title'][self.languageIndex], wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == '__main__':
     app = wx.App()
 
     g_main_win = secBootMain(None)
-    g_main_win.SetTitle(u"NXP MCU Boot Utility v2.1.0")
+    g_main_win.SetTitle(u"NXP MCU Boot Utility v2.3.0")
     g_main_win.Show()
 
     g_task_detectUsbhid = threading.Thread(target=g_main_win.task_doDetectUsbhid)

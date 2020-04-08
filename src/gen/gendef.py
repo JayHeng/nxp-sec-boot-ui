@@ -8,5 +8,9 @@ kAppImageFileExtensionList_S19 = ['.srec', '.s19', '.mot', '.mxt', '.m32', '.s28
 kAppImageFileExtensionList_Hex = ['.hex']
 kAppImageFileExtensionList_Bin = ['.bin']
 
+kIdeType_MCUX = 0
+kIdeType_IAR  = 1
+kIdeType_MDK  = 2
+
 
 

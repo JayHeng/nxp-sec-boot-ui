@@ -29,7 +29,7 @@ class bootDeviceWin_FlexspiNor ( wx.Frame ):
 
 		wSizer_win.Add( self.m_staticText_deviceModel, 0, wx.ALL, 5 )
 
-		m_choice_deviceModeChoices = [ u"No", u"ISSI_IS25LPxxxA_IS25WPxxxA", u"ISSI_IS26KSxxxS", u"Macronix_MX25UMxxx45G_MX66UMxxx45G_MX25LMxxx45G", u"Macronix_MX25UM51345G", u"Micron_MT35XLxxxA_MT35XUxxxA", u"Adesto_AT25SFxxxA", u"Adesto_ATXPxxx", u"Cypress_S26KSxxxS", u"GigaDevice_GD25LBxxxE", u"GigaDevice_GD25LTxxxE", u"GigaDevice_GD25LXxxxE", u"Winbond_W25QxxxJV" ]
+		m_choice_deviceModeChoices = [ u"No", u"ISSI_IS25LPxxxA_IS25WPxxxA", u"ISSI_IS26KSxxxS", u"Macronix_MX25UMxxx45G_MX66UMxxx45G_MX25LMxxx45G", u"Macronix_MX25UM51345G", u"Macronix_MX25UM51345G_2nd", u"Micron_MT35XLxxxA_MT35XUxxxA", u"Adesto_AT25SFxxxA", u"Adesto_ATXPxxx", u"Cypress_S26KSxxxS", u"GigaDevice_GD25LBxxxE", u"GigaDevice_GD25LTxxxE", u"GigaDevice_GD25LXxxxE", u"Winbond_W25QxxxJV" ]
 		self.m_choice_deviceMode = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 340,-1 ), m_choice_deviceModeChoices, 0 )
 		self.m_choice_deviceMode.SetSelection( 0 )
 		wSizer_win.Add( self.m_choice_deviceMode, 0, wx.ALL, 5 )
@@ -88,7 +88,7 @@ class bootDeviceWin_FlexspiNor ( wx.Frame ):
 
 		gSizer_norOpt0.Add( self.m_staticText_miscMode, 0, wx.ALL, 5 )
 
-		m_choice_miscModeChoices = [ u"Disabled", u"0_4_4 Mode", u"0_8_8 Mode", u"Data Order Swapped" ]
+		m_choice_miscModeChoices = [ u"Disabled", u"0_4_4 Mode", u"0_8_8 Mode", u"Data Order Swapped", u"Data Samp Intr Loopback", u"Stand SPI mode" ]
 		self.m_choice_miscMode = wx.Choice( self.m_panel_norOpt0, wx.ID_ANY, wx.DefaultPosition, wx.Size( 140,-1 ), m_choice_miscModeChoices, 0 )
 		self.m_choice_miscMode.SetSelection( 0 )
 		gSizer_norOpt0.Add( self.m_choice_miscMode, 0, wx.ALL, 5 )

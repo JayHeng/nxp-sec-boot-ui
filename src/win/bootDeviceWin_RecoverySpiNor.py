@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version Aug  8 2018)
+## Python code generated with wxFormBuilder (version Oct 26 2018)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -11,10 +11,10 @@ import wx
 import wx.xrc
 
 ###########################################################################
-## Class bootDeviceWin_LpspiNor
+## Class bootDeviceWin_RecoverySpiNor
 ###########################################################################
 
-class bootDeviceWin_LpspiNor ( wx.Frame ):
+class bootDeviceWin_RecoverySpiNor ( wx.Frame ):
 
     def __init__( self, parent ):
         wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 552,256 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )

@@ -38,7 +38,7 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
         self.m_button_ok.SetLabel(uilang.kSubLanguageContentDict['button_otpmkkey_ok'][langIndex])
         self.m_button_cancel.SetLabel(uilang.kSubLanguageContentDict['button_otpmkkey_cancel'][langIndex])
 
-    def setNecessaryInfo( self, secureBootType ):
+    def setNecessaryInfo( self, secureBootType, xipBaseAddr ):
         if self.secureBootType != secureBootType:
             if self.secureBootType == RTyyyy_uidef.kSecureBootType_BeeCrypto:
                 self.otpmkKeyOpt = 0xe0100000
@@ -67,6 +67,10 @@ class secBootUiSettingsFixedOtpmkKey(advSettingsWin_FixedOtpmkKey.advSettingsWin
         self.m_choice_keySource.SetItems(keySource)
         self.m_choice_regionCnt.Clear()
         self.m_choice_regionCnt.SetItems(regionCnt)
+        self.m_textCtrl_region0Start.Clear()
+        self.m_textCtrl_region0Start.write(str(hex(xipBaseAddr + 0x1000)))
+        self.m_textCtrl_region1Start.Clear()
+        self.m_textCtrl_region1Start.write(str(hex(xipBaseAddr + 0x2000)))
         self._recoverLastSettings()
 
     def _updateRegionInfoField ( self, regionCnt ):

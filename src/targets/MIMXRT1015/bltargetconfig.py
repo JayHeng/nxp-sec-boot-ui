@@ -59,7 +59,8 @@ hasRemappedFuse = False
 availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_LpspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_Adesto_AT25SF128A
-flexspiNorMemBase = 0x60000000
+flexspiNorMemBase0 = 0x60000000
+flexspiNorMemBase1 = None
 flexspiFreqs = ['30MHz', '50MHz', '60MHz', '75MHz', '80MHz', '100MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x0
 flexspiNorEfuseBootCfg0Bits = 10
@@ -171,6 +172,10 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        RTyyyy_uidef_efuse.efuse_temp_re
                      '0x6e0_miscconf1_bit23_16':RTyyyy_uidef_efuse.efuse_temp_reserved8,
                      '0x6e0_miscconf1_bit31_24':RTyyyy_uidef_efuse.efuse_temp_reserved8,
                     }
+
+otpmapIndexDict = None
+otpmapDefnDict  = None
+otpDescDiffDict = None
 
 # memory map
 memoryRange = {

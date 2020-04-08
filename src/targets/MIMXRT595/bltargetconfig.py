@@ -32,6 +32,7 @@ import sys, os
 #sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
 from ui import RTxxx_uidef
+from ui import RTxxx_uidef_otp
 from ui import uidef
 
 cpu = 'MIMXRT595'
@@ -51,9 +52,10 @@ availableCommands = 0x5EFDF
 supportedPeripheralSpeed_uart = [4800, 9600, 19200, 57600, 115200] # @todo Verify
 availableSecureBootTypes = RTxxx_uidef.kSecureBootType_Latest
 hasRemappedFuse = None
-availableBootDevices = [RTxxx_uidef.kBootDevice_FlexspiNor]
+availableBootDevices = RTxxx_uidef.kBootDevice_Latest
 flexspiNorDevice = uidef.kFlexspiNorDevice_None
-flexspiNorMemBase = 0x08000000
+flexspiNorMemBase0 = 0x08000000
+flexspiNorMemBase1 = None
 flexspiFreqs = None
 xspiNorCfgInfoOffset = 0x400
 flexspiNorEfuseBootCfg0Bits = None
@@ -71,6 +73,10 @@ registerDefnDict  = None
 efusemapIndexDict = None
 efusemapDefnDict  = None
 efuseDescDiffDict = None
+
+otpmapIndexDict = RTxxx_uidef_otp.otpmapIndexDict_RTxxx
+otpmapDefnDict  = RTxxx_uidef_otp.otpmapDefnDict_RTxxx
+otpDescDiffDict = None
 
 # memory map
 memoryRange = {

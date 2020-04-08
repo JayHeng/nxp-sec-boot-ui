@@ -16,6 +16,9 @@
 /doc
 /ext
 /gen
+/releases
+/src/targets/*/A0_patch
+/src/targets/*/B0_patch
 /tools
 
 # Python bytecode

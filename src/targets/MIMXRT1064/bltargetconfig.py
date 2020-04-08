@@ -61,7 +61,8 @@ availableBootDevices = [RTyyyy_uidef.kBootDevice_FlexspiNor,
                         RTyyyy_uidef.kBootDevice_UsdhcMmc,
                         RTyyyy_uidef.kBootDevice_LpspiNor]
 flexspiNorDevice = uidef.kFlexspiNorDevice_None
-flexspiNorMemBase = 0x70000000
+flexspiNorMemBase0 = 0x70000000
+flexspiNorMemBase1 = None
 flexspiFreqs = ['30MHz', '50MHz', '60MHz', '75MHz', '80MHz', '100MHz', '120MHz', '133MHz', '166MHz', '200MHz']
 xspiNorCfgInfoOffset = 0x0
 flexspiNorEfuseBootCfg0Bits = 12
@@ -219,6 +220,10 @@ efuseDescDiffDict = {'0x400_lock_bit7' :        efuse_0x400_bit7,
                      '0x6e0_miscconf1_bit23_16':efuse_0x6e0_bit23_16,
                      '0x6e0_miscconf1_bit31_24':efuse_0x6e0_bit31_24,
                     }
+
+otpmapIndexDict = None
+otpmapDefnDict  = None
+otpDescDiffDict = None
 
 # memory map
 memoryRange = {

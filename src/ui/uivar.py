@@ -27,6 +27,7 @@ g_toolCommDict = {'isToolRunAsEntryMode':None,
                   'isAutomaticImageReadback':None,
                   'flashloaderResident':None,
                   'efuseGroupSel':None,
+                  'flexspiXipRegionSel':None,
                   'isEnglishLanguage':None,
                   'secBootType':None,
                   'mcuSeries':None,
@@ -56,10 +57,6 @@ g_semcNorOpt = None
 g_semcNorSetting = None
 g_semcNorDeviceModel = None
 
-g_semcNorOpt = 0xD0000600
-g_semcNorSetting = 0x00010601
-g_semcNorDeviceModel = uidef.kSemcNorDevice_None
-
 g_semcNandOpt = None
 g_semcNandFcbOpt = None
 g_semcNandImageInfoList = [None] * 8
@@ -71,6 +68,9 @@ g_usdhcMmcOpt1 = None
 
 g_lpspiNorOpt0 = None
 g_lpspiNorOpt1 = None
+
+g_flexcommSpiNorOpt0 = None
+g_flexcommSpiNorOpt1 = None
 
 g_dcdCtrlDict = {'isDcdEnabled':None,
                  'dcdFileType':None}
@@ -144,6 +144,9 @@ def initVar(cfgFilename):
     global g_lpspiNorOpt0
     global g_lpspiNorOpt1
 
+    global g_flexcommSpiNorOpt0
+    global g_flexcommSpiNorOpt1
+
     global g_flexspiNandOpt
     global g_flexspiNandFcbOpt
     global g_flexspiNandKeyBlob
@@ -189,6 +192,9 @@ def initVar(cfgFilename):
         g_lpspiNorOpt0 = cfgDict["cfgLpspiNor"][0]
         g_lpspiNorOpt1 = cfgDict["cfgLpspiNor"][1]
 
+        g_flexcommSpiNorOpt0 = cfgDict["cfgFlexcommSpiNor"][0]
+        g_flexcommSpiNorOpt1 = cfgDict["cfgFlexcommSpiNor"][1]
+
         g_semcNorOpt = cfgDict["cfgSemcNor"][0]
         g_semcNorSetting = cfgDict["cfgSemcNor"][1]
         g_semcNorDeviceModel = cfgDict["cfgSemcNor"][2]
@@ -215,6 +221,7 @@ def initVar(cfgFilename):
                           'isAutomaticImageReadback':True,
                           'flashloaderResident':None,
                           'efuseGroupSel':0,
+                          'flexspiXipRegionSel':0,
                           'isEnglishLanguage':True,
                           'secBootType':0,
                           'mcuSeries':0,
@@ -242,6 +249,9 @@ def initVar(cfgFilename):
 
         g_lpspiNorOpt0 = 0xc1100500
         g_lpspiNorOpt1 = 0x00000000
+
+        g_flexcommSpiNorOpt0 = 0xc0000000
+        g_flexcommSpiNorOpt1 = 0x00000000
 
         g_flexspiNandOpt = 0xD0010101
         g_flexspiNandFcbOpt = 0x00010601
@@ -316,6 +326,8 @@ def deinitVar(cfgFilename=None):
         global g_semcNandImageInfoList
         global g_lpspiNorOpt0
         global g_lpspiNorOpt1
+        global g_flexcommSpiNorOpt0
+        global g_flexcommSpiNorOpt1
         global g_usdhcSdOpt
         global g_usdhcMmcOpt0
         global g_usdhcMmcOpt1
@@ -331,6 +343,7 @@ def deinitVar(cfgFilename=None):
             "cfgSemcNor": [g_semcNorOpt, g_semcNorSetting, g_semcNorDeviceModel],
             "cfgSemcNand": [g_semcNandOpt, g_semcNandFcbOpt, g_semcNandImageInfoList],
             "cfgLpspiNor": [g_lpspiNorOpt0, g_lpspiNorOpt1],
+            "cfgFlexcommSpiNor": [g_flexcommSpiNorOpt0, g_flexcommSpiNorOpt1],
             "cfgUsdhcSd": [g_usdhcSdOpt],
             "cfgUsdhcMmc": [g_usdhcMmcOpt0, g_usdhcMmcOpt1],
             "cfgDcd": [g_dcdCtrlDict, g_dcdSettingsDict],
@@ -379,6 +392,10 @@ def getBootDeviceConfiguration( group ):
         global g_lpspiNorOpt0
         global g_lpspiNorOpt1
         return g_lpspiNorOpt0, g_lpspiNorOpt1
+    elif group == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+        global g_flexcommSpiNorOpt0
+        global g_flexcommSpiNorOpt1
+        return g_flexcommSpiNorOpt0, g_flexcommSpiNorOpt1
     elif group == RTyyyy_uidef.kBootDevice_Dcd:
         global g_dcdCtrlDict
         global g_dcdSettingsDict
@@ -435,6 +452,11 @@ def setBootDeviceConfiguration( group, *args ):
         global g_lpspiNorOpt1
         g_lpspiNorOpt0 = args[0]
         g_lpspiNorOpt1 = args[1]
+    elif group == RTxxx_uidef.kBootDevice_FlexcommSpiNor:
+        global g_flexcommSpiNorOpt0
+        global g_flexcommSpiNorOpt1
+        g_flexcommSpiNorOpt0 = args[0]
+        g_flexcommSpiNorOpt1 = args[1]
     elif group == RTyyyy_uidef.kBootDevice_Dcd:
         global g_dcdCtrlDict
         global g_dcdSettingsDict

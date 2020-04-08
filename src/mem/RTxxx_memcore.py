@@ -4,9 +4,10 @@ import sys
 import os
 import shutil
 import boot
+
 from mem import RTxxx_memdef
-#sys.path.append(os.path.abspath(".."))
-from run import RTxxx_runcore
+#from run import RTxxx_runcore
+from fuse import RTxxx_otpcore
 from gen import RTxxx_gendef
 from ui import RTxxx_uidef
 from ui import uidef
@@ -14,10 +15,10 @@ from ui import uivar
 from ui import uilang
 from utils import misc
 
-class secBootRTxxxMem(RTxxx_runcore.secBootRTxxxRun):
+class secBootRTxxxMem(RTxxx_otpcore.secBootRTxxxOtp):
 
     def __init__(self, parent):
-        RTxxx_runcore.secBootRTxxxRun.__init__(self, parent)
+        RTxxx_otpcore.secBootRTxxxOtp.__init__(self, parent)
         if self.mcuSeries == uidef.kMcuSeries_iMXRTxxx:
             self.RTxxx_initMem()
 

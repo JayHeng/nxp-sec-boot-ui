@@ -110,6 +110,10 @@ class secBootUiSettingsFlexibleUserKeysBee(advSettingsWin_FlexibleUserKeys_Bee.a
             self.m_choice_engineSel.SetItems(engineSel)
             self.m_choice_engineSel.SetSelection(0)
             self._changeEngineSelection()
+            self.m_textCtrl_engine0Fac0Start.Clear()
+            self.m_textCtrl_engine0Fac0Start.write(str(hex(xipBaseAddr + 0x1000)))
+            self.m_textCtrl_engine1Fac0Start.Clear()
+            self.m_textCtrl_engine1Fac0Start.write(str(hex(xipBaseAddr + 0x3000)))
             self.m_choice_xipBaseAddr.Clear()
             xipBaseAddr = [str(hex(xipBaseAddr))]
             self.m_choice_xipBaseAddr.SetItems(xipBaseAddr)

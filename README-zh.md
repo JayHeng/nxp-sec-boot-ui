@@ -1,11 +1,11 @@
 # NXP MCU Boot Utility
 
-[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.0.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.0.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/releases/latest) [![GitHub commits](https://img.shields.io/github/commits-since/JayHeng/NXP-MCUBootUtility/v2.2.0.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/compare/v2.2.0...master) ![GitHub All Releases](https://img.shields.io/github/downloads/JayHeng/NXP-MCUBootUtility/total.svg) [![GitHub license](https://img.shields.io/github/license/JayHeng/NXP-MCUBootUtility.svg)](https://github.com/JayHeng/NXP-MCUBootUtility/blob/master/LICENSE)
 
 [English](./README.md) | 中文
 
 ```text
-对于MCUBootUtility，RT-Flash工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
+对于MCUBootUtility，MCUBootFlasher（RT-Flash）工具，有任何使用上的问题，可以在《痞子衡嵌入式》博客下留言，也可以扫码加入QQ交流群。  
 ```
 
 <img src="http://henjay724.com/image/cnblogs/MCUBootUtility_qq.png" style="zoom:100%" />
@@ -22,11 +22,12 @@
 > * 支持下载Bootable image进外部启动设备
 > * 支持外部启动设备的任意读/写/擦操作（即通用Flash编程器）  
 -------------------------------------------------------
-> * 支持i.MXRTyyyy全系列MCU，包含i.MXRT1011、i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP  
+> * 支持i.MXRTyyyy全系列MCU，包含i.MXRT1011、i.MXRT1015、i.MXRT1021、i.MXRT1051/1052、i.MXRT1061/1062、i.MXRT1064 SIP、i.MXRT1171/1172/1173/1174/1175/1176  
 > * 源image文件既可以是裸源image文件，也可以是含启动文件头的bootable image文件  
 > * 支持将裸源image文件自动转换成MfgTool和RT-Flash工具能下载的.sb格式文件  
 > * 支持下载Bootable image进主动启动设备 - FlexSPI接口NOR Flash  
 > * 支持下载Bootable image进主动启动设备 - SEMC接口NAND Flash  
+> * 支持下载Bootable image进主动启动设备 - SEMC接口NOR Flash  
 > * 支持下载Bootable image进主动启动设备 - uSDHC接口SD/eMMC卡  
 > * 支持下载Bootable image进备份启动设备 - LPSPI接口NOR/EEPROM Flash  
 > * 支持DCD配置功能，可用于加载image进SDRAM执行  
@@ -40,7 +41,9 @@
 -------------------------------------------------------
 > * 支持i.MXRTxxx全系列MCU，包含i.MXRT533/535/553/555/583/585/593/595、i.MXRT633/635/685  
 > * 支持下载Bootable image进主动启动设备 - FlexSPI/QuadSPI接口NOR Flash  
+> * 支持下载Bootable image进备份启动设备 - Flexcomm SPI接口NOR Flash  
 > * 支持用于开发阶段的非安全加密启动（未签名，CRC校验）  
+> * 支持MCU芯片内部OTP的回读和烧写操作（即专用OTP烧写器）  
 > * 支持MCU芯片内部SRAM的读/写/执行操作（即专用SRAM编程器，可用于ISP启动）  
 > * 支持从外部启动设备回读Bootable image，并对其组成部分（OTFAD KeyBlob/FDCB/KeyStore/Image）进行标注  
 
@@ -113,6 +116,8 @@
 
 ### 2 准备工作
 　　在使用NXP-MCUBootUtility工具前主要有两个准备工作：一、准备好i.MXRT硬件板以及串行下载连接线（USB/UART）；二、准备好用于下载进Flash的源image文件。  
+
+##### 2.1 对于RT四位数系列
 　　关于串行下载线连接，需要查看i.MXRT参考手册System Boot章节，确保连接的UART/USB引脚是BootROM指定的。  
 　　关于源image文件准备，NXP-MCUBootUtility工具能够识别五种常见格式(elf/axf/srec/hex/bin)的image，源image既可以包含i.MXRT加载启动头（IVT, BootData等），也可以不包含这些i.MXRT加载启动头。如果源image中不包含这些启动头，NXP-MCUBootUtility会自动添加文件头。  
 　　以NXP官方SDK为例进一步讲解源image文件的生成，注册并登录NXP官网，来到 [MCUXpresso SDK Builder](https://mcuxpresso.nxp.com/en/select) 页面，选择合适的MCU芯片以及IDE（以RT1060芯片，IAR IDE为例）并点击Download SDK后便可得到SDK_2.4.0_EVK-MIMXRT1060.zip。  
@@ -142,6 +147,10 @@ define symbol m_data2_end              = 0x202BFFFF;
 
 ![NXP-MCUBootUtility_sdkProjectOptions](http://henjay724.com/image/cnblogs/nxpSecBoot_sdkProjectOptions.PNG)
 
+##### 2.2 对于RT三位数系列
+　　关于串行下载线连接，需要查看i.MXRT参考手册Non-Secure Boot ROM章节，确保连接的UART/USB引脚是BootROM指定的。  
+　　关于源image文件准备，NXP-MCUBootUtility工具能够识别五种常见格式(elf/axf/srec/hex/bin)的image，源image既可以是已填充好boot image header（imageLength, imageLoadAddress等）的app，也可以不填充boot image header。如果源image中不包含boot image header，NXP-MCUBootUtility会自动添加。  
+
 　　如果只是为了快速验证NXP-MCUBootUtility工具，在NXP-MCUBootUtility\apps文件夹下默认存放了全系列恩智浦官方i.MXRT评估板的led_blinky应用的image文件。  
 
 ### 3 软件使用
@@ -155,7 +164,7 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　EVK-MIMXRT1060开发板上的IS25WP064AJBLE芯片属于ISSI - IS25LP064A大类，因此我们只需要在【Use Typical Device Model】选择ISSI - IS25LP064A并点击【Ok】即完成了目标设备的设置。  
 
 #### 3.2 连接目标设备
-　　设置好目标设备之后，下一步便是连接目标设备，以USB-HID接口连接为例，给EVK-MIMXRT1060板子供电，并用USB Cable将PC与J9口连接起来，如果一切正常，应该可以在设备管理器找到vid,pid为0x1fc9,0x0135的HID-compliant vendor-defined device设备被枚举。如果没有发现该HID设备，请仔细检查板子SW7拨码开关是否将Boot Mode设为2'b01即Serial Downloader模式。  
+　　设置好目标设备之后，下一步便是连接目标设备，以USB-HID接口连接为例，给EVK-MIMXRT1060板子供电，并用USB Cable将PC与J9口连接起来，如果一切正常，应该可以在设备管理器找到vid,pid为0x1fc9,0x0135（不同RT芯片，USB ID可能不同）的HID-compliant vendor-defined device设备被枚举。如果没有发现该HID设备，请仔细检查板子SW7拨码开关是否将Boot Mode设为2'b01即Serial Downloader模式。  
 
 ![NXP-MCUBootUtility_usbhidDetected_e](http://henjay724.com/image/cnblogs/nxpSecBoot_usbhidDetected_e.png)
 
@@ -177,7 +186,8 @@ define symbol m_data2_end              = 0x202BFFFF;
 > * 【Secure Boot Type】：安全加密模式选择，选择想要安全模式（不使能安全，HAB单签名，HAB签名加密，BEE加密）。  
 > * 【All-In-One Action】：一键操作，image生成窗口和image下载窗口里激活的操作自动按序执行  
 
-##### 3.3.1 模式一：不启用任何安全措施
+##### 3.3.1 对于RT四位数系列
+###### 3.3.1.1 模式一：不启用任何安全措施
 　　第一种模式是最简单的模式，即不启动任何安全措施，一般用于产品开发调试阶段。  
 　　【Secure Boot Type】选择“DEV Unsigned Image Boot”，然后点击【Browse】按钮选择一个原始image文件（使用IDE生成的裸image文件即可，不需要包含任何i.MXRT启动所需的额外文件头），点击【All-In-One Action】按钮即可完成bootable image生成与下载所有操作。  
 
@@ -188,7 +198,7 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　上图中Step4和Step5并不是必需操作，仅是用于确认【All-In-One Action】按钮操作是否成功，尤其是Step5操作，可以对应image下载窗口里显示的Bootable image构成图做一遍检查。  
 　　一切操作无误，板子上SW7拨码开关将Boot Mode设为2'b10即Internal Boot模式，其余保持全0，重新上电便可以看到unsigned image正常执行了。  
 
-##### 3.3.2 模式二：启用HAB签名认证
+###### 3.3.1.2 模式二：启用HAB签名认证
 　　第二种模式是初级的安全模式，即仅对image进行签名认证，一般用于对产品安全性要求较高的场合。签名认证主要是对image合法性进行校验，检测image是否被异常破坏或篡改，如果检测发现image不合法，那么MCU便不会启动执行该image。  
 　　【Secure Boot Type】选择“HAB Signed Image Boot”，然后输入serial（必须是8位数字）以及key_pass（任意长度字符）后点击【Advanced Cert Settings】按钮配置所有签名认证的参数（熟悉 [NXP官方HAB Code Signing Tool工具](https://www.nxp.com/webapp/sps/download/license.jsp?colCode=IMX_CST_TOOL&appType=file2&location=null&DOWNLOAD_ID=null&lang_cd=en) 使用的朋友应该对这些设置很熟悉），再点击【Browse】按钮选择一个原始image文件，最后点击【All-In-One Action】按钮即可完成bootable image生成与下载所有操作。  
 
@@ -198,7 +208,7 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　一切操作无误，板子上SW7拨码开关将Boot Mode设为2'b10即Internal Boot模式，其余保持全0，重新上电便可以看到HAB signed image正常执行了。  
 　　因为此时MCU芯片HAB状态已经是Closed，并且SRKH已经被烧录无法更改，所以未经签名认证的image无法正常运行，在软件目录\NXP-MCUBootUtility\tools\cst\crts文件夹下存放着Private RSA Key文件，请妥善保存好，一旦遗失，那么新的image将无法被正确签名从而导致HAB认证失败无法被启动执行。  
 
-##### 3.3.3 模式三：启用HAB签名认证与HAB加密
+###### 3.3.1.3 模式三：启用HAB签名认证与HAB加密
 　　第三种模式是中级的安全模式，即对image进行签名认证以及HAB级加密，一般用于对产品安全性要求很高的场合。签名认证主要是对image合法性进行校验，而加密则可以保护image在外部Boot Device中不被非法盗用，因为在外部Boot Device中存放的是image的密文数据，即使被非法获取也无法轻易破解，并且加密是和MCU芯片绑定的，因为HAB加密过程中使用了MCU内部SNVS模块里的唯一Master Secret Key。  
 　　【Secure Boot Type】选择“HAB Encrypted Image Boot”，然后配置所有签名认证的参数（如果本地已有证书，可以不用配置，软件会尝试复用），再点击【Browse】按钮选择一个原始image文件，最后点击【All-In-One Action】按钮即可完成bootable image生成与下载所有操作。  
 
@@ -210,7 +220,7 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　从上图中image下载窗口里显示的Bootable image构成图里可以看出，相比HAB单签名的方式，HAB签名加密方式最终使用的Bootable image的最后多了一个DEK KeyBlob组成部分，这个DEK KeyBlob是通过MCU芯片内部SNVS模块里的Master Secret Key对hab_dek.bin里的key数据进行动态加密生成的，因为Master Secret Key是芯片唯一的，因此DEK KeyBlob也是芯片唯一的，这是保护image不被非法盗用的关键。  
 　　关于HAB加密为何不支持XIP Image，其实简单分析一下启动原理便清楚，Image在Boot Device里存储的是密文，这部分密文必须要经过HAB解密成明文才可以被CPU执行，因此必须要指定不同的存储空间去存放Image明文，Non-XIP image天然指定了明文应存放在芯片内部SRAM或者外挂SDRAM中，而XIP Image是在Boot Device中直接执行的，一般明文地址与密文地址是相同的，因此HAB加密不支持XIP Image。  
 
-##### 3.3.4 模式四：启用单引擎BEE加密（唯一SNVS Key）
+###### 3.3.1.4 模式四：启用单引擎BEE加密（唯一SNVS Key）
 　　第四种模式是高级的安全模式，即用唯一SNVS Key对image进行单引擎BEE级加密，一般用于对产品安全性要求极高的场合。BEE加密与HAB加密的主要区别是执行解密操作的主体不同，主要有如下三点区别：  
 
 > * HAB加密是由BootROM里的HAB将加密后的image全部解密成明文另存后再执行（静态解密），而BEE加密是由MCU芯片内部的BEE模块对加密的image进行解密后再执行（如果是XIP image，则是原地边解密边执行（动态解密）；如果是Non-XIP Image，则解密执行流程与HAB加密类似）。  
@@ -228,7 +238,7 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　一切操作无误，板子上SW7拨码开关将Boot Mode设为2'b10即Internal Boot模式，并且将BT_CFG[1]设为1'b1（使能Encrypted XIP），其余保持全0，重新上电便可以看到BEE encrypted image正常执行了。  
 　　BEE加密相比HAB加密是要更安全的，因为HAB加密毕竟仅能静态解密，当HAB解密完成之后在SRAM/SDRAM中存储的是全部的image明文，如果此刻黑客去非法访问SRAM/SDRAM是有可能获取全部image明文的（不过也不用担心，i.MXRT可以设置JTAG访问权限）；而BEE加密可以是动态解密，CPU执行到什么地方才会去解密什么地方，任何时候都不存在完整的image明文，黑客永远无法获取全部的image明文。  
 
-##### 3.3.5 模式五：启用双引擎BEE加密（用户自定义Key）
+###### 3.3.1.5 模式五：启用双引擎BEE加密（用户自定义Key）
 　　第五种模式是顶级的安全模式，即用用户自定义Key对image进行双引擎BEE级加密，跟第四种模式（单引擎）原理类似，一般用于对产品安全性要求最高的场合。单引擎BEE加密与双引擎BEE加密具体区别如下：  
 
 > * 唯一SNVS Key单引擎BEE加密默认使用SNVS Key，芯片出厂已预先烧录，无法更改；用户自定义Key双引擎BEE加密使用的Key是由用户自己设的，需要手动烧录在Fuse SW_GP2和GP4区域。  
@@ -248,11 +258,11 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　双引擎BEE加密是将用户自定义的Key烧录进了Fuse SW_GP2/GP4区域里，但该区域的Fuse内容是可以回读的，如果黑客拿到Key，还是有可能破解存在外部Boot Device里的image密文，有没有对Fuse SW_GP2/GP4区域进行保护的方法？当然有，你可以对指定的Fuse区域进行加锁，可设置Fuse区域访问权限（读保护，写保护，覆盖保护），具体后面有单独章节详细介绍。NXP-MCUBootUtility工具为了安全考虑，直接将SW_GP2/GP4区域锁了起来。  
 　　双引擎BEE加密相比单引擎BEE加密，从破解角度来说难度加倍，毕竟可以启用两组不同的Key来共同保护image不被非法获取。  
 
-##### 3.3.6 模式六：启用单重OTFAD加密（唯一SNVS Key）
+###### 3.3.1.6 模式六：启用单重OTFAD加密（唯一SNVS Key）
 　　第六种模式是顶级的安全模式，即用唯一SNVS Key对image进行单重OTFAD级加密，该模式与单引擎BEE加密（唯一SNVS Key）是类似的，只是早期i.MXRT芯片（比如i.MXRT105x）的FlexSPI配套硬件加解密模块是BEE，而后期i.MXRT芯片（比如i.MXRT1011）的FlexSPI配套硬件加解密模块升级为OTFAD。  
 　　相比于BEE模块，OTFAD模块在加解密效率上提升了很多，并且提供了更加强大的加解密模式。关于OTFAD强大的加解密模式在下一节双重OTFAD加密模式中会进一步介绍。  
 
-##### 3.3.7 模式七：启用双重OTFAD加密（用户自定义Key）
+###### 3.3.1.7 模式七：启用双重OTFAD加密（用户自定义Key）
 　　第七种模式是顶级的安全模式，即用用户自定义Key对image进行双重OTFAD级加密，前一节讲了OTFAD是BEE的升级，那么我们就来比较一下双重OTFAD加密与双引擎BEE加密区别：  
 
 > * 双引擎BEE加密最多可设3个加密区间，这3个加密区间最多仅能由2组用户密钥来保护；而双重OTFAD加密最多可设4个加密区间，每个加密区间均可设独立的用户密钥，并且所有的用户密钥还由一个全局密钥来保护。  
@@ -273,6 +283,15 @@ define symbol m_data2_end              = 0x202BFFFF;
 > Note2: 当.sb文件中包含必要的efuse操作时，会一次性生成3个.sb格式文件，其中application_device.sb包含全部的操作（flash+efuse操作），application_device_flash.sb仅包含flash操作，application_device_efuse.sb仅包含efuse操作，这样做的目的是为了方便工厂量产。  
 > Note3: 对于NOR Flash（FlexSPI NOR、LPSPI NOR）型的启动设备生成.sb文件而言，既可连接板子在线操作（推荐），也可以不用连接板子离线操作。  
 > Note4: eFuse Operation Utility窗口里的【Scan】、【Burn】按钮可用于生成仅含自定义efuse操作的.sb文件，需要先点【Scan】按钮，然后填入想烧写的efuse值，最后再点【Burn】按钮便可在\NXP-MCUBootUtility\gen\sb_image\下生成burn_efuse.sb文件。  
+
+##### 3.3.2 对于RT三位数系列
+###### 3.3.2.1 模式一：不启用任何安全措施
+　　第一种模式是最简单的模式，即不启动任何安全措施，一般用于产品开发调试阶段。  
+　　【Secure Boot Type】选择“Plain Unsigned Image Boot”，然后点击【Browse】按钮选择一个原始image文件（使用IDE生成的裸image文件即可，不需要包含任何i.MXRT启动所需的boot image header），点击【All-In-One Action】按钮即可完成bootable image生成与下载所有操作。  
+
+###### 3.3.2.2 模式二：启用CRC验证完整性
+　　第二种模式是初级的安全模式，即仅对image进行CRC完整性验证，一般用于对产品安全性要求较高的场合。CRC验证主要是对image完整性进行校验，检测image是否被异常破坏或篡改，如果检测发现image不合法，那么MCU便不会启动执行该image。  
+　　【Secure Boot Type】选择“Plain CRC Image Boot”，再点击【Browse】按钮选择一个原始image文件，最后点击【All-In-One Action】按钮即可完成bootable image生成与下载所有操作。  
 
 ### 4 软件进阶
 　　NXP-MCUBootUtility软件打开默认工作在Entry Mode下，可通过功能菜单栏Tools->Option选择进入Master Mode，在Master模式下开放了一些高级功能，适用于对NXP MCU芯片以及Boot ROM非常熟悉的用户。  
@@ -298,6 +317,10 @@ define symbol m_data2_end              = 0x202BFFFF;
 　　对于一些混合功能的eFuse区域，除了可以在对应框内直接填写想要烧录的值外，也可以点击索引按钮，在弹出的界面里编辑：  
 
 ![NXP-MCUBootUtility_fuseViewer](http://henjay724.com/image/cnblogs/nxpSecBoot_v1_4_0_fuseViewer.PNG)
+
+　　对于eFuse大于80个word的芯片（如RT1170或RT600），可以通过设置菜单栏Tools/eFuse Group来切换到其他eFuse分组。  
+
+![NXP-MCUBootUtility_setEfuseGroup](http://henjay724.com/image/cnblogs/nxpSecBoot_v2_2_0_set_efuse_group.PNG)
 
 #### 4.3 专用FlexRAM编程器
 　　进入Master模式下，可以点击【Read】、【Write】、【Execute】按钮实现FlexRAM的任意读/写/执行操作，这样可以将NXP-MCUBootUtility工具当做专用FlexRAM编程器。  

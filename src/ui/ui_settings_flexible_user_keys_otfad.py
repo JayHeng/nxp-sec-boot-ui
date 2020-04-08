@@ -77,6 +77,14 @@ class secBootUiSettingsFlexibleUserKeysOtfad(advSettingsWin_FlexibleUserKeys_Otf
                 kekSource = RTyyyy_uidef.kSupportedKeySource_iMXRT117x
             else:
                 pass
+            self.m_textCtrl_region0FacStart.Clear()
+            self.m_textCtrl_region0FacStart.write(str(hex(xipBaseAddr + 0x1000)))
+            self.m_textCtrl_region1FacStart.Clear()
+            self.m_textCtrl_region1FacStart.write(str(hex(xipBaseAddr + 0x3000)))
+            self.m_textCtrl_region2FacStart.Clear()
+            self.m_textCtrl_region2FacStart.write(str(hex(xipBaseAddr + 0x5000)))
+            self.m_textCtrl_region3FacStart.Clear()
+            self.m_textCtrl_region3FacStart.write(str(hex(xipBaseAddr + 0x7000)))
             self.m_choice_xipBaseAddr.Clear()
             xipBaseAddr = [str(hex(xipBaseAddr))]
             self.m_choice_xipBaseAddr.SetItems(xipBaseAddr)

@@ -52,6 +52,7 @@ kFlexspiNorDevice_ISSI_IS25LP064A       = 'ISSI_IS25LPxxxA_IS25WPxxxA'
 kFlexspiNorDevice_ISSI_IS26KS512S       = 'ISSI_IS26KSxxxS'
 kFlexspiNorDevice_MXIC_MX25UM51245G     = 'Macronix_MX25UMxxx45G_MX66UMxxx45G_MX25LMxxx45G'
 kFlexspiNorDevice_MXIC_MX25UM51345G     = 'Macronix_MX25UM51345G'
+kFlexspiNorDevice_MXIC_MX25UM51345G_2nd = 'Macronix_MX25UM51345G_2nd'
 kFlexspiNorDevice_Micron_MT35X          = 'Micron_MT35XLxxxA_MT35XUxxxA'
 kFlexspiNorDevice_Adesto_AT25SF128A     = 'Adesto_AT25SFxxxA'
 kFlexspiNorDevice_Adesto_ATXP032        = 'Adesto_ATXPxxx'
@@ -65,6 +66,8 @@ kFlexspiNorOpt0_ISSI_IS25LP064A       = 0xc0000007
 kFlexspiNorOpt0_ISSI_IS26KS512S       = 0xc0233007
 kFlexspiNorOpt0_MXIC_MX25UM51245G     = 0xc0403037
 kFlexspiNorOpt0_MXIC_MX25UM51345G     = 0xc0403007
+kFlexspiNorOpt0_MXIC_MX25UM51345G_2nd = 0xc1503051
+kFlexspiNorOpt1_MXIC_MX25UM51345G_2nd = 0x20000014
 kFlexspiNorOpt0_Micron_MT35X          = 0xC0603005
 kFlexspiNorOpt0_Adesto_AT25SF128A     = 0xc0000007
 kFlexspiNorOpt0_Adesto_ATXP032        = 0xc0803007
@@ -73,6 +76,13 @@ kFlexspiNorOpt0_GigaDevice_GD25LB256E = 0xc0000007
 kFlexspiNorOpt0_GigaDevice_GD25LT256E = 0xc0000008
 kFlexspiNorOpt0_GigaDevice_GD25LX256E = 0xc0600008
 kFlexspiNorOpt0_Winbond_W25Q128JV     = 0xc0000207
+
+kSemcNorDevice_None                  = 'No'
+kSemcNorDevice_Micron_MT28EW128ABA   = 'Micron_MT28EW128ABA'
+kSemcNorDevice_Micron_MT28UG128ABA   = 'Micron_MT28UG128ABA'
+
+kSemcNorOpt0_Micron_MT28EW128ABA       = 0xD0000600
+kSemcNorOpt0_Micron_MT28UG128ABA       = 0xD0000601
 
 kAdvancedSettings_Tool      = 0
 kAdvancedSettings_Cert      = 1
@@ -110,10 +120,3 @@ kPageIndex_ImageGenerationSequence = 0
 kPageIndex_ImageLoadingSequence    = 1
 kPageIndex_EfuseOperationUtility   = 2
 kPageIndex_BootDeviceMemory        = 3
-
-kSemcNorDevice_None                  = 'No'
-kSemcNorDevice_Micron_MT28EW128ABA   = 'Micron_MT28EW128ABA'
-kSemcNorDevice_Micron_MT28UG128ABA   = 'Micron_MT28UG128ABA'
-
-kSemcNorOpt0_Micron_MT28EW128ABA       = 0xD0000600
-kSemcNorOpt0_Micron_MT28UG128ABA       = 0xD0000601
