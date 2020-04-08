@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import RTxxx_otpcore
-import RTxxx_otpdef
-import RTyyyy_fusecore
-import RTyyyy_fusedef
+from fuse import RTxxx_otpcore
+from fuse import RTxxx_otpdef
+from fuse import RTyyyy_fusecore
+from fuse import RTyyyy_fusedef
 
 __all__ = ["RTxxx_otpcore",
            "RTxxx_otpdef",

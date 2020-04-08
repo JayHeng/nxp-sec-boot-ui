@@ -2,15 +2,18 @@
 # -*- coding: utf-8 -*-
 import wx
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+if sys.version_info.major == 2:
+    # No need to set default encoding to utf in python3
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 import os
 import time
-import RTyyyy_uidef
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import RTyyyy_uidef
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from mem import memcore
 from run import RTyyyy_rundef
 from run import rundef

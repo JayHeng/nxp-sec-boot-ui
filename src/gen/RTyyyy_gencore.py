@@ -6,9 +6,9 @@ import time
 import shutil
 import subprocess
 import bincopy
-import gendef
-import RTyyyy_gendef
-sys.path.append(os.path.abspath(".."))
+from gen import gendef
+from gen import RTyyyy_gendef
+#sys.path.append(os.path.abspath(".."))
 from ui import RTyyyy_uicore
 from ui import RTyyyy_uidef
 from ui import uidef
@@ -423,7 +423,9 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                     for i in range(elfObj.e_phnum):
                         lengthInByte += elfObj.programmheaders[i].p_memsz
                     isConvSuccessed = True
-                except:
+                except Exception as e:
+                    print('Trying {}... failed with {}'.format(appType,e))
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
             elif appType.lower() in gendef.kAppImageFileExtensionList_S19:
                 try:
@@ -447,7 +449,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
                 startAddress = None
                 entryPointAddress = None
                 lengthInByte = 0
-                self.popupMsgBox(uilang.kMsgLanguageContentDict['genImgError_formatNotValid'][self.languageIndex] + srcAppFilename.encode('utf-8'))
+                self.popupMsgBox(uilang.kMsgLanguageContentDict['genImgError_formatNotValid'][self.languageIndex] + str(srcAppFilename.encode('utf-8')))
         #print ('Image Vector address is 0x%x' %(startAddress))
         #print ('Image Entry address is 0x%x' %(entryPointAddress))
         #print ('Image length is 0x%x' %(lengthInByte))
@@ -502,7 +504,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.dcdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseDcdGenerationResult(commandOutput):
             return True
         else:
@@ -757,11 +759,11 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             pass
 
         if bootDevice == RTyyyy_uidef.kBootDevice_RamFlashloader:
-            with open(self.flBdFilename, 'wb') as fileObj:
+            with open(self.flBdFilename, 'w') as fileObj:
                 fileObj.write(bdContent)
                 fileObj.close()
         else:
-            with open(self.appBdFilename, 'wb') as fileObj:
+            with open(self.appBdFilename, 'w') as fileObj:
                 fileObj.write(bdContent)
                 fileObj.close()
 
@@ -905,7 +907,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         self._adjustDestAppFilenameForBd()
         batContent = "\"" + self.elftosbPath + "\""
         batContent += " -f imx -V -c " + "\"" + self.appBdFilename + "\"" + ' -o ' + "\"" + self.destAppFilename + "\"" + ' ' + "\"" + self.srcAppFilename + "\""
-        with open(self.appBdBatFilename, 'wb') as fileObj:
+        with open(self.appBdBatFilename, 'w') as fileObj:
             fileObj.write(batContent)
             fileObj.close()
 
@@ -918,6 +920,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         # (Encrypted)  Key Blob Address is 0xe000.
         # (Encrypted)  Key Blob data should be placed at Offset :0x6000 in the image
         info = 'iMX bootable image generated successfully'
+        output = str(output)
         if output.find(info) != -1:
             self.printLog('Bootable image is generated: ' + self.destAppFilename)
             info1 = 'Key Blob data should be placed at Offset :0x'
@@ -943,7 +946,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.appBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         self._recoverDcdBecauseOfSrcApp()
         if self._RTyyyy_parseBootableImageGenerationResult(commandOutput):
             return True
@@ -1068,7 +1071,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(encBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print(commandOutput)
 
     def encrypteImageUsingFlexibleUserKeys( self ):
         userKeyCtrlDict, userKeyCmdDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_UserKeys)
@@ -1114,7 +1117,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
             process = subprocess.Popen(self.flBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             os.chdir(curdir)
             commandOutput = process.communicate()[0]
-            print commandOutput
+            print (commandOutput)
             return self.destFlFilename
         else:
             return None
@@ -1345,7 +1348,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(sbAppBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseSbImageGenerationResult(commandOutput):
             return True
         else:
@@ -1394,7 +1397,7 @@ class secBootRTyyyyGen(RTyyyy_uicore.secBootRTyyyyUi):
         process = subprocess.Popen(self.sbUserEfuseBdBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         os.chdir(curdir)
         commandOutput = process.communicate()[0]
-        print commandOutput
+        print (commandOutput)
         if self._parseSbImageGenerationResult(commandOutput):
             return True
         else:

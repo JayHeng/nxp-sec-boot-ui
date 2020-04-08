@@ -2,18 +2,21 @@
 # -*- coding: utf-8 -*-
 import wx
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+if sys.version_info.major == 2:
+    # No need to set default encoding to utf in python3
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
 import os
 import time
 import math
 import serial.tools.list_ports
 import pywinusb.hid
-import RTyyyy_uidef
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import RTyyyy_uidef
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from win import secBootWin
 from run import rundef
 from fuse import RTyyyy_fusedef
@@ -39,6 +42,7 @@ class secBootUi(secBootWin.secBootWin):
         if not os.path.isfile(exeMainFile):
             self.exeTopRoot = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
         uivar.setRuntimeSettings(None, self.exeTopRoot)
+        print('Dir: {}'.format(self.exeTopRoot))
         uivar.initVar(os.path.join(self.exeTopRoot, 'bin', 'nsb_settings.json'))
         toolCommDict = uivar.getAdvancedSettings(uidef.kAdvancedSettings_Tool)
         self.toolCommDict = toolCommDict.copy()
@@ -778,7 +782,10 @@ class secBootUi(secBootWin.secBootWin):
     def getUserAppFilePath( self ):
         appPath = self.m_filePicker_appPath.GetPath()
         self.toolCommDict['appFilename'] = appPath.encode("utf-8")
-        return appPath.encode('utf-8').encode("gbk")
+        if sys.version_info.major == 2:
+            return appPath.encode('utf-8').encode("gbk")
+        else:
+            return appPath
 
     def _setUserBinaryBaseField( self ):
         txt = self.m_choice_appFormat.GetString(self.m_choice_appFormat.GetSelection())
@@ -1108,7 +1115,10 @@ class secBootUi(secBootWin.secBootWin):
 
     def getComMemBinFile( self ):
         memBinFile = self.m_filePicker_memBinFile.GetPath()
-        return memBinFile.encode('utf-8').encode("gbk")
+        if sys.version_info.major == 2:
+            return memBinFile.encode('utf-8').encode("gbk")
+        else:
+            return memBinFile
 
     def needToSaveReadbackImageData( self ):
         return self.m_checkBox_saveImageData.GetValue()

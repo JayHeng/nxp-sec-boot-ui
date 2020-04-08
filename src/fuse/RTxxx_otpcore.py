@@ -5,7 +5,7 @@ import json
 import sys
 import os
 import time
-import RTxxx_otpdef
+from fuse import RTxxx_otpdef
 import collections
 
 sys.path.append(os.path.abspath(".."))

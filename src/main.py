@@ -2,13 +2,17 @@
 # -*- coding: UTF-8 -*-
 import wx
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+if sys.version_info.major == 2:
+    # No need to set default encoding to utf in python3
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
 import os
 import time
 import threading
 import inspect
 import ctypes
+
 from _main import RTxxx_main
 from _main import RTyyyy_main
 from ui import RTyyyy_uidef
@@ -362,7 +366,7 @@ class secBootMain(RTxxx_main.secBootRTxxxMain):
     def _doExecuteApp( self ):
         if self.connectStage == uidef.kConnectStage_ExternalMemory or \
            self.connectStage == uidef.kConnectStage_Reset:
-            self.executeAppInFlexram()
+            self.executeAppInRam()
         else:
             self.popupMsgBox(uilang.kMsgLanguageContentDict['connectError_hasnotEnterFl'][self.languageIndex])
 

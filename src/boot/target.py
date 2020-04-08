@@ -29,8 +29,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import sys, os
-import commands, memoryrange, peripherals
-sys.path.append(os.path.abspath(".."))
+from boot import commands, memoryrange, peripherals
+#sys.path.append(os.path.abspath(".."))
 from utils import misc
 
 ##

@@ -33,11 +33,15 @@ import os
 import copy
 import json
 import time
-import peripherals
-import peripheralspeed
+from boot import peripherals
+from boot import peripheralspeed
 import subprocess
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from utils import filetools
+
+if sys.version_info.major == 3:
+    def long(x):
+        return int(x)
 
 # Constants for command JSON response dictionary keys.
 kCmdResponse_Command = "command"
@@ -129,9 +133,9 @@ class Bootloader(object):
     # @brief Print the return value and stdout string from the executable (blsim/blhost).
     def printStatus(self):
         if self.commandStatus is None:
-            print '\nstatus: None\nresults:\n%s' % (self.commandOutput)
+            print('\nstatus: None\nresults:\n%s' % (self.commandOutput))
         else:
-            print '\nstatus: %d\nresults:\n%s' % (self.commandStatus, self.commandOutput)
+            print('\nstatus: %d\nresults:\n%s' % (self.commandStatus, self.commandOutput))
 
     ##
     # @brief Utility function to return the MemoryRange containing the start address.
@@ -144,10 +148,14 @@ class Bootloader(object):
     # @brief Utility function to return the JSON formatted results.
     def _parseResults(self, output):
         if self.toolStatus == 0:
-            jsonResults = output[output.find('{'):output.rfind('}')+1]
-
-            if len(jsonResults):
+            try:
+                # works in python 3 directly.
+                actualResults = json.loads(output)
+            except json.decoder.JSONDecodeError:
+                jsonResults = output[output.find('{'):output.rfind('}')+1]
                 actualResults = json.loads(jsonResults)
+
+            if len(actualResults) > 1:
                 return actualResults
 
             # No json was found, create artificial results.
@@ -299,7 +307,7 @@ class Bootloader(object):
 
         # Convert all args to strings.
         theArgs = [str(x) for x in theArgs]
-        print "Executing:", " ".join(theArgs)
+        print("Executing:", " ".join(theArgs))
         commandString = str("Executing " + " ".join(theArgs))
 
         # Execute the command.
@@ -307,8 +315,8 @@ class Bootloader(object):
         self.commandOutput = process.communicate()[0]
         self.toolStatus = process.returncode
 
-        print 'toolStatus:', self.toolStatus
-        print 'commandOutput:', self.commandOutput
+        print( 'toolStatus:', self.toolStatus)
+        print( 'commandOutput:', self.commandOutput)
 
         # Convert command JSON output into a dict.
         self.commandResults = self._parseResults(self.commandOutput);

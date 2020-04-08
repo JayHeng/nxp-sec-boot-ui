@@ -4,12 +4,12 @@ import wx
 import sys
 import os
 import math
-import RTyyyy_uidef
-import RTxxx_uidef
-import uidef
-import uivar
-import uilang
-sys.path.append(os.path.abspath(".."))
+from ui import RTyyyy_uidef
+from ui import RTxxx_uidef
+from ui import uidef
+from ui import uivar
+from ui import uilang
+#sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_RecoverySpiNor
 from utils import sound
 

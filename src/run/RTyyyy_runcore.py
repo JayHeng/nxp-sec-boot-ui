@@ -3,10 +3,10 @@
 import sys
 import os
 import math
-import RTyyyy_rundef
-import rundef
+from run import RTyyyy_rundef
+from run import rundef
 import boot
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from gen import RTyyyy_gencore
 from gen import RTyyyy_gendef
 from fuse import RTyyyy_fusedef
@@ -18,6 +18,17 @@ from mem import RTyyyy_memdef
 from boot import bltest
 from boot import target
 from utils import misc
+
+
+def execfilePY3(filepath, globals=None, locals=None):
+    if globals is None:
+        globals = {}
+    globals.update({
+        "__file__": filepath,
+        "__name__": "__main__",
+    })
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), globals, locals)
 
 def RTyyyy_createTarget(device, exeBinRoot, flexspiXipRegionSel ):
     # Build path to target directory and config file.
@@ -58,7 +69,10 @@ def RTyyyy_createTarget(device, exeBinRoot, flexspiXipRegionSel ):
     targetConfig['__name__'] = 'bltargetconfig'
 
     # Execute the target config script.
-    execfile(targetConfigFile, globals(), targetConfig)
+    if sys.version_info.major == 2:
+        execfile(targetConfigFile, globals(), targetConfig)
+    else:
+        execfilePY3(targetConfigFile, globals(), targetConfig)
 
     # Create the target object.
     tgt = target.Target(**targetConfig)

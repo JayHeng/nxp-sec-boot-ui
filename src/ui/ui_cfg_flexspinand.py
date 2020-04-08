@@ -2,9 +2,9 @@
 import wx
 import sys
 import os
-import uivar
-import RTyyyy_uidef
-sys.path.append(os.path.abspath(".."))
+from ui import uivar
+from ui import RTyyyy_uidef
+#sys.path.append(os.path.abspath(".."))
 from win import bootDeviceWin_FlexspiNand
 
 class secBootUiFlexspiNand(bootDeviceWin_FlexspiNand.bootDeviceWin_FlexspiNand):

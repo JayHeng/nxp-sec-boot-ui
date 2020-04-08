@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 
-import secBootWin
-import bootDeviceWin_FlexspiNor
-import bootDeviceWin_FlexspiNand
-import bootDeviceWin_SemcNor
-import bootDeviceWin_SemcNand
-import bootDeviceWin_UsdhcSd
-import bootDeviceWin_UsdhcMmc
-import bootDeviceWin_RecoverySpiNor
-import bootDeviceWin_DCD
-import advSettingsWin_Cert
-import advSettingsWin_FixedOtpmkKey
-import advSettingsWin_FlexibleUserKeys_Bee
-import advSettingsWin_FlexibleUserKeys_Otfad
-import RT10yy_efuseWin_Lock
-import RT10yy_efuseWin_BootCfg0_FlexspiNor_3bits
-import RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits
-import RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits
-import RT10yy_efuseWin_BootCfg1
-import RT10yy_efuseWin_BootCfg2
-import RT10yy_efuseWin_MiscConf0
-import RT10yy_efuseWin_MiscConf1_FlexspiNor
+import sys
+#sys.path.append('win/')
+from win import secBootWin
+from win import bootDeviceWin_FlexspiNor
+from win import bootDeviceWin_FlexspiNand
+from win import bootDeviceWin_SemcNor
+from win import bootDeviceWin_SemcNand
+from win import bootDeviceWin_UsdhcSd
+from win import bootDeviceWin_UsdhcMmc
+from win import bootDeviceWin_RecoverySpiNor
+from win import bootDeviceWin_DCD
+from win import advSettingsWin_Cert
+from win import advSettingsWin_FixedOtpmkKey
+from win import advSettingsWin_FlexibleUserKeys_Bee
+from win import advSettingsWin_FlexibleUserKeys_Otfad
+from win import RT10yy_efuseWin_Lock
+from win import RT10yy_efuseWin_BootCfg0_FlexspiNor_3bits
+from win import RT10yy_efuseWin_BootCfg0_FlexspiNor_10bits
+from win import RT10yy_efuseWin_BootCfg0_FlexspiNor_12bits
+from win import RT10yy_efuseWin_BootCfg1
+from win import RT10yy_efuseWin_BootCfg2
+from win import RT10yy_efuseWin_MiscConf0
+from win import RT10yy_efuseWin_MiscConf1_FlexspiNor
 
 __all__ = ["secBootWin",
            "bootDeviceWin_FlexspiNor",

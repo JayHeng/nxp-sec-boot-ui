@@ -3,9 +3,9 @@
 import wx
 import sys
 import os
-import uivar
-import RTyyyy_uidef_efuse
-sys.path.append(os.path.abspath(".."))
+from ui import uivar
+from ui import RTyyyy_uidef_efuse
+#sys.path.append(os.path.abspath(".."))
 from win import RT10yy_efuseWin_MiscConf0
 
 class secBootUiEfuseMiscConf0(RT10yy_efuseWin_MiscConf0.efuseWin_MiscConf0):

@@ -29,7 +29,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import sys, os
-sys.path.append(os.path.abspath(".."))
+#sys.path.append(os.path.abspath(".."))
 from boot.memoryrange import MemoryRange
 from ui import RTyyyy_uidef
 from ui import RTyyyy_uidef_efuse

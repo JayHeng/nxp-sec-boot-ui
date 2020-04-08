@@ -6,9 +6,9 @@ import shutil
 import json
 import subprocess
 import bincopy
-import gendef
-import RTxxx_gendef
-sys.path.append(os.path.abspath(".."))
+from gen import gendef
+from gen import RTxxx_gendef
+#sys.path.append(os.path.abspath(".."))
 from ui import RTxxx_uicore
 from ui import RTxxx_uidef
 from ui import uidef
@@ -291,7 +291,7 @@ class secBootRTxxxGen(RTxxx_uicore.secBootRTxxxUi):
             process = subprocess.Popen(self.appJsonBatFilename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             os.chdir(curdir)
             commandOutput = process.communicate()[0]
-            print commandOutput
+            print(commandOutput)
             if self._RTxxx_parseBootableImageGenerationResult(commandOutput):
                 return True
             else:

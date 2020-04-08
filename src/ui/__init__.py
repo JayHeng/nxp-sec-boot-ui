@@ -1,35 +1,38 @@
 #!/usr/bin/env python
 
-import RTxxx_uicore
-import RTxxx_uidef
-import RTyyyy_uicore
-import RTyyyy_uidef
-import uicore
-import uidef
-import uivar
-import uilang
-import ui_cfg_flexspinor
-import ui_cfg_flexspinand
-import ui_cfg_semcnor
-import ui_cfg_semcnand
-import ui_cfg_usdhcsd
-import ui_cfg_usdhcmmc
-import ui_cfg_recoveryspinor
-import ui_cfg_dcd
-import ui_settings_cert
-import ui_settings_fixed_otpmk_key
-import ui_settings_flexible_user_keys_bee
-import ui_settings_flexible_user_keys_otfad
-import RTxxx_uidef_otp
-import RTyyyy_uidef_efuse
-import RT10yy_ui_efuse_lock
-import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
-import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
-import RT10yy_ui_efuse_bootcfg0_flexspinor_12bits
-import RT10yy_ui_efuse_bootcfg1
-import RT10yy_ui_efuse_bootcfg2
-import RT10yy_ui_efuse_miscconf0
-import RT10yy_ui_efuse_miscconf1_flexspinor
+import sys
+#sys.path.append('ui/')
+
+from ui import RTxxx_uicore
+from ui import RTxxx_uidef
+from ui import RTyyyy_uicore
+from ui import RTyyyy_uidef
+from ui import uicore
+from ui import uidef
+from ui import uivar
+from ui import uilang
+from ui import ui_cfg_flexspinor
+from ui import ui_cfg_flexspinand
+from ui import ui_cfg_semcnor
+from ui import ui_cfg_semcnand
+from ui import ui_cfg_usdhcsd
+from ui import ui_cfg_usdhcmmc
+from ui import ui_cfg_recoveryspinor
+from ui import ui_cfg_dcd
+from ui import ui_settings_cert
+from ui import ui_settings_fixed_otpmk_key
+from ui import ui_settings_flexible_user_keys_bee
+from ui import ui_settings_flexible_user_keys_otfad
+from ui import RTxxx_uidef_otp
+from ui import RTyyyy_uidef_efuse
+from ui import RT10yy_ui_efuse_lock
+from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_3bits
+from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_10bits
+from ui import RT10yy_ui_efuse_bootcfg0_flexspinor_12bits
+from ui import RT10yy_ui_efuse_bootcfg1
+from ui import RT10yy_ui_efuse_bootcfg2
+from ui import RT10yy_ui_efuse_miscconf0
+from ui import RT10yy_ui_efuse_miscconf1_flexspinor
 
 __all__ = ["RTxxx_uicore",
            "RTxxx_uidef",

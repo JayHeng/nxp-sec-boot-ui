@@ -35,7 +35,7 @@ import unittest
 __all__ = ["align_down", "align_up", "mymkarg", "findPathListCommonPrefix", "splitPath", "rebuildPathSimple", "onlyHyphensPlease", "suite"]
 
 def get_dict_default(d, k, default):
-    if not d.has_key(k):
+    if k not in d:
         return default
     else:
         return d[k]
@@ -44,7 +44,8 @@ def align_down(x, a):
     return x & ~(a - 1)
 
 def align_up(x, a):
-    return (x + a - 1) / a * a
+    a=int(a)
+    return (x + a - 1) // a * a
 
 # This is a modifed version of mkarg from commands module. It will never use single
 # quoting, because the DOS shell does not like that.
@@ -128,8 +129,8 @@ def rebuildPathSimple(originalDir, newDir, path):
         
     absOriginal = os.path.abspath(originalDir)
     absNew = os.path.abspath(newDir)
-    print "absOrig=",absOriginal
-    print 'absNew=',absNew
+    print( "absOrig=",absOriginal)
+    print( 'absNew=',absNew)
     
     originalDirSplit = absOriginal.split(os.path.sep)
     newDirSplit = absNew.split(os.path.sep)

@@ -3,9 +3,9 @@
 import sys
 import os
 import json
-import uidef
-import RTyyyy_uidef
-import RTxxx_uidef
+from ui import uidef
+from ui import RTyyyy_uidef
+from ui import RTxxx_uidef
 
 g_exeTopRoot = None
 g_soundEffectType = None
